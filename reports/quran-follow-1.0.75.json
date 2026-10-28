@@ -1,0 +1,32 @@
+{
+  "feature": "Actual recited ayah highlighting and automatic Mushaf scrolling",
+  "readers": [
+    "shatri",
+    "yasser",
+    "qatami"
+  ],
+  "cue_source": "EveryAyah verse recordings; audio playing event / fulfilled play promise",
+  "estimated_wall_clock_timing_used": false,
+  "basmala": "Same reciter Al-Fatiha 1:1 intro; omitted for surahs 1 and 9",
+  "checks_passed": [
+    "delayed playback does not announce early",
+    "stale play promises after stop/reciter switch are ignored",
+    "one current ayah with aria-current",
+    "pause retains current ayah",
+    "stop/error/completion clear marker",
+    "follow off retains reference without scrolling",
+    "follow on returns to current ayah",
+    "lazy page transitions do not restart audio",
+    "dialog and hidden tab suppress scrolling",
+    "same reader for each queue segment",
+    "next recording preloads without audible playback",
+    "Quran text digest unchanged",
+    "HTML IDs unique and controls resolved"
+  ],
+  "network_playback_requirement": true,
+  "known_limits": [
+    "No connected physical Android device or managed browser QA available",
+    "Build network policy prevents live binary audio requests to the providers",
+    "Previously saved whole-surah recordings can play offline but have no verse timing marker"
+  ]
+}

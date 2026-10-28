@@ -1,0 +1,7 @@
+{
+  "application_id": "com.salati.prayer",
+  "key_alias": "salati",
+  "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+  "first_release": "1.0.68",
+  "note": "Fixed release certificate selected with owner authorization on 2026-10-23. Original 1.0.67 has a different certificate."
+}

@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+android {
+ namespace 'com.salati.ads'
+ compileSdk 36
+ defaultConfig {
+  minSdk 26
+  manifestPlaceholders = [admobAppId: rootProject.salatiAds.appId]
+  buildConfigField 'String', 'BANNER_ID', '"' + rootProject.salatiAds.bannerId + '"'
+  buildConfigField 'boolean', 'TEST_ADS', String.valueOf(rootProject.salatiAds.mode == 'test')
+ }
+ buildFeatures { buildConfig true }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies {
+ implementation 'com.google.android.gms:play-services-ads:25.5.0'
+ implementation 'com.google.android.ump:user-messaging-platform:4.0.0'
+}

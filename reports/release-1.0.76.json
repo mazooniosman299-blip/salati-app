@@ -1,0 +1,26 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.75",
+    "version_code": 76,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "3adfa60892181f30a72137e6e078468741f69dc7e5db512f23691df028206127"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.76",
+    "version_code": 77,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "f69cc7a94558e5a08b21a12a62d42b1d37b3db2db62b8b9425889e56dba3a474"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "packaged_ui_matches_prepared_assets": true,
+  "verse_following_note_removed_ar_and_en": true,
+  "coverage_note_hidden_in_surah_player": true,
+  "verse_following_behavior_unchanged": true,
+  "quran_audio_and_follow_tests_passed": true,
+  "quran_text_unchanged": true,
+  "physical_android_device_tested": false
+}

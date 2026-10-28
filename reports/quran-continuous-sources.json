@@ -1,0 +1,50 @@
+{
+  "version": "v3.2.0",
+  "source": "https://github.com/QUD-Technologies/quranic-universal-audio/releases/tag/v3.2.0",
+  "license": "CC BY 4.0",
+  "changes": "Verse-level timestamps only, grouped by surah; milliseconds losslessly delta-encoded [ayah,start minus previous end,duration], including noncanonical repeated occurrences. No Quran text, word/letter alignment or audio copied. Missing 1:1 in Yasser/Qatami is left without a guessed cue.",
+  "reciters": {
+    "shatri": {
+      "edition": "abu_bakr_al_shatri_tarteel",
+      "archive_sha256": "c644c4b2afee7767c7efa591eef8b6c9914fe9a6ae5688e8a140f7612f623de3",
+      "metadata_sha256": "6a58848ff31fe014bd73b400b9bcab28e00225498e2100a9535be8c4b7c800d4",
+      "coverage": {
+        "ayahs": 6236,
+        "surahs": 114
+      },
+      "occurrences": 6283
+    },
+    "yasser": {
+      "edition": "yasser_al_dosari_archive",
+      "archive_sha256": "95c21b19163d306a6327c1177175d7759755149f31bbf2b2d53685b02aef13ed",
+      "metadata_sha256": "2d505ca06923dbd42a9cf67ef975ef051a8d29aabe9099f85c10e4b9659b81a2",
+      "coverage": {
+        "ayahs": 6235,
+        "missing_verses": "1:1",
+        "surahs": 114
+      },
+      "occurrences": 6403
+    },
+    "qatami": {
+      "edition": "nasser_al_qatami_mp3quran",
+      "archive_sha256": "5d1102e89035093062402973162ec96c8b8d00e4f62f29f0e1719e3ecbc99ff0",
+      "metadata_sha256": "5e9a47128538ad20187d0af5cb47bc52c4e2588b5caaebb49e78fc7e1475f3cc",
+      "coverage": {
+        "ayahs": 6235,
+        "missing_verses": "1:1",
+        "surahs": 114
+      },
+      "occurrences": 6530
+    },
+    "afasy": {
+      "edition": "mishary_rashid_al_afasy_mp3quran",
+      "archive_sha256": "2ef64637e14b657fc354c6aab718344d61102b6a4934a32ff214c77bd1e3db69",
+      "metadata_sha256": "f583c672e6bdbb9e72a9a1366a1261a9c3c3a62f1ac76e0bcecfdf09e87a2db6",
+      "coverage": {
+        "ayahs": 6236,
+        "surahs": 114
+      },
+      "occurrences": 6249
+    }
+  }
+}

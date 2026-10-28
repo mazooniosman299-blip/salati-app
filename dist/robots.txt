@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://salati-world-prayer.sprytitan65.chatgpt.site/sitemap.xml

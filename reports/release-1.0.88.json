@@ -1,0 +1,47 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.87",
+    "version_code": 88,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "acd31a680cdf3136f1e13bb771225f2e57883263783f7cf2b6c848cd4a8440af"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.88",
+    "version_code": 89,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "5aa6ab8f5c65a8b2e1cfafc649e6a937a08b9a17a9ffce71737f52f9fe8dbbb5"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26176786,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_assets_verified": 348,
+  "legacy_pale_light_hero_rule_removed": true,
+  "legacy_180px_location_flex_basis_removed": true,
+  "six_equal_28px_mobile_icon_boxes": true,
+  "desktop_nav_in_real_header_grid_without_negative_margin": true,
+  "six_actual_tab_handlers_verified_rtl_ltr": true,
+  "countdown_label_above_number": true,
+  "settings_eyebrow_removed": true,
+  "phone_photo_natural_ratio_without_crop": true,
+  "responsive_cascade_test_widths": [
+    320,
+    390,
+    600,
+    760,
+    820,
+    1024,
+    1440
+  ],
+  "light_dark_selector_regressions_passed": true,
+  "failing_css_regressions_reproduced_before_fix": true,
+  "complete_application_test_command_passed": true,
+  "web_android_builds_passed": true,
+  "quran_text_font_audio_native_service_unchanged": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "prior_user_publication_without_browser_qa_authorization_retained": true
+}

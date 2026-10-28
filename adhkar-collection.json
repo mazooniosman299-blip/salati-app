@@ -1,0 +1,1454 @@
+{
+  "version": 1,
+  "categories": [
+    {
+      "id": "morning",
+      "ar": "أذكار الصباح",
+      "en": "Morning"
+    },
+    {
+      "id": "evening",
+      "ar": "أذكار المساء",
+      "en": "Evening"
+    },
+    {
+      "id": "after-prayer",
+      "ar": "أذكار بعد الصلاة",
+      "en": "After prayer"
+    },
+    {
+      "id": "sleep",
+      "ar": "أذكار النوم",
+      "en": "Before sleep"
+    },
+    {
+      "id": "waking",
+      "ar": "أذكار الاستيقاظ",
+      "en": "Waking up"
+    },
+    {
+      "id": "home",
+      "ar": "المنزل والخروج",
+      "en": "Home and leaving"
+    },
+    {
+      "id": "mosque",
+      "ar": "دخول المسجد والخروج",
+      "en": "Mosque"
+    },
+    {
+      "id": "food",
+      "ar": "الطعام والشراب",
+      "en": "Food and drink"
+    },
+    {
+      "id": "purity",
+      "ar": "الخلاء والوضوء",
+      "en": "Purification"
+    },
+    {
+      "id": "travel",
+      "ar": "السفر والركوب",
+      "en": "Travel"
+    },
+    {
+      "id": "distress",
+      "ar": "الكرب والهم",
+      "en": "Distress and worry"
+    },
+    {
+      "id": "illness",
+      "ar": "المرض والشفاء",
+      "en": "Illness"
+    },
+    {
+      "id": "weather",
+      "ar": "المطر والريح",
+      "en": "Rain and wind"
+    },
+    {
+      "id": "general",
+      "ar": "أذكار وأدعية عامة",
+      "en": "General remembrance"
+    }
+  ],
+  "items": [
+    {
+      "id": "morning-kingdom",
+      "titleAr": "أصبحنا وأصبح الملك لله",
+      "titleEn": "Morning remembrance of Allah’s dominion",
+      "categories": [
+        "morning"
+      ],
+      "text": "أصبحنا وأصبح الملك لله والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذا اليوم وخير ما بعده، وأعوذ بك من شر ما في هذا اليوم وشر ما بعده، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر.",
+      "repeat": null,
+      "source": {
+        "label": "حصن المسلم، الذكر 77؛ صحيح مسلم 2723",
+        "url": "https://sunnah.com/hisn/78"
+      },
+      "noteAr": "يقال في الصباح؛ لا يرد في الرواية عدد خاص للتكرار."
+    },
+    {
+      "id": "evening-kingdom",
+      "titleAr": "أمسينا وأمسى الملك لله",
+      "titleEn": "Evening remembrance of Allah’s dominion",
+      "categories": [
+        "evening"
+      ],
+      "text": "أمسينا وأمسى الملك لله والحمد لله، لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، رب أسألك خير ما في هذه الليلة وخير ما بعدها، وأعوذ بك من شر ما في هذه الليلة وشر ما بعدها، رب أعوذ بك من الكسل وسوء الكبر، رب أعوذ بك من عذاب في النار وعذاب في القبر.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2723 ب",
+        "url": "https://sunnah.com/muslim:2723b"
+      },
+      "noteAr": "يقال في المساء؛ لا يرد في الرواية عدد خاص للتكرار."
+    },
+    {
+      "id": "morning-by-you",
+      "titleAr": "اللهم بك أصبحنا",
+      "titleEn": "Morning supplication",
+      "categories": [
+        "morning"
+      ],
+      "text": "اللهم بك أصبحنا وبك أمسينا وبك نحيا وبك نموت وإليك النشور.",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5068",
+        "url": "https://sunnah.com/abudawud:5068"
+      },
+      "noteAr": "صيغة الصباح.",
+      "sources": [
+        {
+          "label": "موسوعة الأحاديث النبوية 5490: صيغتا الصباح والمساء",
+          "url": "https://hadeethenc.com/ar/browse/hadith/5490"
+        }
+      ]
+    },
+    {
+      "id": "evening-by-you",
+      "titleAr": "اللهم بك أمسينا",
+      "titleEn": "Evening supplication",
+      "categories": [
+        "evening"
+      ],
+      "text": "اللهم بك أمسينا وبك أصبحنا وبك نحيا وبك نموت وإليك المصير.",
+      "repeat": null,
+      "source": {
+        "label": "حصن المسلم، الذكر 78: صيغة المساء",
+        "url": "https://sunnah.com/hisn/79"
+      },
+      "noteAr": "صيغة المساء كما وردت في حصن المسلم.",
+      "sources": [
+        {
+          "label": "موسوعة الأحاديث النبوية 5490: رواية وإليك المصير في المساء",
+          "url": "https://hadeethenc.com/ar/browse/hadith/5490"
+        }
+      ]
+    },
+    {
+      "id": "master-forgiveness",
+      "titleAr": "سيد الاستغفار",
+      "titleEn": "The foremost prayer for forgiveness",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "اللهم أنت ربي لا إله إلا أنت، خلقتني وأنا عبدك، وأنا على عهدك ووعدك ما استطعت، أعوذ بك من شر ما صنعت، أبوء لك بنعمتك علي، وأبوء لك بذنبي، فاغفر لي، فإنه لا يغفر الذنوب إلا أنت.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6306",
+        "url": "https://sunnah.com/bukhari:6306"
+      },
+      "noteAr": "ورد في النهار والليل؛ لا يذكر الحديث عددًا خاصًا للتكرار."
+    },
+    {
+      "id": "pardon-and-wellbeing",
+      "titleAr": "العفو والعافية والحفظ",
+      "titleEn": "Pardon, wellbeing, and protection",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "اللهم إني أسألك العافية في الدنيا والآخرة، اللهم إني أسألك العفو والعافية في ديني ودنياي وأهلي ومالي، اللهم استر عوراتي وآمن روعاتي، اللهم احفظني من بين يدي ومن خلفي وعن يميني وعن شمالي ومن فوقي، وأعوذ بعظمتك أن أغتال من تحتي.",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5074",
+        "url": "https://sunnah.com/abudawud:5074"
+      },
+      "noteAr": "يقال حين يصبح وحين يمسي."
+    },
+    {
+      "id": "knower-of-unseen",
+      "titleAr": "الاستعاذة من شر النفس والشيطان",
+      "titleEn": "Seeking refuge from the evil of the self and Satan",
+      "categories": [
+        "morning",
+        "evening",
+        "sleep"
+      ],
+      "text": "اللهم عالم الغيب والشهادة، فاطر السماوات والأرض، رب كل شيء ومليكه، أشهد أن لا إله إلا أنت، أعوذ بك من شر نفسي ومن شر الشيطان وشركه.",
+      "repeat": null,
+      "source": {
+        "label": "جامع الترمذي 3392",
+        "url": "https://sunnah.com/tirmidhi:3392"
+      },
+      "noteAr": "يقال في الصباح والمساء وعند أخذ المضجع؛ هذه صيغة الحديث المشار إليه دون الزيادة الواردة في روايات أخرى."
+    },
+    {
+      "id": "name-no-harm",
+      "titleAr": "بسم الله الذي لا يضر مع اسمه شيء",
+      "titleEn": "In Allah’s name",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم.",
+      "repeat": 3,
+      "source": {
+        "label": "سنن أبي داود 5088",
+        "url": "https://sunnah.com/abudawud:5088"
+      },
+      "noteAr": "ثلاث مرات في الصباح وثلاث في المساء."
+    },
+    {
+      "id": "ever-living",
+      "titleAr": "يا حي يا قيوم",
+      "titleEn": "O Ever-Living, O Sustainer",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "يا حي يا قيوم برحمتك أستغيث، أصلح لي شأني كله، ولا تكلني إلى نفسي طرفة عين.",
+      "repeat": null,
+      "source": {
+        "label": "الدرر السنية: صحيح الجامع 5820؛ حكم الألباني: حسن",
+        "url": "https://dorar.net/hadith/sharh/213017"
+      },
+      "noteAr": "من أذكار الصباح والمساء؛ لا يذكر المصدر عددًا خاصًا للتكرار.",
+      "sources": [
+        {
+          "label": "حصن المسلم، الذكر 88",
+          "url": "https://sunnah.com/hisn/89"
+        }
+      ]
+    },
+    {
+      "id": "glory-and-praise",
+      "titleAr": "سبحان الله وبحمده",
+      "titleEn": "Glory and praise to Allah",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "سبحان الله وبحمده.",
+      "repeat": 100,
+      "source": {
+        "label": "صحيح مسلم 2692",
+        "url": "https://sunnah.com/muslim:2692"
+      },
+      "noteAr": "مائة مرة حين يصبح ومائة مرة حين يمسي."
+    },
+    {
+      "id": "glory-number-creation",
+      "titleAr": "التسبيح عدد خلقه",
+      "titleEn": "Praise by the number of His creation",
+      "categories": [
+        "morning"
+      ],
+      "text": "سبحان الله وبحمده عدد خلقه، ورضا نفسه، وزنة عرشه، ومداد كلماته.",
+      "repeat": 3,
+      "source": {
+        "label": "صحيح مسلم 2726 أ",
+        "url": "https://sunnah.com/muslim:2726a"
+      },
+      "noteAr": "ثلاث مرات في الصباح."
+    },
+    {
+      "id": "body-hearing-sight",
+      "titleAr": "العافية في البدن والسمع والبصر",
+      "titleEn": "Wellbeing of body, hearing, and sight",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت.",
+      "repeat": 3,
+      "source": {
+        "label": "سنن أبي داود 5090",
+        "url": "https://sunnah.com/abudawud:5090"
+      },
+      "noteAr": "ثلاث مرات في الصباح وثلاث في المساء."
+    },
+    {
+      "id": "refuge-disbelief-poverty",
+      "titleAr": "الاستعاذة من الكفر والفقر وعذاب القبر",
+      "titleEn": "Seeking refuge from disbelief, poverty, and grave punishment",
+      "categories": [
+        "morning",
+        "evening"
+      ],
+      "text": "اللهم إني أعوذ بك من الكفر والفقر، اللهم إني أعوذ بك من عذاب القبر، لا إله إلا أنت.",
+      "repeat": 3,
+      "source": {
+        "label": "سنن أبي داود 5090",
+        "url": "https://sunnah.com/abudawud:5090"
+      },
+      "noteAr": "ثلاث مرات في الصباح وثلاث في المساء؛ وردت مع أذكار العافية في الحديث نفسه."
+    },
+    {
+      "id": "morning-natural-faith",
+      "titleAr": "أصبحنا على فطرة الإسلام",
+      "titleEn": "Morning declaration of faith",
+      "categories": [
+        "morning"
+      ],
+      "text": "أصبحنا على فطرة الإسلام، وكلمة الإخلاص، ودين نبينا محمد، وملة أبينا إبراهيم حنيفًا مسلمًا وما كان من المشركين.",
+      "repeat": null,
+      "source": {
+        "label": "الدرر السنية: السلسلة الصحيحة 2989؛ حديث عبد الرحمن بن أبزى",
+        "url": "https://dorar.net/h/f258YCR0"
+      },
+      "noteAr": "يقال في الصباح؛ لا يرد عدد خاص للتكرار في النص المشار إليه."
+    },
+    {
+      "id": "perfect-words",
+      "titleAr": "أعوذ بكلمات الله التامات",
+      "titleEn": "Seeking refuge in Allah’s perfect words",
+      "categories": [
+        "evening"
+      ],
+      "text": "أعوذ بكلمات الله التامات من شر ما خلق.",
+      "repeat": 3,
+      "source": {
+        "label": "موسوعة الأحاديث النبوية: حديث 66086؛ رواه الترمذي",
+        "url": "https://hadeethenc.com/ar/browse/hadith/66086"
+      },
+      "noteAr": "ثلاث مرات حين يمسي."
+    },
+    {
+      "id": "beneficial-knowledge",
+      "titleAr": "العلم النافع والرزق الطيب والعمل المقبول",
+      "titleEn": "Beneficial knowledge and good provision",
+      "categories": [
+        "morning",
+        "after-prayer"
+      ],
+      "text": "اللهم إني أسألك علمًا نافعًا، ورزقًا طيبًا، وعملًا متقبلًا.",
+      "repeat": null,
+      "source": {
+        "label": "سنن ابن ماجه 925",
+        "url": "https://sunnah.com/ibnmajah:925"
+      },
+      "noteAr": "بعد السلام من صلاة الفجر تحديدًا؛ لا يعمم على جميع الصلوات."
+    },
+    {
+      "id": "surah-ikhlas",
+      "titleAr": "سورة الإخلاص",
+      "titleEn": "Surah Al-Ikhlas",
+      "categories": [
+        "morning",
+        "evening",
+        "after-prayer",
+        "sleep"
+      ],
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ هُوَ ٱللَّهُ أَحَدٌ\nٱللَّهُ ٱلصَّمَدُ\nلَمْ يَلِدْ وَلَمْ يُولَدْ\nوَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5082: الإخلاص والمعوذتان ثلاثًا صباحًا ومساءً",
+        "url": "https://sunnah.com/abudawud:5082"
+      },
+      "noteAr": "ثلاث مرات صباحًا ومساءً. بعد الصلاة: يذكر حصن المسلم تثليثها بعد الفجر والمغرب، وقراءتها دون تثليث بعد بقية الصلوات. وعند النوم: تجمع الكفين وتنفث وتقرأ الإخلاص والفلق والناس، ثم تمسح بهما ما استطعت من جسدك؛ تفعل ذلك ثلاثًا. حديث عقبة في القراءة بعد الصلاة لا ينص بنفسه على عدد ثلاث.",
+      "repeatByCategory": {
+        "morning": 3,
+        "evening": 3,
+        "sleep": 3
+      },
+      "sources": [
+        {
+          "label": "سنن أبي داود 1523: قراءة المعوذات دبر كل صلاة",
+          "url": "https://sunnah.com/abudawud:1523"
+        },
+        {
+          "label": "صحيح البخاري 5017: القراءة والنفث والمسح ثلاثًا عند النوم",
+          "url": "https://sunnah.com/bukhari:5017"
+        },
+        {
+          "label": "حصن المسلم 70: تفصيل القراءة بعد الصلوات والفجر والمغرب",
+          "url": "https://sunnah.com/hisn/70"
+        }
+      ]
+    },
+    {
+      "id": "surah-falaq",
+      "titleAr": "سورة الفلق",
+      "titleEn": "Surah Al-Falaq",
+      "categories": [
+        "morning",
+        "evening",
+        "after-prayer",
+        "sleep"
+      ],
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ\nمِن شَرِّ مَا خَلَقَ\nوَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ\nوَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِى ٱلْعُقَدِ\nوَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5082: الإخلاص والمعوذتان ثلاثًا صباحًا ومساءً",
+        "url": "https://sunnah.com/abudawud:5082"
+      },
+      "noteAr": "ثلاث مرات صباحًا ومساءً. بعد الصلاة: يذكر حصن المسلم تثليثها بعد الفجر والمغرب، وقراءتها دون تثليث بعد بقية الصلوات. وعند النوم: تجمع الكفين وتنفث وتقرأ الإخلاص والفلق والناس، ثم تمسح بهما ما استطعت من جسدك؛ تفعل ذلك ثلاثًا. حديث عقبة في القراءة بعد الصلاة لا ينص بنفسه على عدد ثلاث.",
+      "repeatByCategory": {
+        "morning": 3,
+        "evening": 3,
+        "sleep": 3
+      },
+      "sources": [
+        {
+          "label": "سنن أبي داود 1523: قراءة المعوذات دبر كل صلاة",
+          "url": "https://sunnah.com/abudawud:1523"
+        },
+        {
+          "label": "صحيح البخاري 5017: القراءة والنفث والمسح ثلاثًا عند النوم",
+          "url": "https://sunnah.com/bukhari:5017"
+        },
+        {
+          "label": "حصن المسلم 70: تفصيل القراءة بعد الصلوات والفجر والمغرب",
+          "url": "https://sunnah.com/hisn/70"
+        }
+      ]
+    },
+    {
+      "id": "surah-nas",
+      "titleAr": "سورة الناس",
+      "titleEn": "Surah An-Nas",
+      "categories": [
+        "morning",
+        "evening",
+        "after-prayer",
+        "sleep"
+      ],
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ\nمَلِكِ ٱلنَّاسِ\nإِلَٰهِ ٱلنَّاسِ\nمِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ\nٱلَّذِى يُوَسْوِسُ فِى صُدُورِ ٱلنَّاسِ\nمِنَ ٱلْجِنَّةِ وَٱلنَّاسِ",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5082: الإخلاص والمعوذتان ثلاثًا صباحًا ومساءً",
+        "url": "https://sunnah.com/abudawud:5082"
+      },
+      "noteAr": "ثلاث مرات صباحًا ومساءً. بعد الصلاة: يذكر حصن المسلم تثليثها بعد الفجر والمغرب، وقراءتها دون تثليث بعد بقية الصلوات. وعند النوم: تجمع الكفين وتنفث وتقرأ الإخلاص والفلق والناس، ثم تمسح بهما ما استطعت من جسدك؛ تفعل ذلك ثلاثًا. حديث عقبة في القراءة بعد الصلاة لا ينص بنفسه على عدد ثلاث.",
+      "repeatByCategory": {
+        "morning": 3,
+        "evening": 3,
+        "sleep": 3
+      },
+      "sources": [
+        {
+          "label": "سنن أبي داود 1523: قراءة المعوذات دبر كل صلاة",
+          "url": "https://sunnah.com/abudawud:1523"
+        },
+        {
+          "label": "صحيح البخاري 5017: القراءة والنفث والمسح ثلاثًا عند النوم",
+          "url": "https://sunnah.com/bukhari:5017"
+        },
+        {
+          "label": "حصن المسلم 70: تفصيل القراءة بعد الصلوات والفجر والمغرب",
+          "url": "https://sunnah.com/hisn/70"
+        }
+      ]
+    },
+    {
+      "id": "ayat-kursi",
+      "titleAr": "آية الكرسي",
+      "titleEn": "Ayat Al-Kursi",
+      "categories": [
+        "after-prayer",
+        "sleep"
+      ],
+      "text": "ٱللَّهُ لَآ إِلَٰهَ إِلَّا هُوَ ٱلْحَىُّ ٱلْقَيُّومُ لَا تَأْخُذُهُۥ سِنَةٌ وَلَا نَوْمٌ لَّهُۥ مَا فِى ٱلسَّمَٰوَٰتِ وَمَا فِى ٱلْأَرْضِ مَن ذَا ٱلَّذِى يَشْفَعُ عِندَهُۥٓ إِلَّا بِإِذْنِهِۦ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ وَلَا يُحِيطُونَ بِشَىْءٍ مِّنْ عِلْمِهِۦٓ إِلَّا بِمَا شَآءَ وَسِعَ كُرْسِيُّهُ ٱلسَّمَٰوَٰتِ وَٱلْأَرْضَ وَلَا يَـُٔودُهُۥ حِفْظُهُمَا وَهُوَ ٱلْعَلِىُّ ٱلْعَظِيمُ",
+      "repeat": null,
+      "source": {
+        "label": "البقرة 255؛ صحيح البخاري 2311: آية الكرسي عند النوم",
+        "url": "https://sunnah.com/bukhari:2311"
+      },
+      "noteAr": "تقرأ الآية كاملة بعد الصلاة وعند النوم؛ لم يثبت في النصين المشار إليهما عدد تكرار خاص. النص مطابق لنص المصحف المحلي.",
+      "sources": [
+        {
+          "label": "حصن المسلم 71: آية الكرسي عقب الصلاة، مع تخريج حديث النسائي",
+          "url": "https://sunnah.com/hisn/71"
+        }
+      ]
+    },
+    {
+      "id": "baqarah-final-verses",
+      "titleAr": "آخر آيتين من سورة البقرة",
+      "titleEn": "The last two verses of Al-Baqarah",
+      "categories": [
+        "sleep"
+      ],
+      "text": "ءَامَنَ ٱلرَّسُولُ بِمَآ أُنزِلَ إِلَيْهِ مِن رَّبِّهِۦ وَٱلْمُؤْمِنُونَ كُلٌّ ءَامَنَ بِٱللَّهِ وَمَلَٰٓئِكَتِهِۦ وَكُتُبِهِۦ وَرُسُلِهِۦ لَا نُفَرِّقُ بَيْنَ أَحَدٍ مِّن رُّسُلِهِۦ وَقَالُوا۟ سَمِعْنَا وَأَطَعْنَا غُفْرَانَكَ رَبَّنَا وَإِلَيْكَ ٱلْمَصِيرُ\nلَا يُكَلِّفُ ٱللَّهُ نَفْسًا إِلَّا وُسْعَهَا لَهَا مَا كَسَبَتْ وَعَلَيْهَا مَا ٱكْتَسَبَتْ رَبَّنَا لَا تُؤَاخِذْنَآ إِن نَّسِينَآ أَوْ أَخْطَأْنَا رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَآ إِصْرًا كَمَا حَمَلْتَهُۥ عَلَى ٱلَّذِينَ مِن قَبْلِنَا رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِۦ وَٱعْفُ عَنَّا وَٱغْفِرْ لَنَا وَٱرْحَمْنَآ أَنتَ مَوْلَىٰنَا فَٱنصُرْنَا عَلَى ٱلْقَوْمِ ٱلْكَٰفِرِينَ",
+      "repeat": null,
+      "source": {
+        "label": "البقرة 285–286؛ صحيح البخاري 5009",
+        "url": "https://sunnah.com/bukhari:5009"
+      },
+      "noteAr": "وردت قراءتهما في الليل، ويجوز اختيارهما لورد ما قبل النوم؛ الحديث لا يخصهما بلحظة النوم ولا يحدد عدد تكرار."
+    },
+    {
+      "id": "after-prayer-forgiveness",
+      "titleAr": "الاستغفار بعد الصلاة",
+      "titleEn": "Seeking forgiveness after prayer",
+      "categories": [
+        "after-prayer"
+      ],
+      "text": "أستغفر الله.",
+      "repeat": 3,
+      "source": {
+        "label": "صحيح مسلم 591",
+        "url": "https://sunnah.com/muslim:591"
+      },
+      "noteAr": "ثلاث مرات عقب السلام، ثم يقال: اللهم أنت السلام."
+    },
+    {
+      "id": "after-prayer-peace",
+      "titleAr": "اللهم أنت السلام",
+      "titleEn": "O Allah, You are Peace",
+      "categories": [
+        "after-prayer"
+      ],
+      "text": "اللهم أنت السلام ومنك السلام، تباركت ذا الجلال والإكرام.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 591",
+        "url": "https://sunnah.com/muslim:591"
+      },
+      "noteAr": "يقال بعد الاستغفار ثلاثًا؛ عدد الثلاث للاستغفار السابق وليس لهذا الدعاء."
+    },
+    {
+      "id": "none-can-withhold",
+      "titleAr": "اللهم لا مانع لما أعطيت",
+      "titleEn": "None can withhold what You give",
+      "categories": [
+        "after-prayer"
+      ],
+      "text": "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، اللهم لا مانع لما أعطيت، ولا معطي لما منعت، ولا ينفع ذا الجد منك الجد.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 593 أ",
+        "url": "https://sunnah.com/muslim:593a"
+      },
+      "noteAr": "يقال بعد السلام من الصلاة."
+    },
+    {
+      "id": "sincere-devotion",
+      "titleAr": "التهليل وإخلاص الدين",
+      "titleEn": "Declaring Allah’s oneness and sincere devotion",
+      "categories": [
+        "after-prayer"
+      ],
+      "text": "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير، لا حول ولا قوة إلا بالله، لا إله إلا الله ولا نعبد إلا إياه، له النعمة وله الفضل وله الثناء الحسن، لا إله إلا الله مخلصين له الدين ولو كره الكافرون.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 594 أ",
+        "url": "https://sunnah.com/muslim:594a"
+      },
+      "noteAr": "ورد عقب السلام من كل صلاة."
+    },
+    {
+      "id": "tasbih",
+      "titleAr": "التسبيح",
+      "titleEn": "Glorification",
+      "categories": [
+        "after-prayer",
+        "sleep",
+        "travel"
+      ],
+      "text": "سبحان الله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 597 أ: التسبيح والتحميد والتكبير ثلاثًا وثلاثين بعد الصلاة",
+        "url": "https://sunnah.com/muslim:597a"
+      },
+      "noteAr": "بعد الصلاة: مع التحميد والتكبير ثلاثًا وثلاثين لكل منها، ثم تهليل تمام المائة. وعند النوم: التسبيح والتحميد ثلاث وثلاثون، والتكبير أربع وثلاثون. عند النزول في السفر يقال التسبيح دون عدد محدد في حديث جابر.",
+      "sources": [
+        {
+          "label": "صحيح البخاري 5361: التسبيح والتحميد 33 والتكبير 34 عند النوم",
+          "url": "https://sunnah.com/bukhari:5361"
+        },
+        {
+          "label": "صحيح البخاري؛ الذكر عند النزول في السفر",
+          "url": "https://hadeethenc.com/ar/browse/hadith/6206"
+        }
+      ],
+      "repeatByCategory": {
+        "after-prayer": 33,
+        "sleep": 33,
+        "travel": null
+      }
+    },
+    {
+      "id": "tahmid",
+      "titleAr": "التحميد",
+      "titleEn": "Praise",
+      "categories": [
+        "after-prayer",
+        "sleep",
+        "general"
+      ],
+      "text": "الحمد لله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 597 أ: التسبيح والتحميد والتكبير ثلاثًا وثلاثين بعد الصلاة",
+        "url": "https://sunnah.com/muslim:597a"
+      },
+      "noteAr": "بعد الصلاة: مع التسبيح والتكبير ثلاثًا وثلاثين لكل منها، ثم تهليل تمام المائة. وعند النوم: التسبيح والتحميد ثلاث وثلاثون، والتكبير أربع وثلاثون. يقول العاطس الحمد لله، دون عدد خاص للتكرار في حديث آداب العطاس.",
+      "sources": [
+        {
+          "label": "صحيح البخاري 5361: التسبيح والتحميد 33 والتكبير 34 عند النوم",
+          "url": "https://sunnah.com/bukhari:5361"
+        },
+        {
+          "label": "صحيح البخاري؛ حمد الله عند العطاس",
+          "url": "https://hadeethenc.com/ar/browse/hadith/3433"
+        }
+      ],
+      "repeatByCategory": {
+        "after-prayer": 33,
+        "sleep": 33,
+        "general": null
+      }
+    },
+    {
+      "id": "takbir",
+      "titleAr": "التكبير",
+      "titleEn": "Declaring Allah’s greatness",
+      "categories": [
+        "after-prayer",
+        "sleep",
+        "travel"
+      ],
+      "text": "الله أكبر.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 597 أ: التسبيح والتحميد والتكبير ثلاثًا وثلاثين بعد الصلاة",
+        "url": "https://sunnah.com/muslim:597a"
+      },
+      "noteAr": "اختيرت صيغة ما بعد الصلاة: 33 تسبيحة و33 تحميدة و33 تكبيرة ثم التهليل لإتمام المائة. عند النوم: 33 تسبيحة و33 تحميدة و34 تكبيرة. عند الصعود في السفر يقال التكبير دون عدد محدد في حديث جابر.",
+      "repeatByCategory": {
+        "after-prayer": 33,
+        "sleep": 34,
+        "travel": null
+      },
+      "sources": [
+        {
+          "label": "صحيح البخاري 5361: التسبيح والتحميد 33 والتكبير 34 عند النوم",
+          "url": "https://sunnah.com/bukhari:5361"
+        },
+        {
+          "label": "صحيح البخاري؛ الذكر عند الصعود في السفر",
+          "url": "https://hadeethenc.com/ar/browse/hadith/6206"
+        }
+      ]
+    },
+    {
+      "id": "oneness-declaration",
+      "titleAr": "التهليل",
+      "titleEn": "Declaring Allah’s oneness",
+      "categories": [
+        "morning",
+        "after-prayer"
+      ],
+      "text": "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 3293: التهليل مائة مرة في اليوم",
+        "url": "https://sunnah.com/bukhari:3293"
+      },
+      "noteAr": "مائة مرة في اليوم، ويعرضها حصن المسلم في ورد الصباح. وبعد الصلاة: مرة لإتمام المائة بعد 33 تسبيحة و33 تحميدة و33 تكبيرة.",
+      "repeatByCategory": {
+        "morning": 100,
+        "after-prayer": 1
+      },
+      "sources": [
+        {
+          "label": "صحيح مسلم 597 أ: تهليل تمام المائة بعد الصلاة",
+          "url": "https://sunnah.com/muslim:597a"
+        },
+        {
+          "label": "حصن المسلم 93: إدراج تهليل المائة في ورد الصباح",
+          "url": "https://sunnah.com/hisn/94"
+        }
+      ]
+    },
+    {
+      "id": "sleep-lay-side",
+      "titleAr": "باسمك ربي وضعت جنبي",
+      "titleEn": "Laying down in Allah’s name",
+      "categories": [
+        "sleep"
+      ],
+      "text": "باسمك ربي وضعت جنبي وبك أرفعه، فإن أمسكت نفسي فارحمها، وإن أرسلتها فاحفظها بما تحفظ به عبادك الصالحين.",
+      "repeat": null,
+      "source": {
+        "label": "جامع الترمذي 3401",
+        "url": "https://sunnah.com/tirmidhi:3401"
+      },
+      "noteAr": "عند الاضطجاع للنوم؛ الثلاث في صدر الحديث لنفض الفراش وليست عددًا لتكرار هذا الدعاء."
+    },
+    {
+      "id": "sleep-created-soul",
+      "titleAr": "اللهم خلقت نفسي",
+      "titleEn": "Entrusting the soul to its Creator",
+      "categories": [
+        "sleep"
+      ],
+      "text": "اللهم خلقت نفسي وأنت توفاها، لك مماتها ومحياها، إن أحييتها فاحفظها، وإن أمتها فاغفر لها، اللهم إني أسألك العافية.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2712",
+        "url": "https://sunnah.com/muslim:2712"
+      },
+      "noteAr": "عند أخذ المضجع."
+    },
+    {
+      "id": "sleep-protection-punishment",
+      "titleAr": "الوقاية من العذاب",
+      "titleEn": "Seeking protection from punishment",
+      "categories": [
+        "sleep"
+      ],
+      "text": "اللهم قني عذابك يوم تبعث عبادك.",
+      "repeat": null,
+      "source": {
+        "label": "سنن أبي داود 5045؛ حكم الألباني: صحيح دون قوله ثلاث مرار",
+        "url": "https://sunnah.com/abudawud:5045"
+      },
+      "noteAr": "عند النوم مع وضع اليد اليمنى تحت الخد؛ لم يعتمد عدد ثلاث لأن المصدر يستثني هذه الزيادة من التصحيح."
+    },
+    {
+      "id": "sleep-die-live",
+      "titleAr": "باسمك اللهم أموت وأحيا",
+      "titleEn": "Sleeping and waking in Allah’s name",
+      "categories": [
+        "sleep"
+      ],
+      "text": "باسمك اللهم أموت وأحيا.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6324",
+        "url": "https://sunnah.com/bukhari:6324"
+      },
+      "noteAr": "يقال عند النوم."
+    },
+    {
+      "id": "sleep-lord-heavens",
+      "titleAr": "اللهم رب السماوات ورب الأرض",
+      "titleEn": "Supplication to the Lord of the heavens and earth",
+      "categories": [
+        "sleep"
+      ],
+      "text": "اللهم رب السماوات ورب الأرض ورب العرش العظيم، ربنا ورب كل شيء، فالق الحب والنوى، ومنزل التوراة والإنجيل والفرقان، أعوذ بك من شر كل شيء أنت آخذ بناصيته، اللهم أنت الأول فليس قبلك شيء، وأنت الآخر فليس بعدك شيء، وأنت الظاهر فليس فوقك شيء، وأنت الباطن فليس دونك شيء، اقض عنا الدين وأغننا من الفقر.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2713 أ",
+        "url": "https://sunnah.com/muslim:2713a"
+      },
+      "noteAr": "عند النوم على الشق الأيمن."
+    },
+    {
+      "id": "sleep-thanks-shelter",
+      "titleAr": "الحمد على الطعام والشراب والمأوى",
+      "titleEn": "Thanks for food, drink, and shelter",
+      "categories": [
+        "sleep"
+      ],
+      "text": "الحمد لله الذي أطعمنا وسقانا وكفانا وآوانا، فكم ممن لا كافي له ولا مؤوي.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2715",
+        "url": "https://sunnah.com/muslim:2715"
+      },
+      "noteAr": "يقال عند الإيواء إلى الفراش."
+    },
+    {
+      "id": "sleep-submit-face",
+      "titleAr": "تفويض الأمر إلى الله عند النوم",
+      "titleEn": "Entrusting one’s affairs to Allah before sleep",
+      "categories": [
+        "sleep"
+      ],
+      "text": "اللهم أسلمت وجهي إليك، وفوضت أمري إليك، وألجأت ظهري إليك، رغبة ورهبة إليك، لا ملجأ ولا منجا منك إلا إليك، آمنت بكتابك الذي أنزلت، وبنبيك الذي أرسلت.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6311",
+        "url": "https://sunnah.com/bukhari:6311"
+      },
+      "noteAr": "يتوضأ ثم يضطجع على شقه الأيمن، ويجعل هذه الكلمات آخر ما يقول؛ اللفظ هنا «وبنبيك» كما في الحديث."
+    },
+    {
+      "id": "waking-restored-life",
+      "titleAr": "الحمد لله الذي أحيانا",
+      "titleEn": "Praise upon waking",
+      "categories": [
+        "waking"
+      ],
+      "text": "الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6312",
+        "url": "https://sunnah.com/bukhari:6312"
+      },
+      "noteAr": "عند القيام من النوم."
+    },
+    {
+      "id": "waking-night",
+      "titleAr": "الذكر عند الاستيقاظ في الليل",
+      "titleEn": "Remembrance when waking during the night",
+      "categories": [
+        "waking"
+      ],
+      "text": "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد، وهو على كل شيء قدير، الحمد لله وسبحان الله، ولا إله إلا الله، والله أكبر، ولا حول ولا قوة إلا بالله، اللهم اغفر لي.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 1154",
+        "url": "https://sunnah.com/bukhari:1154"
+      },
+      "noteAr": "لمن استيقظ من الليل؛ بعد الذكر يدعو بالمغفرة أو بما شاء من الدعاء."
+    },
+    {
+      "id": "waking-body-soul",
+      "titleAr": "الحمد على عافية الجسد وعودة الروح",
+      "titleEn": "Thanks for restored wellbeing and life",
+      "categories": [
+        "waking"
+      ],
+      "text": "الحمد لله الذي عافاني في جسدي ورد علي روحي وأذن لي بذكره.",
+      "repeat": null,
+      "source": {
+        "label": "جامع الترمذي 3401",
+        "url": "https://sunnah.com/tirmidhi:3401"
+      },
+      "noteAr": "يقال عند الاستيقاظ."
+    },
+    {
+      "id": "surah-kafirun",
+      "titleAr": "سورة الكافرون عند النوم",
+      "titleEn": "Surah Al-Kafirun before sleep",
+      "categories": [
+        "sleep"
+      ],
+      "text": "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ قُلْ يَٰٓأَيُّهَا ٱلْكَٰفِرُونَ\nلَآ أَعْبُدُ مَا تَعْبُدُونَ\nوَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ\nوَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ\nوَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ\nلَكُمْ دِينُكُمْ وَلِىَ دِينِ",
+      "repeat": null,
+      "source": {
+        "label": "سورة الكافرون 109؛ سنن أبي داود 5055",
+        "url": "https://sunnah.com/abudawud:5055"
+      },
+      "noteAr": "تقرأ السورة كاملة ثم ينام على خاتمتها؛ لا يحدد الحديث عدد تكرار. النص مطابق لنص المصحف المحلي."
+    },
+    {
+      "id": "home-leaving-trust",
+      "titleAr": "عند الخروج من المنزل",
+      "titleEn": "Leaving home",
+      "categories": [
+        "home"
+      ],
+      "text": "بسم الله، توكلت على الله، ولا حول ولا قوة إلا بالله.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود والترمذي؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3504"
+      }
+    },
+    {
+      "id": "home-leaving-protection",
+      "titleAr": "الاستعاذة عند الخروج من المنزل",
+      "titleEn": "Protection when leaving home",
+      "categories": [
+        "home"
+      ],
+      "text": "بسم الله، توكلت على الله، اللهم إني أعوذ بك أن أَضِلَّ أو أُضَلَّ، أو أَزِلَّ أو أُزَلَّ، أو أَظْلِمَ أو أُظْلَمَ، أو أَجْهَلَ أو يُجْهَلَ عليَّ.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود 5094 والترمذي 3427؛ صححه النووي",
+        "url": "https://dorar.net/h/HP5dUqEs"
+      },
+      "noteAr": "صيغة أخرى مأثورة عند الخروج من المنزل."
+    },
+    {
+      "id": "mosque-entering-mercy",
+      "titleAr": "عند دخول المسجد",
+      "titleEn": "Entering the mosque",
+      "categories": [
+        "mosque"
+      ],
+      "text": "اللهم افتح لي أبواب رحمتك.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 713",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65092"
+      }
+    },
+    {
+      "id": "mosque-leaving-bounty",
+      "titleAr": "عند الخروج من المسجد",
+      "titleEn": "Leaving the mosque",
+      "categories": [
+        "mosque"
+      ],
+      "text": "اللهم إني أسألك من فضلك.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 713",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65092"
+      }
+    },
+    {
+      "id": "mosque-entering-refuge",
+      "titleAr": "الاستعاذة عند دخول المسجد",
+      "titleEn": "Seeking refuge on entering the mosque",
+      "categories": [
+        "mosque"
+      ],
+      "text": "أعوذ بالله العظيم، وبوجهه الكريم، وسلطانه القديم، من الشيطان الرجيم.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/8294"
+      }
+    },
+    {
+      "id": "food-before-eating",
+      "titleAr": "قبل الطعام",
+      "titleEn": "Before eating",
+      "categories": [
+        "food"
+      ],
+      "text": "بسم الله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 5376؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/58120"
+      },
+      "noteAr": "تقال عند بدء الطعام."
+    },
+    {
+      "id": "food-forgot-basmala",
+      "titleAr": "إذا نسي التسمية أول الطعام",
+      "titleEn": "Remembering the basmala during a meal",
+      "categories": [
+        "food"
+      ],
+      "text": "بسم الله أوله وآخره.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود والترمذي؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65997"
+      }
+    },
+    {
+      "id": "food-after-provision",
+      "titleAr": "الحمد بعد الطعام",
+      "titleEn": "Gratitude after eating",
+      "categories": [
+        "food"
+      ],
+      "text": "الحمد لله الذي أطعمني هذا ورزقنيه من غير حول مني ولا قوة.",
+      "repeat": null,
+      "source": {
+        "label": "الترمذي 3458 وأبو داود 4023؛ حديث حسن",
+        "url": "https://hadeethenc.com/ar/browse/hadith/5431"
+      }
+    },
+    {
+      "id": "food-after-abundant-praise",
+      "titleAr": "حمد آخر بعد الطعام",
+      "titleEn": "Another praise after eating",
+      "categories": [
+        "food"
+      ],
+      "text": "الحمد لله حمدا كثيرا طيبا مباركا فيه، غير مكفي ولا مودع ولا مستغنى عنه ربنا.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري",
+        "url": "https://hadeethenc.com/ar/browse/hadith/4828"
+      },
+      "noteAr": "صيغة مأثورة أخرى بعد الفراغ من الطعام."
+    },
+    {
+      "id": "food-host-blessing",
+      "titleAr": "الدعاء لأهل الطعام",
+      "titleEn": "Praying for the host",
+      "categories": [
+        "food"
+      ],
+      "text": "اللهم بارك لهم في ما رزقتهم، واغفر لهم وارحمهم.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم",
+        "url": "https://hadeethenc.com/ar/browse/hadith/66001"
+      }
+    },
+    {
+      "id": "food-provider-prayer",
+      "titleAr": "الدعاء لمن أطعم أو سقى",
+      "titleEn": "Praying for someone who offered food or drink",
+      "categories": [
+        "food"
+      ],
+      "text": "اللهم أطعم من أطعمني، وأَسْقِ من أسقاني.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2055",
+        "url": "https://hadeethenc.com/ar/browse/hadith/66350"
+      }
+    },
+    {
+      "id": "food-after-milk",
+      "titleAr": "بعد شرب اللبن",
+      "titleEn": "After drinking milk",
+      "categories": [
+        "food"
+      ],
+      "text": "اللهم بارك لنا فيه، وزدنا منه.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود 3730 وابن ماجه 3322؛ حديث حسن",
+        "url": "https://hadeethenc.com/ar/browse/hadith/66011"
+      }
+    },
+    {
+      "id": "food-guest-prayer",
+      "titleAr": "دعاء الضيف لأهل الطعام",
+      "titleEn": "A guest's prayer for the household",
+      "categories": [
+        "food"
+      ],
+      "text": "أفطر عندكم الصائمون، وأكل طعامكم الأبرار، وصلت عليكم الملائكة.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود وابن ماجه؛ إسناده صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/10110"
+      },
+      "noteAr": "ورد دعاء النبي ﷺ به بعد أن أكل عند سعد بن عبادة."
+    },
+    {
+      "id": "purity-entering-toilet",
+      "titleAr": "قبل دخول الخلاء",
+      "titleEn": "Before entering the toilet",
+      "categories": [
+        "purity"
+      ],
+      "text": "اللهم إني أعوذ بك من الخُبُث والخبائث.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 142؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3150"
+      }
+    },
+    {
+      "id": "purity-leaving-toilet",
+      "titleAr": "بعد الخروج من الخلاء",
+      "titleEn": "After leaving the toilet",
+      "categories": [
+        "purity"
+      ],
+      "text": "غفرانك.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود 30 والترمذي؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/10046"
+      }
+    },
+    {
+      "id": "purity-after-wudu",
+      "titleAr": "بعد الوضوء",
+      "titleEn": "After ablution",
+      "categories": [
+        "purity"
+      ],
+      "text": "أشهد أن لا إله إلا الله، وأن محمدا عبد الله ورسوله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 234",
+        "url": "https://hadeethenc.com/ar/browse/hadith/8388"
+      },
+      "noteAr": "إحدى الصيغ الصحيحة الواردة بعد إتمام الوضوء."
+    },
+    {
+      "id": "travel-setting-out",
+      "titleAr": "دعاء السفر",
+      "titleEn": "Setting out on a journey",
+      "categories": [
+        "travel"
+      ],
+      "text": "الله أكبر، الله أكبر، الله أكبر.\nسبحان الذي سخر لنا هذا وما كنا له مقرنين، وإنا إلى ربنا لمنقلبون. اللهم إنا نسألك في سفرنا هذا البر والتقوى، ومن العمل ما ترضى. اللهم هون علينا سفرنا هذا واطو عنا بعده. اللهم أنت الصاحب في السفر والخليفة في الأهل. اللهم إني أعوذ بك من وعثاء السفر، وكآبة المنظر، وسوء المنقلب في المال والأهل.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 1342",
+        "url": "https://dorar.net/h/B0GBrjAg"
+      },
+      "noteAr": "تقال التكبيرات الثلاث في البداية، ولا يكرر الدعاء كله ثلاث مرات."
+    },
+    {
+      "id": "travel-returning",
+      "titleAr": "عند الرجوع من السفر",
+      "titleEn": "Returning from a journey",
+      "categories": [
+        "travel"
+      ],
+      "text": "آيبون، تائبون، عابدون، لربنا حامدون.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 1342؛ زيادة دعاء الرجوع من السفر",
+        "url": "https://dorar.net/h/B0GBrjAg"
+      },
+      "noteAr": "تزاد هذه الكلمات على دعاء السفر عند الرجوع."
+    },
+    {
+      "id": "travel-farewell-faith",
+      "titleAr": "عند توديع المسافر",
+      "titleEn": "Bidding farewell to a traveler",
+      "categories": [
+        "travel"
+      ],
+      "text": "أستودع الله دينك، وأمانتك، وخواتيم عملك.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود والترمذي؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3058"
+      }
+    },
+    {
+      "id": "travel-farewell-trust",
+      "titleAr": "صيغة أخرى لتوديع المسافر",
+      "titleEn": "Another farewell prayer",
+      "categories": [
+        "travel"
+      ],
+      "text": "أستودعك الله الذي لا تضيع ودائعه.",
+      "repeat": null,
+      "source": {
+        "label": "ابن ماجه 2825؛ صححه الألباني",
+        "url": "https://dorar.net/h/RayIZSMb"
+      }
+    },
+    {
+      "id": "distress-great-affliction",
+      "titleAr": "عند الكرب",
+      "titleEn": "In distress",
+      "categories": [
+        "distress"
+      ],
+      "text": "لا إله إلا الله العظيم الحليم، لا إله إلا الله رب العرش العظيم، لا إله إلا الله رب السماوات ورب الأرض ورب العرش الكريم.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2730؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/5141"
+      }
+    },
+    {
+      "id": "distress-worry-debt",
+      "titleAr": "الاستعاذة من الهم والحزن والدين",
+      "titleEn": "Seeking refuge from worry and debt",
+      "categories": [
+        "distress"
+      ],
+      "text": "اللهم إني أعوذ بك من الهم والحزن، والعجز والكسل، والبخل والجبن، وضلع الدين، وغلبة الرجال.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 2893؛ صححه الألباني",
+        "url": "https://dorar.net/h/GoBe05bR"
+      }
+    },
+    {
+      "id": "distress-seeking-mercy",
+      "titleAr": "دعاء المكروب",
+      "titleEn": "Seeking mercy in hardship",
+      "categories": [
+        "distress"
+      ],
+      "text": "اللهم رحمتك أرجو، فلا تكلني إلى نفسي طرفة عين، وأصلح لي شأني كله، لا إله إلا أنت.",
+      "repeat": null,
+      "source": {
+        "label": "أبو داود؛ حديث حسن، منصة محمد السادس للحديث النبوي",
+        "url": "https://hadithm6.ma/question/1440.html"
+      },
+      "noteAr": "دعاء للكرب، ولم يحدد هذا الجزء من الحديث عددا لتكراره."
+    },
+    {
+      "id": "distress-calamity",
+      "titleAr": "عند المصيبة",
+      "titleEn": "When a calamity occurs",
+      "categories": [
+        "distress"
+      ],
+      "text": "إنا لله وإنا إليه راجعون، اللهم أجرني في مصيبتي، وأخلف لي خيرا منها.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 918",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65772"
+      }
+    },
+    {
+      "id": "illness-healing-prayer",
+      "titleAr": "الدعاء للمريض بالشفاء",
+      "titleEn": "Praying for healing",
+      "categories": [
+        "illness"
+      ],
+      "text": "أذهب البأس، رب الناس، واشف أنت الشافي، لا شفاء إلا شفاؤك، شفاء لا يغادر سقما.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2191؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/5542"
+      }
+    },
+    {
+      "id": "illness-site-of-pain",
+      "titleAr": "عند وجود ألم في الجسد",
+      "titleEn": "When feeling bodily pain",
+      "categories": [
+        "illness"
+      ],
+      "text": "أعوذ بالله وقدرته من شر ما أجد وأحاذر.",
+      "repeat": 7,
+      "source": {
+        "label": "صحيح مسلم 2202",
+        "url": "https://hadeethenc.com/ar/browse/hadith/6018"
+      },
+      "noteAr": "ضع يدك على موضع الألم وقل «بسم الله» ثلاث مرات، ثم هذا الدعاء سبع مرات."
+    },
+    {
+      "id": "illness-visiting-seven",
+      "titleAr": "الدعاء عند عيادة المريض",
+      "titleEn": "Visiting a sick person",
+      "categories": [
+        "illness"
+      ],
+      "text": "أسأل الله العظيم، رب العرش العظيم، أن يشفيك.",
+      "repeat": 7,
+      "source": {
+        "label": "أبو داود 3106 والترمذي 2083؛ صحح إسناده الألباني",
+        "url": "https://dorar.net/h/o1Q45ly6"
+      },
+      "noteAr": "يقال عند المريض سبع مرات، كما ورد في حديث عيادته."
+    },
+    {
+      "id": "illness-visiting-reassurance",
+      "titleAr": "مواساة المريض",
+      "titleEn": "Reassuring a sick person",
+      "categories": [
+        "illness"
+      ],
+      "text": "لا بأس، طهور إن شاء الله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري",
+        "url": "https://hadeethenc.com/ar/browse/hadith/6009"
+      }
+    },
+    {
+      "id": "illness-ruqya",
+      "titleAr": "من الرقية المأثورة",
+      "titleEn": "An authentic healing invocation",
+      "categories": [
+        "illness"
+      ],
+      "text": "باسم الله أرقيك، من كل شيء يؤذيك، من شر كل نفس أو عين حاسد، الله يشفيك، باسم الله أرقيك.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2186",
+        "url": "https://hadeethenc.com/ar/browse/hadith/5650"
+      },
+      "noteAr": "هذه الصيغة وردت في رقية جبريل للنبي ﷺ، دون عدد محدد في الحديث."
+    },
+    {
+      "id": "weather-rain-falling",
+      "titleAr": "عند نزول المطر",
+      "titleEn": "When rain falls",
+      "categories": [
+        "weather"
+      ],
+      "text": "اللهم صيبا نافعا.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65527"
+      }
+    },
+    {
+      "id": "weather-after-rain",
+      "titleAr": "بعد نزول المطر",
+      "titleEn": "After rainfall",
+      "categories": [
+        "weather"
+      ],
+      "text": "مطرنا بفضل الله ورحمته.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 846؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65010"
+      }
+    },
+    {
+      "id": "weather-excessive-rain",
+      "titleAr": "إذا كثر المطر وخيف ضرره",
+      "titleEn": "When excessive rain threatens harm",
+      "categories": [
+        "weather"
+      ],
+      "text": "اللهم حوالينا ولا علينا، اللهم على الآكام والظراب، وبطون الأودية، ومنابت الشجر.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 1014؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3174"
+      }
+    },
+    {
+      "id": "weather-strong-wind",
+      "titleAr": "عند اشتداد الريح",
+      "titleEn": "When the wind grows strong",
+      "categories": [
+        "weather"
+      ],
+      "text": "اللهم إني أسألك خيرها، وخير ما فيها، وخير ما أرسلت به، وأعوذ بك من شرها، وشر ما فيها، وشر ما أرسلت به.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم",
+        "url": "https://hadeethenc.com/ar/browse/hadith/8956"
+      }
+    },
+    {
+      "id": "weather-seeking-rain",
+      "titleAr": "طلب الغيث",
+      "titleEn": "Asking for rain",
+      "categories": [
+        "weather"
+      ],
+      "text": "اللهم أغثنا.",
+      "repeat": 3,
+      "source": {
+        "label": "صحيح البخاري 1014؛ متفق عليه",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3174"
+      },
+      "noteAr": "ورد أن النبي ﷺ كررها ثلاث مرات في الاستسقاء."
+    },
+    {
+      "id": "general-two-beloved-phrases",
+      "titleAr": "كلمتان حبيبتان إلى الرحمن",
+      "titleEn": "Two beloved phrases of remembrance",
+      "categories": [
+        "general"
+      ],
+      "text": "سبحان الله وبحمده، سبحان الله العظيم.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6682 وصحيح مسلم 2694",
+        "url": "https://dorar.net/h/4DZspCuR"
+      },
+      "noteAr": "ذكر مطلق؛ لم يحدد هذا الحديث عددا لتكراره."
+    },
+    {
+      "id": "general-four-beloved-phrases",
+      "titleAr": "أحب الكلام إلى الله",
+      "titleEn": "Words beloved to Allah",
+      "categories": [
+        "general"
+      ],
+      "text": "سبحان الله، والحمد لله، ولا إله إلا الله، والله أكبر.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح مسلم 2137",
+        "url": "https://hadeethenc.com/ar/browse/hadith/5475"
+      },
+      "noteAr": "لا يلزم ترتيب معين لهذه الكلمات، ولا عدد محدد في هذا الحديث."
+    },
+    {
+      "id": "general-gathering-repentance",
+      "titleAr": "الاستغفار في المجلس",
+      "titleEn": "Seeking forgiveness in a gathering",
+      "categories": [
+        "general"
+      ],
+      "text": "رب اغفر لي، وتب علي، إنك أنت التواب الرحيم.",
+      "repeat": 100,
+      "source": {
+        "label": "أبو داود والترمذي؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65925"
+      },
+      "noteAr": "ورد عن ابن عمر أنه عد للنبي ﷺ مائة مرة في المجلس الواحد."
+    },
+    {
+      "id": "general-end-of-gathering",
+      "titleAr": "كفارة المجلس",
+      "titleEn": "At the end of a gathering",
+      "categories": [
+        "general"
+      ],
+      "text": "سبحانك اللهم وبحمدك، أستغفرك وأتوب إليك.",
+      "repeat": null,
+      "source": {
+        "label": "النسائي 1344؛ حديث صحيح",
+        "url": "https://hadeethenc.com/ar/browse/hadith/65923"
+      },
+      "noteAr": "إحدى الصيغ الصحيحة في ختم المجلس."
+    },
+    {
+      "id": "general-reply-to-sneezer",
+      "titleAr": "تشميت العاطس إذا حمد الله",
+      "titleEn": "Replying to a sneezer who praised Allah",
+      "categories": [
+        "general"
+      ],
+      "text": "يرحمك الله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري؛ حديث آداب العطاس",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3433"
+      },
+      "noteAr": "تقال للعاطس بعد سماع حمده لله."
+    },
+    {
+      "id": "general-sneezer-response",
+      "titleAr": "جواب العاطس لمن شمته",
+      "titleEn": "The sneezer's response",
+      "categories": [
+        "general"
+      ],
+      "text": "يهديكم الله ويصلح بالكم.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري؛ حديث آداب العطاس",
+        "url": "https://hadeethenc.com/ar/browse/hadith/3433"
+      },
+      "noteAr": "يرد بها العاطس على من قال له: يرحمك الله."
+    },
+    {
+      "id": "general-salawat",
+      "titleAr": "الصلاة على النبي ﷺ",
+      "titleEn": "Sending blessings upon the Prophet",
+      "categories": [
+        "general"
+      ],
+      "text": "اللهم صل على محمد، وعلى آل محمد، كما صليت على إبراهيم وعلى آل إبراهيم، إنك حميد مجيد، اللهم بارك على محمد، وعلى آل محمد، كما باركت على إبراهيم وعلى آل إبراهيم، إنك حميد مجيد.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 3370",
+        "url": "https://sunnah.com/bukhari:3370"
+      },
+      "noteAr": "صيغة مأثورة للصلاة على النبي ﷺ؛ لا يحدد الحديث عددًا لتكرارها."
+    },
+    {
+      "id": "general-hawqala",
+      "titleAr": "لا حول ولا قوة إلا بالله",
+      "titleEn": "There is no power or strength except through Allah",
+      "categories": [
+        "general"
+      ],
+      "text": "لا حول ولا قوة إلا بالله.",
+      "repeat": null,
+      "source": {
+        "label": "صحيح البخاري 6409",
+        "url": "https://sunnah.com/bukhari:6409"
+      },
+      "noteAr": "ذكر مطلق؛ لا يحدد الحديث عددًا لتكراره."
+    }
+  ],
+  "reviewed_on": "2026-10-24",
+  "review_timezone": "Asia/Dubai"
+}

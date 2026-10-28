@@ -1,0 +1,10 @@
+{
+  "version": "1.0.97",
+  "application_id": "com.salati.prayer",
+  "source_commit": "52169a219b7e0d76bb600158f8375782c56145f9",
+  "source_tree": "0f6ad013682d167f56a96b249f801fee7afc4932",
+  "source_files_verified": 620,
+  "source_readme_preserved_at": "docs/source-README.md",
+  "original_github_history_preserved": true,
+  "private_signing_keys_included": false
+}

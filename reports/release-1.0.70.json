@@ -1,0 +1,23 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.69",
+    "version_code": 70,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "dfacceb0f0107c18159e64792697a76f94c0288e5b6e6ca6c0f8971ad8816260"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.70",
+    "version_code": 71,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "3bc535a1c0eb02e2486f6ef5daf604fb732a87b4d0f565c2f0dcb76190cdca87"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "packaged_ui_matches_current_source": true,
+  "alarm_ready_message_removed": true,
+  "native_status_smoke_test_passed": true,
+  "native_schedule_sync_test_passed": true
+}

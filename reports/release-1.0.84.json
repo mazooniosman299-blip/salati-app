@@ -1,0 +1,36 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.83",
+    "version_code": 84,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "d9a711045b7d60094ba602905690f04a2ed3355e5d1255e368d38896acceb89b"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.84",
+    "version_code": 85,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "64651eb0f0f37d7cec0781c49356bde7e0a0d7e99313ad5d963fdeb57e508529"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26142845,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_assets_verified": 333,
+  "original_hollow_location_pin_restored": true,
+  "icon_width_and_height_px": 15,
+  "icon_fill": "none",
+  "location_icon_badge_background": "transparent",
+  "same_icon_on_home_locate_button_trigger_and_all_250_countries": true,
+  "location_country_and_place_selection_tests_passed": true,
+  "centered_location_card_and_auto_first_preserved": true,
+  "theme_regression_passed": true,
+  "quran_text_and_font_unchanged": true,
+  "native_background_quran_code_unchanged": true,
+  "native_quran_service_in_apk": true,
+  "web_and_android_builds_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false
+}

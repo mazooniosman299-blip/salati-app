@@ -1,0 +1,23 @@
+Quran text: Tanzil Uthmani, Hafs. Copyright (C) 2007-2021 Tanzil Project.
+Creative Commons Attribution 3.0. Permission to copy and distribute verbatim copies; CHANGING THE TEXT IS NOT ALLOWED.
+https://tanzil.net/docs/text_license
+https://tanzil.net
+Text obtained verbatim from https://github.com/risan/quran-json/blob/main/data/tanzil/uthmani.json
+Text snapshot SHA-256: adaebb377c60eba1bab6ef652959c7a0b4ccb4d0ca42145945c14ecdbeb4b761
+No Quran text corrections or changes made. Added page, chapter and juz metadata separately.
+Madinah 604-page boundaries: quran-meta 7.0.0, Hafs metadata (MIT), https://github.com/quran-center/quran-meta
+Arabic Quran font: Amiri Quran, SIL Open Font License (included).
+Recitation links: Abu Bakr Al-Shatri, Yasser Al-Dosari, Nasser Al-Qatami, Abdul Rahman Al-Sudais and Mishary Al-Afasy (all 114 surahs).
+MP3Quran: https://www.mp3quran.net/ar/api
+Page playback: EveryAyah verse streams for Abu_Bakr_Ash-Shaatree_128kbps, Yasser_Ad-Dussary_128kbps and Nasser_Alqatami_128kbps.
+Catalogue: https://everyayah.com/data/recitations.js
+Only remote links are used; recordings are not redistributed or automatically downloaded.
+Audio streaming availability depends on the original host and the user's connection.
+
+Quran reading font: KFGQPC Uthmanic Script HAFS, version 0.09 (MadinahHafsClassic.ttf), distributed unmodified under the included KFGQPC-HAFS-LICENSE.txt.
+Typeface reference: https://qurancomplex.gov.sa/riwaiat-hafs/ ; distributed copy: https://github.com/nuqayah/qpc-fonts/blob/master/various/UthmanicHafs1%20Ver09.otf .
+Only the reading typeface changed in 1.0.79; Quran text, font-size preferences, page structure and styling are preserved. Amiri Quran remains the fallback for marked words and unsupported glyphs.
+
+Additional full-Quran reciters in 1.0.79: Abdul Rahman Al-Sudais (https://www.mp3quran.net/ar/sds/downloads) and Mishary Al-Afasy (https://www.mp3quran.net/ar/afs/downloads), all 114 surahs. Individual ayah playback uses EveryAyah directories Abdurrahmaan_As-Sudais_192kbps and Alafasy_128kbps. Provider catalogues and both directory listings were checked on 24 October 2026. Audio is streamed on request, not bundled or automatically downloaded.
+
+Sudais replacement recording (1.0.80), shown once as عبدالرحمن السديس: 114 complete-surah MP3 links from the published studio collection at https://archive.org/details/a0s0261002ddddddddddd . Listing and attribution: https://alkabbah.com/recitations/playlist/803492/nskh-astodyo-114-sor-kaml-mshf-alsdys-128-k-b-asdar-gdyd-aabd-alrhmn-alsdys . Official existence of a studio release: https://www.spa.gov.sa/N2563619 . The exact mirror-to-official-video match and subjective sound quality were not independently auditioned. Durations differ from the legacy set; no matching ayah timestamps were supplied. It streams complete surahs without an estimated ayah cursor. The previous Sudais verse and surah sources are no longer used; the other four readers retain individual ayah playback. Old saved files are never substituted for the studio URLs. No recording is bundled or automatically downloaded.

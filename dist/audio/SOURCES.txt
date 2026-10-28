@@ -1,0 +1,28 @@
+Audio recordings bundled with Salati
+
+Adhan: Ahmad Al-Nufais, Makkah, Al-Aqsa; dua after adhan:
+Source: https://github.com/DBChoco/Salawat
+Path: src/main/resources/io/github/dbchoco/Salawat/audio/
+Repository license: MIT, copyright (c) 2022 DarkBlackChocolate.
+Full license: SALAWAT-LICENSE.txt
+Original attribution from the source project:
+Ahmad Al-Nufais: https://www.youtube.com/watch?v=9k0wQtYu2nU
+Makkah: https://www.youtube.com/watch?v=MaEzj5eRmjc
+Al-Aqsa: https://www.youtube.com/watch?v=z2xEwSi2vaI
+No endorsement or affiliation is implied.
+
+Fajr adhan, Al-Haram Al-Madani:
+https://github.com/Five-Prayers/five-prayers-android/blob/main/app/src/main/res/raw/adhan_fajr_al_haram_el_madani_saoudia.mp3
+Repository license: GPL-3.0. This unmodified recording is distributed separately under its source license, included in FIVE-PRAYERS-LICENSE.txt.
+The original recording is available in that repository at the URL above.
+
+Recordings are distributed as obtained from these projects. Repository licenses and attribution are recorded here; independent recording rights have not been confirmed directly with performers.
+
+Nasser Al-Qatami adhan (user-selected replacement):
+Extracted without trimming from the MP4 supplied by the application owner:
+أروع ما قد تسمعه في حياتك .. أذان من الشيخ ناصر القطامي [GN1f4LNoTUs].mp4
+Converted to MP3 for browser compatibility. No voice synthesis or imitation was used. Replaces the previous Sajda recording. Attribution is based on the supplied file name; no independent rights license was supplied with the recording.
+
+Audio revision 3 (2026-10-21): existing adhan recordings processed with a 65 Hz high-pass, mild adaptive FFT noise reduction (7 dB), 12 kHz low-pass and reduced gain; exported at 44.1 kHz / 128 kbps (Fajr: 64 kbps, 7.5 kHz low-pass; original was 16 kHz / 16 kbps mono). Original reciters and recording sources unchanged. Clean filenames end in -clean-v3.mp3. This reduces background noise; defects already embedded in the recording may remain.
+
+Qatami revision 4 (2026-10-21): qatami-original-v4.ogg contains the original Opus audio packets remuxed directly from the owner-provided MP4 with ffmpeg -c:a copy. No denoiser, resampling, voice editing or lossy re-encoding. Full decoded content matches the uploaded audio exactly after accounting for a 24-sample (0.5 ms) container offset. Replaces the processed Qatami MP3 in revision 3; other recordings unchanged.

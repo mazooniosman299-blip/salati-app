@@ -1,0 +1,105 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 97,
+    "version_name": "1.0.96",
+    "apk_sha256": "884801b65dc9e236238f7221864e8f69f9ecf7982b646d9ad71b1686839738a8",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 98,
+    "version_name": "1.0.97",
+    "apk_sha256": "ddf0cbecb890a8486ecfab7ecae9afe7bb43aee67d0319fcd79f332d931cd2b8",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 24809008,
+  "packaged_assets_verified": 350,
+  "all_packaged_assets_match_final_preparation": true,
+  "application_tests_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 32,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "fixes": [
+    "Preserve explicit calculation choices during GPS refresh",
+    "Respect editable manual timezone across UI, calendar and native schedule",
+    "Evict invalid adhan cache and cache only decoded audio",
+    "Isolate adhan request completion/timeouts/focus callbacks",
+    "Terminate stalled Quran playback and bound wake leases",
+    "Native compass does not depend on browser sensor constructor"
+  ],
+  "malformed_saved_settings_existing_protection_retested": true,
+  "review_of_twelve_concerns": "reports/review-1.0.97.md",
+  "physical_update_install_tested": false,
+  "live_adhan_phone_tested": false,
+  "live_provider_request": "not tested live; previous environment proxy restriction",
+  "live_admob_account_verified": false,
+  "features": [
+    "Five-minute spoken approach reminders configurable5/10/15, independent native alarm and foreground web mode",
+    "Optional bounded Fajr phrase before selected unchanged adhan",
+    "Installed local Arabic speech selection, previews and speech settings",
+    "Modern24px SVG navigation, requested colors and aligned controls",
+    "Full-scene widget with sunrise/maghrib day/night appearance"
+  ],
+  "original_adhan_files_byte_identical": true,
+  "original_audio_files_verified": 6,
+  "audio_measurements": [
+    {
+      "file": "nufais-clean-v3.mp3",
+      "integrated_lufs": -15.1,
+      "true_peak_dbtp": -3.38,
+      "range_lu": 4.4,
+      "decoded_without_error": true
+    },
+    {
+      "file": "qatami-original-v4.ogg",
+      "integrated_lufs": -13.44,
+      "true_peak_dbtp": -1.42,
+      "range_lu": 3.5,
+      "decoded_without_error": true
+    },
+    {
+      "file": "makkah-clean-v3.mp3",
+      "integrated_lufs": -10.58,
+      "true_peak_dbtp": -1.31,
+      "range_lu": 8.1,
+      "decoded_without_error": true
+    },
+    {
+      "file": "wasilah.mp3",
+      "integrated_lufs": -17.3,
+      "true_peak_dbtp": -4.04,
+      "range_lu": 2.7,
+      "decoded_without_error": true
+    },
+    {
+      "file": "fajr-clean-v3.mp3",
+      "integrated_lufs": -14.92,
+      "true_peak_dbtp": -5.3,
+      "range_lu": 17.9,
+      "decoded_without_error": true
+    },
+    {
+      "file": "aqsa-clean-v3.mp3",
+      "integrated_lufs": -9.94,
+      "true_peak_dbtp": -0.5,
+      "range_lu": 7.5,
+      "decoded_without_error": true
+    }
+  ],
+  "javascript_test_commands": 35,
+  "responsive_cascade_tests_passed": true,
+  "responsive_test_count": 7,
+  "native_reminder_scheduling_tests_passed": true,
+  "first_install_permission_order_tested": true,
+  "local_speech_lifecycle_tested": true,
+  "widget_day_night_tested": true,
+  "speech_requires_installed_local_arabic_voice": true,
+  "polar_prayer_limits_unchanged": true
+}

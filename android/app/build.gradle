@@ -1,0 +1,20 @@
+apply plugin: 'com.android.application'
+android {
+ namespace 'com.salati.prayer'
+ compileSdk 36
+ defaultConfig { manifestPlaceholders = [admobAppId: rootProject.salatiAds.appId]; applicationId 'com.salati.prayer'; minSdk 26; targetSdk 36; versionCode providers.gradleProperty('salatiVersionCode').getOrElse('98').toInteger(); versionName providers.gradleProperty('salatiVersionName').getOrElse('1.0.97') }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+ sourceSets { main { if (!rootProject.salatiAds.enabled) java.srcDirs += 'src/noAds/java' } }
+ androidResources { noCompress += ['mp3','ogg'] }
+ buildTypes { release { minifyEnabled false } }
+}
+
+dependencies { if (rootProject.salatiAds.enabled) implementation project(':ads') }
+
+def verifyReleaseSigningIdentity = tasks.register('verifyReleaseSigningIdentity', Exec) {
+ workingDir rootProject.projectDir.parentFile
+ commandLine providers.gradleProperty('salatiPython').getOrElse('python3'), 'scripts/sign-android.py', '--check-key'
+}
+tasks.configureEach {
+ if (name == 'preReleaseBuild') dependsOn(verifyReleaseSigningIdentity)
+}

@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),Module=require('node:module');
+const source=require('esbuild').buildSync({entryPoints:['prayer-refresh.js'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text;
+const m=new Module('refresh',module);m._compile(source,'refresh.cjs');
+const doc=new EventTarget(),win=new EventTarget();doc.visibilityState='visible';
+let pulse,cleared=false;let date='2026-10-21',rendered=date;const calls=[];
+const cleanup=m.exports.setupPrayerRefresh({document:doc,window:win,wake:options=>{rendered=date;calls.push(options)},setInterval:(f,ms)=>{assert.equal(ms,60000);pulse=f;return 17},clearInterval:id=>{assert.equal(id,17);cleared=true}});
+win.dispatchEvent(new Event('salati-native-resume'));assert.equal(calls.length,1);
+date='2026-10-22';pulse();assert.equal(rendered,date);
+doc.visibilityState='hidden';pulse();win.dispatchEvent(new Event('online'));assert.equal(calls.length,2);
+doc.visibilityState='visible';doc.dispatchEvent(new Event('visibilitychange'));assert.equal(calls.length,3);
+win.dispatchEvent(new Event('online'));assert.equal(calls.at(-1).retryFailed,true);
+win.dispatchEvent(new Event('pageshow'));assert.equal(calls.at(-1).retryFailed,false);
+cleanup();const before=calls.length;win.dispatchEvent(new Event('salati-native-resume'));assert.equal(calls.length,before);assert(cleared);
+console.log('PASS: midnight reconciliation, native resume, browser restore, online retry, hidden-page suppression and cleanup.');

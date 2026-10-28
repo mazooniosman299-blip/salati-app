@@ -1,0 +1,17 @@
+{
+  "collection": "hugeicons",
+  "license": {
+    "title": "MIT",
+    "spdx": "MIT"
+  },
+  "source": "https://github.com/iconify/icon-sets/blob/master/json/hugeicons.json",
+  "icons": {
+    "clock-01": "cd1cd65f0f06a796399ef69ef11533e01914daf811cd14791706302d7204c85e",
+    "book-open-text": "275aebe1ed21d582d99ecaa1e611b537dd69848613d125676a83eea22f7ac8e6",
+    "navigation-03": "02e2ef331983542d3f60eecdb9c31ec65c045243e56f42d785214fd3991efb61",
+    "dua": "71f98eabe0e588801c698ae2128fda20b6b765a56a3cfa0e3c0837f81a5f99fb",
+    "tasbih": "a1af6186d95d012cb16a10774a2040921775a4e39e66ace8317aaa3736ca5b0a",
+    "settings-01": "8f2c31cccf4575dc96d345f2b370d9a6fa399ccc2f805e1df1bc3aee1655a92b",
+    "refresh-01": "69aa7749755d66de8d49fb741ddccebff3f3352d14bc596f8aa9e47f6ccbf5d8"
+  }
+}

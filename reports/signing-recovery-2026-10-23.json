@@ -1,0 +1,29 @@
+{
+  "recovery_verified": true,
+  "key_and_password_restored_exactly": true,
+  "wrong_recovery_secret_rejected": true,
+  "modified_ciphertext_rejected": true,
+  "gradle_release_without_key_stopped": true,
+  "signer_with_wrong_fingerprint_stopped": true,
+  "same_restored_key_signed_later_release": true,
+  "apks": [
+    {
+      "application_id": "com.salati.prayer",
+      "version_code": 69,
+      "version_name": "1.0.68",
+      "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+      "apk_sha256": "cac9eb5e683cae35c976941365ee6e13d75229b10f11fe7f4df3c991df0f477b"
+    },
+    {
+      "application_id": "com.salati.prayer",
+      "version_code": 70,
+      "version_name": "1.0.69",
+      "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+      "apk_sha256": "4f530967f080f82c60a8dcf7201e0f30479bc82748e5b0366d5ba626f6bd474c"
+    }
+  ],
+  "physical_device_installation_tested": false,
+  "private_drive_backup_downloaded_and_byte_verified": true,
+  "private_drive_permissions_owner_only": true,
+  "public_project_files_scanned_for_secret_leaks": 161
+}

@@ -1,0 +1,42 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.79",
+    "version_code": 80,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "7b8241a504057976524e385b7b88164b2808c0e3752c80c92dbcbbc00801aaf4"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.80",
+    "version_code": 81,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "411723d61bd020cbb28493bdd587d03359fc237beec79f297e9e493ae388aa86"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26126461,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_asset_count": 333,
+  "quran_text_and_font_unchanged": true,
+  "plain_white_light_background": true,
+  "light_text_black_dark_text_white": true,
+  "light_text_contrast_ratio": 21,
+  "real_regular_bold_arabic_ui_fonts": true,
+  "adhkar_cards_natural_content_height": true,
+  "modern_searchable_adhkar_category_list": true,
+  "verse_list_non_modal_anchored_230px": true,
+  "reciter_selection_starts_playback": true,
+  "prayer_bead_navigation_icon": true,
+  "quran_reciters": 5,
+  "sudais_shown_once_as": "عبدالرحمن السديس",
+  "sudais_replacement_complete_surahs": 114,
+  "sudais_legacy_audio_and_cache_not_used": true,
+  "sudais_verse_tracking_available": false,
+  "sudais_subjective_audio_quality_auditioned": false,
+  "other_reciters_verse_routes_checked": 24944,
+  "full_application_and_seo_tests_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false
+}

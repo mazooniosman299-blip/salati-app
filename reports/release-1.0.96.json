@@ -1,0 +1,42 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 96,
+    "version_name": "1.0.95",
+    "apk_sha256": "aca7ca4d38cc6e8e9a2b83dde86107eaaee159f2b99fd02ebb8b0ac11af555a7",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 97,
+    "version_name": "1.0.96",
+    "apk_sha256": "884801b65dc9e236238f7221864e8f69f9ecf7982b646d9ad71b1686839738a8",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26181049,
+  "packaged_assets_verified": 350,
+  "all_packaged_assets_match_final_preparation": true,
+  "application_tests_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 33,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "fixes": [
+    "Use service start IDs to protect newer queued Quran sessions",
+    "Catch prepared MediaPlayer errors and reject stale callbacks",
+    "Preserve and apply saved adhan volume in web, native schedule, playback and preview",
+    "Normalize malformed cross-window audio settings",
+    "Reject corrupt finite cache rows and refresh incomplete cached prayer months"
+  ],
+  "malformed_saved_settings_existing_protection_retested": true,
+  "review_of_twelve_concerns": "reports/review-1.0.96.md",
+  "physical_update_install_tested": false,
+  "live_adhan_phone_tested": false,
+  "live_provider_request": "blocked by environment proxy HTTP 403",
+  "live_admob_account_verified": false
+}

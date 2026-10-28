@@ -1,0 +1,8 @@
+Huge Icons — free stroke icons
+Author: Hugeicons
+License: MIT (SPDX MIT, as declared by the upstream collection)
+Source: https://github.com/iconify/icon-sets/blob/master/json/hugeicons.json
+Package: @iconify-json/hugeicons 1.2.35
+Icon names: clock-01, book-open-text, navigation-03, dua, tasbih, settings-01, refresh-01
+The SVG path data embedded in the interface is copied from the upstream collection.
+License information: https://opensource.org/license/mit

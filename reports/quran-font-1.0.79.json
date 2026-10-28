@@ -1,0 +1,14 @@
+{
+  "font_family": "KFGQPC Uthmanic Script HAFS",
+  "font_version": "0.09",
+  "font_sha256": "59e20b2403687a67854fd199861abed3528068c035d2689898465d5faf39bb31",
+  "font_distributed_unmodified": true,
+  "only_quran_typeface_changed": true,
+  "all_quran_codepoints_covered_by_primary_and_existing_fallback": true,
+  "size_and_page_layout_settings_unchanged": true,
+  "countries_and_cities_home_button_removed": true,
+  "quran_text_unchanged": true,
+  "visual_font_sample_inspected": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false
+}

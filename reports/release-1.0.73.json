@@ -1,0 +1,24 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.72",
+    "version_code": 73,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "5c1dd4bc9ac4ee9de925c5bdb4c88358ef332a37a5fa01b798277ae9fa7b9842"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.73",
+    "version_code": 74,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "023df1de37c7522818f1b0b2a8fdc49cbab714f9dd78b240fc40fdd343f1ba74"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "packaged_ui_matches_prepared_assets": true,
+  "quran_qatami_full_surah_and_verse_sources_packaged": true,
+  "automated_recitation_tests_passed": true,
+  "full_npm_test_suite_passed": true,
+  "quran_text_unchanged": true
+}

@@ -1,0 +1,51 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 92,
+    "version_name": "1.0.91",
+    "apk_sha256": "4bc95d0986753ab7db3ebceec0baa381d49f4a3d463e1924fff4b4372e5977cb",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 93,
+    "version_name": "1.0.92",
+    "apk_sha256": "78f6ac862e81e813590e8dc508e7bbbc504fec6f465b640cfc1cb55842f8d9f7",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26181049,
+  "packaged_assets_verified": 350,
+  "all_packaged_assets_match_final_preparation": true,
+  "selected_reference": "docs/design/selected-tasbih-navigation.png",
+  "selected_reference_original_display_order": 2,
+  "scope": "Only Tasbih and navigation icons from the original first-set image 2",
+  "all_other_section_html_unchanged_except_version": true,
+  "qibla_widget_launcher_brand_and_global_theme_unchanged": true,
+  "unchanged_files_checked": [
+    "dist/icon.svg",
+    "dist/icon-192.png",
+    "dist/icon-512.png",
+    "dist/images/salati-brand.png",
+    "dist/style.css",
+    "dist/light-theme.css",
+    "android/app/src/main/java/com/salati/prayer/PrayerWidget.java",
+    "android/app/src/main/res/layout/prayer_widget.xml",
+    "android/app/src/main/res/drawable/widget_prayer_active.xml"
+  ],
+  "all_100_counter_values_phases_progress_limit_reset_persistence_tested_in_both_languages": true,
+  "application_test_suite_passed": true,
+  "responsive_cascade_checks_passed": true,
+  "seo_tests_passed": true,
+  "web_android_release_builds_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 33,
+  "icon_provenance": "reports/tasbih-navigation-icon-sources.json",
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "prior_user_publication_without_browser_qa_authorization_retained": true
+}

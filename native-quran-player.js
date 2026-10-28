@@ -1,0 +1,20 @@
+// The Android service owns the full queue; this object only mirrors its controls and position.
+export function quranPlayer(fallback){const bridge=globalThis.window?.SalatiNative;return typeof bridge?.quranPlay==='function'&&typeof bridge?.quranState==='function'?new NativeQuranPlayer(bridge):fallback;}
+export class NativeQuranPlayer extends EventTarget{
+ constructor(bridge){super();this.bridge=bridge;this.nativeQuran=true;this.queue=[];this.queueIndex=0;this.session='';this.state={paused:true,active:false,position:0,duration:0,status:'stopped'};this.loop=false;this.muted=false;this.volume=1;this.expected=false;
+  this.sync();globalThis.window?.addEventListener('salati-native-quran',event=>this.apply(event.detail));globalThis.window?.addEventListener('salati-native-resume',()=>this.sync());globalThis.document?.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')this.sync();});this.timer=setInterval(()=>{if(this.session&&globalThis.document?.visibilityState==='visible')this.sync();},500);this.timer.unref?.();
+ }
+ emit(name){this.dispatchEvent(new Event(name));}
+ sync(){try{this.apply(JSON.parse(this.bridge.quranState()));}catch{}}
+ apply(value){if(!value||typeof value.session!=='string'||!value.session||value.session===this.stoppedSession)return;if(this.session&&value.session!==this.session&&this.expected)return;const old=this.state,changedSession=this.session!==value.session;this.session=value.session;
+  if(changedSession||!this.queue.length&&value.active){try{this.queue=JSON.parse(this.bridge.quranQueue());}catch{this.queue=[];}}
+  this.state=value;this.queueIndex=Number(value.index)||0;if(changedSession||old.index!==value.index||old.active!==value.active)this.emit('trackchange');if(old.duration!==value.duration){this.emit('loadedmetadata');this.emit('durationchange');}if(old.paused!==value.paused)this.emit(value.paused?'pause':'play');if(value.status==='playing'&&(old.status!=='playing'||old.index!==value.index))this.emit('playing');if(value.status==='loading'&&old.status!=='loading')this.emit('waiting');this.emit('timeupdate');if(value.status==='ended'&&old.status!=='ended')this.emit('ended');if(value.status==='error'&&old.status!=='error')this.emit('error');if(value.active===false&&['stopped','ended','error'].includes(value.status))this.stoppedSession=value.session;
+ }
+ get paused(){return this.state.paused!==false;}get active(){return !!this.state.active;}get ended(){return this.state.status==='ended';}get error(){return this.state.status==='error'?Error('playback'):null;}get duration(){return this.state.duration||0;}get currentTime(){return this.state.position||0;}set currentTime(value){if(!Number.isFinite(value))return;this.bridge.quranSeek(this.session,Math.round(value*1000));}
+ get src(){return this.queue[this.queueIndex]?.url||'';}getAttribute(name){return name==='src'?(this.src||null):null;}
+ pause(){if(this.session)this.bridge.quranPause(this.session);}
+ play(){if(this.session)this.bridge.quranResume(this.session);return Promise.resolve();}
+ setOptions(repeat,autoNext){if(this.session)this.bridge.quranOptions(this.session,!!repeat,!!autoNext);}
+ playQueue(queue,{reciter,label,repeat=false,autoNext=false}={}){this.queue=queue;this.queueIndex=0;this.stoppedSession='';this.session='q'+Date.now()+'-'+Math.random().toString(36).slice(2);this.expected=true;this.state={session:this.session,index:0,paused:true,active:true,position:0,duration:0,status:'loading'};this.emit('waiting');const response=this.bridge.quranPlay(JSON.stringify({session:this.session,reciter,label,repeat,autoNext,queue}));if(response!=='ok'){this.state.status='error';this.emit('error');}return Promise.resolve();}
+ stopQueue(){this.stoppedSession=this.session;if(this.session)this.bridge.quranStop(this.session);this.state={paused:true,active:false,position:0,duration:0,status:'stopped'};this.queue=[];this.queueIndex=0;this.emit('emptied');}
+}

@@ -1,0 +1,29 @@
+/* Shared theme palette. Cairo UI typography is defined once in style.css. */
+:root{--bg:#ffffff;--card:#ffffff;--ink:#000000;--muted:#000000;--line:#7a8796;--gold:#000000;--prayer-highlight:#2563eb;--accent:#1d4ed8;--brand-gold:#1d4ed8;--divider:#e3e7ed;--selected:#eef5ff}
+body:not(.dark){color:var(--ink);background:var(--bg);color-scheme:light;font-synthesis:none}
+body:not(.dark) .intro p{color:var(--muted);font-weight:700}
+body:not(.dark) .note,body:not(.dark) .eyebrow,body:not(.dark) .time-context,body:not(.dark) .location p{color:var(--muted);font-size:15px;font-weight:700}
+body:not(.dark) .card,body:not(.dark) .adhkar-card{background:var(--card);border-color:var(--line)}
+body:not(.dark) .choice-trigger,body:not(.dark) input:not([type=checkbox]):not([type=range]),body:not(.dark) select{background:#ffffff;color:var(--ink);border-color:var(--line);font-weight:700}
+body:not(.dark) input::placeholder{color:#000000;opacity:1;font-weight:700}
+body:not(.dark) .choice-trigger:disabled,body:not(.dark) input:disabled,body:not(.dark) select:disabled{opacity:1;color:var(--muted);-webkit-text-fill-color:var(--muted);background:#ffffff}
+body:not(.dark) label span,body:not(.dark) legend,body:not(.dark) summary{color:var(--ink);font-weight:700}
+body:not(.dark) .adhkar-text{font-weight:700;color:var(--ink)}
+body:not(.dark) .adhkar-repeat{color:#000000;background:#ffffff}
+body:not(.dark) .adhkar-source,body:not(.dark) .adhkar-source a{color:#000000}
+body:not(.dark) .choice-option{background:#ffffff;color:var(--ink)}
+body:not(.dark) .choice-option[aria-selected=true]{background:#ffffff;border-color:#000000}
+body:not(.dark) .floating-menu{background:#fff;color:var(--ink);border-color:var(--line)}
+body:not(.dark) .floating-menu button[aria-checked=true]{background:#ffffff;color:#000000}
+body:not(.dark) .adhkar-shortcuts button[aria-pressed=true]{background:#ffffff;color:#000000;border-color:#000000}
+
+/* Plain page surfaces; no colored light-mode background. */
+body:not(.dark) .quran-reading-page,body:not(.dark) .mushaf-sheet,body:not(.dark) .mushaf-sheet .quran-surah-title{background:#fff;color:#000}
+body:not(.dark) .mushaf-page-head,body:not(.dark) .mushaf-page-number,body:not(.dark) .reading-page-heading,body:not(.dark) .reading-page-number{color:#000}
+body:not(.dark) .choice-option[aria-selected=true],body:not(.dark) .floating-menu button[aria-checked=true],body:not(.dark) .floating-menu button[aria-selected=true],body:not(.dark) .adhkar-shortcuts button[aria-pressed=true]{box-shadow:inset 0 0 0 1px #000}
+body.dark{--bg:#000000;--card:#171717;--ink:#ffffff;--muted:#ffffff;--line:#353535;--gold:#93c5fd;--prayer-highlight:#60a5fa;--accent:#8db5ff;--brand-gold:#93c5fd;--divider:#30343b;--selected:#132b4c;color-scheme:dark}
+
+body:not(.dark) .prayer-switches input[type=checkbox]:checked{background:#1d4ed8;border-color:#1d4ed8}
+
+/* Strengthen UI labels without changing the Quran reading typeface or weight. */
+body:not(.dark) .site-nav button,body:not(.dark) .location #locate,body:not(.dark) #settings label,body:not(.dark) #settings button,body:not(.dark) .adhkar-library>.fields label{font-weight:700}

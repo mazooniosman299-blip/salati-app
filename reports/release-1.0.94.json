@@ -1,0 +1,43 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 94,
+    "version_name": "1.0.93",
+    "apk_sha256": "15e7ca6094bcd00629a2cb5aaf883fc1b485d24ba62113047d1de39b702f1e9b",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 95,
+    "version_name": "1.0.94",
+    "apk_sha256": "9b6335f1e16b69c209aab135bde17a0e195c48c5a53d7b7411c78178ca314fe5",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26181049,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_assets_verified": 350,
+  "fixes": [
+    "Automatic startup/resume/compass refresh preserves a valid manual prayer location/method/offsets; explicit automatic location remains available",
+    "Normalize malformed saved locale, method/school, counter, offsets and audio flags/voice while retaining valid preferences",
+    "Reject missing/null/non-numeric/non-finite/mismatched calendar coordinates and retain local calculation fallback"
+  ],
+  "regressions_reproduced_and_fixed": true,
+  "actual_resume_callback_manual_mode_tested": true,
+  "all_ui_calculation_methods_restorable": true,
+  "valid_preferences_and_adjustments_retained": true,
+  "rejected_calendar_local_fallback_tested": true,
+  "application_tests_passed": true,
+  "responsive_cascade_tests_passed": true,
+  "seo_tests_passed": true,
+  "web_android_builds_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 33,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "prior_user_publication_without_browser_qa_authorization_retained": true
+}

@@ -1,0 +1,40 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.88",
+    "version_code": 89,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "5aa6ab8f5c65a8b2e1cfafc649e6a937a08b9a17a9ffce71737f52f9fe8dbbb5"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.89",
+    "version_code": 90,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "54f8bc5cdb955a06dffb5679a1802bd56fdd5cdc2f64378d157efadf107db28e"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26176786,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_assets_verified": 348,
+  "only_interface_change_is_action_button_selector_scope": true,
+  "all_other_html_css_and_audio_controller_code_unchanged_except_version": true,
+  "regression_reproduced_before_fix": true,
+  "switch_geometry_cases_passed": 32,
+  "three_switches_equal_size_px": [
+    66,
+    38
+  ],
+  "thumb_size_px": 30,
+  "thumb_inset_px": 4,
+  "thumb_center_verified_in_both_states_directions_themes": true,
+  "ordinary_listening_buttons_keep_44px_targets": true,
+  "real_master_switch_handler_enable_disable_persistence_native_sync_aria_verified": true,
+  "complete_application_test_command_passed": true,
+  "web_android_builds_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "prior_user_publication_without_browser_qa_authorization_retained": true
+}

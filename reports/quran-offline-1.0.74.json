@@ -1,0 +1,36 @@
+{
+  "release": "1.0.74",
+  "scope": "Offline playback of downloaded complete surahs, for each selected Quran reciter; individual verse files still stream.",
+  "browser": {
+    "storage": "Dedicated persistent CacheStorage namespace",
+    "offline_bytes_match_download": true,
+    "new_instance_restore_tested": true,
+    "reciter_isolation_tested": true,
+    "truncated_or_html_download_not_saved": true,
+    "quota_failure_reported": true,
+    "cancel_and_immediate_retry_tested": true,
+    "bulk_download_and_removal_tested": true,
+    "stale_blob_released_without_playback": true
+  },
+  "android": {
+    "download_transport": "Android DownloadManager",
+    "completed_storage": "App-specific external Music/quran directory, outside DownloadManager tracked temporary paths",
+    "completion_receiver_promotes_files": true,
+    "atomic_promotion_and_old_path_cleanup_tested": true,
+    "partial_and_suffix_range_playback_tested": true,
+    "build_and_release_vital_checks_passed": true,
+    "physical_device_download_and_playback_tested": false
+  },
+  "ui": {
+    "reciter_specific_download_state_tested": true,
+    "bulk_download_requires_explicit_in_app_confirmation": true,
+    "cancel_routes_to_selected_reciter_tested": true,
+    "playback_stopped_before_removal_tested": true
+  },
+  "documentation": "https://developer.android.com/reference/android/app/DownloadManager.Request#setVisibleInDownloadsUi(boolean)",
+  "limitations": [
+    "Initial audio download requires an Internet connection and sufficient device storage.",
+    "Physical Android hardware was not available for an end-to-end device test.",
+    "The build network blocks the recitation hosts; playback/storage checks use audio fixtures with the network disabled."
+  ]
+}

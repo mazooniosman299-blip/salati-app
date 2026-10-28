@@ -1,0 +1,35 @@
+{
+  "name": "salati-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node tests/prayer-engine.cjs && node tests/quran.cjs && node tests/quran-audio.cjs && node tests/quran-progress.cjs && node tests/native-quran.cjs && node tests/quran-follow.cjs && node tests/quran-offline.cjs && node tests/quran-download-controls.cjs && node tests/native-schedule.cjs && node tests/location.cjs && node tests/world-location.cjs && node tests/location-picker.cjs && node tests/country-search.cjs && node tests/popover-menus.cjs && node tests/light-theme.cjs && node tests/tab-controls.cjs && node tests/adhan-toggle.cjs && node tests/adhkar.cjs && node tests/prayer-provider.cjs && node tests/prayer-preferences.cjs && node tests/native-audio.cjs && node tests/audio-voice.cjs && node tests/prayer-refresh.cjs && node tests/auto-city-times.cjs && node tests/native-sync.cjs && node tests/preferences-storage.cjs && node tests/back-navigation.cjs && node tests/tasbih-controls.cjs && node tests/review-regressions.cjs && node tests/audio-storage.cjs && node tests/review-round-two.cjs && node tests/infrastructure-regressions.cjs && node tests/audio-cache-recovery.cjs && node tests/timezone-choice.cjs && node tests/prayer-announcements.cjs",
+    "build": "node scripts/build-web.cjs",
+    "test:quran-background": "bash scripts/test-quran-background.sh",
+    "test:audio-focus": "bash scripts/test-audio-focus.sh",
+    "test:seo": "node tests/city-pages.cjs && node tests/site-growth.cjs && node tests/international-seo.cjs && python3 tests/seo.py",
+    "test:responsive": "python3 tests/responsive-ui.py",
+    "test:quran-race": "python3 tests/quran-service-race.py",
+    "test:quran-lifecycle": "python3 tests/quran-service-lifecycle.py",
+    "test:ads": "bash scripts/test-ads.sh",
+    "test:adhan-lifecycle": "python3 tests/adhan-service-lifecycle.py",
+    "test:quran-stall": "bash scripts/test-quran-stall.sh && python3 tests/quran-stall-integration.py",
+    "test:reminders": "bash scripts/test-reminders.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "adhan": "4.4.6",
+    "countries-and-timezones": "3.11.0",
+    "esbuild": "0.28.2",
+    "geomagnetism": "0.2.0",
+    "tz-lookup": "6.1.25"
+  },
+  "devDependencies": {
+    "cities.json": "1.1.65",
+    "i18n-iso-countries": "7.14.0"
+  }
+}

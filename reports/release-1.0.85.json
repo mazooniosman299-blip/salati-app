@@ -1,0 +1,43 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.84",
+    "version_code": 85,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "64651eb0f0f37d7cec0781c49356bde7e0a0d7e99313ad5d963fdeb57e508529"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.85",
+    "version_code": 86,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "7b711ad7f4c403253c13de72244935041db57879b2620032519fc964375a3298"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26143272,
+  "all_packaged_assets_match_final_preparation": true,
+  "packaged_assets_verified": 338,
+  "one_continuous_recording_per_surah": true,
+  "continuous_editions_verified": 4,
+  "full_surah_routes_tested": 456,
+  "individual_ayah_routes_tested": 24944,
+  "timing_occurrences_losslessly_verified_against_pinned_source": 25465,
+  "timing_source_archives_match_upstream_sha256_manifest": true,
+  "full_duration_elapsed_cross_verse_seek_tests_passed": true,
+  "pause_stop_and_metadata_race_tests_passed": true,
+  "native_background_and_activity_restoration_tests_passed": true,
+  "legacy_recordings_not_substituted_under_new_edition_timings": true,
+  "missing_1_1_timing_not_guessed_for": [
+    "yasser",
+    "qatami"
+  ],
+  "quran_text_and_font_unchanged": true,
+  "native_quran_service_in_apk": true,
+  "web_and_android_builds_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "remote_recordings_listened_to": false,
+  "network_limitation": "Audio hosts unavailable through environment network policy; published edition catalogs/timings verified against version-pinned upstream release metadata."
+}

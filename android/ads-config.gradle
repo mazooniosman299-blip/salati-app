@@ -1,0 +1,17 @@
+// Publisher IDs are public configuration, not account credentials.
+def config = new Properties()
+def publishedConfig = rootProject.file('admob-publisher.properties')
+if (publishedConfig.exists()) publishedConfig.withInputStream { config.load(it) }
+def configFile = rootProject.file('admob.properties')
+if (configFile.exists()) configFile.withInputStream { config.load(it) }
+def mode = providers.gradleProperty('salatiAdsMode').getOrElse('off')
+if (!(mode in ['off', 'test', 'production'])) throw new GradleException('salatiAdsMode must be off, test or production')
+def appId = mode == 'test' ? 'ca-app-pub-3940256099942544~3347511713' : config.getProperty('appId', '')
+def bannerId = mode == 'test' ? 'ca-app-pub-3940256099942544/9214589741' : config.getProperty('bannerId', '')
+if (mode == 'production') {
+ def appMatch = appId =~ /^ca-app-pub-(\d{16})~\d{10}$/
+ def bannerMatch = bannerId =~ /^ca-app-pub-(\d{16})\/\d{10}$/
+ if (!appMatch.matches() || !bannerMatch.matches()) throw new GradleException('Add valid appId and bannerId to android/admob.properties before enabling production ads')
+ if (appMatch[0][1] != bannerMatch[0][1] || appMatch[0][1] == '3940256099942544') throw new GradleException('Production App ID and Banner ID must belong to the same real publisher; Google test IDs are not allowed')
+}
+ext.salatiAds = [mode: mode, enabled: mode != 'off', appId: appId, bannerId: bannerId]

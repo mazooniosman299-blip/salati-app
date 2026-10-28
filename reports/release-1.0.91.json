@@ -1,0 +1,40 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 91,
+    "version_name": "1.0.90",
+    "apk_sha256": "819c890ca34b1f94ca8dda4ddf9fd7a3e98ec333e35b7565e1b353a7773550a6",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 92,
+    "version_name": "1.0.91",
+    "apk_sha256": "4bc95d0986753ab7db3ebceec0baa381d49f4a3d463e1924fff4b4372e5977cb",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26176786,
+  "packaged_assets_verified": 348,
+  "all_packaged_assets_match_final_preparation": true,
+  "approved_findings_fixed": [
+    "Initial and subsequent preference writes tolerate quota/security errors without blocking startup or native sync; visible warning and recovery; no false saved confirmation",
+    "Retain already loaded Quran page/verse nodes on calendar/theme refresh and font sizing; ignore obsolete page-observer appends",
+    "Android legacy/predictive back dismisses an open HTML dialog/popover before native history/exit; restores focus and serializes pending callbacks"
+  ],
+  "regressions_failed_before_fix_and_passed_after": true,
+  "application_test_suite_passed": true,
+  "responsive_cascade_tests_passed": true,
+  "seo_tests_passed": true,
+  "web_and_android_release_builds_passed": true,
+  "android_release_lint_errors": 0,
+  "android_release_lint_warnings": 33,
+  "legacy_back_lint_suppression_rationale": "onBackPressed intentionally supports API26-32 only; API33+ OnBackInvokedDispatcher is explicitly registered in onCreate, including API36 gestures",
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "prior_user_publication_without_browser_qa_authorization_retained": true
+}

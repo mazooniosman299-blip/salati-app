@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+*.pyc
+private/
+*.keystore
+*.jks
+*.p12
+*.pfx
+*-password.txt
+*-PRIVATE.txt
+*.salati-backup
+salati-signing-recovery-kit*.zip

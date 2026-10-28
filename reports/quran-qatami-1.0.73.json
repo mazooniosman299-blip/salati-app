@@ -1,0 +1,17 @@
+{
+  "reciter_id": "qatami",
+  "name_ar": "ناصر القطامي",
+  "name_en": "Nasser Al-Qatami",
+  "full_surah_base_url": "https://server6.mp3quran.net/qtm/",
+  "verse_base_url": "https://everyayah.com/data/Nasser_Alqatami_128kbps/",
+  "verified_public_catalogs": [
+    "https://server6.mp3quran.net/qtm/",
+    "https://everyayah.com/data/Nasser_Alqatami_128kbps/",
+    "https://everyayah.com/data/Nasser_Alqatami_128kbps/000_details.txt"
+  ],
+  "catalog_contains_114_surahs": true,
+  "automated_playback_routing_tests_passed": true,
+  "full_surah_verse_and_reciter_switch_tests_passed": true,
+  "live_audio_playback_on_device_tested": false,
+  "live_binary_audio_fetch": "Unavailable in build environment: outbound HTTP policy rejects audio hosts; public catalog verified through browser search tool."
+}

@@ -1,0 +1,612 @@
+{
+  "reciter": "عبد الرحمن السديس",
+  "riwaya": "حفص عن عاصم — as labelled by alkabbah source",
+  "collection": "نسخة استوديو جديدة 114 سورة",
+  "archive_id": "a0s0261002ddddddddddd",
+  "archive_uploaded_at": "2026-10-02 06:57:59",
+  "studio_announcement_date": "2023-02-01",
+  "recording_date": "not established for these exact files",
+  "provenance_verified": "Official announcement confirms a complete studio recording; Alkabbah attributes this mirror to the Saudi Center's YouTube channel; exact audio correspondence not independently verified.",
+  "sources": [
+    "https://moathemam.org/recorded-quran/",
+    "https://alkabbah.com/recitations/playlist/803492/nskh-astodyo-114-sor-kaml-mshf-alsdys-128-k-b-asdar-gdyd-aabd-alrhmn-alsdys",
+    "https://archive.org/details/a0s0261002ddddddddddd",
+    "https://archive.org/download/a0s0261002ddddddddddd",
+    "https://www.spa.gov.sa/N2563619",
+    "https://www.youtube.com/channel/UCMrvSRIH56TMhpeELteIQ0w"
+  ],
+  "verse_timestamps": null,
+  "files": [
+    {
+      "surah": 1,
+      "name": "001 - الفاتحة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/001%20-%20%D8%A7%D9%84%D9%81%D8%A7%D8%AA%D8%AD%D8%A9.mp3"
+    },
+    {
+      "surah": 2,
+      "name": "002 - البقرة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/002%20-%20%D8%A7%D9%84%D8%A8%D9%82%D8%B1%D8%A9.mp3"
+    },
+    {
+      "surah": 3,
+      "name": "003 - آل عمران.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/003%20-%20%D8%A2%D9%84%20%D8%B9%D9%85%D8%B1%D8%A7%D9%86.mp3"
+    },
+    {
+      "surah": 4,
+      "name": "004 - النساء.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/004%20-%20%D8%A7%D9%84%D9%86%D8%B3%D8%A7%D8%A1.mp3"
+    },
+    {
+      "surah": 5,
+      "name": "005 - المائدة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/005%20-%20%D8%A7%D9%84%D9%85%D8%A7%D8%A6%D8%AF%D8%A9.mp3"
+    },
+    {
+      "surah": 6,
+      "name": "006 - الأنعام.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/006%20-%20%D8%A7%D9%84%D8%A3%D9%86%D8%B9%D8%A7%D9%85.mp3"
+    },
+    {
+      "surah": 7,
+      "name": "007 - الأعراف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/007%20-%20%D8%A7%D9%84%D8%A3%D8%B9%D8%B1%D8%A7%D9%81.mp3"
+    },
+    {
+      "surah": 8,
+      "name": "008 - الأنفال.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/008%20-%20%D8%A7%D9%84%D8%A3%D9%86%D9%81%D8%A7%D9%84.mp3"
+    },
+    {
+      "surah": 9,
+      "name": "009 - التوبة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/009%20-%20%D8%A7%D9%84%D8%AA%D9%88%D8%A8%D8%A9.mp3"
+    },
+    {
+      "surah": 10,
+      "name": "010 - يونس.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/010%20-%20%D9%8A%D9%88%D9%86%D8%B3.mp3"
+    },
+    {
+      "surah": 11,
+      "name": "011 - هود.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/011%20-%20%D9%87%D9%88%D8%AF.mp3"
+    },
+    {
+      "surah": 12,
+      "name": "012 - يوسف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/012%20-%20%D9%8A%D9%88%D8%B3%D9%81.mp3"
+    },
+    {
+      "surah": 13,
+      "name": "013 - الرعد.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/013%20-%20%D8%A7%D9%84%D8%B1%D8%B9%D8%AF.mp3"
+    },
+    {
+      "surah": 14,
+      "name": "014 - إبراهيم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/014%20-%20%D8%A5%D8%A8%D8%B1%D8%A7%D9%87%D9%8A%D9%85.mp3"
+    },
+    {
+      "surah": 15,
+      "name": "015 - الحجر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/015%20-%20%D8%A7%D9%84%D8%AD%D8%AC%D8%B1.mp3"
+    },
+    {
+      "surah": 16,
+      "name": "016 - النحل.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/016%20-%20%D8%A7%D9%84%D9%86%D8%AD%D9%84.mp3"
+    },
+    {
+      "surah": 17,
+      "name": "017 - الإسراء.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/017%20-%20%D8%A7%D9%84%D8%A5%D8%B3%D8%B1%D8%A7%D8%A1.mp3"
+    },
+    {
+      "surah": 18,
+      "name": "018 - الكهف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/018%20-%20%D8%A7%D9%84%D9%83%D9%87%D9%81.mp3"
+    },
+    {
+      "surah": 19,
+      "name": "019 - مريم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/019%20-%20%D9%85%D8%B1%D9%8A%D9%85.mp3"
+    },
+    {
+      "surah": 20,
+      "name": "020 - طه.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/020%20-%20%D8%B7%D9%87.mp3"
+    },
+    {
+      "surah": 21,
+      "name": "021 - الأنبياء.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/021%20-%20%D8%A7%D9%84%D8%A3%D9%86%D8%A8%D9%8A%D8%A7%D8%A1.mp3"
+    },
+    {
+      "surah": 22,
+      "name": "022 - الحج.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/022%20-%20%D8%A7%D9%84%D8%AD%D8%AC.mp3"
+    },
+    {
+      "surah": 23,
+      "name": "023 - المؤمنون.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/023%20-%20%D8%A7%D9%84%D9%85%D8%A4%D9%85%D9%86%D9%88%D9%86.mp3"
+    },
+    {
+      "surah": 24,
+      "name": "024 - النور.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/024%20-%20%D8%A7%D9%84%D9%86%D9%88%D8%B1.mp3"
+    },
+    {
+      "surah": 25,
+      "name": "025 - الفرقان.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/025%20-%20%D8%A7%D9%84%D9%81%D8%B1%D9%82%D8%A7%D9%86.mp3"
+    },
+    {
+      "surah": 26,
+      "name": "026 - الشعراء.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/026%20-%20%D8%A7%D9%84%D8%B4%D8%B9%D8%B1%D8%A7%D8%A1.mp3"
+    },
+    {
+      "surah": 27,
+      "name": "027 - النمل.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/027%20-%20%D8%A7%D9%84%D9%86%D9%85%D9%84.mp3"
+    },
+    {
+      "surah": 28,
+      "name": "028 - القصص.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/028%20-%20%D8%A7%D9%84%D9%82%D8%B5%D8%B5.mp3"
+    },
+    {
+      "surah": 29,
+      "name": "029 - العنكبوت.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/029%20-%20%D8%A7%D9%84%D8%B9%D9%86%D9%83%D8%A8%D9%88%D8%AA.mp3"
+    },
+    {
+      "surah": 30,
+      "name": "030 - الروم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/030%20-%20%D8%A7%D9%84%D8%B1%D9%88%D9%85.mp3"
+    },
+    {
+      "surah": 31,
+      "name": "031 - لقمان.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/031%20-%20%D9%84%D9%82%D9%85%D8%A7%D9%86.mp3"
+    },
+    {
+      "surah": 32,
+      "name": "032 - السجدة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/032%20-%20%D8%A7%D9%84%D8%B3%D8%AC%D8%AF%D8%A9.mp3"
+    },
+    {
+      "surah": 33,
+      "name": "033 - الأحزاب.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/033%20-%20%D8%A7%D9%84%D8%A3%D8%AD%D8%B2%D8%A7%D8%A8.mp3"
+    },
+    {
+      "surah": 34,
+      "name": "034 - سبأ.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/034%20-%20%D8%B3%D8%A8%D8%A3.mp3"
+    },
+    {
+      "surah": 35,
+      "name": "035 - فاطر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/035%20-%20%D9%81%D8%A7%D8%B7%D8%B1.mp3"
+    },
+    {
+      "surah": 36,
+      "name": "036 - يس.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/036%20-%20%D9%8A%D8%B3.mp3"
+    },
+    {
+      "surah": 37,
+      "name": "037 - الصافات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/037%20-%20%D8%A7%D9%84%D8%B5%D8%A7%D9%81%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 38,
+      "name": "038 - ص.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/038%20-%20%D8%B5.mp3"
+    },
+    {
+      "surah": 39,
+      "name": "039 - الزمر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/039%20-%20%D8%A7%D9%84%D8%B2%D9%85%D8%B1.mp3"
+    },
+    {
+      "surah": 40,
+      "name": "040 - غافر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/040%20-%20%D8%BA%D8%A7%D9%81%D8%B1.mp3"
+    },
+    {
+      "surah": 41,
+      "name": "041 - فصلت.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/041%20-%20%D9%81%D8%B5%D9%84%D8%AA.mp3"
+    },
+    {
+      "surah": 42,
+      "name": "042 - الشورى.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/042%20-%20%D8%A7%D9%84%D8%B4%D9%88%D8%B1%D9%89.mp3"
+    },
+    {
+      "surah": 43,
+      "name": "043 - الزخرف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/043%20-%20%D8%A7%D9%84%D8%B2%D8%AE%D8%B1%D9%81.mp3"
+    },
+    {
+      "surah": 44,
+      "name": "044 - الدخان.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/044%20-%20%D8%A7%D9%84%D8%AF%D8%AE%D8%A7%D9%86.mp3"
+    },
+    {
+      "surah": 45,
+      "name": "045 - الجاثية.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/045%20-%20%D8%A7%D9%84%D8%AC%D8%A7%D8%AB%D9%8A%D8%A9.mp3"
+    },
+    {
+      "surah": 46,
+      "name": "046 - الأحقاف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/046%20-%20%D8%A7%D9%84%D8%A3%D8%AD%D9%82%D8%A7%D9%81.mp3"
+    },
+    {
+      "surah": 47,
+      "name": "047 - محمد.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/047%20-%20%D9%85%D8%AD%D9%85%D8%AF.mp3"
+    },
+    {
+      "surah": 48,
+      "name": "048 - الفتح.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/048%20-%20%D8%A7%D9%84%D9%81%D8%AA%D8%AD.mp3"
+    },
+    {
+      "surah": 49,
+      "name": "049 - الحجرات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/049%20-%20%D8%A7%D9%84%D8%AD%D8%AC%D8%B1%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 50,
+      "name": "050 - ق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/050%20-%20%D9%82.mp3"
+    },
+    {
+      "surah": 51,
+      "name": "051 - الذاريات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/051%20-%20%D8%A7%D9%84%D8%B0%D8%A7%D8%B1%D9%8A%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 52,
+      "name": "052 - الطور.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/052%20-%20%D8%A7%D9%84%D8%B7%D9%88%D8%B1.mp3"
+    },
+    {
+      "surah": 53,
+      "name": "053 - النجم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/053%20-%20%D8%A7%D9%84%D9%86%D8%AC%D9%85.mp3"
+    },
+    {
+      "surah": 54,
+      "name": "054 - القمر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/054%20-%20%D8%A7%D9%84%D9%82%D9%85%D8%B1.mp3"
+    },
+    {
+      "surah": 55,
+      "name": "055 - الرحمن.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/055%20-%20%D8%A7%D9%84%D8%B1%D8%AD%D9%85%D9%86.mp3"
+    },
+    {
+      "surah": 56,
+      "name": "056 - الواقعة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/056%20-%20%D8%A7%D9%84%D9%88%D8%A7%D9%82%D8%B9%D8%A9.mp3"
+    },
+    {
+      "surah": 57,
+      "name": "057 - الحديد.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/057%20-%20%D8%A7%D9%84%D8%AD%D8%AF%D9%8A%D8%AF.mp3"
+    },
+    {
+      "surah": 58,
+      "name": "058 - المجادلة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/058%20-%20%D8%A7%D9%84%D9%85%D8%AC%D8%A7%D8%AF%D9%84%D8%A9.mp3"
+    },
+    {
+      "surah": 59,
+      "name": "059 - الحشر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/059%20-%20%D8%A7%D9%84%D8%AD%D8%B4%D8%B1.mp3"
+    },
+    {
+      "surah": 60,
+      "name": "060 - الممتحنة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/060%20-%20%D8%A7%D9%84%D9%85%D9%85%D8%AA%D8%AD%D9%86%D8%A9.mp3"
+    },
+    {
+      "surah": 61,
+      "name": "061 - الصف.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/061%20-%20%D8%A7%D9%84%D8%B5%D9%81.mp3"
+    },
+    {
+      "surah": 62,
+      "name": "062 - الجمعة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/062%20-%20%D8%A7%D9%84%D8%AC%D9%85%D8%B9%D8%A9.mp3"
+    },
+    {
+      "surah": 63,
+      "name": "063 - المنافقون.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/063%20-%20%D8%A7%D9%84%D9%85%D9%86%D8%A7%D9%81%D9%82%D9%88%D9%86.mp3"
+    },
+    {
+      "surah": 64,
+      "name": "064 - التغابن.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/064%20-%20%D8%A7%D9%84%D8%AA%D8%BA%D8%A7%D8%A8%D9%86.mp3"
+    },
+    {
+      "surah": 65,
+      "name": "065 - الطلاق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/065%20-%20%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D9%82.mp3"
+    },
+    {
+      "surah": 66,
+      "name": "066 - التحريم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/066%20-%20%D8%A7%D9%84%D8%AA%D8%AD%D8%B1%D9%8A%D9%85.mp3"
+    },
+    {
+      "surah": 67,
+      "name": "067 - الملك.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/067%20-%20%D8%A7%D9%84%D9%85%D9%84%D9%83.mp3"
+    },
+    {
+      "surah": 68,
+      "name": "068 - القلم.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/068%20-%20%D8%A7%D9%84%D9%82%D9%84%D9%85.mp3"
+    },
+    {
+      "surah": 69,
+      "name": "069 - الحاقة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/069%20-%20%D8%A7%D9%84%D8%AD%D8%A7%D9%82%D8%A9.mp3"
+    },
+    {
+      "surah": 70,
+      "name": "070 - المعارج.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/070%20-%20%D8%A7%D9%84%D9%85%D8%B9%D8%A7%D8%B1%D8%AC.mp3"
+    },
+    {
+      "surah": 71,
+      "name": "071 - نوح.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/071%20-%20%D9%86%D9%88%D8%AD.mp3"
+    },
+    {
+      "surah": 72,
+      "name": "072 - الجن.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/072%20-%20%D8%A7%D9%84%D8%AC%D9%86.mp3"
+    },
+    {
+      "surah": 73,
+      "name": "073 - المزمل.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/073%20-%20%D8%A7%D9%84%D9%85%D8%B2%D9%85%D9%84.mp3"
+    },
+    {
+      "surah": 74,
+      "name": "074 - المدثر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/074%20-%20%D8%A7%D9%84%D9%85%D8%AF%D8%AB%D8%B1.mp3"
+    },
+    {
+      "surah": 75,
+      "name": "075 - القيامة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/075%20-%20%D8%A7%D9%84%D9%82%D9%8A%D8%A7%D9%85%D8%A9.mp3"
+    },
+    {
+      "surah": 76,
+      "name": "076 - الإنسان.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/076%20-%20%D8%A7%D9%84%D8%A5%D9%86%D8%B3%D8%A7%D9%86.mp3"
+    },
+    {
+      "surah": 77,
+      "name": "077 - المرسلات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/077%20-%20%D8%A7%D9%84%D9%85%D8%B1%D8%B3%D9%84%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 78,
+      "name": "078 - النبأ.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/078%20-%20%D8%A7%D9%84%D9%86%D8%A8%D8%A3.mp3"
+    },
+    {
+      "surah": 79,
+      "name": "079 - النازعات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/079%20-%20%D8%A7%D9%84%D9%86%D8%A7%D8%B2%D8%B9%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 80,
+      "name": "080 - عبس.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/080%20-%20%D8%B9%D8%A8%D8%B3.mp3"
+    },
+    {
+      "surah": 81,
+      "name": "081 - التكوير.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/081%20-%20%D8%A7%D9%84%D8%AA%D9%83%D9%88%D9%8A%D8%B1.mp3"
+    },
+    {
+      "surah": 82,
+      "name": "082 - الانفطار.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/082%20-%20%D8%A7%D9%84%D8%A7%D9%86%D9%81%D8%B7%D8%A7%D8%B1.mp3"
+    },
+    {
+      "surah": 83,
+      "name": "083 - المطففين.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/083%20-%20%D8%A7%D9%84%D9%85%D8%B7%D9%81%D9%81%D9%8A%D9%86.mp3"
+    },
+    {
+      "surah": 84,
+      "name": "084 - الانشقاق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/084%20-%20%D8%A7%D9%84%D8%A7%D9%86%D8%B4%D9%82%D8%A7%D9%82.mp3"
+    },
+    {
+      "surah": 85,
+      "name": "085 - البروج.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/085%20-%20%D8%A7%D9%84%D8%A8%D8%B1%D9%88%D8%AC.mp3"
+    },
+    {
+      "surah": 86,
+      "name": "086 - الطارق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/086%20-%20%D8%A7%D9%84%D8%B7%D8%A7%D8%B1%D9%82.mp3"
+    },
+    {
+      "surah": 87,
+      "name": "087 - الأعلى.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/087%20-%20%D8%A7%D9%84%D8%A3%D8%B9%D9%84%D9%89.mp3"
+    },
+    {
+      "surah": 88,
+      "name": "088 - الغاشية.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/088%20-%20%D8%A7%D9%84%D8%BA%D8%A7%D8%B4%D9%8A%D8%A9.mp3"
+    },
+    {
+      "surah": 89,
+      "name": "089 - الفجر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/089%20-%20%D8%A7%D9%84%D9%81%D8%AC%D8%B1.mp3"
+    },
+    {
+      "surah": 90,
+      "name": "090 - البلد.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/090%20-%20%D8%A7%D9%84%D8%A8%D9%84%D8%AF.mp3"
+    },
+    {
+      "surah": 91,
+      "name": "091 - الشمس.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/091%20-%20%D8%A7%D9%84%D8%B4%D9%85%D8%B3.mp3"
+    },
+    {
+      "surah": 92,
+      "name": "092 - الليل.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/092%20-%20%D8%A7%D9%84%D9%84%D9%8A%D9%84.mp3"
+    },
+    {
+      "surah": 93,
+      "name": "093 - الضحى.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/093%20-%20%D8%A7%D9%84%D8%B6%D8%AD%D9%89.mp3"
+    },
+    {
+      "surah": 94,
+      "name": "094 - الشرح.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/094%20-%20%D8%A7%D9%84%D8%B4%D8%B1%D8%AD.mp3"
+    },
+    {
+      "surah": 95,
+      "name": "095 - التين.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/095%20-%20%D8%A7%D9%84%D8%AA%D9%8A%D9%86.mp3"
+    },
+    {
+      "surah": 96,
+      "name": "096 - العلق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/096%20-%20%D8%A7%D9%84%D8%B9%D9%84%D9%82.mp3"
+    },
+    {
+      "surah": 97,
+      "name": "097 - القدر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/097%20-%20%D8%A7%D9%84%D9%82%D8%AF%D8%B1.mp3"
+    },
+    {
+      "surah": 98,
+      "name": "098 - البينة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/098%20-%20%D8%A7%D9%84%D8%A8%D9%8A%D9%86%D8%A9.mp3"
+    },
+    {
+      "surah": 99,
+      "name": "099 - الزلزلة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/099%20-%20%D8%A7%D9%84%D8%B2%D9%84%D8%B2%D9%84%D8%A9.mp3"
+    },
+    {
+      "surah": 100,
+      "name": "100 - العاديات.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/100%20-%20%D8%A7%D9%84%D8%B9%D8%A7%D8%AF%D9%8A%D8%A7%D8%AA.mp3"
+    },
+    {
+      "surah": 101,
+      "name": "101 - القارعة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/101%20-%20%D8%A7%D9%84%D9%82%D8%A7%D8%B1%D8%B9%D8%A9.mp3"
+    },
+    {
+      "surah": 102,
+      "name": "102 - التكاثر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/102%20-%20%D8%A7%D9%84%D8%AA%D9%83%D8%A7%D8%AB%D8%B1.mp3"
+    },
+    {
+      "surah": 103,
+      "name": "103 - العصر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/103%20-%20%D8%A7%D9%84%D8%B9%D8%B5%D8%B1.mp3"
+    },
+    {
+      "surah": 104,
+      "name": "104 - الهمزة.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/104%20-%20%D8%A7%D9%84%D9%87%D9%85%D8%B2%D8%A9.mp3"
+    },
+    {
+      "surah": 105,
+      "name": "105 - الفيل.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/105%20-%20%D8%A7%D9%84%D9%81%D9%8A%D9%84.mp3"
+    },
+    {
+      "surah": 106,
+      "name": "106 - قريش.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/106%20-%20%D9%82%D8%B1%D9%8A%D8%B4.mp3"
+    },
+    {
+      "surah": 107,
+      "name": "107 - الماعون.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/107%20-%20%D8%A7%D9%84%D9%85%D8%A7%D8%B9%D9%88%D9%86.mp3"
+    },
+    {
+      "surah": 108,
+      "name": "108 - الكوثر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/108%20-%20%D8%A7%D9%84%D9%83%D9%88%D8%AB%D8%B1.mp3"
+    },
+    {
+      "surah": 109,
+      "name": "109 - الكافرون.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/109%20-%20%D8%A7%D9%84%D9%83%D8%A7%D9%81%D8%B1%D9%88%D9%86.mp3"
+    },
+    {
+      "surah": 110,
+      "name": "110 - النصر.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/110%20-%20%D8%A7%D9%84%D9%86%D8%B5%D8%B1.mp3"
+    },
+    {
+      "surah": 111,
+      "name": "111 - المسد.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/111%20-%20%D8%A7%D9%84%D9%85%D8%B3%D8%AF.mp3"
+    },
+    {
+      "surah": 112,
+      "name": "112 - الإخلاص.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/112%20-%20%D8%A7%D9%84%D8%A5%D8%AE%D9%84%D8%A7%D8%B5.mp3"
+    },
+    {
+      "surah": 113,
+      "name": "113 - الفلق.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/113%20-%20%D8%A7%D9%84%D9%81%D9%84%D9%82.mp3"
+    },
+    {
+      "surah": 114,
+      "name": "114 - الناس.mp3",
+      "url": "https://archive.org/download/a0s0261002ddddddddddd/114%20-%20%D8%A7%D9%84%D9%86%D8%A7%D8%B3.mp3"
+    }
+  ],
+  "official_launch_date": "2026-04-16",
+  "official_channel": "https://www.youtube.com/@SaudiQHC",
+  "duration_comparison": {
+    "evidence": "catalog metadata, not listened comparison",
+    "new_collection_seconds": {
+      "1": 64,
+      "2": 8635
+    },
+    "quranicaudio_7_seconds": {
+      "1": 38,
+      "2": 5449
+    },
+    "new_source": "https://alkabbah.com/scholar/113/aabd-alrhmn-alsdys/recitations",
+    "old_source": "https://quranicaudio.com/quran/7"
+  },
+  "verification_limits": [
+    "MP3 source inventory checked for exactly 114 consecutive surahs; individual audio content not downloaded or listened to.",
+    "The mirror identifies its source as the official Saudi Center YouTube channel; identity against the exact official videos was not independently established.",
+    "No matching ayah timestamps, split-ayah inventory or word segments found for this studio collection.",
+    "Existing EveryAyah/QUL timings must not be reused without proving a match."
+  ]
+}

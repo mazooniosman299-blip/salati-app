@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict');
+const vm=require('node:vm');
+const {buildSync}=require('esbuild');
+const path=require('node:path');
+(async()=>{
+ const calls=[],events=[],window=new EventTarget(),module={exports:{}};
+ Object.defineProperty(window,'AudioContext',{get(){throw Error('Native adhan must not use Web Audio');}});
+ window.SalatiNative={previewAdhan:(...args)=>calls.push(['play',...args]),stopAdhan:()=>calls.push(['stop']),audioState:()=> 'inactive',setAdhanVolume:v=>calls.push(['volume',v])};
+ const source=buildSync({entryPoints:[path.join(__dirname,'../native-prayer-audio.js')],bundle:true,format:'cjs',write:false}).outputFiles[0].text;
+ vm.runInNewContext(source,{module,exports:module.exports,window,queueMicrotask,Date});
+ const {NativePrayerAudio,hasNativePrayerAudio}=module.exports;assert(hasNativePrayerAudio());
+ const settings={voice:'qatami',volume:.65};const audio=new NativePrayerAudio({getSettings:()=>settings,onState:s=>events.push(s)});await Promise.resolve();assert.equal(audio.code,'inactive');
+ await audio.arm();await audio.play('adhan');assert.deepEqual(calls.at(-1),['play','adhan','qatami',.65]);assert(audio.active);
+ const emit=code=>{const event=new Event('salati-native-playback');event.detail={code};window.dispatchEvent(event);};
+ emit('adhan');const count=calls.length;await audio.arm({automatic:true});assert.equal(calls.length,count,'Opening/resuming the UI must not stop a scheduled adhan');assert(audio.active);
+ await audio.arm();assert.deepEqual(calls.at(-1),['stop'],'An explicit change must stop the previous output');
+ settings.voice='makkah';await audio.play('dua');assert.deepEqual(calls.at(-1),['play','dua','makkah',.65]);emit('dua');assert(audio.active);
+ settings.volume=.3;audio.setVolume();assert.deepEqual(calls.at(-1),['volume',.3]);emit('finished');assert(!audio.active);assert.equal(audio.code,'finished');
+ emit('not-a-state');assert.equal(audio.code,'finished');audio.disable();assert(!audio.armed);assert(!audio.active);assert.equal(audio.code,'inactive');
+ delete window.SalatiNative.previewAdhan;assert(!hasNativePrayerAudio(),'Older APKs retain their existing browser-audio fallback');
+ console.log('Native audio bridge: previews, automatic playback preservation, explicit stop, dua, live volume, state validation and older-APK fallback pass.');
+})().catch(e=>{console.error(e);process.exit(1)});

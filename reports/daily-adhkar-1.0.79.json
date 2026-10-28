@@ -1,0 +1,31 @@
+{
+  "reviewed_date": "2026-10-24",
+  "timezone": "Asia/Dubai",
+  "items": 82,
+  "categories": 14,
+  "source_urls": 80,
+  "collection_sha256": "2b1ef65cb444f66b90d8cf38e5345ab787012b385a6bb8fc3461420e45edb006",
+  "source_references_in_each_card": true,
+  "web_research_performed": true,
+  "classical_arabic_texts_only_no_modern_commentary_copied": true,
+  "number_not_inferred_when_source_does_not_prescribe_it": true,
+  "contextual_repetitions_tested": true,
+  "quran_used_only_in_reported_dhikr_contexts_and_text_preserved": true,
+  "old_quran_only_supplication_library_removed": true,
+  "counter_persistence_category_isolation_daily_reset_tests_passed": true,
+  "copy_and_search_tests_passed": true,
+  "full_application_and_seo_tests_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "primary_reference_links": [
+    "https://risala.prh.gov.sa/ar/content/51",
+    "https://hadeethenc.com/ar/browse/category/301",
+    "https://dorar.net/feqhia/1061",
+    "https://sunnah.com/bukhari:3370",
+    "https://sunnah.com/bukhari:6409",
+    "https://hadithm6.ma/question/1440.html"
+  ],
+  "countries_and_cities_home_button_removed": true,
+  "mushaf_font_changed_to_classic_madinah_hafs": true,
+  "tasbih_in_separate_tab": true
+}

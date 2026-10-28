@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline' file:; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>استعادة مفتاح توقيع صلاتي</title>
+<style>body{font:18px/1.8 system-ui,sans-serif;background:#f3f6f5;color:#15392f;max-width:660px;margin:7vh auto;padding:24px}main{background:white;border-radius:20px;padding:30px}h1{font-size:27px}label{display:block;margin-top:24px}input,button{box-sizing:border-box;width:100%;padding:13px;font:inherit;border:1px solid #a6bcb5;border-radius:10px}input[type=password]{direction:ltr}button{margin-top:25px;background:#176448;color:white;cursor:pointer}button:disabled{opacity:.6}small{color:#526b62}#status{min-height:2em}</style></head>
+<body><main><h1>استعادة مفتاح توقيع صلاتي</h1><p>اختر النسخة المشفّرة وأدخل رمز الاسترداد من الملف الخاص المنفصل. سيُنزّل ملف ZIP يحتوي المفتاح الأصلي وكلمة مروره وأدوات التوقيع.</p>
+<p><small>تعمل هذه الصفحة محليًا دون إنترنت. لا تُرسل الملفات أو الرموز إلى أي خادم.</small></p>
+<label for="backup">النسخة المشفّرة</label><input id="backup" type="file" accept=".salati-backup,application/json">
+<label for="secret">رمز الاسترداد</label><input id="secret" type="password" autocomplete="off" spellcheck="false">
+<button id="restore" type="button">استعادة وتنزيل المفتاح</button><p id="status" role="status" aria-live="polite"></p></main>
+<script src="restore-backup.js"></script><script>
+const button = document.getElementById('restore'), status = document.getElementById('status');
+button.onclick = async () => {
+  const file = document.getElementById('backup').files[0], input = document.getElementById('secret');
+  if (!file || !input.value.trim()) { status.textContent = 'اختر الملف وأدخل رمز الاسترداد.'; return; }
+  if (!globalThis.crypto?.subtle) { status.textContent = 'افتح هذه الصفحة المحلية في متصفح حديث يدعم Web Crypto.'; return; }
+  button.disabled = true; status.textContent = 'جارٍ التحقق وفك التشفير محليًا…';
+  try {
+    const bytes = await SalatiRecovery.decryptBackup(await file.text(), input.value.trim());
+    const url = URL.createObjectURL(new Blob([bytes], {type:'application/zip'}));
+    const link = document.createElement('a'); link.href = url; link.download = 'salati-signing-restored.zip';
+    document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+    input.value = ''; status.textContent = 'تمت الاستعادة. احفظ ملف ZIP المستعاد في مكان خاص واتبع التعليمات بداخله.';
+  } catch { status.textContent = 'تعذر فتح النسخة. تحقق من رمز الاسترداد ومن سلامة الملف.'; }
+  finally { button.disabled = false; }
+};
+</script></body></html>

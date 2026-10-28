@@ -1,0 +1,36 @@
+{
+  "previous_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.86",
+    "version_code": 87,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "7e309f70ff79f82895dce8833385de2466e3d3e70ff2101b33e5df956004f0c4"
+  },
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_name": "1.0.87",
+    "version_code": 88,
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "apk_sha256": "acd31a680cdf3136f1e13bb771225f2e57883263783f7cf2b6c848cd4a8440af"
+  },
+  "same_signing_certificate": true,
+  "same_application_id": true,
+  "version_code_increased": true,
+  "apk_bytes": 26176786,
+  "packaged_assets_verified": 348,
+  "all_packaged_assets_match_final_preparation": true,
+  "approved_design": "first displayed generated image exec-1a480d70-eb10-430d-9bdf-812f5348e739.png",
+  "mosque_photo_on_mobile_and_desktop": true,
+  "city_panel_removed_from_shell_and_build": true,
+  "all_six_tabs_and_original_controller_ids_retained": true,
+  "quran_font_text_audio_native_service_unchanged": true,
+  "complete_application_test_command_passed": true,
+  "seo_tests_passed": true,
+  "web_and_android_builds_passed": true,
+  "browser_visual_tested": false,
+  "physical_android_device_tested": false,
+  "design_qa": "blocked",
+  "publication_status": "authorized_for_publication",
+  "user_authorized_publication_without_browser_qa": true,
+  "user_authorization_date": "2026-10-27"
+}
