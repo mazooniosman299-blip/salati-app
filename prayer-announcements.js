@@ -1,48 +1,49 @@
 import {duePrayer} from './audio-controller.js';
 
 const PRAYER_NAMES={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
-const LOCAL_ARABIC=voice=>voice?.localService===true&&/^ar(?:[-_]|$)/i.test(voice.lang||'');
+const CLIPS=Object.fromEntries(Object.entries(PRAYER_NAMES).map(([key,name])=>['اقتربت صلاة '+name,'audio/reminders/approach-'+key+'.mp3']));
+CLIPS['الصلاة خير من النوم']='audio/reminders/fajr-phrase.mp3';
 
-// Web reminders are deliberately foreground only. Speech uses installed voices only.
+// Short, same-origin recordings work without installed voices or a speech service.
+// Browser scheduling remains foreground only; Android owns background delivery.
 export class PrayerAnnouncements{
- constructor({getSettings,isBusy=()=>false,onState=()=>{},storage,speech=globalThis.speechSynthesis,Utterance=globalThis.SpeechSynthesisUtterance,now=()=>Date.now(),setTimer=setTimeout,clearTimer=clearTimeout}={}){
-  this.getSettings=getSettings;this.isBusy=isBusy;this.onState=onState;this.speech=speech;this.Utterance=Utterance;this.now=now;this.setTimer=setTimer;this.clearTimer=clearTimer;this.previous=now();this.wasVisible=false;this.played=new Set();this.generation=0;this.pending=null;this.utterance=null;
+ constructor({getSettings,isBusy=()=>false,onState=()=>{},storage,Audio=globalThis.Audio,now=()=>Date.now(),setTimer=(callback,delay)=>globalThis.setTimeout(callback,delay),clearTimer=timer=>globalThis.clearTimeout(timer)}={}){
+  this.getSettings=getSettings;this.isBusy=isBusy;this.onState=onState;this.Audio=Audio;this.now=now;this.setTimer=setTimer;this.clearTimer=clearTimer;this.previous=now();this.wasVisible=false;this.played=new Set();this.generation=0;this.pending=null;this.player=null;
   try{this.storage=storage===undefined?globalThis.localStorage:storage}catch{this.storage=null}
  }
  emit(status){this.status=status;try{this.onState(status)}catch{}return {status}}
- async voice(){
-  const find=()=>{try{return this.speech?.getVoices().find(LOCAL_ARABIC)}catch{return null}};
-  if(!this.speech||!this.Utterance)return null;
-  const available=find();if(available)return available;
+ init(){return Promise.resolve(this.emit(this.Audio?'ready':'unavailable'))}
+ cancel(){this.generation++;this.pending?.();this.pending=null;}
+ speak(text){
+  this.cancel();const gen=this.generation,src=CLIPS[text];
+  if(!src||!this.Audio)return Promise.resolve(this.emit('unavailable'));
+  const saved=Number(this.getSettings()?.volume),volume=Number.isFinite(saved)?Math.max(0,Math.min(1,saved)):1;
+  if(volume===0)return Promise.resolve(this.emit('muted'));
   return new Promise(resolve=>{
-   let timer,done=false;
-   const finish=value=>{if(done)return;done=true;this.clearTimer(timer);this.speech.removeEventListener?.('voiceschanged',changed);if(this.pending===cancel)this.pending=null;resolve(value)};
-   const changed=()=>{const voice=find();if(voice)finish(voice)};
-   const cancel=()=>finish(null);this.pending=cancel;
-   this.speech.addEventListener?.('voiceschanged',changed);
-   timer=this.setTimer(()=>finish(find()),600);changed();
-  });
- }
- async init(){const gen=this.generation;const voice=await this.voice();return gen===this.generation?this.emit(voice?'ready':'unavailable'):{status:'cancelled'}}
- cancel(){this.generation++;const utterance=this.utterance;this.pending?.();this.pending=null;if(utterance){utterance.onend=null;utterance.onerror=null;this.utterance=null;try{this.speech.cancel()}catch{}}}
- async speak(text){
-  this.cancel();const gen=this.generation;const voice=await this.voice();
-  if(gen!==this.generation)return {status:'cancelled'};
-  if(!voice)return this.emit('unavailable');
-  // Never queue behind speech belonging to another feature or application.
-  if(this.speech.speaking||this.speech.pending)return this.emit('busy');
-  return new Promise(resolve=>{
-   let utterance,timer,done=false;
-   const finish=status=>{if(done)return;done=true;this.clearTimer(timer);if(this.pending===cancel)this.pending=null;if(utterance){utterance.onend=null;utterance.onerror=null}if(this.utterance===utterance)this.utterance=null;if(status==='timeout'){try{this.speech.cancel()}catch{}}resolve(this.emit(status))};
+   let player,timer,done=false;
+   const finish=status=>{
+    if(done)return;done=true;this.clearTimer(timer);
+    if(this.pending===cancel)this.pending=null;
+    if(player){player.onended=null;player.onerror=null;try{player.pause();player.removeAttribute('src');player.load()}catch{}}
+    if(this.player===player)this.player=null;
+    // A late completion never overwrites state emitted by its replacement.
+    resolve(gen===this.generation||status==='cancelled'?this.emit(status):{status:'cancelled'});
+   };
    const cancel=()=>finish('cancelled');this.pending=cancel;
-   try{utterance=new this.Utterance(text);utterance.voice=voice;utterance.lang=voice.lang;utterance.volume=Math.max(0,Math.min(1,Number(this.getSettings()?.volume) || 0));utterance.onend=()=>finish('finished');utterance.onerror=()=>finish('error');this.utterance=utterance;timer=this.setTimer(()=>finish('timeout'),4500);this.emit('speaking');if(gen!==this.generation){finish('cancelled');return}this.speech.speak(utterance)}catch{finish('error')}
+   try{
+    player=new this.Audio(src);this.player=player;player.preload='auto';player.volume=volume;
+    player.onended=()=>finish('finished');player.onerror=()=>finish('error');
+    timer=this.setTimer(()=>finish('timeout'),12000);this.emit('loading');
+    // Call play synchronously while a preview click still owns user activation.
+    Promise.resolve(player.play()).then(()=>{if(!done&&gen===this.generation)this.emit('playing')},error=>finish(error?.name==='NotAllowedError'?'blocked':'error'));
+   }catch{finish('error')}
   });
  }
  beforeAdhan(prayer){const settings=this.getSettings();if(prayer!=='fajr'||settings.fajrAnnouncement===false||!settings.enabled||settings.prayers?.fajr!==true)return Promise.resolve({status:'skipped'});return this.speak('الصلاة خير من النوم')}
  tick(schedule,now=this.now(),visible=globalThis.document?.visibilityState==='visible'){
   const previous=this.previous,wasVisible=this.wasVisible;this.previous=now;this.wasVisible=visible;
   if(!visible){this.cancel();return}
-  if(!wasVisible||this.isBusy()||this.utterance||this.pending)return;
+  if(!wasVisible||this.isBusy()||this.player||this.pending)return;
   const settings=this.getSettings();if(!settings.enabled||settings.approachEnabled===false)return;
   const minutes=[5,10,15].includes(Number(settings.approachMinutes))?Number(settings.approachMinutes):5;
   const shifted=schedule.map(prayer=>({...prayer,time:+prayer.time-minutes*60000}));

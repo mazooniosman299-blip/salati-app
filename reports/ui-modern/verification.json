@@ -1,0 +1,22 @@
+{
+  "result": "PASS",
+  "widths": [
+    320,
+    390,
+    600,
+    760,
+    1024,
+    1440
+  ],
+  "tabs": 6,
+  "themes": 2,
+  "checks": [
+    "no horizontal overflow",
+    "24px icons",
+    "custom menu selection keyboard Escape focus",
+    "tasbih count/reset ring",
+    "single Quran switch thumb and dark blue checked track",
+    "reduced motion"
+  ],
+  "pageErrors": []
+}

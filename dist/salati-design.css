@@ -54,7 +54,7 @@ body.dark #tasbih .tasbih-guide{border-top-color:#23334b}
 .location #locate:hover{background:#eef5ff;border-color:#93b4e8}
 header .brand{position:relative}
 header .brand::before{content:"";position:absolute;inset-inline-start:0;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:12px;background:#2563eb}
-header .brand img{position:relative;width:44px;height:44px;padding:5px;background:transparent;border-radius:12px;filter:brightness(0) invert(1)}
+header .brand img{position:relative;width:44px;height:44px;padding:0;background:transparent;border-radius:12px;filter:none}
 .hero #countdown{color:#000}
 body.dark .hero #countdown{color:#fff}
 body.dark .prayers .prayer.active{background:#132b4c;color:#93c5fd;--prayer-highlight:#60a5fa}
@@ -109,3 +109,92 @@ body.dark .qibla-card{--qibla-blue:#93c5fd;--qibla-line:#365477}
 header>.site-nav button[data-tab="qibla"].active>.nav-symbol{padding:0;background:transparent;color:inherit;border-radius:0}
 html[dir=rtl] #settings .announcement-settings input.compact-switch::before{left:32px}
 html[dir=rtl] #settings .announcement-settings input.compact-switch:checked::before{transform:translateX(-28px)}
+
+/* Modern blue instruments and compact navigation. Keep all interaction targets stable. */
+body{--control-blue:#153d78;--control-blue-hover:#1b4b91;--instrument-surface:#f4f7fc;--instrument-line:#d9e4f2;--instrument-ink:#000;--instrument-secondary:#3f526b}
+body.dark{--control-blue:#173e76;--control-blue-hover:#214f91;--instrument-surface:#111e32;--instrument-line:#2a3f5c;--instrument-ink:#fff;--instrument-secondary:#c3d1e5}
+header>.site-nav{gap:6px}
+header>.site-nav .nav-icon-button{border-radius:14px;transition:background .18s ease,color .18s ease}
+header>.site-nav .nav-icon-button:hover{background:var(--instrument-surface)}
+header>.site-nav .nav-icon-button.active{background:var(--nav-active-bg);color:#174b9e}
+body.dark header>.site-nav .nav-icon-button.active{color:#bfdbfe}
+header>.site-nav button::after{display:none}
+header>.site-nav .nav-icon-button>.nav-symbol{display:block;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;stroke-width:1.8;overflow:hidden;flex:0 0 24px;transform:none}
+header>.site-nav .nav-icon-button:focus-visible{outline:3px solid #60a5fa;outline-offset:-3px}
+body.dark .prayer-switches input[type=checkbox]:checked{background:var(--control-blue);border-color:#517cb7}
+#settings .announcement-settings input.compact-switch:checked{background:var(--control-blue)}
+.quran-play-options{gap:10px;flex-wrap:wrap}
+.quran-play-options label{display:flex;align-items:center;gap:10px;min-height:48px;margin:0;padding:8px 12px;background:var(--instrument-surface);border:1px solid var(--instrument-line);border-radius:12px;color:var(--instrument-ink);cursor:pointer}
+.quran-play-options label>span{margin:0;font-size:13px;line-height:1.6}
+.quran-play-options input[type=checkbox]{appearance:none;-webkit-appearance:none;position:relative;width:44px;min-width:44px;height:26px;padding:0;margin:0;border:1px solid #788ba5;border-radius:99px;background:#7d8da4;direction:ltr;cursor:pointer;transition:background .18s ease}
+.quran-play-options input[type=checkbox]::after{content:none}
+.quran-play-options input[type=checkbox]::before{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:transform .18s ease}
+.quran-play-options input[type=checkbox]:checked{background:var(--control-blue);border-color:var(--control-blue)}
+.quran-play-options input[type=checkbox]:checked::before{transform:translateX(18px)}
+.quran-play-options input[type=checkbox]:focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+#tasbih .tasbih-card,#qibla .qibla-card{max-width:560px;margin:24px auto;padding:28px;border:1px solid var(--instrument-line);border-radius:26px;background:#fff;color:var(--instrument-ink);box-shadow:0 12px 42px #18375a06}
+body.dark #tasbih .tasbih-card,body.dark #qibla .qibla-card{background:#0b1423;color:#fff;border-color:var(--instrument-line);box-shadow:none}
+#tasbih .tasbih-card>.eyebrow,#qibla .qibla-card>.eyebrow{display:block;text-align:start;font-size:11px;line-height:1.8;font-weight:700;color:var(--instrument-secondary);letter-spacing:.6px}
+#tasbih .tasbih-card>h2,#qibla .qibla-card>h2{text-align:start;font-size:30px;margin:4px 0 6px;line-height:1.5;color:inherit}
+#tasbih .tasbih-intro{font-size:14px;margin-bottom:24px;color:var(--instrument-secondary)}
+#tasbih .tasbih-phrase{font-size:27px;line-height:1.65;margin:0 0 18px;color:inherit;min-height:45px}
+#tasbih .tasbih-orbit{position:relative;isolation:isolate;width:min(256px,100%);aspect-ratio:1;margin:0 auto 24px;display:grid;place-items:center}
+#tasbih .tasbih-progress{position:absolute;inset:0;width:100%;height:100%;max-width:none;margin:0;border-radius:50%;background:conic-gradient(from 0deg,#2563eb var(--progress,0%),var(--instrument-line) 0);transform:none;overflow:visible}
+#tasbih .tasbih-progress::after{content:"";position:absolute;inset:9px;border:1px solid var(--instrument-line);border-radius:50%;background:#fff;box-shadow:inset 0 0 0 9px var(--instrument-surface)}
+body.dark #tasbih .tasbih-progress{background:conic-gradient(from 0deg,#60a5fa var(--progress,0%),var(--instrument-line) 0)}
+body.dark #tasbih .tasbih-progress::after{background:#0b1423}
+#tasbih .tasbih-progress>span{display:none}
+#tasbih .tasbih-reading{position:relative;z-index:1;display:flex;flex-direction:column;gap:2px;pointer-events:none}
+#tasbih .tasbih-reading #tasbihCount{font-size:84px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums;color:inherit}
+#tasbih .tasbih-total{font-size:12px;line-height:1.8;color:var(--instrument-secondary)}
+#tasbih .tasbih-declaration{font-size:17px;margin:0 auto 20px;line-height:1.9;color:inherit}
+#tasbih .tasbih-panel .counter{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:360px;height:62px;min-height:62px;margin:0 auto;border:1px solid var(--control-blue);border-radius:18px;background:var(--control-blue);color:#fff;font-size:20px;box-shadow:0 6px 18px #153d7818;transition:background .15s ease,transform .15s ease}
+#tasbih .tasbih-panel .counter svg{width:24px;height:24px;flex:none}
+#tasbih .tasbih-panel .counter:hover{background:var(--control-blue-hover)}
+#tasbih .tasbih-panel .counter:active{transform:scale(.98)}
+#tasbih .tasbih-panel .counter:disabled{opacity:.6;cursor:default;transform:none}
+#tasbih .tasbih-reset{font-size:13px;color:var(--instrument-secondary);min-height:44px;margin:12px auto 0;padding:6px 14px;border:0;border-radius:12px;background:transparent}
+body.dark #tasbih .tasbih-reset{color:var(--instrument-secondary)}
+#tasbih .tasbih-reset:hover{background:var(--instrument-surface)}
+#tasbih .tasbih-reset-icon{width:18px;height:18px}
+#tasbih .tasbih-guide{border-color:var(--instrument-line);margin-top:20px;color:inherit}
+#tasbih .tasbih-guide summary,#qibla .qibla-help summary{display:list-item;min-height:44px;align-content:center;color:var(--instrument-secondary);font-size:13px}
+#tasbih .tasbih-guide p{color:inherit}
+#qibla .compass-mode{display:flex;width:fit-content;margin:12px 0 0;padding:5px 10px;background:var(--instrument-surface);border-color:var(--instrument-line);color:var(--instrument-secondary);font-size:11px}
+#qibla .qibla-card .compass{width:min(320px,100%);margin:34px auto 24px;background:var(--instrument-surface);border:1px solid var(--instrument-line);box-shadow:inset 0 0 0 10px #fff,0 8px 30px #14355708}
+body.dark #qibla .qibla-card .compass{background:var(--instrument-surface);border-color:var(--instrument-line);box-shadow:inset 0 0 0 10px #0b1423}
+#qibla .qibla-card .compass::before{inset:11px;background:repeating-conic-gradient(from 0deg,#7095c7 0deg 1deg,transparent 1deg 5deg);mask:radial-gradient(circle,transparent 64%,#000 65% 69%,transparent 70%);-webkit-mask:radial-gradient(circle,transparent 64%,#000 65% 69%,transparent 70%)}
+#qibla .qibla-card .compass::after{inset:58px;border:1px solid var(--instrument-line)}
+#qibla .qibla-card .cardinal-ring{inset:30px}
+#qibla .qibla-card .cardinal,#qibla .qibla-card .north{font-size:11px;color:var(--instrument-secondary)}
+#qibla .qibla-card .phone-target{display:grid;place-items:center;top:-12px;left:calc(50% - 15px);width:30px;height:30px;padding:0;border:1px solid var(--instrument-line);border-radius:10px;background:#fff;color:#2563eb}
+body.dark #qibla .qibla-card .phone-target{background:#0b1423;color:#93c5fd}
+#qibla .phone-target svg{width:20px;height:20px}
+#qibla .qibla-card .kaaba-icon{width:64px;height:64px;left:calc(50% - 32px);top:52px;filter:drop-shadow(0 4px 7px #153d7826)}
+#qibla .qibla-card .qibla-ray{height:88px;width:3px;left:calc(50% - 1.5px);background:linear-gradient(#3b82f6,transparent)}
+#qibla .qibla-card .dial-center{width:18px;height:18px;left:calc(50% - 9px);top:calc(50% - 9px);border:5px solid #fff;background:#2563eb;box-shadow:0 0 0 1px var(--instrument-line)}
+body.dark #qibla .qibla-card .dial-center{border-color:#0b1423;background:#93c5fd}
+#qibla .qibla-reading{padding:0 0 20px}
+#qibla .qibla-reading #bearing{font-size:48px;color:inherit;letter-spacing:-1.5px;line-height:1.25}
+#qibla .qibla-reading p{color:var(--instrument-secondary);font-size:12px}
+#qibla .qibla-reading #headingValue{background:var(--instrument-surface);padding:5px 12px;border-radius:99px;margin:10px 0 0}
+#qibla #compassStatus{background:var(--instrument-surface);border-color:var(--instrument-line);color:inherit;font-size:13px;text-align:start;border-radius:14px}
+#qibla .compass-actions button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;background:var(--control-blue);border-color:var(--control-blue);border-radius:14px;color:#fff;font-size:15px}
+#qibla .compass-actions button:hover{background:var(--control-blue-hover)}
+#qibla .qibla-help{border-color:var(--instrument-line);padding-top:8px}
+#qibla .qibla-help p{color:var(--instrument-secondary)}
+#qibla.qibla-aligned .qibla-card .compass{border-color:#60a5fa;box-shadow:inset 0 0 0 10px var(--card),0 0 0 4px #60a5fa1c}
+#settings #approachMinutesPickerOpen{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;width:100%;height:44px;padding:7px 12px;background:var(--instrument-surface);border:1px solid var(--instrument-line);border-radius:12px;color:var(--instrument-ink);font-size:13px;line-height:1.5}
+#settings #approachMinutesPickerOpen>span{margin:0;font-size:inherit}
+#approachMinutesPickerOpen svg{width:18px;height:18px;flex:none;transition:transform .15s ease}
+#approachMinutesPickerOpen[aria-expanded=true] svg{transform:rotate(180deg)}
+.reminder-interval-menu{gap:3px;padding:6px;border:1px solid var(--instrument-line);border-radius:16px;background:#fff;color:#000;box-shadow:0 12px 36px #153d7824;overflow:auto}
+body.dark .reminder-interval-menu{background:#111e32;color:#fff;box-shadow:0 12px 36px #0005}
+.reminder-interval-menu button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:10px 12px;border-radius:10px;font-size:14px}
+.reminder-interval-menu button[aria-selected=true]{background:#e8efff;color:#153d78}
+body.dark .reminder-interval-menu button[aria-selected=true]{background:#173e76;color:#fff}
+.reminder-interval-menu button[aria-selected=true]::after{content:"✓";font-size:17px}
+.reminder-interval-menu button:hover,.reminder-interval-menu button:focus-visible{background:var(--instrument-surface);outline:2px solid #60a5fa;outline-offset:-2px}
+@media(max-width:760px){header>.site-nav{grid-template-rows:56px;padding:4px 7px calc(4px + var(--nav-safe-bottom));gap:3px}header>.site-nav .nav-icon-button{height:56px;min-height:0;padding:5px 0;gap:3px;border-radius:12px;grid-template-rows:24px 16px;font-size:10px}#tasbih .tasbih-card,#qibla .qibla-card{margin:20px auto;padding:23px 20px;border-radius:22px}#tasbih .tasbih-card>h2,#qibla .qibla-card>h2{font-size:28px}#tasbih .tasbih-orbit{width:min(240px,100%)}#qibla .qibla-card .compass{width:min(290px,100%)}#qibla .qibla-card .kaaba-icon{top:45px}}
+@media(max-width:360px){#tasbih .tasbih-card,#qibla .qibla-card{padding:20px 15px}#tasbih .tasbih-orbit{width:220px}#tasbih .tasbih-reading #tasbihCount{font-size:76px}#qibla .qibla-card .compass{width:250px}#qibla .qibla-card .kaaba-icon{top:35px;width:58px;height:58px;left:calc(50% - 29px)}#qibla .qibla-card .qibla-ray{height:68px}.quran-play-options label{width:100%;justify-content:space-between}}
+@media(prefers-reduced-motion:reduce){header>.site-nav .nav-icon-button,.quran-play-options input[type=checkbox],.quran-play-options input[type=checkbox]::before,#tasbih .tasbih-panel .counter,#approachMinutesPickerOpen svg{transition:none}#tasbih .tasbih-panel .counter:active{transform:none}}

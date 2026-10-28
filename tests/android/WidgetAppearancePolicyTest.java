@@ -21,6 +21,13 @@ public final class WidgetAppearancePolicyTest {
   if(WidgetAppearancePolicy.nextTransition(now,zone,0,0)!=at("2026-10-28T06:00:00+03:00[Asia/Riyadh]"))throw new AssertionError("fallback schedules sunrise without polling");
   long dst=at("2026-11-01T01:30:00-04:00[America/New_York]");
   if(WidgetAppearancePolicy.nextTransition(dst,"America/New_York",0,0)!=at("2026-11-01T06:00:00-05:00[America/New_York]"))throw new AssertionError("fallback respects DST change");
+  long delayed=at("2026-10-28T17:42:18+03:00[Asia/Riyadh]");
+  check(WidgetAppearancePolicy.isDay(delayed,zone,rise,set),false,"late refresh still switches to night without exact-minute matching");
+  long isha=at("2026-10-28T18:51:00+03:00[Asia/Riyadh]");
+  if(WidgetAppearancePolicy.nextRefresh(delayed,zone,rise,set,new long[]{set,isha})!=isha+1000)throw new AssertionError("delayed update skips past events and schedules next prayer");
+  long midnight=at("2026-10-29T00:00:00+03:00[Asia/Riyadh]");
+  if(WidgetAppearancePolicy.nextRefresh(isha+1000,zone,rise,set,new long[]{set,isha})!=midnight+1000)throw new AssertionError("new local day refreshes before next sunrise");
+  if(WidgetAppearancePolicy.nextRefresh(now,zone,rise,set,new long[]{rise})!=rise+1000)throw new AssertionError("sunrise refresh includes small delivery cushion");
   System.out.println("PASS: widget sunrise/maghrib boundaries, configured zones, stale/missing/malformed timings and DST transitions.");
  }
 }

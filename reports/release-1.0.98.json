@@ -1,0 +1,175 @@
+{
+  "version": "1.0.98",
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 99,
+    "version_name": "1.0.98",
+    "apk_sha256": "e324c5bbb97d3862104e64acc48494897e1f263e84a56d5a97a72f8241edce66",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "version_code_increased": true,
+  "apk_bytes": 25293683,
+  "packaged_assets_verified": 362,
+  "all_packaged_assets_match_final_preparation": true,
+  "original_adhan_files_byte_identical": true,
+  "original_audio_files_verified": 6,
+  "javascript_test_commands": 36,
+  "native_lifecycle_and_reminder_tests_passed": true,
+  "android_release_build_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 35,
+  "browser_layout_keyboard_and_theme_tests": {
+    "result": "PASS",
+    "widths": [
+      320,
+      390,
+      600,
+      760,
+      1024,
+      1440
+    ],
+    "tabs": 6,
+    "themes": 2,
+    "checks": [
+      "no horizontal overflow",
+      "24px icons",
+      "custom menu selection keyboard Escape focus",
+      "tasbih count/reset ring",
+      "single Quran switch thumb and dark blue checked track",
+      "reduced motion"
+    ],
+    "pageErrors": []
+  },
+  "real_browser_previews_and_offline": {
+    "result": "PASS",
+    "real_browser_previews": 2,
+    "offline_cached_clips": 6,
+    "offline_fajr_preview": true,
+    "page_errors": []
+  },
+  "reminder_audio_measurements": [
+    {
+      "file": "approach-fajr.mp3",
+      "duration": 2.9529024943310658,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.9,
+      "clipped_samples": 0,
+      "sha256": "c8931a1697d8d9a4352faf66cf79d18796609c2e4667d2baae5a4eb6f7566fe1",
+      "source_sha256": "e016aa12fed434df129bc39e20e3a6f34a28e1915e1cf17bb52ee667e389a34a",
+      "gain_db": 1.465
+    },
+    {
+      "file": "approach-dhuhr.mp3",
+      "duration": 2.9760090702947846,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.97,
+      "clipped_samples": 0,
+      "sha256": "fd6878aa2bef4808959f09abca26531cd66db15e15380d7a5b1acb4c0e955859",
+      "source_sha256": "a9f594d0aafb26bb6dd42f7cffd6ce4694a541fbbec80df6218d843d9d55ce24",
+      "gain_db": 1.193
+    },
+    {
+      "file": "approach-asr.mp3",
+      "duration": 3.0,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.36,
+      "clipped_samples": 0,
+      "sha256": "c5dafd6bad8a8edfbaf4b5dc99153a1e86dd95c5c38a9946bdbe99c67c5d265d",
+      "source_sha256": "59d27af7df5d4cd73e2ad5e52f1ae894d105804c1dee3f1ce2047a0b0aaf7d1d",
+      "gain_db": 1.951
+    },
+    {
+      "file": "approach-maghrib.mp3",
+      "duration": 3.0960090702947847,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.85,
+      "clipped_samples": 0,
+      "sha256": "4f19358591c259796615d1a7ab70235e457ec3dc06a06d91fb1761a979d9319b",
+      "source_sha256": "4512341774283b6ea36fc0ffa0f83f0a2cc19516c5a68fb740fac8bfcdf98300",
+      "gain_db": 0.308
+    },
+    {
+      "file": "approach-isha.mp3",
+      "duration": 3.240249433106576,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.88,
+      "clipped_samples": 0,
+      "sha256": "c79884fcc6ab9553495ed41a80f2289fed135a90be76b54aa15bc714491cb1a2",
+      "source_sha256": "b19b277548b98096566a3f43dda863fce9439be50743e021eb4dae57563dcf9c",
+      "gain_db": 1.211
+    },
+    {
+      "file": "fajr-phrase.mp3",
+      "duration": 2.832018140589569,
+      "sample_rate": 44100,
+      "channels": 1,
+      "peak_dbfs": -3.96,
+      "clipped_samples": 0,
+      "sha256": "9a7e62fe2615c65d8bda3931ca8ec20e2b4a8a7e6175198537fe80413939d641",
+      "source_sha256": "c9182ad40401fd35a901bc7f7547427c1239a1c64276eea4d8aaa7d8492a5a7e",
+      "gain_db": -0.52
+    }
+  ],
+  "reminder_phrase_transcripts": {
+    "model": "Whisper medium",
+    "language": "ar",
+    "prompt": null,
+    "records": [
+      {
+        "name": "approach-fajr",
+        "text": "اقترب موعد صلاة الفجر",
+        "transcript": [
+          "اقترب موعد صلاة الفجر"
+        ]
+      },
+      {
+        "name": "approach-dhuhr",
+        "text": "اقترب موعد صلاة الظهر",
+        "transcript": [
+          "اقترب موعد صلاة الظهر"
+        ]
+      },
+      {
+        "name": "approach-asr",
+        "text": "اقترب موعد صلاة العصر",
+        "transcript": [
+          "اقترب موعد صلاة العصر"
+        ]
+      },
+      {
+        "name": "approach-maghrib",
+        "text": "اقترب موعد صلاة المغرب",
+        "transcript": [
+          "اقترب موعد صلاة المغرب"
+        ]
+      },
+      {
+        "name": "approach-isha",
+        "text": "اقترب موعد صلاة العشاء",
+        "transcript": [
+          "اقترب موعد صلاة العشاء"
+        ]
+      },
+      {
+        "name": "fajr-phrase",
+        "text": "الصلاة خير من النوم",
+        "transcript": [
+          "الصلاة خير من النوم"
+        ]
+      }
+    ]
+  },
+  "requires_installed_arabic_voice": false,
+  "subjective_audio_listening_performed": false,
+  "physical_android_device_tested": false,
+  "physical_update_install_tested": false,
+  "widget_day_night_policy_and_resources_tested": true,
+  "notes": "reports/review-1.0.98.md"
+}
