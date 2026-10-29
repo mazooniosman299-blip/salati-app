@@ -81,7 +81,7 @@ with sync_playwright() as p:
    assert active['color']==ink,(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(29, 78, 216)','reference selection must remain translucent glass'
+   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(255, 255, 255, 0.055)','reference selection must remain translucent glass'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
    assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
    inactive=page.locator('header>.site-nav button:not(.active)').first
@@ -94,8 +94,8 @@ with sync_playwright() as p:
    if tab=='tasbih':
     button=page.locator('#counter')
     page.keyboard.press('Tab');button.focus()
-    focus=button.evaluate('(e)=>({color:getComputedStyle(e).outlineColor,width:getComputedStyle(e).outlineWidth,visible:e.matches(":focus-visible")})')
-    assert focus['visible'] and focus['width']=='3px',(dark,focus)
+    focus=button.evaluate('(e)=>({color:getComputedStyle(e).borderTopColor,width:getComputedStyle(e).outlineWidth,visible:e.matches(":focus-visible")})')
+    assert focus['visible'] and focus['width']=='0px',(dark,focus)
     assert contrast(focus['color'],'rgb(21, 24, 29)')>=3,(dark,focus)
     button.evaluate('(e)=>e.disabled=true');page.wait_for_timeout(200)
     disabled=button.evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,opacity:getComputedStyle(e).opacity})')

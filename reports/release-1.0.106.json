@@ -1,0 +1,1603 @@
+{
+  "version": "1.0.106",
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 107,
+    "version_name": "1.0.106",
+    "apk_sha256": "59e310c5190f1cf793e4665f9a557cdd8aeb096ed713e26256906764c5e7e12f",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "latest_user_scope_supersedes_blue_release105": true,
+  "same_signing_certificate": true,
+  "version_code_increased": true,
+  "apk_bytes": 26002993,
+  "release_build": "PASS",
+  "android_lint_errors": 0,
+  "android_lint_warnings": 50,
+  "prepared_apk_asset_identity": "PASS",
+  "preserved_audio_and_quran_files": 23,
+  "changes": [
+    "White/charcoal glass reference restored; blue action fills removed",
+    "All nine selection menus share centered glass card/search/rounded rows/selected tick/44px close",
+    "Filtered verse-reader arrow navigation skips hidden/disabled results and handles empty lists",
+    "12 +/- controls and modal close targets are true44x44 circles with centered glyphs",
+    "Larger white Gregorian/Hijri dates below city on left; next prayer/name/countdown aligned to physical right",
+    "Prayer selection has stronger translucent white material and frame",
+    "No outer white focus ring/glow on search; existing field frame distinguishes keyboard focus",
+    "Footer actions have12px spacing and wrap without overlap"
+  ],
+  "checks": {
+    "javascript_commands": 40,
+    "theme_navigation_disabled_focus": "PASS",
+    "rendered_colors": {
+      "result": "PASS",
+      "states": 26,
+      "computed_styles": 10326,
+      "failures": [],
+      "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+    },
+    "reference_ui": {
+      "checks.json": {
+        "result": "PASS",
+        "checks": [
+          {
+            "width": 390,
+            "tab": "times",
+            "actions": [
+              {
+                "id": "locate",
+                "text": "حدد موقعي",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "tab": "mushaf",
+            "actions": [
+              {
+                "id": "qSmaller",
+                "text": "A−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "qLarger",
+                "text": "A+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "qBookmark",
+                "text": "حفظ علامة القراءة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "tab": "dhikr",
+            "actions": [
+              {
+                "id": "",
+                "text": "الصباح",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "المساء",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "بعد الصلاة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "النوم",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "adhkarReset",
+                "text": "إعادة عدّ المعروض",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 100",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 100",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "tab": "qibla",
+            "actions": [
+              {
+                "id": "compassEnable",
+                "text": "تحديد القبلة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "tab": "tasbih",
+            "actions": [
+              {
+                "id": "counter",
+                "text": "تسبيح",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "reset",
+                "text": "إعادة العدّ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "tab": "settings",
+            "actions": [
+              {
+                "id": "zoneAuto",
+                "text": "تلقائي حسب موقعي",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewFajrPhrase",
+                "text": "تجربة عبارة الفجر",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewAdhan",
+                "text": "استماع للأذان",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewDua",
+                "text": "استماع لدعاء الوسيلة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "audioStop",
+                "text": "إيقاف الصوت",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "resetPrayerAdjustments",
+                "text": "إعادة تعيين",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "applyPrayerAdjustments",
+                "text": "تطبيق",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "cancelPrayerAdjustments",
+                "text": "إلغاء",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "حفظ الإعدادات",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "تحميل تطبيق أندرويد APK",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "times",
+            "actions": [
+              {
+                "id": "locate",
+                "text": "حدد موقعي",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "mushaf",
+            "actions": [
+              {
+                "id": "qSmaller",
+                "text": "A−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "qLarger",
+                "text": "A+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "qBookmark",
+                "text": "حفظ علامة القراءة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "dhikr",
+            "actions": [
+              {
+                "id": "",
+                "text": "الصباح",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "المساء",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "بعد الصلاة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "النوم",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "adhkarReset",
+                "text": "إعادة عدّ المعروض",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 100",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 3",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "نسخ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "ذكرتُه · 0 / 100",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "qibla",
+            "actions": [
+              {
+                "id": "compassEnable",
+                "text": "تحديد القبلة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "tasbih",
+            "actions": [
+              {
+                "id": "counter",
+                "text": "تسبيح",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "reset",
+                "text": "إعادة العدّ",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "tab": "settings",
+            "actions": [
+              {
+                "id": "zoneAuto",
+                "text": "تلقائي حسب موقعي",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewFajrPhrase",
+                "text": "تجربة عبارة الفجر",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewAdhan",
+                "text": "استماع للأذان",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "previewDua",
+                "text": "استماع لدعاء الوسيلة",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "audioStop",
+                "text": "إيقاف الصوت",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "resetPrayerAdjustments",
+                "text": "إعادة تعيين",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "−",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "+",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "applyPrayerAdjustments",
+                "text": "تطبيق",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "cancelPrayerAdjustments",
+                "text": "إلغاء",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "حفظ الإعدادات",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              },
+              {
+                "id": "",
+                "text": "تحميل تطبيق أندرويد APK",
+                "bg": "rgb(4, 5, 9)",
+                "ink": "rgb(255, 255, 255)"
+              }
+            ]
+          }
+        ],
+        "white_charcoal_contrast": 20.372224335742747,
+        "page_errors": [],
+        "published": false
+      },
+      "menus/checks.json": {
+        "result": "PASS",
+        "checks": [
+          {
+            "width": 390,
+            "menus": 9,
+            "search_selection_focus_back": "PASS"
+          },
+          {
+            "width": 1440,
+            "menus": 9,
+            "search_selection_focus_back": "PASS"
+          }
+        ],
+        "page_errors": []
+      },
+      "circles.json": {
+        "result": "PASS",
+        "checks": [
+          {
+            "width": 320,
+            "stepper_buttons": [
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              }
+            ],
+            "location_close": {
+              "x": 27,
+              "y": 82.375,
+              "width": 44,
+              "height": 44
+            },
+            "voice_close": {
+              "x": 27,
+              "y": 335.5,
+              "width": 44,
+              "height": 44
+            }
+          },
+          {
+            "width": 360,
+            "stepper_buttons": [
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              }
+            ],
+            "location_close": {
+              "x": 27,
+              "y": 82.375,
+              "width": 44,
+              "height": 44
+            },
+            "voice_close": {
+              "x": 27,
+              "y": 335.5,
+              "width": 44,
+              "height": 44
+            }
+          },
+          {
+            "width": 390,
+            "stepper_buttons": [
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              }
+            ],
+            "location_close": {
+              "x": 27,
+              "y": 82.375,
+              "width": 44,
+              "height": 44
+            },
+            "voice_close": {
+              "x": 27,
+              "y": 329.24224853515625,
+              "width": 44,
+              "height": 44
+            }
+          },
+          {
+            "width": 760,
+            "stepper_buttons": [
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              }
+            ],
+            "location_close": {
+              "x": 120,
+              "y": 84.375,
+              "width": 44,
+              "height": 44
+            },
+            "voice_close": {
+              "x": 120,
+              "y": 334.5,
+              "width": 44,
+              "height": 44
+            }
+          },
+          {
+            "width": 1440,
+            "stepper_buttons": [
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              },
+              {
+                "width": 44,
+                "height": 44,
+                "radius": "50%",
+                "display": "grid",
+                "place": "center"
+              }
+            ],
+            "location_close": {
+              "x": 460,
+              "y": 84.375,
+              "width": 44,
+              "height": 44
+            },
+            "voice_close": {
+              "x": 460,
+              "y": 334.5,
+              "width": 44,
+              "height": 44
+            }
+          }
+        ]
+      },
+      "date-checks.json": {
+        "result": "PASS",
+        "web": [
+          {
+            "width": 320,
+            "dates": [
+              {
+                "x": 27,
+                "y": 187.5,
+                "right": 152,
+                "width": 125,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              },
+              {
+                "x": 27,
+                "y": 233.6875,
+                "right": 152,
+                "width": 125,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              }
+            ]
+          },
+          {
+            "width": 390,
+            "dates": [
+              {
+                "x": 33,
+                "y": 196.609375,
+                "right": 187,
+                "width": 154,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              },
+              {
+                "x": 33,
+                "y": 219.703125,
+                "right": 187,
+                "width": 154,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              }
+            ]
+          },
+          {
+            "width": 760,
+            "dates": [
+              {
+                "x": 33,
+                "y": 208.15625,
+                "right": 372,
+                "width": 339,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              },
+              {
+                "x": 33,
+                "y": 231.25,
+                "right": 372,
+                "width": 339,
+                "color": "rgb(255, 255, 255)",
+                "size": 14,
+                "align": "left"
+              }
+            ]
+          },
+          {
+            "width": 1440,
+            "dates": [
+              {
+                "x": 155,
+                "y": 243,
+                "right": 386.90625,
+                "width": 231.90625,
+                "color": "rgb(255, 255, 255)",
+                "size": 18,
+                "align": "left"
+              },
+              {
+                "x": 155,
+                "y": 272.6875,
+                "right": 386.90625,
+                "width": 231.90625,
+                "color": "rgb(255, 255, 255)",
+                "size": 18,
+                "align": "left"
+              }
+            ]
+          }
+        ],
+        "native_source_hierarchy": "PASS",
+        "native_physical_render_tested": false
+      },
+      "button-spacing.json": {
+        "result": "PASS",
+        "checks": [
+          {
+            "width": 320,
+            "footer_gap": "12px"
+          },
+          {
+            "width": 390,
+            "footer_gap": "12px"
+          },
+          {
+            "width": 760,
+            "footer_gap": "12px"
+          },
+          {
+            "width": 1440,
+            "footer_gap": "12px"
+          }
+        ]
+      }
+    },
+    "reference_media_behavior": "PASS",
+    "player_geometry_five_widths": "PASS",
+    "native_quran_race_lifecycle_focus": "PASS",
+    "native_adhan_lifecycle_volume_alarm_policy": "PASS",
+    "native_fajr_permissions_and_migration": "PASS",
+    "native_activity_owner": "PASS",
+    "ads_sdk_and_144_visibility_cases": "PASS",
+    "real_chromium_offline_navigation": "PASS",
+    "real_uploaded_fajr_browser_decode_completion_offline": "PASS"
+  },
+  "independent_review": "reports/review-1.0.106.md",
+  "review_P2_filtered_reader_navigation": "FIXED and browser regression PASS",
+  "physical_android_device_tested": false,
+  "physical_update_install_tested": false,
+  "native_font_scale_render_tested": false,
+  "native_render_limit": "Date fitting source uses14sp preferred/minimum12sp and left gravity. Physical font-scale rendering unavailable; very large system fonts at minimum140dp widget height may exceed available space. No device-fit claim.",
+  "audio_recordings_changed": false,
+  "mosque_photo_changed": false,
+  "fajr_rights_status": "Unchanged user-directed recording; no verified redistribution permission. No new recording or rights assertion."
+}

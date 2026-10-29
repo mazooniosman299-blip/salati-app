@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "width": 320,
+      "footer_gap": "12px"
+    },
+    {
+      "width": 390,
+      "footer_gap": "12px"
+    },
+    {
+      "width": 760,
+      "footer_gap": "12px"
+    },
+    {
+      "width": 1440,
+      "footer_gap": "12px"
+    }
+  ]
+}

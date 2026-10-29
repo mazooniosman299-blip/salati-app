@@ -25,7 +25,9 @@
     "test:reference-image": "python3 tests/reference-image.py",
     "test:reference-media": "python3 tests/reference-media.py",
     "test:dark-matte": "python3 tests/dark-matte.py",
-    "test:fajr-only": "node tests/fajr-only.cjs"
+    "test:fajr-only": "node tests/fajr-only.cjs",
+    "test:selection-menus": "python3 tests/selection-menus.py",
+    "test:reference-controls": "python3 tests/reference-controls.py && python3 tests/circular-controls.py"
   },
   "keywords": [],
   "author": "",

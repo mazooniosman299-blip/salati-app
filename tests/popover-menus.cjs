@@ -5,25 +5,8 @@ const {popoverGeometry}=load('popover-menu.js'),{QuranReader,QURAN_RECITERS}=loa
 for(const rect of [{top:20,bottom:50,right:30},{top:720,bottom:760,right:370},{top:-40,bottom:10,right:390}]){
  const box=popoverGeometry(rect,{width:390,height:780},{width:230,height:240});assert(box.left>=8);assert(box.left+box.width<=382);assert(box.top>=8);assert(box.top+box.maxHeight<=772);
 }
-const original={document:global.document,window:global.window,navigator:global.navigator,MutationObserver:global.MutationObserver};
-(async()=>{try{
- const document=makeDocument(),events=new Map();document.body=new Node(1,'body');document.documentElement={dir:'rtl'};document.addEventListener=(name,fn)=>{if(!events.has(name))events.set(name,[]);events.get(name).push(fn);};
- function enhance(node){node.handlers={};node.addEventListener=(name,fn)=>node.handlers[name]=fn;node.contains=target=>{for(let n=target;n;n=n.parentNode)if(n===node)return true;return false;};node.focus=()=>{document.activeElement=node;node.focused=true;};node.getAttribute=name=>node.attributes.get(name);return node;}
- const create=document.createElement;document.createElement=tag=>{assert.notEqual(tag,'dialog','These choices must be lists, not modal dialogs');return enhance(create(tag));};
- global.document=document;global.window={innerWidth:390,innerHeight:780,getSelection:()=>({isCollapsed:true}),addEventListener:()=>{}};Object.defineProperty(global,'navigator',{configurable:true,value:{onLine:true}});global.MutationObserver=class{observe(){}};
- const verses=enhance(document.getElementById('qVerses'));document.body.append(verses);const verse=enhance(new Node(1,'span'));verse.dataset.ayah='1:7';verse.offsetWidth=900;verse.bounds={top:700,bottom:740,left:20,right:370};verses.append(verse);
- const reader=Object.create(QuranReader.prototype);reader.getLang=()=>'ar';reader.data=require('../dist/quran/data.json');reader.reciters=QURAN_RECITERS;reader.reciter=QURAN_RECITERS[4];let stops=0,before=0,plays=[];reader.stop=()=>stops++;reader.beforePlay=()=>before++;reader.pageAudio={play:async(reciter,items)=>plays.push({reciter,items})};reader.setupVerseActions();
- const menu=document.body.children.find(node=>node.id==='verseReciterMenu');assert(menu);assert.equal(menu.tagName,'DIV');assert(menu.hidden);
- verses.handlers.click({type:'click',detail:1,target:verse,clientX:370,clientY:720});assert(!menu.hidden);assert(reader.verseMenuOpen);assert.equal(menu.children.length,4);assert.equal(menu.style.width,'230px');assert(!menu.children.some(node=>node.dataset.reciter==='sudais'));assert.equal(menu.getAttribute('role'),'menu');assert.equal(document.activeElement.dataset.reciter,'afasy');
- const selected=menu.children.find(node=>node.dataset.reciter==='qatami');await selected.onclick();assert(menu.hidden);assert(!reader.verseMenuOpen);assert.equal(stops,1);assert.equal(before,1);assert.equal(plays[0].reciter.id,'qatami');assert.equal(plays[0].items[0].a,7);assert.equal(document.activeElement,verse);
- verses.handlers.keydown({key:'Enter',target:verse,preventDefault(){}});menu.onkeydown({key:'ArrowDown',preventDefault(){}});assert.equal(document.activeElement.dataset.reciter,'afasy');menu.onkeydown({key:'ArrowDown',preventDefault(){}});assert.equal(document.activeElement.dataset.reciter,'shatri');
- for(const fn of events.get('scroll'))fn({target:menu.children[0]});assert(!menu.hidden,'Scrolling inside the list must keep it open');for(const fn of events.get('keydown'))fn({key:'Escape',preventDefault(){}});assert(menu.hidden);assert.equal(document.activeElement,verse);
- verses.handlers.click({type:'click',detail:1,target:verse,clientX:370,clientY:720});for(const fn of events.get('pointerdown'))fn({target:document.body});assert(menu.hidden,'Clicking outside dismisses the list');
- navigator.onLine=false;verses.handlers.keydown({key:'Enter',target:verse,preventDefault(){}});await menu.children[0].onclick();assert.equal(plays.length,1);assert(menu.hidden);assert(document.getElementById('qAudioStatus').textContent.includes('اتصالًا'));
- const select=enhance(new Node(1,'select'));select.id='adhkarCategory';select.value='morning';Object.defineProperty(select,'selectedOptions',{get:()=>select.children.filter(node=>node.value===select.value)});
- for(const c of [{id:'',ar:'كل الأذكار'},...require('../adhkar-collection.json').categories]){const option=new Node(1,'option');option.value=c.id;option.textContent=c.ar;select.append(option);}
- document.body.append(select);select.after=node=>document.body.append(node);let changes=0;select.dispatchEvent=()=>{changes++;};
- const chooser=setupCompactCategory(select,()=>'ar');assert(select.hidden);chooser.button.onclick();assert(chooser.popup.isOpen);const options=chooser.popup.element.children[1];assert.equal(options.children.length,15);
- const input=chooser.popup.element.children[0];input.value='الوضوء';input.oninput();assert.equal(options.children.length,1);assert.equal(options.children[0].dataset.value,'purity');options.children[0].onclick();assert.equal(select.value,'purity');assert.equal(changes,1);assert(!chooser.popup.isOpen);assert(chooser.button.textContent.includes('الخلاء'));
- console.log('PASS: verse clicks open an anchored non-modal list, choosing a reciter plays immediately, keyboard/outside/scroll dismissal works, offline is handled, and the adhkar category uses a searchable non-native list.');
-}finally{for(const [key,value]of Object.entries(original)){if(key==='navigator')Object.defineProperty(global,key,{configurable:true,value});else global[key]=value;}}})().catch(error=>{console.error(error);process.exitCode=1;});
+
+const {choiceMatches}=load('choice-picker.js');
+assert(choiceMatches({textContent:'أذكار الصباح',dataset:{}},'اذكار الصباح'));
+assert(!choiceMatches({textContent:'أذكار المساء',dataset:{}},'الصباح'));
+console.log('PASS: bounded popover geometry and normalized choice search. Modal selection/verse behavior is covered by tests/selection-menus.py and tests/reference-media.py.');

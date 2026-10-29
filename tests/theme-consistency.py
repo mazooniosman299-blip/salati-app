@@ -24,7 +24,7 @@ for name in ['style.css','light-theme.css','salati-design.css','city-pages.css',
     if is_gray(color):issues.append(f'{name}:{declaration.source_line}: {selector}: {declaration.name}=#{color}')
 assert not issues,'Neutral grays bypass the shared reference palette:\n'+'\n'.join(issues)
 # Protect the complete new approved palette, not merely absence of neutral gray.
-approved={'0B0E13','040509','15181D','32383F','FFFFFF','AEBCCB','000000','2563EB','1D4ED8','1E40AF','3B82F6','93C5FD','172554'}
+approved={'0B0E13','040509','15181D','32383F','FFFFFF','AEBCCB','000000'}
 for name in ['style.css','light-theme.css','salati-design.css','city-pages.css','public-pages.css','reference-layout.css']:
  for rule in rules(tinycss2.parse_stylesheet((root/'dist'/name).read_text())):
   selector=tinycss2.serialize(rule.prelude)
@@ -45,7 +45,7 @@ for name in ['widget_background.xml','widget_glass_header.xml','widget_glass_str
    if key in [ns+'color',ns+'startColor',ns+'centerColor',ns+'endColor'] and value.startswith('#'):
     rgb=value[-6:];r,g,b=[int(rgb[i:i+2],16) for i in (0,2,4)]
     if element.tag=='stroke':continue
-    assert rgb.upper() in ['040509','0B0E13','15181D','32383F','FFFFFF','2563EB','1D4ED8','1E40AF','3B82F6','93C5FD','172554'],f'{name}: unexpected native surface {value}'
+    assert rgb.upper() in ['040509','0B0E13','15181D','32383F','FFFFFF'],f'{name}: unexpected native surface {value}'
 print('PASS: shared colors cover all first-party styles and native widget glass surfaces.')
 activity=(root/'android/app/src/main/java/com/salati/prayer/MainActivity.java').read_text()
 assert '#171717' not in activity and '#CCCCCC' not in activity and '#D4B87F' not in activity,'Native confirmation must use the reference palette, not gray/gold literals'

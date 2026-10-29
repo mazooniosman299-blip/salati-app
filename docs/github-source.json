@@ -1,9 +1,9 @@
 {
-  "version": "1.0.105",
+  "version": "1.0.106",
   "application_id": "com.salati.prayer",
-  "source_commit": "e6248cd980201548ad76e5e860cafeca5cfc1bee",
-  "source_tree": "957aa4a36199670428172e96e43af73507b767ee",
-  "source_files_verified": 847,
+  "source_commit": "451f8f784e19448313a6d309d2ce3dc97a2c7f76",
+  "source_tree": "3c6ef8a9ebe5fede9f5422b72651a07c071efbd8",
+  "source_files_verified": 906,
   "source_readme_preserved_at": "docs/source-README.md",
   "original_github_history_preserved": true,
   "private_signing_keys_included": false

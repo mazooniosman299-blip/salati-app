@@ -4,9 +4,9 @@
  <color name="salati_surface_light">#15181D</color>
  <color name="salati_ink_dark">#FFFFFF</color>
  <color name="salati_ink_light">#FFFFFF</color>
- <color name="salati_action">#2563EB</color>
+ <color name="salati_action">#040509</color>
  <color name="salati_action_ink">#FFFFFF</color>
  <color name="salati_dialog_surface">#15181D</color>
  <color name="salati_dialog_ink">#FFFFFF</color>
- <color name="salati_dialog_accent">#3B82F6</color>
+ <color name="salati_dialog_accent">#FFFFFF</color>
 </resources>

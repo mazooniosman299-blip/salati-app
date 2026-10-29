@@ -13,3 +13,5 @@ fs.writeFileSync(path.join(root,'dist/licenses/MOTION-LICENSES.txt'),['motion','
 console.log('Built six local Phosphor navigation icons.');
 
 fs.copyFileSync(path.join(library,'assets/fill/map-pin-fill.svg'),path.join(root,'dist/icons/location-fill.svg'));
+
+for(const name of ['magnifying-glass','list-bullets','waveform'])fs.writeFileSync(path.join(root,'dist/icons',name+'.svg'),fs.readFileSync(path.join(library,'assets/regular',name+'.svg'),'utf8').replace(/#000(?:000)?/g,'#FFFFFF').replace(/currentColor/g,'#FFFFFF'));

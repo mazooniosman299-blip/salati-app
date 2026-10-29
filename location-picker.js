@@ -7,7 +7,7 @@ export function setupLocationPicker({country,city,trigger,getLanguage,getLabel,i
  const handle=document.createElement('div');handle.className='sheet-handle';handle.setAttribute('aria-hidden','true');
  const heading=document.createElement('div');heading.className='choice-heading';
  const title=document.createElement('h2');title.id='locationMenuTitle';
- const close=document.createElement('button');close.type='button';close.className='choice-close';close.textContent='×';heading.append(title,close);
+ const copy=document.createElement('div'),count=document.createElement('small');copy.append(count,title);const close=document.createElement('button');close.type='button';close.className='choice-close';close.textContent='×';heading.append(copy,close);
  const searchWrap=document.createElement('div');searchWrap.className='choice-search-wrap';
  const search=document.createElement('input');search.type='search';search.autocomplete='off';searchWrap.append(search);
  const back=document.createElement('button');back.type='button';back.className='location-back';
@@ -37,7 +37,7 @@ export function setupLocationPicker({country,city,trigger,getLanguage,getLabel,i
     dialog.close();if(option.value==='__coords__'){onCoordinates();return;}city.value=option.value;city.dispatchEvent(new Event('change',{bubbles:true}));refresh();
    };fragment.append(item);
   }
-  options.replaceChildren(automatic,fragment);message.textContent=stage==='city'&&!search.value&&!places?getStatus():found?(stage==='city'&&found>200?tr('حدّد البحث لإظهار بقية النتائج.','Refine your search to find more results.'):''):(stage==='city'&&!search.value?getStatus():tr('لا توجد نتائج','No matches'));message.hidden=!message.textContent;
+  options.replaceChildren(automatic,fragment);count.textContent=(found+1)+tr(' خيار',' choices');message.textContent=stage==='city'&&!search.value&&!places?getStatus():found?(stage==='city'&&found>200?tr('حدّد البحث لإظهار بقية النتائج.','Refine your search to find more results.'):''):(stage==='city'&&!search.value?getStatus():tr('لا توجد نتائج','No matches'));message.hidden=!message.textContent;
  }
  function refresh(){const label=getLabel();trigger.querySelector('.choice-value').textContent=label;trigger.setAttribute('aria-label',tr('الموقع: ','Location: ')+label);if(dialog.open)render();}
  automatic.onclick=()=>{if(isBusy())return;dialog.close();onAutomatic();};close.onclick=()=>dialog.close();

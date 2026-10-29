@@ -20,7 +20,7 @@ try:
    page.click('[data-tab=times]');page.wait_for_selector('.prayer.active')
    selected=page.locator('.prayer.active').evaluate('(e)=>{let c=getComputedStyle(e);return{fill:c.backgroundColor,image:c.backgroundImage,radius:c.borderRadius}}')
    assert selected['fill']=='rgba(0, 0, 0, 0)' and 'linear-gradient' in selected['image'],selected
-   assert '255, 255, 255, 0.09' in selected['image'],selected
+   assert '255, 255, 255, 0.16' in selected['image'],selected
    page.locator('.prayer-overview').screenshot(path=str(out/f'widget-{width}.png'))
    page.click('[data-tab=mushaf]')
    colors=page.locator('.mushaf-emblem path').evaluate_all('(es)=>es.map(e=>getComputedStyle(e).fill)')
@@ -42,11 +42,11 @@ try:
     style=toggle.evaluate('(e)=>{let c=getComputedStyle(e),t=getComputedStyle(e,"::before");return{border:c.borderTopColor,borderWidth:c.borderTopWidth,track:c.backgroundColor,gradient:c.backgroundImage,w:e.offsetWidth,h:e.offsetHeight,thumb:t.backgroundColor,thumbWidth:t.width}}')
     assert style['borderWidth']=='1px' and style['w']==66 and style['h']==38,style
     assert style['thumb']=='rgb(255, 255, 255)'and style['thumbWidth']=='30px',style
-    assert style['border']=='rgb(59, 130, 246)',style
+    assert style['border']==('rgb(255, 255, 255)'if checked else'rgba(255, 255, 255, 0.46)'),style
    toggle.evaluate('(e)=>e.checked=false')
    border=page.locator('#previewFajrPhrase').evaluate('(e)=>{let c=getComputedStyle(e);return{border:c.borderTopColor,width:c.borderTopWidth,color:c.color,bg:c.backgroundColor}}')
-   assert border['border']=='rgb(59, 130, 246)'and border['width']=='1px',border
-   assert border['color']=='rgb(255, 255, 255)'and border['bg']=='rgb(37, 99, 235)',border
+   assert border['border']=='rgba(255, 255, 255, 0.46)'and border['width']=='1px',border
+   assert border['color']=='rgb(255, 255, 255)'and border['bg']=='rgb(4, 5, 9)',border
    page.locator('#previewFajrPhrase').scroll_into_view_if_needed();page.screenshot(path=str(out/f'settings-{width}.png'))
    for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click(f'[data-tab={tab}]');page.wait_for_timeout(80)

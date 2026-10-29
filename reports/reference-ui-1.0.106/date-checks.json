@@ -1,0 +1,99 @@
+{
+  "result": "PASS",
+  "web": [
+    {
+      "width": 320,
+      "dates": [
+        {
+          "x": 27,
+          "y": 187.5,
+          "right": 152,
+          "width": 125,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        },
+        {
+          "x": 27,
+          "y": 233.6875,
+          "right": 152,
+          "width": 125,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "dates": [
+        {
+          "x": 33,
+          "y": 196.609375,
+          "right": 187,
+          "width": 154,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        },
+        {
+          "x": 33,
+          "y": 219.703125,
+          "right": 187,
+          "width": 154,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "width": 760,
+      "dates": [
+        {
+          "x": 33,
+          "y": 208.15625,
+          "right": 372,
+          "width": 339,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        },
+        {
+          "x": 33,
+          "y": 231.25,
+          "right": 372,
+          "width": 339,
+          "color": "rgb(255, 255, 255)",
+          "size": 14,
+          "align": "left"
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "dates": [
+        {
+          "x": 155,
+          "y": 243,
+          "right": 386.90625,
+          "width": 231.90625,
+          "color": "rgb(255, 255, 255)",
+          "size": 18,
+          "align": "left"
+        },
+        {
+          "x": 155,
+          "y": 272.6875,
+          "right": 386.90625,
+          "width": 231.90625,
+          "color": "rgb(255, 255, 255)",
+          "size": 18,
+          "align": "left"
+        }
+      ]
+    }
+  ],
+  "native_source_hierarchy": "PASS",
+  "native_physical_render_tested": false
+}

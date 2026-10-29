@@ -63,7 +63,7 @@ export class QuranReader{
   this.verseMenuOpen=true;popup.open(element,{point:event?.type==='click'&&event.detail!==0?{x:event.clientX,y:event.clientY}:undefined});
   const selected=[...menu.children].find(button=>button.dataset.reciter===(this.playingReciter||this.reciter).id)||menu.children[0];selected?.focus({preventScroll:true});selected?.scrollIntoView({block:'nearest'});
  };
- menu.onkeydown=event=>{const buttons=[...menu.children],index=buttons.indexOf(document.activeElement);let next;if(event.key==='ArrowDown')next=(index+1)%buttons.length;else if(event.key==='ArrowUp')next=(index-1+buttons.length)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;else if(event.key==='Tab'){popup.close();return;}if(next!==undefined){event.preventDefault();buttons[next].focus();}};
+ menu.onkeydown=event=>{const buttons=[...menu.children].filter(button=>!button.hidden&&!button.disabled);if(!buttons.length)return;const index=buttons.indexOf(document.activeElement);let next;if(event.key==='ArrowDown')next=(index+1)%buttons.length;else if(event.key==='ArrowUp')next=(index-1+buttons.length)%buttons.length;else if(event.key==='Home')next=0;else if(event.key==='End')next=buttons.length-1;if(next!==undefined){event.preventDefault();buttons[next].focus();}};
  $('qVerses').addEventListener('click',event=>{const selection=window.getSelection();if(selection&&!selection.isCollapsed)return;const verse=event.target.closest('[data-ayah]');if(verse)open(verse,event);});
  $('qVerses').addEventListener('keydown',event=>{if((event.key==='Enter'||event.key===' ')&&event.target.matches('[data-ayah]')){event.preventDefault();open(event.target,event);}});
  }
