@@ -1,0 +1,34 @@
+name: Prepare documented mosque photographs
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  photographs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Download original-aspect photographer assets
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from urllib.request import urlopen
+          from pathlib import Path
+          import hashlib,json
+          output=Path('photographs');output.mkdir()
+          manifest=[]
+          for identifier,expected in [('20584925','c6fe84d91ccef12234c14673a953513d6efb1cd5dac4892e92656652a7ed30cb'),('13299493',None)]:
+              url=f'https://images.pexels.com/photos/{identifier}/pexels-photo-{identifier}.jpeg?w=1000'
+              data=urlopen(url,timeout=40).read()
+              digest=hashlib.sha256(data).hexdigest()
+              if expected and digest!=expected:raise RuntimeError('Photograph changed; review source before replacing')
+              (output/(identifier+'.jpg')).write_bytes(data)
+              manifest.append({'photo':identifier,'source_url':url,'sha256':digest,'bytes':len(data),'license':'https://www.pexels.com/license/','processing':'none'})
+          (output/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
+      - name: Retain source bytes for visual review
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mosque-photographs
+          path: photographs/
+          retention-days: 7
