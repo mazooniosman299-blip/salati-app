@@ -59,7 +59,7 @@ class Responsive(unittest.TestCase):
   for width in [320,390,820,1440]:
    for dark in [False,True]:
     c=Cascade(width,dark)
-    self.assertEqual(c.style(c.element('//*[@id="countdown"]'))['color'],'#fff' if dark else '#000')
+    self.assertEqual(c.style(c.element('//*[@id="countdown"]'))['color'],'#ffffff' if dark else '#000000')
     locate=c.element('//*[@id="locate"]');self.assertEqual(c.style(locate)['background'],'#fff');self.assertEqual(c.style(locate)['color'],'#000')
     for id in ['adhkarCategoryPickerOpen','adhkarSearch']:
      if id=='adhkarCategoryPickerOpen':

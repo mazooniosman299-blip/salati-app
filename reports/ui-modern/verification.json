@@ -15,10 +15,10 @@
     "24px icons",
     "custom menu selection keyboard Escape focus",
     "tasbih count/reset ring",
-    "single Quran switch thumb and neutral checked track",
+    "single Quran switch thumb and high-contrast checked track",
     "Motion sliding glass navigation",
     "same-tab RTL/LTR language realignment",
-    "white labels with >=4.5:1 contrast",
+    "control labels with >=4.5:1 contrast",
     "disabled and focused controls",
     "black/white timer and unselected labels",
     "reduced motion and transparency",
@@ -31,7 +31,7 @@
       "controlFill": "rgb(48, 48, 48)",
       "whiteTextContrast": 13.2,
       "focus": {
-        "color": "rgb(68, 68, 68)",
+        "color": "rgb(36, 36, 36)",
         "width": "3px",
         "visible": true
       },
@@ -43,16 +43,16 @@
     },
     {
       "dark": true,
-      "controlFill": "rgb(68, 68, 68)",
-      "whiteTextContrast": 9.74,
+      "controlFill": "rgb(244, 244, 245)",
+      "whiteTextContrast": 17.16,
       "focus": {
-        "color": "rgb(255, 255, 255)",
+        "color": "rgb(238, 238, 238)",
         "width": "3px",
         "visible": true
       },
       "disabled": {
-        "bg": "rgb(41, 41, 41)",
-        "color": "rgb(255, 255, 255)",
+        "bg": "rgb(41, 42, 48)",
+        "color": "rgb(191, 191, 199)",
         "opacity": "1"
       }
     }

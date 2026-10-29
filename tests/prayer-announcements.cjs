@@ -13,7 +13,7 @@ function fixture(){
 (async()=>{
  for(const minutes of [5,10,15]){
   const f=fixture();f.settings.approachMinutes=minutes;const schedule=[{key:'dhuhr',time:minutes*60000+1000}];
-  f.controller.tick(schedule,999,true);f.controller.tick(schedule,1000,true);await flush();assert.equal(f.players[0]?.src,'audio/reminders/approach-hayya-human-v1.mp3','reminder must play bundled clip without installed Arabic voices');
+  f.controller.tick(schedule,999,true);f.controller.tick(schedule,1000,true);await flush();assert.equal(f.players[0]?.src,'audio/reminders/approach-dhuhr-human-v2.mp3','reminder must play bundled clip without installed Arabic voices');
   f.players[0].onended();f.controller.previous=999;f.controller.tick(schedule,1000,true);await flush();assert.equal(f.players.length,1,'blocked storage still deduplicated');
  }
  for(const reason of ['hidden','busy','disabled','prayer','off','stale','return']){
@@ -25,9 +25,13 @@ function fixture(){
   if(reason==='return')f.controller.tick(schedule,999,false);
   f.controller.tick(schedule,reason==='stale'?31001:1000,reason!=='hidden');await flush();assert.equal(f.players.length,0,reason);
  }
+ const ownerOne=fixture(),ownerTwo=fixture();const cancelledOwner=ownerOne.controller.speak('الصلاة خير من النوم');await flush();
+ const currentOwner=ownerTwo.controller.speak('الصلاة خير من النوم');await flush();
+ assert(ownerOne.players[0].paused,'a second announcement controller must stop the first output');
+ assert.equal((await cancelledOwner).status,'cancelled');ownerTwo.players[0].onended();await currentOwner;
  const f=fixture();assert.equal((await f.controller.init()).status,'ready');
- const first=f.controller.beforeAdhan('fajr');await flush();assert.equal(f.players[0].src,'audio/reminders/fajr-phrase-human-v1.mp3');assert.equal(f.players[0].volume,1);const oldEnd=f.players[0].onended;
- const replacement=f.controller.speak('اقتربت صلاة العصر');assert.equal((await first).status,'cancelled');await flush();assert(f.players[0].paused);assert.equal(f.players[1].src,'audio/reminders/approach-hayya-human-v1.mp3');oldEnd();assert.equal(f.controller.status,'playing','old callback cannot finish newer playback');f.players[1].onended();assert.equal((await replacement).status,'finished');assert.equal(f.timers.size,0);
+ const first=f.controller.beforeAdhan('fajr');await flush();assert.equal(f.players[0].src,'audio/reminders/fajr-phrase-single-human-v2.mp3');assert.equal(f.players[0].volume,1);const oldEnd=f.players[0].onended;
+ const replacement=f.controller.speak('اقتربت صلاة العصر');assert.equal((await first).status,'cancelled');await flush();assert(f.players[0].paused);assert.equal(f.players[1].src,'audio/reminders/approach-asr-human-v2.mp3');oldEnd();assert.equal(f.controller.status,'playing','old callback cannot finish newer playback');f.players[1].onended();assert.equal((await replacement).status,'finished');assert.equal(f.timers.size,0);
  const failed=f.controller.speak('الصلاة خير من النوم');await flush();f.players.at(-1).onerror();assert.equal((await failed).status,'error');assert.equal(f.timers.size,0);
  const timed=f.controller.speak('الصلاة خير من النوم');await flush();f.advance(14000);assert.equal(f.controller.status,'playing','complete human phrase must not be cut at the old synthetic deadline');f.advance(16000);assert.equal((await timed).status,'timeout');assert(f.players.at(-1).paused);
  f.settings.fajrAnnouncement=false;assert.equal((await f.controller.beforeAdhan('fajr')).status,'skipped');

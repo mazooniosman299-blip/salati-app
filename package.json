@@ -11,7 +11,7 @@
     "test:seo": "node tests/city-pages.cjs && node tests/site-growth.cjs && node tests/international-seo.cjs && python3 tests/seo.py",
     "test:responsive": "python3 tests/responsive-ui.py",
     "test:quran-race": "python3 tests/quran-service-race.py",
-    "test:quran-lifecycle": "python3 tests/quran-service-lifecycle.py",
+    "test:quran-lifecycle": "python3 tests/quran-service-lifecycle.py && python3 tests/quran-focus-sequence.py",
     "test:ads": "bash scripts/test-ads.sh",
     "test:adhan-lifecycle": "python3 tests/adhan-service-lifecycle.py",
     "test:quran-stall": "bash scripts/test-quran-stall.sh && python3 tests/quran-stall-integration.py",

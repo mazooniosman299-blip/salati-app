@@ -12,13 +12,14 @@ final class ArabicSpeech {
  private PcmAudioPlayer player;private Runnable completion,timeout;private long generation;
  ArabicSpeech(Context context,AudioAttributes attributes){this.context=context.getApplicationContext();this.attributes=attributes;}
  static String asset(String text){
-  if("الصلاة خير من النوم".equals(text))return "www/audio/reminders/fajr-phrase-human-v1.mp3";
+  if("الصلاة خير من النوم".equals(text))return "www/audio/reminders/fajr-phrase-single-human-v2.mp3";
   String[] keys={"fajr","dhuhr","asr","maghrib","isha"};
   String[] names={"الفجر","الظهر","العصر","المغرب","العشاء"};
-  for(int n=0;n<keys.length;n++)if(("اقتربت صلاة "+names[n]).equals(text))return "www/audio/reminders/approach-hayya-human-v1.mp3";
+  for(int n=0;n<keys.length;n++)if(("اقتربت صلاة "+names[n]).equals(text))return "www/audio/reminders/approach-"+keys[n]+"-human-v2.mp3";
   return null;
  }
  void speak(String text,float volume,Runnable done){
+  if(owner!=null&&owner!=this)owner.close();
   close();long ticket=generation;completion=done;owner=this;
   record(context,"loading");String path=asset(text);
   if(path==null||!Float.isFinite(volume)){finish(ticket,"error");return;}

@@ -1,8 +1,9 @@
 import {duePrayer} from './audio-controller.js';
 
 const PRAYER_NAMES={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
-const CLIPS=Object.fromEntries(Object.entries(PRAYER_NAMES).map(([key,name])=>['اقتربت صلاة '+name,'audio/reminders/approach-hayya-human-v1.mp3']));
-CLIPS['الصلاة خير من النوم']='audio/reminders/fajr-phrase-human-v1.mp3';
+const CLIPS=Object.fromEntries(Object.entries(PRAYER_NAMES).map(([key,name])=>['اقتربت صلاة '+name,'audio/reminders/approach-'+key+'-human-v2.mp3']));
+CLIPS['الصلاة خير من النوم']='audio/reminders/fajr-phrase-single-human-v2.mp3';
+let activeAnnouncement=null;
 
 // Short, same-origin recordings work without installed voices or a speech service.
 // Browser scheduling remains foreground only; Android owns background delivery.
@@ -13,12 +14,14 @@ export class PrayerAnnouncements{
  }
  emit(status){this.status=status;try{this.onState(status)}catch{}return {status}}
  init(){return Promise.resolve(this.emit(this.Audio?'ready':'unavailable'))}
- cancel(){this.generation++;this.pending?.();this.pending=null;}
+ cancel(){this.generation++;this.pending?.();this.pending=null;if(activeAnnouncement===this)activeAnnouncement=null;}
  speak(text){
+  if(activeAnnouncement&&activeAnnouncement!==this)activeAnnouncement.cancel();
   this.cancel();const gen=this.generation,src=CLIPS[text];
   if(!src||!this.Audio)return Promise.resolve(this.emit('unavailable'));
   const saved=Number(this.getSettings()?.volume),volume=Number.isFinite(saved)?Math.max(0,Math.min(1,saved)):1;
   if(volume===0)return Promise.resolve(this.emit('muted'));
+  activeAnnouncement=this;
   return new Promise(resolve=>{
    let player,timer,done=false;
    const finish=status=>{
@@ -26,6 +29,7 @@ export class PrayerAnnouncements{
     if(this.pending===cancel)this.pending=null;
     if(player){player.onended=null;player.onerror=null;try{player.pause();player.removeAttribute('src');player.load()}catch{}}
     if(this.player===player)this.player=null;
+    if(activeAnnouncement===this)activeAnnouncement=null;
     // A late completion never overwrites state emitted by its replacement.
     resolve(gen===this.generation||status==='cancelled'?this.emit(status):{status:'cancelled'});
    };

@@ -14,7 +14,7 @@ assert(!/body\.dark\{[^}]*--/.test(main),'Theme palettes must be defined in one 
 assert.equal((main.match(/\.prayer\.active\{/g)||[]).length,1);assert(!css.includes('.prayer.active'));
 assert(main.includes('.prayer.active{border:3px solid var(--prayer-highlight);background:var(--card)}'));
 assert(contrast(colors['prayer-highlight'],colors.card)>=4.5);assert(contrast(dark['prayer-highlight'],dark.card)>=4.5);assert.notEqual(colors['prayer-highlight'],colors.gold);
-assert(css.includes('.prayer-switches input[type=checkbox]:checked{background:var(--control-fill);border-color:var(--control-fill)}'));for(const theme of [colors,dark])assert(contrast('#ffffff',theme['control-fill'])>=4.5,'Checked switches and filled controls must contrast with their white labels/thumbs');
+assert(css.includes('.prayer-switches input[type=checkbox]:checked{background:var(--control-fill);border-color:var(--control-fill)}'));for(const theme of [colors,dark])assert(contrast(theme['control-ink'],theme['control-fill'])>=4.5,'Checked switches and filled controls must contrast with their actual foreground labels/thumbs');
 assert(main.includes('grid-template-columns:minmax(0,1fr);align-items:start'));assert(main.includes('font-family:SalatiMadinahClassic,AmiriQuran,serif'));
-assert(!main.includes('.verse-audio-dialog'));assert(!fs.readFileSync('quran-controller.js','utf8').includes('verseAudioPlay'));assert(fs.readFileSync('dist/index.html','utf8').includes('href="light-theme.css"'));
+assert(!main.includes('.verse-audio-dialog'));assert(!fs.readFileSync('quran-controller.js','utf8').includes('verseAudioPlay'));assert(/href="light-theme(?:-v[\d.]+)?\.css"/.test(fs.readFileSync('dist/index.html','utf8')));
 console.log('PASS: single theme palette; bold Cairo UI in both themes; 21:1 light text contrast; prayer highlight contrast >=4.5:1 in both themes; Quran face/weight preserved; content-height cards and compact verse list retained.');

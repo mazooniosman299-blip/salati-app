@@ -12,6 +12,7 @@ with sync_playwright() as p:
  browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
  context=browser.new_context(viewport={'width':390,'height':844})
  context.add_init_script("localStorage.setItem('salati',JSON.stringify({lat:24.7136,lon:46.6753,zone:'Asia/Riyadh',name:'الرياض',locationSet:true,locationMode:'manual',audio:{enabled:false,volume:1}}));")
+ context.add_init_script("const OriginalAudio=window.Audio;window.__reminderPlayers=[];window.Audio=function(src){const player=new OriginalAudio(src);window.__reminderPlayers.push(player);return player};");
  page=context.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  base=f'http://127.0.0.1:{server.server_port}/'
  page.goto(base,wait_until='domcontentloaded');page.locator('[data-tab="settings"]').click()
@@ -22,15 +23,19 @@ with sync_playwright() as p:
   except Exception:
    print('PREVIEW DEBUG',button,page.locator('#announcementStatus').text_content(),errors);raise
   page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
+ for _ in range(3):
+  page.locator('#previewApproach').click();page.locator('#previewFajrPhrase').click()
+  assert page.evaluate('window.__reminderPlayers.filter(p=>!p.paused&&!p.ended&&p.getAttribute("src")).length')<=1
+ page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  # Install and take control before testing offline; this tests the actual service-worker fetch path.
  page.evaluate("async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));}")
  context.set_offline(True)
- for filename in ['approach-hayya-human-v1','fajr-phrase-human-v1']:
+ for filename in ['approach-'+prayer+'-human-v2' for prayer in ['fajr','dhuhr','asr','maghrib','isha']]+['fajr-phrase-single-human-v2']:
   assert page.evaluate("async name=>{const response=await fetch('audio/reminders/'+name+'.mp3');return response.ok&&(await response.arrayBuffer()).byteLength>1000}",filename)
  page.locator('#previewFajrPhrase').click()
  page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  assert not errors,errors
- (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':2,'offline_cached_clips':2,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
+ (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':2,'offline_cached_clips':6,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
  browser.close()
 server.shutdown()
-print('PASS: both real reminder previews finish, both real clips served offline, offline Fajr preview completes without installed speech voices.')
+print('PASS: both real reminder previews finish, all six real clips served offline, offline Fajr preview completes without installed speech voices.')

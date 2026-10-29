@@ -1,15 +1,16 @@
-Real photographic mosque backgrounds — Salati1.0.99
+Real photographic mosque frames — Salati1.0.100
 
-Day photo: Mauricio Krupka Buendia, Pexels photo30052188.
-https://www.pexels.com/photo/stunning-mosque-architecture-in-muscat-oman-30052188/
-Original: https://images.pexels.com/photos/30052188/pexels-photo-30052188.jpeg
-Night photo: Reyyan, Pexels photo30926892.
-https://www.pexels.com/photo/stunning-night-view-of-sultan-qaboos-grand-mosque-30926892/
-Original: https://images.pexels.com/photos/30926892/pexels-photo-30926892.jpeg
+Day: Jackson Jacob / Pexels20584925.
+https://www.pexels.com/photo/sheikh-zayed-grand-mosque-in-abu-dhabi-in-uae-20584925/
+https://images.pexels.com/photos/20584925/pexels-photo-20584925.jpeg?w=1000
+SHA256:c6fe84d91ccef12234c14673a953513d6efb1cd5dac4892e92656652a7ed30cb
 
-License for both: https://www.pexels.com/license/
-Pexels permits use and modification, including applications. Credit is preserved here.
-The named photographers published these camera photographs. Scene details match between the pair.
-The source titles may misidentify the building; Salati makes no building-name claim.
+Night: Muhammad Ibrahim / Pexels13299493.
+https://www.pexels.com/photo/the-sheikh-zayed-grand-mosque-at-night-13299493/
+https://images.pexels.com/photos/13299493/pexels-photo-13299493.jpeg?w=1000
+SHA256:ddae823e2bbb4d0f9e963c9b9b4ff13b5d960d2bf229f57ba5a8167e09b39933
 
-Derivatives: conventional crop and WebP encoding only. Day crop from1067x1600 source preview:0,300,1067,950; night:0,220,1067,850. Dry architecture, no sea/pool/reflection. No AI generation, AI enhancement, sky substitution, recoloring, or compositing.
+License: https://www.pexels.com/license/ . App use allowed. No endorsement implied.
+Both1000x667 JPEGs are the exact public source bytes, downloaded and hash-verified through the repository's manual asset-preparation workflow. They are real existing photographer images; no cropping, person removal, AI generation, image enhancement, compositing or invented day/night conversion is applied. Visible domes/minarets are inside the frame; no visible people or pool/sea. Natural glass/paving highlights remain in these photographs, distinct from a mirrored mosque in a body of water.
+
+Main hero uses intrinsic image dimensions and object-fit:contain. Android widget uses fitCenter. The full source frame is preserved on narrow/wide layouts; launcher size may introduce neutral margins rather than cut off the mosque.

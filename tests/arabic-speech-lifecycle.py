@@ -60,7 +60,7 @@ public final class ArabicSpeechLifecycleTest {
  public static void main(String[] args){
   Context c=new Context();AudioAttributes attributes=new AudioAttributes();ArabicSpeech speech=new ArabicSpeech(c,attributes);int[] done={0};
   speech.speak(FAJR,.35f,()->done[0]++);PcmAudioPlayer player=PcmAudioPlayer.latest;
-  check(player.path.equals("www/audio/reminders/fajr-phrase-human-v1.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
+  check(player.path.equals("www/audio/reminders/fajr-phrase-single-human-v2.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
   status(c,"playing");check(MainActivity.events.get(0).equals("loading"),"loading precedes playing");check(done[0]==0,"adhan waits for clip completion");
   speech.setVolume(.0875f);check(Math.abs(player.volume-.0875f)<.0001,"ducked volume reaches active PCM prelude");speech.setVolume(.35f);check(Math.abs(player.volume-.35f)<.0001,"focus gain restores configured volume");
   speech.setVolume(.6f);check(player.volume==.6f,"live user volume reaches active prelude");speech.setVolume(2f);check(player.volume==1f,"live volume clamps high values");speech.setVolume(-1f);check(player.volume==0f,"live volume clamps negative values");
@@ -68,7 +68,11 @@ public final class ArabicSpeechLifecycleTest {
   player.listener.complete();speech.setVolume(.8f);check(player.volumeChanges==validChanges,"volume update after close is harmless");player.listener.complete();player.listener.error(new Exception("late"));
   check(done[0]==1&&player.stopped==1,"continuation and cleanup happen exactly once");status(c,"finished");check(Handler.timers.isEmpty(),"completion clears timeout");
   String[] keys={"fajr","dhuhr","asr","maghrib","isha"},names={"الفجر","الظهر","العصر","المغرب","العشاء"};
-  for(int i=0;i<keys.length;i++){speech.speak("اقتربت صلاة "+names[i],1f,()->done[0]++);player=PcmAudioPlayer.latest;check(player.path.equals("www/audio/reminders/approach-hayya-human-v1.mp3"),"prayer maps to own recording: "+keys[i]);player.listener.complete();}
+  for(int i=0;i<keys.length;i++){speech.speak("اقتربت صلاة "+names[i],1f,()->done[0]++);player=PcmAudioPlayer.latest;check(player.path.equals("www/audio/reminders/approach-"+keys[i]+"-human-v2.mp3"),"prayer maps to own recording: "+keys[i]);player.listener.complete();}
+  speech.speak(FAJR,1f,()->done[0]++);PcmAudioPlayer sharedOld=PcmAudioPlayer.latest;
+  ArabicSpeech otherOwner=new ArabicSpeech(c,attributes);otherOwner.speak(FAJR,1f,()->done[0]++);
+  check(sharedOld.stopped==1,"a different announcement owner must stop the previous PCM output");
+  int doneBeforeStale=done[0];sharedOld.listener.complete();check(done[0]==doneBeforeStale,"old owner cannot continue after replacement");otherOwner.close();
   final int[] old={0},replacement={0};speech.speak(FAJR,.5f,()->old[0]++);PcmAudioPlayer stale=PcmAudioPlayer.latest;speech.speak("اقتربت صلاة العصر",.7f,()->replacement[0]++);player=PcmAudioPlayer.latest;
   check(stale.stopped==1,"rapid replacement stops old clip");stale.listener.complete();stale.listener.error(new Exception("late"));check(old[0]==0&&replacement[0]==0,"stale callback cannot finish replacement");status(c,"playing");player.listener.complete();check(replacement[0]==1,"replacement continues exactly once");
   speech.speak(FAJR,1f,()->old[0]++);player=PcmAudioPlayer.latest;speech.close();player.listener.complete();player.listener.error(new Exception("late"));Handler.advance(9000);check(old[0]==0&&Handler.timers.isEmpty(),"explicit close suppresses callbacks and deadlines");

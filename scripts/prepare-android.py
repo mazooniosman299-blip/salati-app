@@ -10,6 +10,14 @@ if entry:
     (target/'app.js').unlink(missing_ok=True)
     for old in target.glob('app-v*.js'):
         if old.name!=entry[1]:old.unlink()
+# Keep only the current app styles and referenced mosque asset in the APK.
+index=(target/'index.html').read_text()
+stylesheet_references='\n'.join(page.read_text() for page in target.rglob('*.html'))
+for style in target.glob('*.css'):
+    if re.fullmatch(r'(style|light-theme|salati-design)(-v[\d.]+)?\.css',style.name) and not re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):style.unlink()
+for image in (target/'images').glob('mosque*'):
+    if image.is_file() and image.suffix in ['.webp','.jpg'] and 'images/'+image.name not in index:image.unlink()
+
 p=target/'index.html';s=p.read_text()
 s=re.sub(r'data-ar="فعّل الأذان مرة واحدة؛[^"\n]+" data-en="Enable adhan once;[^"\n]+"', 'data-ar="فعّل الأذان واسمح بالإشعارات والمنبّهات الدقيقة لتشغيله في الخلفية. اتبع إعدادات توفير البطارية في هاتفك، وافتح التطبيق مجددًا بعد الإيقاف الإجباري. يعتمد التشغيل على أذونات أندرويد وصوت الجهاز." data-en="Enable adhan and allow notifications and exact alarms for background playback. Check your phone’s battery restrictions and reopen the app after a force stop. Playback depends on Android permissions and device volume."',s)
 s=s.replace('الأذان والدعاء يعملان بعد تفعيل الصوت أثناء فتح التطبيق ونشاطه؛ لا توجد تنبيهات مضمونة عند إغلاقه أو قفل الشاشة.','أذان الخلفية يستخدم منبّهات أندرويد وخدمة تشغيل صوتية، ويحتاج أذونات الإشعارات والمنبّهات الدقيقة. قد تمنع قيود البطارية أو الإيقاف الإجباري تشغيله. تُحفظ جداول محسوبة لأكثر من سنة؛ افتح التطبيق دوريًا لتجديدها، وحدّث الموقع عند السفر.')

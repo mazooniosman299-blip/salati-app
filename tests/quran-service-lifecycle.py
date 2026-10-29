@@ -17,7 +17,7 @@ code='''public class ServiceBranches {
  void publish(){}void tick(){}void releaseWake(){}void releasePlayer(){}void abandonFocus(){}void stopForeground(int mode){}void finish(String result){errors++;'''+finish+'''}
  void missing(int id){'''+missing+'''}
  void prepared(MediaPlayer mp){'''+prepared+'''}
- static class Adhan {Pcm player=new Pcm();Settings settings=new Settings();Focus focusState=new Focus();void applyFocus(){'''+focus+'''}}
+ static class Adhan {Pcm player=new Pcm(),prelude;Settings settings=new Settings();Focus focusState=new Focus();void applyFocus(){'''+focus+'''}}
  public static void main(String[] args){int failures=0;
  ServiceBranches s=new ServiceBranches();s.missing(1);if(s.stopped){System.err.println("Cancelled old start stopped a newer queued start");failures++;}
  s=new ServiceBranches();s.player=new MediaPlayer();s.player.fail=true;try{s.prepared(s.player);if(s.errors!=1){System.err.println("Prepared error not reported");failures++;}}catch(IllegalStateException e){System.err.println("Prepared callback leaked MediaPlayer error");failures++;}

@@ -1,36 +1,79 @@
 {
   "recordings": [
     {
-      "file": "approach-hayya-human-v1.mp3",
+      "source": "ramy-fajr.m4a",
+      "start": 0.95,
+      "end": 6.95,
+      "duration": 6.0,
+      "peak_dbfs": -4.05,
+      "clipped_samples": 0,
+      "sha256": "79fbe09f8bb15d23338ddf4c0456e9ea856bdd33cf40405350d5379b4fb79c2b",
+      "file": "approach-fajr-human-v2.mp3",
       "recording_type": "recorded-human",
-      "phrase": "حي على الصلاة",
-      "duration_seconds": 10.8,
-      "source_excerpt_seconds": [
-        63.5,
-        74.3
-      ],
-      "sha256": "9a1bf07368cab2926ce4328bbfb662efdb52c4543152338d3b5edd3bcb40ff26",
       "synthetic": false
     },
     {
-      "file": "fajr-phrase-human-v1.mp3",
+      "source": "ramy-dhuhr.m4a",
+      "start": 2.03,
+      "end": 7.04,
+      "duration": 5.01,
+      "peak_dbfs": -4.24,
+      "clipped_samples": 0,
+      "sha256": "63a73813e8a46d6d7b3b161b16c5bb96272c0f40387d56a215cc277d7aa8a1e6",
+      "file": "approach-dhuhr-human-v2.mp3",
       "recording_type": "recorded-human",
-      "phrase": "الصلاة خير من النوم",
-      "duration_seconds": 19.75,
-      "source_excerpt_seconds": [
-        25.85,
-        45.6
-      ],
-      "sha256": "adabd1e6d8435dea1c5081040e6af2a56f0173c1a4106a101144aeaee6e2c6a4",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-asr.m4a",
+      "start": 0.85,
+      "end": 5.6,
+      "duration": 4.75,
+      "peak_dbfs": -4.25,
+      "clipped_samples": 0,
+      "sha256": "32ebf2d3ea63e26a3ce2d1a910c80685dd90e88f025140b608432ef26705b860",
+      "file": "approach-asr-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-maghrib.m4a",
+      "start": 0.95,
+      "end": 5.75,
+      "duration": 4.8,
+      "peak_dbfs": -4.27,
+      "clipped_samples": 0,
+      "sha256": "8b8b175c8e2cd4857a71943fa0c52bc4892d42d4aa3e16cce0b58222425cb183",
+      "file": "approach-maghrib-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-isha.m4a",
+      "start": 1.2,
+      "end": 6.0,
+      "duration": 4.8,
+      "peak_dbfs": -4.16,
+      "clipped_samples": 0,
+      "sha256": "6d7d02e101d40422bbb72a78d2deeeb5c1ea4ff8a76ad77708c12d3bfbf41746",
+      "file": "approach-isha-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "fajr-clean-v3.mp3",
+      "start": 214.2,
+      "end": 228.2,
+      "duration": 14.0,
+      "peak_dbfs": -4.25,
+      "clipped_samples": 0,
+      "sha256": "c6e8d705ccef1add81cd667e8fa15f5bfecf4eadc41d675471395e9f2f43b93a",
+      "file": "fajr-phrase-single-human-v2.mp3",
+      "recording_type": "recorded-human",
       "synthetic": false
     }
   ],
-  "approach_prayer_names": "notification only; user selected the shared human call",
-  "signal_checks": {
-    "sample_rate": 44100,
-    "channels": 1,
-    "clipped_samples": 0,
-    "peak_below_dbfs": -4
-  },
-  "listening_review": "No subjective model listening; source attribution and ASR used, samples provided for user listening."
+  "approach_prayer_names": "spoken in each recording",
+  "processing": "contiguous excerpts only; no word assembly, voice generation or enhancement",
+  "subjective_audio_listening_performed": false
 }
