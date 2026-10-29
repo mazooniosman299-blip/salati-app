@@ -1,7 +1,7 @@
-# Salati1.0.107 action/reference separation
+# Salati1.0.108 corrected switch/audio scope
 
 final result: passed
 
-Latest explicit correction: blue is only for action commands; independent dark glass reference for all navigation, selector fields, option rows and Mushaf media. Compared actual rendered navigation/player/settings phone/desktop screenshots with the supplied visual. White library icons, charcoal frames and compact dark playback disc preserved. Actions #2563EB with white contrast5.17:1; hover/pressed states verified. Do not reuse action variables for glass materials.
+Blue only for on/off switches and audio preview/play/pause/stop. Off #153D7A; on #2563EB. Save/apply/cancel/adjustments/location, menus, navigation, cards and player frame remain charcoal glass. Existing dates, alignment,44px circles,12px footer gaps retained.
 
-Independent review found category/back navigation leaked blue and active navigation lost keyboard focus border. Both fixed, browser regressions passed and source re-reviewed. Shared nine-menu106 layout, widget date/right alignment,44px circles and footer12px gaps preserved. Current APK matches prepared assets, builds/lints/signs with original certificate. No physical device/install/native font-scale or subjective audio claim. Evidence: reports/release-1.0.107.json, reports/action-glass-1.0.107 and reports/review-1.0.107.md.
+Nine settings switches and two Quran toggles checked in both positions at390/1440. Other command/field/option/navigation negative checks pass. Six tabs, four navigation widths, five player widths; no overflow or page errors. Browser screenshot comparison performed. JS40 commands and theme/player behavior pass. Android builds/lints/signs with original certificate and exact assets. No physical device/install/native font-scale or subjective listening claim. Evidence: reports/audio-controls-1.0.108 and reports/release-1.0.108.json.

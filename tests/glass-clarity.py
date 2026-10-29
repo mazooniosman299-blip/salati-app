@@ -42,7 +42,7 @@ try:
     style=toggle.evaluate('(e)=>{let c=getComputedStyle(e),t=getComputedStyle(e,"::before");return{border:c.borderTopColor,borderWidth:c.borderTopWidth,track:c.backgroundColor,gradient:c.backgroundImage,w:e.offsetWidth,h:e.offsetHeight,thumb:t.backgroundColor,thumbWidth:t.width}}')
     assert style['borderWidth']=='1px' and style['w']==66 and style['h']==38,style
     assert style['thumb']=='rgb(255, 255, 255)'and style['thumbWidth']=='30px',style
-    assert style['border']==('rgb(255, 255, 255)'if checked else'rgba(255, 255, 255, 0.46)'),style
+    assert style['border']=='rgb(59, 130, 246)',style
    toggle.evaluate('(e)=>e.checked=false')
    border=page.locator('#previewFajrPhrase').evaluate('(e)=>{let c=getComputedStyle(e);return{border:c.borderTopColor,width:c.borderTopWidth,color:c.color,bg:c.backgroundColor}}')
    assert border['border']=='rgba(255, 255, 255, 0.46)'and border['width']=='1px',border

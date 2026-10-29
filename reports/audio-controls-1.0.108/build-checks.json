@@ -1,0 +1,13 @@
+{
+  "draft_version": "1.0.108",
+  "version_code": 109,
+  "published": false,
+  "javascript_commands": 40,
+  "theme_controls": "PASS",
+  "playback_behavior": "PASS",
+  "release_build": "PASS",
+  "apk_asset_identity": "PASS",
+  "signed_apk_sha256": "e545cf72659ce2095bf48706abfc1e8fe759f9ffa5da7968ebaaae7572ae00b8",
+  "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+  "physical_device_tested": false
+}

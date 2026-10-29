@@ -1,0 +1,87 @@
+{
+  "result": "PASS",
+  "language": "ar",
+  "cases": [
+    {
+      "viewport": 360,
+      "player": {
+        "x": 21,
+        "y": 599.75,
+        "width": 318,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgba(255, 255, 255, 0.14)",
+        "disc": "rgb(59, 130, 246)",
+        "track": "rgba(255,255,255,.3)",
+        "edgeToken": "rgba(255,255,255,.14)",
+        "trackToken": "rgba(255,255,255,.3)"
+      }
+    },
+    {
+      "viewport": 390,
+      "player": {
+        "x": 27,
+        "y": 599.75,
+        "width": 336,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgba(255, 255, 255, 0.14)",
+        "disc": "rgb(59, 130, 246)",
+        "track": "rgba(255,255,255,.3)",
+        "edgeToken": "rgba(255,255,255,.14)",
+        "trackToken": "rgba(255,255,255,.3)"
+      }
+    },
+    {
+      "viewport": 412,
+      "player": {
+        "x": 27,
+        "y": 599.75,
+        "width": 358,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgba(255, 255, 255, 0.14)",
+        "disc": "rgb(59, 130, 246)",
+        "track": "rgba(255,255,255,.3)",
+        "edgeToken": "rgba(255,255,255,.14)",
+        "trackToken": "rgba(255,255,255,.3)"
+      }
+    },
+    {
+      "viewport": 1366,
+      "player": {
+        "x": 116,
+        "y": 535.25,
+        "width": 1134,
+        "height": 137
+      },
+      "styles": {
+        "edge": "rgba(255, 255, 255, 0.14)",
+        "disc": "rgb(59, 130, 246)",
+        "track": "rgba(255,255,255,.3)",
+        "edgeToken": "rgba(255,255,255,.14)",
+        "trackToken": "rgba(255,255,255,.3)"
+      }
+    },
+    {
+      "viewport": 1600,
+      "player": {
+        "x": 233,
+        "y": 535.25,
+        "width": 1134,
+        "height": 137
+      },
+      "styles": {
+        "edge": "rgba(255, 255, 255, 0.14)",
+        "disc": "rgb(59, 130, 246)",
+        "track": "rgba(255,255,255,.3)",
+        "edgeToken": "rgba(255,255,255,.14)",
+        "trackToken": "rgba(255,255,255,.3)"
+      }
+    }
+  ],
+  "page_errors": []
+}
