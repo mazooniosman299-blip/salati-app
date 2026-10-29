@@ -1,0 +1,33 @@
+/* Shared theme palette. Cairo UI typography is defined once in style.css. */
+:root{--bg:#ffffff;--card:#ffffff;--ink:#000000;--muted:#000000;--line:#667e9e;--gold:#263d62;--prayer-highlight:#304969;--accent:#263d62;--brand-gold:#000000;--divider:#c3d0e3;--selected:#e6edf8;--control-fill:#2e4262;--control-edge:#304969;--control-hover:#233652;--control-ink:#ffffff;--control-disabled:#e3eaf5;--control-disabled-ink:#33496b;--focus-ring:#304663;--instrument-surface:#eaf0f9;--instrument-line:#aebbd0;--instrument-ink:#000;--instrument-secondary:#000;--instrument-accent:#304969;--surface-solid:#f9fbff;--glass-fill:rgba(255,255,255,.72);--glass-edge:rgba(89,111,151,.28);--glass-frame:rgba(215,227,248,.30);--nav-selection-fill:rgba(116,143,187,.18);--glass-shadow:0 12px 34px #25375914,inset 0 1px 0 #ffffff;--page-glow:radial-gradient(ellipse at 20% 12%,#e3e9f5,transparent 48%),radial-gradient(ellipse at 75% 25%,#f2e9ed,transparent 42%),linear-gradient(#ffffff,#f0f4fb);--progress-fill:#263d62;--progress-track:#bcc9dd;--input-fill:rgba(255,255,255,.68);--glass-sheen:rgba(255,255,255,.30);--switch-off:#586b88;--reading-surface:#ffffff;--reciting-fill:#dce7f8}
+body:not(.dark){color:var(--ink);background:var(--bg);color-scheme:light;font-synthesis:none}
+body:not(.dark) .intro p{color:var(--muted);font-weight:700}
+body:not(.dark) .note,body:not(.dark) .eyebrow,body:not(.dark) .time-context,body:not(.dark) .location p{color:var(--muted);font-size:15px;font-weight:700}
+body:not(.dark) .card,body:not(.dark) .adhkar-card{background:var(--card);border-color:var(--line)}
+body:not(.dark) .choice-trigger,body:not(.dark) input:not([type=checkbox]):not([type=range]),body:not(.dark) select{background:#ffffff;color:var(--ink);border-color:var(--line);font-weight:700}
+body:not(.dark) input::placeholder{color:#000000;opacity:1;font-weight:700}
+body:not(.dark) .choice-trigger:disabled,body:not(.dark) input:disabled,body:not(.dark) select:disabled{opacity:1;color:var(--muted);-webkit-text-fill-color:var(--muted);background:#ffffff}
+body:not(.dark) label span,body:not(.dark) legend,body:not(.dark) summary{color:var(--ink);font-weight:700}
+body:not(.dark) .adhkar-text{font-weight:700;color:var(--ink)}
+body:not(.dark) .adhkar-repeat{color:#000000;background:#ffffff}
+body:not(.dark) .adhkar-source,body:not(.dark) .adhkar-source a{color:#000000}
+body:not(.dark) .choice-option{background:#ffffff;color:var(--ink)}
+body:not(.dark) .choice-option[aria-selected=true]{background:#ffffff;border-color:#000000}
+body:not(.dark) .floating-menu{background:#fff;color:var(--ink);border-color:var(--line)}
+body:not(.dark) .floating-menu button[aria-checked=true]{background:#ffffff;color:#000000}
+body:not(.dark) .adhkar-shortcuts button[aria-pressed=true]{background:#ffffff;color:#000000;border-color:#000000}
+
+/* Plain page surfaces; no colored light-mode background. */
+body:not(.dark) .quran-reading-page,body:not(.dark) .mushaf-sheet,body:not(.dark) .mushaf-sheet .quran-surah-title{background:#fff;color:#000}
+body:not(.dark) .mushaf-page-head,body:not(.dark) .mushaf-page-number,body:not(.dark) .reading-page-heading,body:not(.dark) .reading-page-number{color:#000}
+body:not(.dark) .choice-option[aria-selected=true],body:not(.dark) .floating-menu button[aria-checked=true],body:not(.dark) .floating-menu button[aria-selected=true],body:not(.dark) .adhkar-shortcuts button[aria-pressed=true]{box-shadow:inset 0 0 0 1px #000}
+body.dark{--bg:#1a2030;--card:#242d41;--ink:#ffffff;--muted:#ffffff;--line:#8d9bb3;--gold:#edf4ff;--prayer-highlight:#dbe7fa;--accent:#ffffff;--brand-gold:#ffffff;--divider:#4d5970;--selected:#384762;--control-fill:#344763;--control-edge:#a4b9dc;--control-hover:#405676;--control-ink:#ffffff;--control-disabled:#283349;--control-disabled-ink:#bcc9de;--focus-ring:#edf4ff;--instrument-surface:#2c374f;--instrument-line:#788ba8;--instrument-ink:#ffffff;--instrument-secondary:#ffffff;--instrument-accent:#e4edff;--surface-solid:#232c40;--glass-fill:rgba(43,54,78,.62);--glass-edge:rgba(225,237,255,.28);--glass-frame:rgba(189,210,250,.08);--nav-selection-fill:rgba(197,216,252,.17);--glass-shadow:0 16px 42px #0b112a38,inset 0 1px 0 #ffffff26;--page-glow:radial-gradient(ellipse at 20% 16%,#66516675,transparent 46%),radial-gradient(ellipse at 85% 28%,#39476688,transparent 48%),linear-gradient(150deg,#242a3b,#1a2030 60%,#182030);color-scheme:dark;--progress-fill:#f3f7ff;--progress-track:#5a6a88;--input-fill:rgba(23,31,49,.64);--glass-sheen:rgba(211,226,255,.09);--switch-off:#1d2c45;--reading-surface:#172338;--reciting-fill:#405779}
+
+body:not(.dark) .prayer-switches input[type=checkbox]:checked,body.dark .prayer-switches input[type=checkbox]:checked{background:var(--control-fill);border-color:var(--control-fill)}
+
+/* Strengthen UI labels without changing the Quran reading typeface or weight. */
+body:not(.dark) .site-nav button,body:not(.dark) .location #locate,body:not(.dark) #settings label,body:not(.dark) #settings button,body:not(.dark) .adhkar-library>.fields label{font-weight:700}
+
+/* Form surfaces share the reference material instead of legacy neutral gray fills. */
+body.dark .choice-trigger,body.dark input:not([type=checkbox]):not([type=range]),body.dark select{background:var(--input-fill);color:var(--ink);border-color:var(--line)}
+body.dark input::placeholder{color:#c5cfdf;opacity:1}

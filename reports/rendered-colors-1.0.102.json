@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "states": 56,
+  "computed_styles": 19972,
+  "failures": [],
+  "checks": "Non-black/white neutral gray computed text, fill, stroke, backgrounds, active borders and outlines. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+}

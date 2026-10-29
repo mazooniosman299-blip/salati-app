@@ -5,7 +5,7 @@ const fs=require('node:fs'),path=require('node:path');const root=path.resolve(__
 // Version every app stylesheet with the entrypoint so browser caches cannot mix releases.
 const version=target[1].match(/app-v([\d.]+)\.js/)[1];
 let currentHtml=fs.readFileSync(path.join(root,'dist/index.html'),'utf8');
-for(const name of ['style','light-theme','salati-design']){
+for(const name of ['style','light-theme','salati-design','reference-layout']){
  const filename=name+'-v'+version+'.css';
  fs.copyFileSync(path.join(root,'dist',name+'.css'),path.join(root,'dist',filename));
  const pattern=new RegExp('href="'+name+'(?:-v[\\d.]+)?\\.css"','g');

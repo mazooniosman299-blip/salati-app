@@ -14,7 +14,7 @@ if entry:
 index=(target/'index.html').read_text()
 stylesheet_references='\n'.join(page.read_text() for page in target.rglob('*.html'))
 for style in target.glob('*.css'):
-    if re.fullmatch(r'(style|light-theme|salati-design)(-v[\d.]+)?\.css',style.name) and not re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):style.unlink()
+    if re.fullmatch(r'(style|light-theme|salati-design|reference-layout)(-v[\d.]+)?\.css',style.name) and not re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):style.unlink()
 for image in (target/'images').glob('mosque*'):
     if image.is_file() and image.suffix in ['.webp','.jpg'] and 'images/'+image.name not in index:image.unlink()
 

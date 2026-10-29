@@ -51,7 +51,7 @@ class Responsive(unittest.TestCase):
   for width in [320,390,600,760]:
    for dark in [False,True]:
     with self.subTest(width=width,dark=dark):
-     c=Cascade(width,dark);label=c.element('//div[@class="hero-timer"]/small');self.assertEqual(c.style(label)['color'],'#ffffff' if dark else '#000000')
+     c=Cascade(width,dark);label=c.element('//div[@class="hero-timer"]/small');self.assertEqual(c.style(label)['color'],'#bed0dc' if dark else '#19394b')
      for e in [c.element('//div[@class="location-identity"]'),c.element('//div[@class="location-date"]')]:self.assertNotIn('180px',c.style(e).get('flex',''))
      icons=[c.by_element[e] for e in c.root.xpath('//nav/button/*[self::svg or self::img]')];self.assertEqual(len(icons),6);self.assertTrue(all(c.pixels(e,'width')==24 and c.pixels(e,'height')==24 for e in icons),[(c.pixels(e,'width'),c.pixels(e,'height')) for e in icons])
      photo=c.element('//div[@class="hero-picture"]/img');self.assertEqual(c.style(photo)['height'],'auto');self.assertEqual(c.style(photo)['position'],'static');self.assertEqual(c.style(photo)['object-fit'],'contain')

@@ -48,7 +48,7 @@ public final class AdsController {
   container.setContentDescription("إعلان / Advertisement");
   container.setOrientation(LinearLayout.VERTICAL);
   container.setGravity(Gravity.CENTER_HORIZONTAL);
-  container.setBackgroundColor(Color.rgb(20, 20, 20));
+  container.setBackgroundColor(Color.rgb(6, 18, 26));
   container.setPadding(0, dp(8), 0, 0);
   container.setVisibility(View.GONE);
   root.addView(container, new LinearLayout.LayoutParams(-1, -2));

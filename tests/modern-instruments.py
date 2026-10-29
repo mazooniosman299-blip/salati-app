@@ -50,9 +50,15 @@ with sync_playwright() as p:
     assert style['after']=='none',(switch_id,dark,checked,'duplicate thumb',style)
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
     if checked:
-     assert style['track']==('rgb(244, 244, 245)' if dark else 'rgb(48, 48, 48)'),(switch_id,dark,style)
+     assert style['track']==page.evaluate('()=>{const e=document.createElement("span");e.style.color="var(--control-fill)";document.body.append(e);const color=getComputedStyle(e).color;e.remove();return color}'),(switch_id,dark,style)
      assert abs(float(style['thumb'].split(',')[-2])-18)<.2,(switch_id,dark,style)
-     assert contrast('rgb(17, 17, 19)' if dark else 'rgb(255, 255, 255)',style['track'])>=4.5
+     assert contrast('rgb(255, 255, 255)',style['track'])>=4.5
+  page.wait_for_function('document.querySelector("#qVerses [data-ayah] .ayah-number")!==null')
+  verse=page.locator('#qVerses [data-ayah]').first
+  verse.evaluate('(e)=>e.classList.add("is-reciting")')
+  badge=verse.locator('.ayah-number').evaluate('(e)=>({color:getComputedStyle(e).color,bg:getComputedStyle(e).backgroundColor})')
+  assert contrast(badge['color'],badge['bg'])>=4.5,(dark,'active verse number',badge)
+  verse.evaluate('(e)=>e.classList.remove("is-reciting")')
   page.screenshot(path=str(root/f'reports/ui-modern/quran-switches-{"dark" if dark else "light"}.png'))
 
   for tab in ['times','mushaf','tasbih','qibla','dhikr','settings']:
@@ -69,34 +75,36 @@ with sync_playwright() as p:
 
    assert page.locator('header .brand img').evaluate('(e)=>getComputedStyle(e).filter')=='none'
    page.mouse.move(0,0);page.wait_for_timeout(320)
-   fill='rgb(244, 244, 245)' if dark else 'rgb(48, 48, 48)'
+   fill=page.evaluate('()=>{const e=document.createElement("span");e.style.color="var(--control-fill)";document.body.append(e);const color=getComputedStyle(e).color;e.remove();return color}')
    ink='rgb(255, 255, 255)' if dark else 'rgb(0, 0, 0)'
    active=page.locator('header>.site-nav .active').evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})')
    assert active['color']==ink,(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert neutral(marker.evaluate('(e)=>getComputedStyle(e).backgroundColor'))
+   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor').startswith('rgba('),'reference selection must remain translucent glass'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
-   assert marker_box['width']==marker_box['height']==36 and abs(marker_box['x']+18-(active_box['x']+active_box['width']/2))<1.5 and abs(marker_box['y']-(active_box['y']+(0 if page.viewport_size['width']<=760 else 1)))<1.5,(dark,tab,marker_box,active_box)
+   assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
    inactive=page.locator('header>.site-nav button:not(.active)').first
    assert inactive.evaluate('(e)=>getComputedStyle(e).color')==ink
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
     for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e).backgroundColor}))'):
-     assert style['bg']==fill and style['color']==('rgb(17, 17, 19)' if dark else 'rgb(255, 255, 255)'),(dark,tab,style)
+     expected_bg=page.evaluate('getComputedStyle(document.body).getPropertyValue("--media-fill").trim()') if style['id']=='qTransport' else None
+     if expected_bg:expected_bg=page.locator('#qTransport').evaluate('(e)=>{const x=document.createElement("i");x.style.color="var(--media-fill)";document.body.append(x);const c=getComputedStyle(x).color;x.remove();return c}')
+     assert style['bg']==(expected_bg or fill) and style['color']==(ink if style['id']=='qTransport' else 'rgb(255, 255, 255)'),(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':
     button=page.locator('#counter')
     page.keyboard.press('Tab');button.focus()
     focus=button.evaluate('(e)=>({color:getComputedStyle(e).outlineColor,width:getComputedStyle(e).outlineWidth,visible:e.matches(":focus-visible")})')
     assert focus['visible'] and focus['width']=='3px',(dark,focus)
-    assert contrast(focus['color'],'rgb(21, 23, 28)' if dark else 'rgb(255, 255, 255)')>=3,(dark,focus)
+    assert contrast(focus['color'],'rgb(35, 44, 64)' if dark else 'rgb(255, 255, 255)')>=3,(dark,focus)
     button.evaluate('(e)=>e.disabled=true');page.wait_for_timeout(200)
     disabled=button.evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,opacity:getComputedStyle(e).opacity})')
     assert disabled['opacity']=='1' and disabled['bg']!=fill,(dark,disabled)
     assert contrast(disabled['color'],disabled['bg'])>=4.5,(dark,disabled)
     button.evaluate('(e)=>e.disabled=false');button.blur()
-    palette_evidence.append({'dark':dark,'controlFill':fill,'whiteTextContrast':round(contrast('rgb(17, 17, 19)' if dark else 'rgb(255, 255, 255)',fill),2),'focus':focus,'disabled':disabled})
+    palette_evidence.append({'dark':dark,'controlFill':fill,'whiteTextContrast':round(contrast('rgb(255, 255, 255)',fill),2),'focus':focus,'disabled':disabled})
    page.mouse.move(0,0);page.wait_for_timeout(220)
    page.screenshot(path=str(root/f'reports/ui-modern/{tab}-{"dark" if dark else "light"}.png'))
   for selector in ['.announcement-settings','.prayer-switches','.minute-adjustments']:
@@ -115,7 +123,7 @@ with sync_playwright() as p:
   assert page.locator('#approachMinutesOptions').is_visible()
   assert page.locator('#approachMinutesOptions [role=option]').count()==3
   selected=page.locator('#approachMinutesOptions [aria-selected=true]').evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})')
-  assert selected=={'bg':fill,'color':'rgb(17, 17, 19)' if dark else 'rgb(255, 255, 255)'},(dark,selected)
+  assert selected=={'bg':fill,'color':'rgb(255, 255, 255)'},(dark,selected)
   assert contrast(selected['color'],selected['bg'])>=4.5
   for style in page.locator('#approachMinutesOptions [aria-selected=false]').evaluate_all('(es)=>es.map(e=>({color:getComputedStyle(e).color}))'):
    assert style['color']==ink,(dark,style)
@@ -136,7 +144,7 @@ with sync_playwright() as p:
   assert page.locator('html').get_attribute('dir')==expected_direction
   assert page.locator('header>.site-nav .active').get_attribute('data-tab')==active_tab
   marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
-  assert marker_box['width']==marker_box['height']==36 and abs(marker_box['x']+18-(active_box['x']+active_box['width']/2))<1.5 and abs(marker_box['y']-(active_box['y']+(0 if page.viewport_size['width']<=760 else 1)))<1.5,(expected_direction,marker_box,active_box,'Language switch must realign the same active tab')
+  assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(expected_direction,marker_box,active_box,'Language switch must realign the same active tab')
   if expected_direction=='ltr':assert 'minutes' in page.locator('#approachMinutesPickerOpen').inner_text()
  page.click('[data-tab=tasbih]');page.click('#reset')
  for _ in range(34):page.click('#counter')
@@ -149,7 +157,7 @@ with sync_playwright() as p:
   for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
    page.click(f'[data-tab="{tab}"]')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
-   assert page.locator('.nav-symbol').evaluate_all('(icons)=>icons.every(i=>i.getBoundingClientRect().width===24&&i.getBoundingClientRect().height===24)'),(width,tab,'icon')
+   assert page.locator('header>.site-nav .nav-symbol').evaluate_all('(icons)=>icons.every(i=>i.getBoundingClientRect().width===24&&i.getBoundingClientRect().height===24)'),(width,tab,'icon')
  page.click('[data-tab=mushaf]')
  for selector in ['.mushaf-verses','.quran-text']:
   for styles in page.locator(selector).evaluate_all('(es)=>es.map(e=>({filter:getComputedStyle(e).filter,backdrop:getComputedStyle(e).backdropFilter}))'):
@@ -164,7 +172,7 @@ with sync_playwright() as p:
  page.emulate_media(reduced_motion='reduce');page.click('[data-tab=tasbih]')
  assert page.locator('#counter').evaluate('(e)=>getComputedStyle(e).transitionDuration')=='0s'
  marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('[data-tab=tasbih]').bounding_box()
- assert marker_box['width']==marker_box['height']==36 and abs(marker_box['x']+18-(active_box['x']+active_box['width']/2))<1.5 and abs(marker_box['y']-(active_box['y']+(0 if page.viewport_size['width']<=760 else 1)))<1.5,(marker_box,active_box,'Reduced motion snaps the selection')
+ assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(marker_box,active_box,'Reduced motion snaps the selection')
  result={'result':'PASS','widths':[320,390,600,760,1024,1440],'tabs':6,'themes':2,'checks':['no horizontal overflow','24px icons','custom menu selection keyboard Escape focus','tasbih count/reset ring','single Quran switch thumb and high-contrast checked track','Motion sliding glass navigation','same-tab RTL/LTR language realignment','control labels with >=4.5:1 contrast','disabled and focused controls','black/white timer and unselected labels','reduced motion and transparency','crisp Quran text and compact controls'],'pageErrors':errors,'palette':palette_evidence}
  assert not errors,errors
  (root/'reports/ui-modern/verification.json').write_text(json.dumps(result,indent=2)+'\n')

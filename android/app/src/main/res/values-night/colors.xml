@@ -1,0 +1,5 @@
+<resources>
+ <color name="salati_dialog_surface">#08141D</color>
+ <color name="salati_dialog_ink">#FFFFFF</color>
+ <color name="salati_dialog_accent">#DCE8FF</color>
+</resources>

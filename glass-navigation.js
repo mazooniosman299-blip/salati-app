@@ -12,7 +12,7 @@ export function setupGlassNavigation(){
  function update(shouldAnimate=true){
   const active=nav.querySelector('button.active');if(!active)return;
   const box=active.getBoundingClientRect(),origin=marker.offsetParent?.getBoundingClientRect()||{left:0,top:0};
-  const next={left:box.left-origin.left+(box.width-36)/2,top:box.top-origin.top+(window.innerWidth<=760?0:1),width:36,height:36};
+  const next={left:box.left-origin.left+4,top:box.top-origin.top+4,width:Math.max(0,box.width-8),height:Math.max(0,box.height-8)};
   animation?.stop();
   if(started&&shouldAnimate&&!reduced.matches){animation=animate(marker,next,{duration:.26,ease:[.22,1,.36,1]});}
   else{for(const [key,value] of Object.entries(next))marker.style[key]=value+'px';}

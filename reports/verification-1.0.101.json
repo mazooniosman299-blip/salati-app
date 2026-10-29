@@ -1,0 +1,24 @@
+{
+  "state": "local preview, not published",
+  "intended_version": "1.0.101",
+  "version_code": 102,
+  "npm_test_commands": 39,
+  "rendered_layout_cases": 72,
+  "android_build": "assembleDebug PASS; production ads variant",
+  "android_lint": {
+    "errors": 0,
+    "warnings": 34
+  },
+  "device_testing": false,
+  "new_voice_replacement": false,
+  "assets_verified_against_prepared_android_payload": true,
+  "rendered_color_audit": {
+    "result": "PASS",
+    "states": 56,
+    "computed_styles": 20324,
+    "failures": [],
+    "checks": "Non-black/white neutral gray computed text, fill, stroke, backgrounds, active borders and outlines. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+  },
+  "native_resources_gray_literals": 0,
+  "focus_input_browser_default_fixed": true
+}

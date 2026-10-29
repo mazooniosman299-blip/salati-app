@@ -28,31 +28,31 @@
   "palette": [
     {
       "dark": false,
-      "controlFill": "rgb(48, 48, 48)",
-      "whiteTextContrast": 13.2,
+      "controlFill": "rgb(46, 66, 98)",
+      "whiteTextContrast": 10.14,
       "focus": {
-        "color": "rgb(36, 36, 36)",
+        "color": "rgb(38, 61, 98)",
         "width": "3px",
         "visible": true
       },
       "disabled": {
-        "bg": "rgb(228, 228, 228)",
-        "color": "rgb(80, 80, 80)",
+        "bg": "rgb(227, 234, 245)",
+        "color": "rgb(51, 73, 107)",
         "opacity": "1"
       }
     },
     {
       "dark": true,
-      "controlFill": "rgb(244, 244, 245)",
-      "whiteTextContrast": 17.16,
+      "controlFill": "rgb(18, 37, 49)",
+      "whiteTextContrast": 15.73,
       "focus": {
-        "color": "rgb(238, 238, 238)",
+        "color": "rgb(229, 240, 247)",
         "width": "3px",
         "visible": true
       },
       "disabled": {
-        "bg": "rgb(41, 42, 48)",
-        "color": "rgb(191, 191, 199)",
+        "bg": "rgb(12, 28, 38)",
+        "color": "rgb(183, 203, 217)",
         "opacity": "1"
       }
     }

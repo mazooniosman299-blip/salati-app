@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const css=fs.readFileSync('dist/light-theme.css','utf8');
+const block=css.match(/body\.dark\{([^}]+)\}/)[1];
+const tokens=Object.fromEntries([...block.matchAll(/--([\w-]+):([^;]+)/g)].map(x=>[x[1],x[2]]));
+const rgb=h=>h.slice(1).match(/../g).map(v=>parseInt(v,16));
+const luminance=h=>rgb(h).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
+const contrast=(a,b)=>{const [lo,hi]=[luminance(a),luminance(b)].sort((x,y)=>x-y);return(hi+.05)/(lo+.05)};
+const [r,g,b]=rgb(tokens.bg);
+assert(b-r>=12&&g-r>=4,'reference backdrop must use the visible cool charcoal/navy tint rather than neutral near-black');
+assert.equal(tokens.ink,'#ffffff');assert(contrast(tokens.ink,tokens.card)>=7);
+assert(luminance(tokens['control-fill'])<.2,'reference controls are dark glass with white symbols, not opaque white discs');
+assert(contrast(tokens['control-ink'],tokens['control-fill'])>=4.5);
+const alpha=Number(tokens['glass-fill'].match(/,([.\d]+)\)$/)[1]);
+assert(alpha>=.45&&alpha<=.75,'glass must reveal the tinted backdrop instead of stacking nearly opaque gray surfaces');
+assert(contrast(tokens['progress-fill'],tokens['progress-track'])>=3,'audio progress must remain distinct from its track');
+console.log('PASS: reference navy/charcoal tint, white text, translucent glass and readable control/progress contrast.');

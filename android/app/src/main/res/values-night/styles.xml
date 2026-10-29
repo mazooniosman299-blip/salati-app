@@ -1,0 +1,14 @@
+<resources>
+ <style name="Theme.Salati" parent="android:style/Theme.Material.NoActionBar">
+  <item name="android:windowBackground">@color/salati_shell</item>
+  <item name="android:colorAccent">@color/salati_dialog_accent</item>
+  <item name="android:alertDialogTheme">@style/Theme.Salati.Dialog</item>
+ </style>
+ <style name="Theme.Salati.Dialog" parent="android:style/Theme.Material.Dialog.Alert">
+  <item name="android:colorAccent">@color/salati_dialog_accent</item>
+  <item name="android:colorBackground">@color/salati_dialog_surface</item>
+  <item name="android:windowBackground">@color/salati_dialog_surface</item>
+  <item name="android:textColorPrimary">@color/salati_dialog_ink</item>
+  <item name="android:textColorSecondary">@color/salati_dialog_ink</item>
+ </style>
+</resources>

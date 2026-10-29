@@ -4,14 +4,14 @@ import android.app.*;import android.content.*;import android.media.*;import andr
 
 /** Native foreground media owner. Leaving/destroying the WebView never pauses its queue. */
 public final class QuranService extends Service {
- static volatile QuranService active;static volatile String lastState="{}";static JSONObject pending;
- static synchronized void stage(JSONObject request){pending=request;}
+ static volatile QuranService active;static volatile String lastState="{}";static JSONObject pending;static volatile String requestedSession="";
+ static synchronized void stage(JSONObject request){pending=request;requestedSession=request.optString("session");}
  static synchronized JSONObject take(String session){if(pending==null||!session.equals(pending.optString("session")))return null;JSONObject request=pending;pending=null;return request;}
  static String start(Context context,String json){
   try{if(json.length()>3000000)throw new IllegalArgumentException();JSONObject request=new JSONObject(json);String session=request.getString("session");if(!session.matches("[a-zA-Z0-9-]{1,80}"))throw new IllegalArgumentException();stage(request);context.startForegroundService(new Intent(context,QuranService.class).setAction("START").putExtra("session",session));return "ok";}catch(Exception error){return "error";}
  }
  static synchronized void cancel(String session){if(pending!=null&&session.equals(pending.optString("session")))pending=null;}
- static String state(){return lastState;}
+ static String state(){try{return new JSONObject(lastState).put("requestedSession",requestedSession).toString();}catch(Exception ignored){return lastState;}}
  static String queue(){QuranService service=active;JSONArray current=service==null?null:service.rows;return current==null?"[]":current.toString();}
  static void command(String session,String action,long position,boolean repeat,boolean autoNext){if("STOP".equals(action))cancel(session);QuranService service=active;if(service==null)return;service.handler.post(()->{if(active!=service||service.terminal||!session.equals(service.session))return;switch(action){case "PAUSE":service.pause(true);break;case "PLAY":service.resume();break;case "STOP":service.finish("stopped");break;case "SEEK":service.seek(position);break;case "OPTIONS":service.playlist.repeat=repeat;service.playlist.autoNext=autoNext;service.publish();break;}});}
  final Handler handler=new Handler(Looper.getMainLooper());MediaPlayer player;MediaSession mediaSession;AudioManager manager;AudioFocusRequest focus;PowerManager.WakeLock wake;volatile JSONArray rows;QuranPlaylist playlist;String session="",reciter="",reciterName="",status="stopped";boolean ready,wantPlay,resumeOnGain,terminal;Runnable progressTick,prepareTimeout;long generation,focusEpoch,wakeRenewAt;final PlaybackWatchdog watchdog=new PlaybackWatchdog(45000);int duration,position,startId;

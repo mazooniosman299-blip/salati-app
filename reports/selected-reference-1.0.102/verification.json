@@ -1,0 +1,49 @@
+{
+  "version": "1.0.102",
+  "version_code": 103,
+  "status": "implemented and verified locally; not published",
+  "reference_image_name": "image(20261029-112243).png",
+  "original_user_image_available_as_local_file": true,
+  "generated_replacement_used": false,
+  "native_widget_background": "Exact approved source crop; one image in both day/night modes with legibility overlays",
+  "tests": {
+    "runtime_js": 39,
+    "responsive_cascade": 7,
+    "reference_widget_cases": 12,
+    "computed_color_states": 56,
+    "browser_geometry_interactions": "PASS",
+    "mocked_visible_transport_start_pause_resume_stop": "PASS",
+    "Android_debug_build": "PASS",
+    "prepared_apk_assets": "PASS",
+    "source_image_pixel_identity": "PASS",
+    "offline_original_mosque": "PASS",
+    "reference_media_browser": "PASS: no home controls; single Mushaf player; navigation preserves playhead and audio owner; start/pause/resume/stop; responsive dark/light; metadata refresh and failed-load retry.",
+    "reference_media_output": "Mocked for transport verification; no new recording-quality claim."
+  },
+  "published": false,
+  "physical_device_tested": false,
+  "reference_source": {
+    "source": "User uploaded Salati_Original_Mosque_References.zip / 01_original_widget_reference.png",
+    "source_repository_path": "design-references/user-mosque-original.png",
+    "source_sha256": "942e0f4a3e3a55b0a3b569357687f67f75cbe90b4fc748083d988f689f5ea004",
+    "crop_box": [
+      460,
+      78,
+      1580,
+      400
+    ],
+    "size": [
+      1120,
+      322
+    ],
+    "web_asset": "images/mosque-reference-original.png",
+    "native_asset": "android/app/src/main/res/drawable-nodpi/widget_reference_mosque.png",
+    "asset_sha256": "e1b480d72a5723a35317fcc5442b1096a1465b32ae475837008eed0e351d9add",
+    "processing": "Lossless PNG crop only. No new image, generated replacement, inpainting, resampling or color changes.",
+    "day_night": "The same approved pixels are used in both modes; Android changes only its text-legibility overlay."
+  },
+  "web_visual_qa": "PASS",
+  "native_resource_pixels_in_compiled_apk": "PASS",
+  "launcher_widget_scope": "Prayer/photo/date/countdown/six times only. No launcher Quran audio controls.",
+  "media_scope": "Single player only inside Mushaf. No home audio panel or added shortcut row. Existing primary navigation location retained."
+}
