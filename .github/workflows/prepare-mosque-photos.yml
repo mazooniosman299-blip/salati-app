@@ -12,14 +12,14 @@ jobs:
         shell: bash
         run: |
           python3 - <<'PY'
-          from urllib.request import urlopen
+          from urllib.request import urlopen,Request
           from pathlib import Path
           import hashlib,json
           output=Path('photographs');output.mkdir()
           manifest=[]
           for identifier,expected in [('20584925','c6fe84d91ccef12234c14673a953513d6efb1cd5dac4892e92656652a7ed30cb'),('13299493',None)]:
               url=f'https://images.pexels.com/photos/{identifier}/pexels-photo-{identifier}.jpeg?w=1000'
-              data=urlopen(url,timeout=40).read()
+              data=urlopen(Request(url,headers={'User-Agent':'Mozilla/5.0','Referer':'https://www.pexels.com/'}),timeout=40).read()
               digest=hashlib.sha256(data).hexdigest()
               if expected and digest!=expected:raise RuntimeError('Photograph changed; review source before replacing')
               (output/(identifier+'.jpg')).write_bytes(data)
