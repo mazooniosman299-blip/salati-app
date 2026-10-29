@@ -1,0 +1,111 @@
+{
+  "status": "AUDITION ONLY — not adopted",
+  "licensed_fajr_candidates": [
+    {
+      "file": "audio-samples/fajr-candidate-A.mp3",
+      "source": "https://raw.githubusercontent.com/nandxorandor/Athan/ad2bf1799add51cca4aaf1f123b1c212378c7786/app/src/main/assets/athan/fajr/Developer_Athan-3_Fajr.mp3",
+      "source_sha256": "18b43fca35558ed05de0cbf8fcf468fd606e17cacb688bfed065e45787f56378",
+      "start": 74.8,
+      "end": 79.25,
+      "duration": 4.466939,
+      "sha256": "94bedf8988132f2b2bdf2731acfab332b0f94ecc566b85e4bd903885b6af796d",
+      "peak_dbfs": -14.35,
+      "clipped_samples": 0,
+      "license": "CC BY4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "creator": "Ahmed Khalaf",
+      "changes": "Contiguous excerpt, MP3 frame-copy only; no synthesis, mixing, gain or enhancement.",
+      "phrase_verification": "Candidate intervals selected from speech/silence boundaries near the Fajr additions. Listening/word confirmation and user approval still required.",
+      "installed": false
+    },
+    {
+      "file": "audio-samples/fajr-candidate-B.mp3",
+      "source": "https://raw.githubusercontent.com/nandxorandor/Athan/ad2bf1799add51cca4aaf1f123b1c212378c7786/app/src/main/assets/athan/fajr/Developer_Athan-3_Fajr.mp3",
+      "source_sha256": "18b43fca35558ed05de0cbf8fcf468fd606e17cacb688bfed065e45787f56378",
+      "start": 80.1,
+      "end": 86.6,
+      "duration": 6.530612,
+      "sha256": "acca2ceb01b38f720b25f2e03664964a79ad21956274469743c6df99b8871f76",
+      "peak_dbfs": -14.56,
+      "clipped_samples": 0,
+      "license": "CC BY4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0/",
+      "creator": "Ahmed Khalaf",
+      "changes": "Contiguous excerpt, MP3 frame-copy only; no synthesis, mixing, gain or enhancement.",
+      "phrase_verification": "Candidate intervals selected from speech/silence boundaries near the Fajr additions. Listening/word confirmation and user approval still required.",
+      "installed": false
+    }
+  ],
+  "previous_approach_samples": [
+    {
+      "source": "ramy-fajr.m4a",
+      "start": 0.95,
+      "end": 6.95,
+      "duration": 6.0,
+      "peak_dbfs": -4.05,
+      "clipped_samples": 0,
+      "sha256": "79fbe09f8bb15d23338ddf4c0456e9ea856bdd33cf40405350d5379b4fb79c2b",
+      "file": "approach-fajr-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-dhuhr.m4a",
+      "start": 2.03,
+      "end": 7.04,
+      "duration": 5.01,
+      "peak_dbfs": -4.24,
+      "clipped_samples": 0,
+      "sha256": "63a73813e8a46d6d7b3b161b16c5bb96272c0f40387d56a215cc277d7aa8a1e6",
+      "file": "approach-dhuhr-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-asr.m4a",
+      "start": 0.85,
+      "end": 5.6,
+      "duration": 4.75,
+      "peak_dbfs": -4.25,
+      "clipped_samples": 0,
+      "sha256": "32ebf2d3ea63e26a3ce2d1a910c80685dd90e88f025140b608432ef26705b860",
+      "file": "approach-asr-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-maghrib.m4a",
+      "start": 0.95,
+      "end": 5.75,
+      "duration": 4.8,
+      "peak_dbfs": -4.27,
+      "clipped_samples": 0,
+      "sha256": "8b8b175c8e2cd4857a71943fa0c52bc4892d42d4aa3e16cce0b58222425cb183",
+      "file": "approach-maghrib-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    },
+    {
+      "source": "ramy-isha.m4a",
+      "start": 1.2,
+      "end": 6.0,
+      "duration": 4.8,
+      "peak_dbfs": -4.16,
+      "clipped_samples": 0,
+      "sha256": "6d7d02e101d40422bbb72a78d2deeeb5c1ea4ff8a76ad77708c12d3bfbf41746",
+      "file": "approach-isha-human-v2.mp3",
+      "recording_type": "recorded-human",
+      "synthetic": false
+    }
+  ],
+  "previous_approach_permission": "Primary publisher self-identifies voice and invites sharing/mobile-app inclusion. Full distribution/editing/commercial scope remains unverified; do not mark release-approved.",
+  "no_full_adhan_sample": true,
+  "new_app_audio_installed": false,
+  "subjective_listening_performed": false,
+  "published_version_unchanged": "1.0.102",
+  "required_fajr_words": "الصلاة خير من النوم",
+  "required_fajr_occurrences": 1,
+  "fajr_must_exclude_other_adhan_phrases": true,
+  "user_selected_candidate": null,
+  "approval_status": "Awaiting confirmation that the chosen excerpt contains only the complete phrase and that its delivery is suitable."
+}

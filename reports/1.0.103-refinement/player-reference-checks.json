@@ -1,0 +1,87 @@
+{
+  "result": "PASS",
+  "language": "ar",
+  "cases": [
+    {
+      "viewport": 360,
+      "player": {
+        "x": 21,
+        "y": 599.75,
+        "width": 318,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgb(50, 56, 63)",
+        "disc": "rgb(50, 56, 63)",
+        "track": "#32383F",
+        "edgeToken": "#32383F",
+        "trackToken": "#32383F"
+      }
+    },
+    {
+      "viewport": 390,
+      "player": {
+        "x": 27,
+        "y": 599.75,
+        "width": 336,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgb(50, 56, 63)",
+        "disc": "rgb(50, 56, 63)",
+        "track": "#32383F",
+        "edgeToken": "#32383F",
+        "trackToken": "#32383F"
+      }
+    },
+    {
+      "viewport": 412,
+      "player": {
+        "x": 27,
+        "y": 599.75,
+        "width": 358,
+        "height": 128.890625
+      },
+      "styles": {
+        "edge": "rgb(50, 56, 63)",
+        "disc": "rgb(50, 56, 63)",
+        "track": "#32383F",
+        "edgeToken": "#32383F",
+        "trackToken": "#32383F"
+      }
+    },
+    {
+      "viewport": 1366,
+      "player": {
+        "x": 116,
+        "y": 521.25,
+        "width": 1134,
+        "height": 137
+      },
+      "styles": {
+        "edge": "rgb(50, 56, 63)",
+        "disc": "rgb(50, 56, 63)",
+        "track": "#32383F",
+        "edgeToken": "#32383F",
+        "trackToken": "#32383F"
+      }
+    },
+    {
+      "viewport": 1600,
+      "player": {
+        "x": 233,
+        "y": 521.25,
+        "width": 1134,
+        "height": 137
+      },
+      "styles": {
+        "edge": "rgb(50, 56, 63)",
+        "disc": "rgb(50, 56, 63)",
+        "track": "#32383F",
+        "edgeToken": "#32383F",
+        "trackToken": "#32383F"
+      }
+    }
+  ],
+  "page_errors": []
+}

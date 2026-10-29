@@ -11,7 +11,8 @@ class Quiet(SimpleHTTPRequestHandler):
 s=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')));Thread(target=s.serve_forever,daemon=True).start()
 scan=r'''()=>{
  const findings=[];let inspected=0;
- function gray(color){const parts=color.match(/[\d.]+/g);if(!parts||parts.length<3)return false;let [r,g,b,a=1]=parts.map(Number);if(color.startsWith('color(srgb ')){r*=255;g*=255;b*=255;}return a>.01&&Math.max(r,g,b)-Math.min(r,g,b)<=3&&r>.01&&r<254.99;}
+ function unexpected(color){const parts=color.match(/[\d.]+/g);if(!parts||parts.length<3)return false;let[r,g,b,a=1]=parts.map(Number);if(color.startsWith('color(srgb ')){r*=255;g*=255;b*=255;}if(a<=.01)return false;const key=[r,g,b].map(Math.round).join(',');return !['11,14,19','4,5,9','21,24,29','50,56,63','255,255,255','174,188,203','0,0,0'].includes(key);}
+
  for(const e of document.querySelectorAll('body *')){
   const rect=e.getBoundingClientRect(),base=getComputedStyle(e);
   if(!rect.width||!rect.height||base.visibility==='hidden'||base.display==='none')continue;
@@ -23,7 +24,7 @@ scan=r'''()=>{
    const colors={color:c.color,background:c.backgroundColor,fill:c.fill,stroke:c.stroke};
    for(const edge of ['Top','Right','Bottom','Left'])if(parseFloat(c['border'+edge+'Width'])>0&&c['border'+edge+'Style']!=='none')colors['border'+edge]=c['border'+edge+'Color'];
    if(c.outlineStyle!=='none'&&parseFloat(c.outlineWidth)>0)colors.outline=c.outlineColor;
-   for(const [property,color]of Object.entries(colors))if(gray(color))findings.push({element:e.tagName,id:e.id,class:e.getAttribute('class'),pseudo,property,color});
+   for(const [property,color]of Object.entries(colors))if(unexpected(color))findings.push({element:e.tagName,id:e.id,class:e.getAttribute('class'),pseudo,property,color});
   }
  }
  return{inspected,findings};
@@ -39,7 +40,7 @@ try:
    page.wait_for_timeout(350);result=page.evaluate(scan);results.append({'state':state,**result})
   for width in [390,1440]:
    page.set_viewport_size({'width':width,'height':1000})
-   for dark in [False,True]:
+   for dark in [True]:
     page.evaluate('(dark)=>document.body.classList.toggle("dark",dark)',dark)
     for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
      page.click('[data-tab='+tab+']');audit(f'{width}/{dark}/{tab}')
@@ -51,7 +52,7 @@ try:
       trigger.click();audit(f'{width}/{dark}/{tab}/menu:{label}');page.keyboard.press('Escape')
   b.close()
  failures=[{'state':r['state'],**f}for r in results for f in r['findings']]
- output={'result':'FAIL' if failures else 'PASS','states':len(results),'computed_styles':sum(r['inspected']for r in results),'failures':failures,'checks':'Non-black/white neutral gray computed text, fill, stroke, backgrounds, active borders and outlines. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens.'}
+ output={'result':'FAIL' if failures else 'PASS','states':len(results),'computed_styles':sum(r['inspected']for r in results),'failures':failures,'checks':'Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens.'}
  (root/'reports'/('rendered-colors-'+__import__('re').search(r'app-v([\d.]+)\.js',(root/'dist/index.html').read_text())[1]+'.json')).write_text(json.dumps(output,indent=2)+'\n')
- print(json.dumps(output,indent=2));assert not failures,'Rendered neutral-gray UI colors remain'
+ print(json.dumps(output,indent=2));assert not failures,'Rendered colors outside the final palette remain'
 finally:s.shutdown()

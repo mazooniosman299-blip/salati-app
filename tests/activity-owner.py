@@ -10,7 +10,7 @@ code='''import java.lang.ref.WeakReference;
 class Base {protected void onResume(){}protected void onDestroy(){}}
 public class ActivityOwnerTest extends Base {
  static WeakReference<ActivityOwnerTest> current=new WeakReference<>(null);
- static boolean nativeAdhanPlaying,nativeApproachPlaying;boolean resumed,wantCompass;Object rotation;Handler main=new Handler();Ads ads;Web web=new Web();Sensors sensors=new Sensors();Geo geoCallback;String geoOrigin;
+ static boolean nativeAdhanPlaying,nativeFajrPreviewPlaying;boolean resumed,wantCompass;Object rotation;Handler main=new Handler();Ads ads;Web web=new Web();Sensors sensors=new Sensors();Geo geoCallback;String geoOrigin;
  static class Handler {void post(Runnable r){r.run();}}
  static class Ads {boolean playing;void setNativePlayback(boolean value){playing=value;}void resume(){}void destroy(){}}
  static class Web {void onResume(){}void evaluateJavascript(String s,Object callback){}void removeJavascriptInterface(String s){}void destroy(){}}

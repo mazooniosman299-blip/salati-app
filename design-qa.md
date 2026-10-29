@@ -1,43 +1,47 @@
-# Selected-reference design QA
+## Final 1.0.103 decision — supersedes prior publication holds
+
+User removed all approach announcements and explicitly directed use of the attached Fajr file after disclosure that redistribution permission is unverified. Exact bytes retained; not described as licensed. Current evidence: `reports/release-1.0.103.json`. JS/native/browser/build/lint/signature/APK checks passed. No physical device testing or subjective audio listening claimed. Final six-color palette includes PWA manifest. Original mosque/icons and Quran behavior preserved.
+
+## Historical checks (superseded decisions below)
+
+# Salati permanent dark matte correction
 
 final result: passed
 
-## Scope
+Scope: targeted WEB design acceptance only. Publication remains held on new reminder-audio rights and listening approval. Physical-device tests were not performed and, per the latest user instruction, are not a condition for completing the web changes. This is not a published release or an assurance of zero possible defects.
 
-Responsive application UI shared by web/Android WebView, approved mosque asset identity, Android widget source/resources and build verification. Physical Android launcher rendering is not included in the visual pass and remains untested.
+## Target and preserved structure
 
-## Selected source
+User specification: `docs/specs/2026-10-29-dark-matte-user-request.md`; previous original mosque screenshot: `design-references/user-mosque-original.png`. Correct the existing implementation only. Approved visual tokens: #0B0E13/#040509/#15181D/#32383F/#FFFFFF/#AEBCCB. The active theme stylesheet keeps its historical filename for build compatibility but contains only the permanent dark palette. No light/system switching remains.
 
-`design-references/user-mosque-original.png` is copied unchanged from the user's `Salati_Original_Mosque_References.zip / 01_original_widget_reference.png`. The exact source was inspected alongside captures at `reports/selected-reference-1.0.102/screenshots/`. Source hash and crop coordinates are recorded in `design-references/mosque-crop.json` and `dist/images/SELECTED-MOSQUE-SOURCE.json`.
+City/dates stay in the left grid area; per the latest clarification, city size is unchanged and dates are smaller white text with normal word wrapping (15px desktop/12px mobile). Right area shows live next-prayer title, name, white countdown; no extra caption/icon. Image box/layout stays in place; exact original crop is preserved with four-edge CSS feathering and no image filtering/recoloring. Six live times remain below. Bottom six-tab phone navigation/safe-area padding and Mushaf-only media controls remain in place.
 
-The central mosque region is extracted using lossless cropping only. No generation, inpainting, resampling or color modification is used for the image asset. Full screenshot text is not baked into the app: location, Gregorian/Hijri dates, next prayer, countdown and six prayer times remain live. Visible architecture is limited to what the supplied screenshot itself contains; missing imagery is not invented. The two alternate reference images and the rejected generated replacement are not used as the mosque background.
+## Verified
 
-## Comparison and interaction checks
+- Actual Chromium measurements/screenshots at360/390/412/768/1024/1366/1920; six tabs, popovers, no horizontal overflow, matched date styles, white enabled-button text and charcoal controls. Independent English/navigation-safe-inset review also passed.
+- Dark first paint with CSS and JS disabled, saved dark=false, malformed/blocked storage and public information pages.
+-39 JavaScript commands, media owner/playhead/metadata/error retry, native reminder/permission harnesses, responsive CSS checks, actual computed-color audit, exact image identity and offline navigation.
+- Android release and lint succeed (no errors/fatal; warnings documented), original certificate matches, all prepared APK assets and original image pixels match source. Original Quran text and all existing audio bytes are unchanged.
+- Native city stays17sp; smaller dates start at12sp and fit using actual text/fallback-font metrics, with guarded API28 behavior. This is not physical launcher verification;8sp fallback does not certify arbitrary custom scales.
 
-- Deep navy glass palette, rounded transparent surfaces, fine borders and white icons are shared across Times, Quran, Qibla, Adhkar, Tasbih, Settings and popup menus; the light theme retains black text and readable white surfaces.
-- The live prayer card groups location/date at left, original mosque at center, next prayer/countdown at right, and all six times on one aligned lower strip. The highlighted time follows the actual upcoming prayer rather than copying the stale highlighted prayer in the screenshot.
-- Mobile reflows the same uncropped asset to a full-width middle row so its visible mosque content is not lost to a cover crop. Metadata and controls remain readable without horizontal overflow.
-- Existing white location action remains available, honoring the user's earlier functional preference; live date text correctly reflects the current selected-zone calendar instead of copying the incorrect weekday/Hijri text baked into the mockup.
-- Book-open, heart and compass navigation glyphs follow the supplied icon reference. All six navigation destinations use equally sized rectangular glass targets, including RTL/LTR and reduced-motion states.
-- Compact Quran transport has one visible primary play/pause button, thin timeline, complete current-stream elapsed/duration information and a Stop control when active. No player ownership or background-audio logic is replaced by this visual change.
-- The native widget uses the same exact cropped PNG. Its day/night policy changes only the text-legibility overlay, not the approved mosque image. Its existing scheduling/countdown behavior and selected time zone remain intact.
+## Not completed / publication gate
 
-## Verification
+No newly approved spoken approach recording with complete redistribution/editing/commercial scope has been verified. The prior five approach clips are available for comparison on a local review page only; they have not been reapproved. Two short continuous audition excerpts were prepared from a creator-owned CC BY4.0 Fajr source; full-phrase-only content and listening suitability still need approval. No full adhan is offered as a preview or bundled as a new alert. Existing reminder audio remains unchanged. No real Android device/emulator was connected, so lock-screen/background playback, installation upgrade and native launcher visuals are not physically verified.
 
-PASS: exact source-crop pixel comparison; web/native image files are identical. Compiled APK native image pixels also match the approved crop. All prepared Android web assets match their source payload byte-for-byte.
+Do not deploy or present1.0.103 as complete until the mandatory audio acceptance is resolved. Existing public1.0.102 remains unchanged. Rollback tag: `salati-1.0.102-stable`.
 
-PASS: 39 JavaScript regression commands; 7 CSS cascade responsive checks; 12 selected-widget width/theme cases; actual Chromium navigation/menu/keyboard/focus/contrast/reduced-motion tests; 56 rendered-color states with no non-black/white neutral-gray failures. Background photography is correctly excluded from UI token classification.
+Evidence: `reports/dark-matte-1.0.103/verification.json`, `acceptance.json`, `screenshots/`, `web-review.md`, `native-review.md` and `audio-research.md`.
 
-PASS: controlled offline Arabic/English deep-link fallback loads the actual approved mosque and Quran data. Public information pages follow saved themes and recover from malformed settings.
+## Latest bounded refinement
 
-PASS: Android reminder/widget/date scheduling, permission and Activity/session harnesses; `assembleDebug --offline` for 1.0.102, versionCode 103. Native resource IDs resolve uniquely. No physical-device, launcher font-scale, doze or audio-route claims are made.
+User clarification: `docs/specs/2026-10-29-1.0.103-refinement.md`. Original24px white Phosphor book-open/heart/compass paths are unchanged and compared to their library originals. The player keeps its charcoal palette/card, stop control and one audio owner: stop moved onto the header row, play has44px hit target/36px visual disc, with16px glyph and4px track. No Home player added. Surrounding cards, calculations and other functions were not changed.
 
-## Remaining notes
+Only affected checks were rerun: date/player geometry at14 viewport/language cases, existing playback/metadata regression, private audition-page decoding/exclusivity, native build/lint/signature and prepared-asset verification. Other previously passing systems were not retested unnecessarily. Samples remain unadopted; published1.0.102 unchanged.
 
-No P0/P1/P2 issue remains in the checked UI and asset integration. The native launcher appearance still needs a real-device check. This is a local implementation/preview, not a published or newly signed release. Subjective replacement of reminder voice recordings is a separate outstanding task and was not changed by this design work.
+Current evidence and previews: `reports/1.0.103-refinement/README.md`, `focused-checks.json`, `audio-checks.json`, `audio-review.html` and `screenshots/`.
 
-## Mushaf-only media reference refinement
+### Final visual feedback
 
-Following clarification, primary navigation retains its existing position (bottom on phones). No extra shortcut row or audio panel is added to Times/Home. The selected glass media styling applies to the existing single player inside Mushaf only; its audio owner is never replaced when switching pages. Playback may continue with the controls hidden outside Mushaf.
+Player-only neutral graphite overrides: frame/disc edge#363636, progress track#606060 (computedRGB channels equal; no blue tint). All other approved material tokens remain unchanged. The card fills its content width; phones gain16px within the existing toolbar padding without overflow. New screenshots use Arabic title/details: `player-ar-1600-v2.png`, `player-ar-390-v2.png`. Five focused widths pass; playback regression remains green. No broad unrelated tests repeated.
 
-Browser regression verification confirms no Home player, one Mushaf player, preserved playhead and audio identity across navigation, start/pause/resume/stop, actual verse/reciter metadata across theme/language refresh, failed Quran load and retry, and both themes at 320/390/760/1440. Audio output is mocked. Physical launcher rendering remains untested; changes are unpublished.
+User explicitly chose to WAIT for audio rights and listening approval before publication. Fajr must contain only «الصلاة خير من النوم», once. No candidate has been adopted; prior approach distribution/editing/commercial scope is unresolved. Current public1.0.102 is retained.

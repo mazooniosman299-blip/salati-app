@@ -1,0 +1,71 @@
+{
+  "version": "1.0.103",
+  "version_code": 104,
+  "publication_status": "BLOCKED — not published",
+  "last_published_version": "1.0.102",
+  "build_and_signature": {
+    "application_id": "com.salati.prayer",
+    "version_code": 104,
+    "version_name": "1.0.103",
+    "signed_apk": "/workspace/salati-fix/206/salati-1.0.103-unpublished.apk",
+    "apk_sha256": "f0e177c4096a79664a3c7bf84773e0ce8819456811d1d889e4ef673f67543105",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati",
+    "apk_bytes": 26162999,
+    "same_previous_certificate": true
+  },
+  "lint": {
+    "Error": 0,
+    "Fatal": 0,
+    "Warning": 46
+  },
+  "untouched_audio_and_quran_files": 13,
+  "physical_device_tested": false,
+  "physical_widget_rendering_tested": false,
+  "screen_locked_audio_tested": false,
+  "new_recordings_installed": false,
+  "audio_candidate": "Creator-owned Ahmed Khalaf Fajr recording, CC BY4.0; full source retrieved privately, phrase timing/listening not verified, not bundled.",
+  "release_blockers": [
+    "No new licensed spoken approach recording verified",
+    "New recordings and physical background/lock-screen behavior unverified"
+  ],
+  "completed": [
+    "Permanent dark theme independent of saved/system light preference; preserved other settings",
+    "Exact charcoal palette across six pages/popovers/public pages/native shell and widgets",
+    "White city-sized Gregorian/Hijri dates, live right title/name/countdown without extra caption",
+    "Original mosque pixels preserved and image edges integrated",
+    "Consistent charcoal controls and visible disabled states; bottom six-tab navigation retained",
+    "Mushaf-only compact audio controls; same audio owner/playhead/reciter retained",
+    "Android font metrics fitted for city/dates with guarded fallback spacing; original certificate/code104 build"
+  ],
+  "automated_evidence": {
+    "javascript_test_commands": 39,
+    "browser_widths": [
+      360,
+      390,
+      412,
+      768,
+      1024,
+      1366,
+      1920
+    ],
+    "dark_matte_browser": "PASS",
+    "all_visible_enabled_button_text_white": "PASS",
+    "first_paint_without_css_or_js": "PASS",
+    "corrupt_and_blocked_storage": "PASS",
+    "public_pages": "PASS",
+    "single_player_and_metadata": "PASS",
+    "original_mosque_identity": "PASS",
+    "offline_navigation": "PASS",
+    "native_reminder_and_permission_harnesses": "PASS",
+    "compiled_apk_asset_identity": "PASS"
+  },
+  "limitations": [
+    "Native launcher and real phone not connected; no arbitrary system-font-scale/no-clipping guarantee at the8sp sizing floor",
+    "No subjective listening quality approval",
+    "This report does not certify zero possible defects."
+  ],
+  "latest_refinement": "reports/1.0.103-refinement/README.md",
+  "historical_layout_note": "Earlier equal-size city/date acceptance superseded by smaller white dates in latest user clarification.",
+  "physical_test_gate_note": "Latest user clarification explicitly removes physical-phone testing as a web-completion condition."
+}

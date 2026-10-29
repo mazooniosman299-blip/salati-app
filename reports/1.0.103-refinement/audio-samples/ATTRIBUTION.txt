@@ -1,0 +1,3 @@
+Fajr audition excerpts A/B: Ahmed Khalaf, Developer_Athan-3_Fajr.mp3, Athan project. Licensed under Creative Commons Attribution4.0: https://creativecommons.org/licenses/by/4.0/
+Source pinned revision ad2bf1799add51cca4aaf1f123b1c212378c7786: https://raw.githubusercontent.com/nandxorandor/Athan/ad2bf1799add51cca4aaf1f123b1c212378c7786/app/src/main/assets/athan/fajr/Developer_Athan-3_Fajr.mp3
+Changes: continuous frame-copy excerpts at74.80–79.25s and80.10–86.60s; no voice generation, stitching, gain or effects. No endorsement implied. For audition only pending word/timing/voice approval; not installed in Salati.

@@ -12,7 +12,7 @@ Thread(target=server.serve_forever,daemon=True).start()
 try:
  with sync_playwright() as p:
   b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
-  for saved,dark in [('true',True),('false',False),('corrupt',False)]:
+  for saved,dark in [('true',True),('false',True),('corrupt',True)]:
    c=b.new_context(color_scheme='light');page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.add_init_script("localStorage.setItem('salati',"+("'{broken'" if saved=='corrupt' else "JSON.stringify({dark:"+saved+"})")+");")
    for path in ['privacy.html','ar/prayer-times/muscat.html','en/prayer-times/index.html','ar/about.html']:
@@ -21,5 +21,5 @@ try:
     assert page.locator('body').evaluate('(e)=>getComputedStyle(e).color')==('rgb(255, 255, 255)' if dark else 'rgb(0, 0, 0)'),(saved,path)
    assert not errors,errors;c.close()
   b.close()
- print('PASS: privacy, city, directory and about pages inherit saved light/dark themes and recover from malformed settings without page errors.')
+ print('PASS: privacy, city, directory and about pages remain dark regardless of saved light/dark preference and recover from malformed settings without page errors.')
 finally:server.shutdown()

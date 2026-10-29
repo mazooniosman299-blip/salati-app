@@ -1,0 +1,18 @@
+{
+  "result": "PASS",
+  "samples": 7,
+  "durations": [
+    6,
+    5.01,
+    4.75,
+    4.8,
+    4.8,
+    4.466939,
+    6.530612
+  ],
+  "local_links_decode": true,
+  "audition_exclusivity": true,
+  "subjective_listening_performed": false,
+  "no_full_adhan_preview": true,
+  "app_audio_unchanged": true
+}

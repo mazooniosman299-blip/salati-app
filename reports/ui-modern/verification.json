@@ -9,7 +9,7 @@
     1440
   ],
   "tabs": 6,
-  "themes": 2,
+  "themes": 1,
   "checks": [
     "no horizontal overflow",
     "24px icons",
@@ -27,32 +27,17 @@
   "pageErrors": [],
   "palette": [
     {
-      "dark": false,
-      "controlFill": "rgb(46, 66, 98)",
-      "whiteTextContrast": 10.14,
-      "focus": {
-        "color": "rgb(38, 61, 98)",
-        "width": "3px",
-        "visible": true
-      },
-      "disabled": {
-        "bg": "rgb(227, 234, 245)",
-        "color": "rgb(51, 73, 107)",
-        "opacity": "1"
-      }
-    },
-    {
       "dark": true,
-      "controlFill": "rgb(18, 37, 49)",
-      "whiteTextContrast": 15.73,
+      "controlFill": "rgb(21, 24, 29)",
+      "whiteTextContrast": 17.79,
       "focus": {
-        "color": "rgb(229, 240, 247)",
+        "color": "rgb(255, 255, 255)",
         "width": "3px",
         "visible": true
       },
       "disabled": {
-        "bg": "rgb(12, 28, 38)",
-        "color": "rgb(183, 203, 217)",
+        "bg": "rgb(21, 24, 29)",
+        "color": "rgb(174, 188, 203)",
         "opacity": "1"
       }
     }

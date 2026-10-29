@@ -11,13 +11,7 @@ final class ArabicSpeech {
  private final Context context;private final AudioAttributes attributes;private final Handler main=new Handler(Looper.getMainLooper());
  private PcmAudioPlayer player;private Runnable completion,timeout;private long generation;
  ArabicSpeech(Context context,AudioAttributes attributes){this.context=context.getApplicationContext();this.attributes=attributes;}
- static String asset(String text){
-  if("الصلاة خير من النوم".equals(text))return "www/audio/reminders/fajr-phrase-single-human-v2.mp3";
-  String[] keys={"fajr","dhuhr","asr","maghrib","isha"};
-  String[] names={"الفجر","الظهر","العصر","المغرب","العشاء"};
-  for(int n=0;n<keys.length;n++)if(("اقتربت صلاة "+names[n]).equals(text))return "www/audio/reminders/approach-"+keys[n]+"-human-v2.mp3";
-  return null;
- }
+ static String asset(String text){return "الصلاة خير من النوم".equals(text)?"www/audio/reminders/fajr-user-approved-1.0.103.mp3":null;}
  void speak(String text,float volume,Runnable done){
   if(owner!=null&&owner!=this)owner.close();
   close();long ticket=generation;completion=done;owner=this;

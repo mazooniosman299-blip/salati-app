@@ -1,0 +1,301 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "width": 360,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "19px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 61,
+          "y": 117.65625,
+          "right": 121.359375,
+          "bottom": 146.15625
+        },
+        {
+          "id": "gregorianDate",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 27,
+          "y": 199.15625,
+          "right": 172,
+          "bottom": 219.546875
+        },
+        {
+          "id": "dateLabel",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 27,
+          "y": 219.546875,
+          "right": 172,
+          "bottom": 260.328125
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 390,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "21px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 67,
+          "y": 116.15625,
+          "right": 133.703125,
+          "bottom": 147.65625
+        },
+        {
+          "id": "gregorianDate",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 33,
+          "y": 200.65625,
+          "right": 187,
+          "bottom": 221.046875
+        },
+        {
+          "id": "dateLabel",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 33,
+          "y": 221.046875,
+          "right": 187,
+          "bottom": 261.828125
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 412,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "21px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 67,
+          "y": 116.15625,
+          "right": 133.703125,
+          "bottom": 147.65625
+        },
+        {
+          "id": "gregorianDate",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 33,
+          "y": 200.65625,
+          "right": 198,
+          "bottom": 221.046875
+        },
+        {
+          "id": "dateLabel",
+          "size": "12px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 33,
+          "y": 221.046875,
+          "right": 198,
+          "bottom": 261.828125
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 768,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "28px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 89,
+          "y": 200,
+          "right": 177.9375,
+          "bottom": 242
+        },
+        {
+          "id": "gregorianDate",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 55,
+          "y": 295,
+          "right": 179.625,
+          "bottom": 346
+        },
+        {
+          "id": "dateLabel",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 55,
+          "y": 346,
+          "right": 179.625,
+          "bottom": 397
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 1024,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "28px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 89,
+          "y": 205.25,
+          "right": 177.9375,
+          "bottom": 247.25
+        },
+        {
+          "id": "gregorianDate",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 55,
+          "y": 300.25,
+          "right": 237.8125,
+          "bottom": 325.75
+        },
+        {
+          "id": "dateLabel",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 55,
+          "y": 325.75,
+          "right": 237.8125,
+          "bottom": 376.75
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 1366,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "28px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 152,
+          "y": 166,
+          "right": 240.9375,
+          "bottom": 208
+        },
+        {
+          "id": "gregorianDate",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 118,
+          "y": 261,
+          "right": 349.90625,
+          "bottom": 286.5
+        },
+        {
+          "id": "dateLabel",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 118,
+          "y": 286.5,
+          "right": 349.90625,
+          "bottom": 312
+        }
+      ],
+      "six_tabs": "PASS"
+    },
+    {
+      "width": 1920,
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": "28px",
+          "weight": "800",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 429,
+          "y": 166,
+          "right": 517.9375,
+          "bottom": 208
+        },
+        {
+          "id": "gregorianDate",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 395,
+          "y": 261,
+          "right": 626.90625,
+          "bottom": 286.5
+        },
+        {
+          "id": "dateLabel",
+          "size": "15px",
+          "weight": "600",
+          "font": "SalatiCairo, Tahoma, Arial, sans-serif",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1",
+          "x": 395,
+          "y": 286.5,
+          "right": 626.90625,
+          "bottom": 312
+        }
+      ],
+      "six_tabs": "PASS"
+    }
+  ],
+  "page_errors": [],
+  "physical_device_tested": false
+}

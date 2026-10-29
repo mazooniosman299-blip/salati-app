@@ -9,7 +9,7 @@ public final class AdhanService extends Service{
  static String prayerName(String p){switch(p==null?"":p){case "fajr":return "الفجر";case "dhuhr":return "الظهر";case "asr":return "العصر";case "maghrib":return "المغرب";case "isha":return "العشاء";default:return "الصلاة";}}
  Notification notice(String title){NotificationChannel channel=new NotificationChannel("salati_adhan","أذان الصلاة",NotificationManager.IMPORTANCE_LOW);channel.setSound(null,null);getSystemService(NotificationManager.class).createNotificationChannel(channel);PendingIntent open=PendingIntent.getActivity(this,0,new Intent(this,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);PendingIntent stop=PendingIntent.getService(this,1,new Intent(this,AdhanService.class).setAction("STOP"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);return new Notification.Builder(this,"salati_adhan").setSmallIcon(com.salati.prayer.R.drawable.ic_notification).setContentTitle(title).setContentText("صلاتي · اضغط إيقاف لإنهاء الصوت").setContentIntent(open).setOngoing(true).setCategory(Notification.CATEGORY_ALARM).addAction(new Notification.Action.Builder(null,"إيقاف",stop).build()).build();}
  public int onStartCommand(Intent i,int flags,int id){
-  startId=id;stopService(new Intent(this,ApproachService.class));
+  startId=id;stopService(new Intent(this,FajrPreviewService.class));
   if(i==null||"STOP".equals(i.getAction())){finishPlayback("stopped");return START_NOT_STICKY;}
   release();focusState=new AudioFocusPolicy();terminal=false;settings=PrayerSchedule.config(this);preview=i.getBooleanExtra("preview",false);
   if(!preview&&!settings.optBoolean("enabled")){finishPlayback("stopped");return START_NOT_STICKY;}
@@ -24,7 +24,7 @@ public final class AdhanService extends Service{
   duaPlaying="dua".equals(i.getStringExtra("kind"));
   String voice=settings.optString("voice","nufais");if(!voice.matches("nufais|qatami|makkah|aqsa"))voice="nufais";
   String name=duaPlaying?"wasilah":"qatami".equals(voice)?"qatami-user-v2":voice;
-  if(!preview&&"fajr".equals(prayer)&&settings.optBoolean("fajrAnnouncement",true)&&settings.optDouble("volume",1)>0){
+  if(!preview&&"fajr".equals(prayer)&&settings.optBoolean("fajrAnnouncement",true)&&FajrAnnouncementPolicy.canPlay(PrayerSchedule.notificationsAllowed(this),getSystemService(NotificationManager.class).getCurrentInterruptionFilter(),settings.optDouble("volume",1))){
    pendingRecording=name;prelude=new ArabicSpeech(this,attributes);MainActivity.notifyPlayback("fajr");prelude.speak("الصلاة خير من النوم",(float)settings.optDouble("volume",1),()->{if(ticket!=generation)return;prelude=null;if(!focusState.paused&&pendingRecording!=null){String recording=pendingRecording;pendingRecording=null;play(recording);}});
   }else play(name);return START_NOT_STICKY;
  }

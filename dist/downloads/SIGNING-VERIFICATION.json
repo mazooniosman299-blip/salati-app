@@ -27,181 +27,72 @@
   "private_drive_permissions_owner_only": true,
   "public_project_files_scanned_for_secret_leaks": 161,
   "latest_release": {
-    "version": "1.0.102",
+    "version": "1.0.103",
     "current_release": {
       "application_id": "com.salati.prayer",
-      "version_code": 103,
-      "version_name": "1.0.102",
-      "apk_sha256": "4823474cb5af88894f9862a1ef7fad21e8daa633c9bec9c56aa91c5631e60462",
+      "version_code": 104,
+      "version_name": "1.0.103",
+      "apk_sha256": "6a6c3c79e3da4610a1f9bc9355f69413cc6a21e30d2a523e65c8943f7ec0cbff",
       "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
       "key_alias": "salati"
     },
     "same_signing_certificate": true,
     "version_code_increased": true,
-    "apk_bytes": 26167014,
+    "apk_bytes": 25998660,
     "release_build": "PASS",
+    "android_lint_errors": 0,
+    "android_lint_warnings": 45,
     "prepared_apk_asset_identity": "PASS",
-    "native_widget_source_pixels": "PASS",
-    "original_adhan_and_reminder_bytes_unchanged": 12,
-    "tests": {
-      "runtime_groups": [
+    "original_audio_and_quran_files_byte_identical": 10,
+    "approach_reminders_removed": true,
+    "legacy_alarm_5103_cancelled_on_migration": true,
+    "fajr_recordings": {
+      "version": "1.0.103",
+      "recordings": [
         {
-          "command": [
-            "npm",
-            "test"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-0.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:activity-owner"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-1.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:quran-race"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-2.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:quran-lifecycle"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-3.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:audio-focus"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-4.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:reminders"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-5.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:adhan-lifecycle"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-6.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:ads"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/runtime-7.log"
+          "file": "fajr-user-approved-1.0.103.mp3",
+          "source": "User supplied salati_fajr_salah_khayrun_min_alnawm.mp3",
+          "sha256": "9204596c44b45f494b372838ddbd1ff35caf0a17cc4735a069c9f479a6b84db9",
+          "duration": 19.748571,
+          "synthetic": false,
+          "processing": "None. User file copied byte-for-byte.",
+          "recording_type": "user-supplied human recording",
+          "rights_status": "No documented redistribution license available",
+          "redistribution_license_verified": false
         }
       ],
-      "ui_groups": [
-        {
-          "command": [
-            "python3",
-            "tests/reference-image.py"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-0.log"
-        },
-        {
-          "command": [
-            "python3",
-            "tests/reference-media.py"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-1.log"
-        },
-        {
-          "command": [
-            "python3",
-            "tests/reference-widget.py"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-2.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:theme"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-3.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:responsive"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-4.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:rendered-colors"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-5.log"
-        },
-        {
-          "command": [
-            "npm",
-            "run",
-            "test:offline-navigation"
-          ],
-          "exit_code": 0,
-          "log": "/workspace/salati-fix/205/ui-6.log"
-        }
-      ]
+      "user_authorized_use_after_rights_disclosure": true,
+      "user_instruction": "User directed use of attached file after being informed that no documented redistribution permission was available.",
+      "approach_recordings_removed": true,
+      "fajr_playback_occurrences": 1,
+      "subjective_audio_listening_performed": false
     },
-    "android_lint": {
-      "Error": 0,
-      "Fatal": 0,
-      "Warning": 48
+    "tests": {
+      "javascript_commands": 40,
+      "native_reminders": "PASS",
+      "activity_owner": "PASS",
+      "adhan_lifecycle": "PASS",
+      "theme": "PASS",
+      "rendered_color_states": 26,
+      "rendered_styles_checked": 9434,
+      "rendered_palette_failures": 0,
+      "responsive_dark_layout": "PASS",
+      "quran_reference_media": "PASS",
+      "player_reference": "PASS",
+      "real_browser_mp3_and_offline_preview": "PASS",
+      "apk_assets": "PASS"
     },
-    "design_scope": [
-      "Times/Home",
-      "Mushaf",
-      "Adhkar",
-      "Qibla",
-      "Tasbih",
-      "Settings",
-      "Popovers",
-      "Android launcher prayer widget"
-    ],
-    "media_controls": "Mushaf only; no Home audio panel or shortcut row",
-    "phone_navigation": "Existing bottom position retained; styling updated",
-    "mosque": "Exact lossless crop from user ZIP, not a generated replacement",
-    "original_reference": "design-references/user-mosque-original.png",
     "physical_android_device_tested": false,
     "physical_update_install_tested": false,
     "subjective_audio_listening_performed": false,
-    "recording_changes": "None in this release; no new voice-quality claim"
+    "rights_note": "No documented redistribution permission available. Exact attachment used at user explicit direction after disclosure; this is not a verified license.",
+    "palette": [
+      "#0B0E13",
+      "#040509",
+      "#15181D",
+      "#32383F",
+      "#FFFFFF",
+      "#AEBCCB"
+    ]
   }
 }

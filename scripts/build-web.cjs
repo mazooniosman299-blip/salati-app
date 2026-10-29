@@ -14,3 +14,6 @@ for(const name of ['style','light-theme','salati-design','reference-layout']){
 fs.writeFileSync(path.join(root,'dist/index.html'),currentHtml);
 
 require('./build-city-pages.cjs');
+
+// Permanent dark first paint on all first-party HTML pages, even before JS or styles load.
+function forceDarkPages(directory){for(const entry of fs.readdirSync(directory,{withFileTypes:true})){if(entry.name==='downloads')continue;const file=path.join(directory,entry.name);if(entry.isDirectory())forceDarkPages(file);else if(entry.name.endsWith('.html')){let text=fs.readFileSync(file,'utf8');text=text.replace(/<body([^>]*)>/i,(_,attrs)=>{if(/class="/.test(attrs))attrs=attrs.replace(/class="([^"]*)"/,(_,classes)=>'class="'+[...new Set((classes+' dark').split(/\s+/))].join(' ')+'"');else attrs+=' class="dark"';return '<body'+attrs+'>';});if(!text.includes('html,body{background:#0B0E13'))text=text.replace(/<head>/i,'<head><style>html,body{background:#0B0E13;color:#FFFFFF;color-scheme:dark}</style>');fs.writeFileSync(file,text);}}}forceDarkPages(path.join(root,'dist'));

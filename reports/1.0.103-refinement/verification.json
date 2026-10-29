@@ -1,0 +1,30 @@
+{
+  "version": "1.0.103",
+  "published": false,
+  "published_version_retained": "1.0.102",
+  "publication_decision": "User explicitly chose waiting for audio completion/rights",
+  "signed_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 104,
+    "version_name": "1.0.103",
+    "signed_apk": "/workspace/salati-fix/207/salati-1.0.103-unpublished.apk",
+    "apk_sha256": "63451fdc5ec37e01fb07f4dd32c5fd3377fc4cf71ec1bcd60f28735eebf1acf2",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "date_and_player_focused_check": "PASS14width/languagecases",
+  "final_arabic_neutral_player_check": "PASS5widths",
+  "single_player_playback_regression": "PASS",
+  "audition_samples_decode_and_exclusivity": "PASS7samples",
+  "runtime_audio_unchanged": 12,
+  "new_samples_installed": false,
+  "original_icon_geometry_preserved": true,
+  "physical_device_tested": false,
+  "unresolved": [
+    "Full redistribution/editing/commercial scope for five approach recordings",
+    "Listening approval and confirmation of only one complete Fajr phrase in selected candidate"
+  ],
+  "report": "README.md",
+  "audio_review": "audio-review.html"
+}

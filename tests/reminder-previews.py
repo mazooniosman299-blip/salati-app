@@ -17,25 +17,25 @@ with sync_playwright() as p:
  base=f'http://127.0.0.1:{server.server_port}/'
  page.goto(base,wait_until='domcontentloaded');page.locator('[data-tab="settings"]').click()
  assert page.locator('#nativeSpeechSettings').count()==0
- for button in ['previewApproach','previewFajrPhrase']:
+ for button in ['previewFajrPhrase']:
   page.locator('#'+button).click()
   try:page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('جارٍ تشغيل')",timeout=8000)
   except Exception:
    print('PREVIEW DEBUG',button,page.locator('#announcementStatus').text_content(),errors);raise
   page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  for _ in range(3):
-  page.locator('#previewApproach').click();page.locator('#previewFajrPhrase').click()
+  page.locator('#previewFajrPhrase').click()
   assert page.evaluate('window.__reminderPlayers.filter(p=>!p.paused&&!p.ended&&p.getAttribute("src")).length')<=1
  page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  # Install and take control before testing offline; this tests the actual service-worker fetch path.
  page.evaluate("async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));}")
  context.set_offline(True)
- for filename in ['approach-'+prayer+'-human-v2' for prayer in ['fajr','dhuhr','asr','maghrib','isha']]+['fajr-phrase-single-human-v2']:
+ for filename in ['fajr-user-approved-1.0.103']:
   assert page.evaluate("async name=>{const response=await fetch('audio/reminders/'+name+'.mp3');return response.ok&&(await response.arrayBuffer()).byteLength>1000}",filename)
  page.locator('#previewFajrPhrase').click()
  page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  assert not errors,errors
- (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':2,'offline_cached_clips':6,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
+ (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':1,'offline_cached_clips':1,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
  browser.close()
 server.shutdown()
-print('PASS: both real reminder previews finish, all six real clips served offline, offline Fajr preview completes without installed speech voices.')
+print('PASS: approved upload preview finishes, only Fajr clip served offline, offline Fajr preview completes without installed speech voices.')

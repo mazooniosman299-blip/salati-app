@@ -5,7 +5,7 @@ import tinycss2,cssselect2
 from lxml import html
 ROOT=Path(__file__).resolve().parents[1]
 class Cascade:
- def __init__(self,width,dark=False,native=False):
+ def __init__(self,width,dark=True,native=False):
   self.root=html.fromstring((ROOT/'dist/index.html').read_text());body=self.root.find('body');body.set('class',('dark ' if dark else '')+('native-android' if native else ''))
   self.wrapper=cssselect2.ElementWrapper.from_html_root(self.root);self.elements=list(self.wrapper.iter_subtree());self.by_element={e.etree_element:e for e in self.elements};self.matcher=cssselect2.Matcher();self.order=0
   def add(rules):
@@ -47,20 +47,20 @@ class Cascade:
    font=self.style(e).get('font-size','16px');return float(value[:-2])*float(font[:-2])
   return value
 class Responsive(unittest.TestCase):
- def test_phone_light_dark(self):
+ def test_phone_permanent_dark(self):
   for width in [320,390,600,760]:
-   for dark in [False,True]:
+   for dark in [True]:
     with self.subTest(width=width,dark=dark):
-     c=Cascade(width,dark);label=c.element('//div[@class="hero-timer"]/small');self.assertEqual(c.style(label)['color'],'#bed0dc' if dark else '#19394b')
+     c=Cascade(width,dark);self.assertFalse(c.root.xpath('//div[@class="hero-timer"]/small'))
      for e in [c.element('//div[@class="location-identity"]'),c.element('//div[@class="location-date"]')]:self.assertNotIn('180px',c.style(e).get('flex',''))
      icons=[c.by_element[e] for e in c.root.xpath('//nav/button/*[self::svg or self::img]')];self.assertEqual(len(icons),6);self.assertTrue(all(c.pixels(e,'width')==24 and c.pixels(e,'height')==24 for e in icons),[(c.pixels(e,'width'),c.pixels(e,'height')) for e in icons])
      photo=c.element('//div[@class="hero-picture"]/img');self.assertEqual(c.style(photo)['height'],'auto');self.assertEqual(c.style(photo)['position'],'static');self.assertEqual(c.style(photo)['object-fit'],'contain')
  def test_updated_controls_and_colors(self):
   for width in [320,390,820,1440]:
-   for dark in [False,True]:
+   for dark in [True]:
     c=Cascade(width,dark)
-    self.assertEqual(c.style(c.element('//*[@id="countdown"]'))['color'],'#ffffff' if dark else '#000000')
-    locate=c.element('//*[@id="locate"]');self.assertEqual(c.style(locate)['background'],'#fff');self.assertEqual(c.style(locate)['color'],'#000')
+    self.assertEqual(c.style(c.element('//*[@id="countdown"]'))['color'].lower(),'#ffffff')
+    locate=c.element('//*[@id="locate"]');self.assertEqual(c.style(locate)['background'].lower(),'#15181d');self.assertEqual(c.style(locate)['color'].lower(),'#ffffff')
     for id in ['adhkarCategoryPickerOpen','adhkarSearch']:
      if id=='adhkarCategoryPickerOpen':
       # Generated trigger is created by JS; inspect its equivalent selector in live component checks.
@@ -72,7 +72,7 @@ class Responsive(unittest.TestCase):
   c=Cascade(390);self.assertEqual({node.get('href').split('#')[1] for node in c.root.xpath('//nav/button/*[name()="svg"]/*[name()="use"]')},ids)
  def test_compact_phone_navigation(self):
   for width in [320,390,600,760]:
-   for dark in [False,True]:
+   for dark in [True]:
     with self.subTest(width=width,dark=dark):
      c=Cascade(width,dark);nav=c.element('//nav');style=c.style(nav)
      self.assertEqual(style.get('grid-template-rows'),'56px','Navigation must not use a stretchable auto row')
@@ -85,13 +85,13 @@ class Responsive(unittest.TestCase):
      self.assertEqual(c.style(nav).get('height'),'calc(65px + 0px)','Native root already applies system inset')
  def test_capped_cards_are_centered(self):
   for width in [390,820,1440]:
-   for dark in [False,True]:
+   for dark in [True]:
     c=Cascade(width,dark)
     for xpath in ['//*[@id="tasbih"]/div','//*[@id="qibla"]/div','//*[@id="dhikr"]/div']:
      self.assertEqual(c.style(c.element(xpath)).get('margin-inline'),'auto',xpath)
  def test_audio_switch_geometry(self):
   for width in [320,390,820,1440]:
-   for dark in [False,True]:
+   for dark in [True]:
     for direction in ['rtl','ltr']:
      for checked in [False,True]:
       with self.subTest(width=width,dark=dark,direction=direction,checked=checked):
@@ -112,5 +112,5 @@ class Responsive(unittest.TestCase):
   for width in [820,1024,1440]:
    c=Cascade(width);nav=c.element('//nav');self.assertEqual(nav.etree_element.getparent().tag,'header');self.assertNotIn('-',c.style(nav).get('margin-top','0'));self.assertEqual(c.style(nav).get('position','static'),'static')
  def test_copy_and_counter_order(self):
-  c=Cascade(390);timer=c.element('//div[@class="hero-timer"]').etree_element;self.assertEqual(timer[0].tag,'small');self.assertEqual(timer[1].get('id'),'countdown');self.assertNotIn('صلاتي كما تحب',(ROOT/'dist/index.html').read_text())
+  c=Cascade(390);timer=c.element('//div[@class="hero-timer"]').etree_element;self.assertEqual(len(timer),1);self.assertEqual(timer[0].get('id'),'countdown');self.assertNotIn('صلاتي كما تحب',(ROOT/'dist/index.html').read_text())
 if __name__=='__main__':unittest.main()

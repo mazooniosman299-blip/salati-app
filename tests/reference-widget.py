@@ -17,7 +17,7 @@ try:
   card=page.locator('.prayer-overview');assert card.count()==1,'Selected reference needs one shared prayer/location/countdown surface'
   for width in [320,390,600,760,1024,1440]:
    page.set_viewport_size({'width':width,'height':1000})
-   for dark in [False,True]:
+   for dark in [True]:
     page.evaluate('(dark)=>document.body.classList.toggle("dark",dark)',dark)
     page.click('[data-tab=times]');page.wait_for_timeout(300)
     for target in ['#cityLabel','#gregorianDate','#dateLabel','#nextName','#countdown','#prayers']:assert card.locator(target).count()==1,target
@@ -32,5 +32,5 @@ try:
     active=page.locator('header>.site-nav .active').bounding_box();marker=page.locator('.nav-selection').bounding_box()
     assert abs(marker['width']-(active['width']-8))<1.5 and abs(marker['height']-(active['height']-8))<1.5,'Active rectangle must follow its equal-sized navigation target'
   b.close()
- print('PASS: 12 widget/width/theme states share live data, aligned prayer strip, single player and reference rectangular navigation.')
+ print('PASS: 6 widget/width states share live data, aligned prayer strip, single player and reference rectangular navigation.')
 finally:server.shutdown()

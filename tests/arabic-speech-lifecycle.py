@@ -60,7 +60,7 @@ public final class ArabicSpeechLifecycleTest {
  public static void main(String[] args){
   Context c=new Context();AudioAttributes attributes=new AudioAttributes();ArabicSpeech speech=new ArabicSpeech(c,attributes);int[] done={0};
   speech.speak(FAJR,.35f,()->done[0]++);PcmAudioPlayer player=PcmAudioPlayer.latest;
-  check(player.path.equals("www/audio/reminders/fajr-phrase-single-human-v2.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
+  check(player.path.equals("www/audio/reminders/fajr-user-approved-1.0.103.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
   status(c,"playing");check(MainActivity.events.get(0).equals("loading"),"loading precedes playing");check(done[0]==0,"adhan waits for clip completion");
   speech.setVolume(.0875f);check(Math.abs(player.volume-.0875f)<.0001,"ducked volume reaches active PCM prelude");speech.setVolume(.35f);check(Math.abs(player.volume-.35f)<.0001,"focus gain restores configured volume");
   speech.setVolume(.6f);check(player.volume==.6f,"live user volume reaches active prelude");speech.setVolume(2f);check(player.volume==1f,"live volume clamps high values");speech.setVolume(-1f);check(player.volume==0f,"live volume clamps negative values");
@@ -68,12 +68,12 @@ public final class ArabicSpeechLifecycleTest {
   player.listener.complete();speech.setVolume(.8f);check(player.volumeChanges==validChanges,"volume update after close is harmless");player.listener.complete();player.listener.error(new Exception("late"));
   check(done[0]==1&&player.stopped==1,"continuation and cleanup happen exactly once");status(c,"finished");check(Handler.timers.isEmpty(),"completion clears timeout");
   String[] keys={"fajr","dhuhr","asr","maghrib","isha"},names={"الفجر","الظهر","العصر","المغرب","العشاء"};
-  for(int i=0;i<keys.length;i++){speech.speak("اقتربت صلاة "+names[i],1f,()->done[0]++);player=PcmAudioPlayer.latest;check(player.path.equals("www/audio/reminders/approach-"+keys[i]+"-human-v2.mp3"),"prayer maps to own recording: "+keys[i]);player.listener.complete();}
+  for(String name:names)check(ArabicSpeech.asset("اقتربت صلاة "+name)==null,"Approach routes are permanently removed");
   speech.speak(FAJR,1f,()->done[0]++);PcmAudioPlayer sharedOld=PcmAudioPlayer.latest;
   ArabicSpeech otherOwner=new ArabicSpeech(c,attributes);otherOwner.speak(FAJR,1f,()->done[0]++);
   check(sharedOld.stopped==1,"a different announcement owner must stop the previous PCM output");
   int doneBeforeStale=done[0];sharedOld.listener.complete();check(done[0]==doneBeforeStale,"old owner cannot continue after replacement");otherOwner.close();
-  final int[] old={0},replacement={0};speech.speak(FAJR,.5f,()->old[0]++);PcmAudioPlayer stale=PcmAudioPlayer.latest;speech.speak("اقتربت صلاة العصر",.7f,()->replacement[0]++);player=PcmAudioPlayer.latest;
+  final int[] old={0},replacement={0};speech.speak(FAJR,.5f,()->old[0]++);PcmAudioPlayer stale=PcmAudioPlayer.latest;speech.speak(FAJR,.7f,()->replacement[0]++);player=PcmAudioPlayer.latest;
   check(stale.stopped==1,"rapid replacement stops old clip");stale.listener.complete();stale.listener.error(new Exception("late"));check(old[0]==0&&replacement[0]==0,"stale callback cannot finish replacement");status(c,"playing");player.listener.complete();check(replacement[0]==1,"replacement continues exactly once");
   speech.speak(FAJR,1f,()->old[0]++);player=PcmAudioPlayer.latest;speech.close();player.listener.complete();player.listener.error(new Exception("late"));Handler.advance(9000);check(old[0]==0&&Handler.timers.isEmpty(),"explicit close suppresses callbacks and deadlines");
   final int[] timed={0};speech.speak(FAJR,1f,()->timed[0]++);player=PcmAudioPlayer.latest;Handler.advance(14000);check(timed[0]==0,"a complete human phrase must not be cut at the old synthetic deadline");Handler.advance(15999);check(timed[0]==0,"clip may run up to deadline");Handler.advance(1);check(timed[0]==1&&player.stopped==1,"timeout releases player and continues adhan");status(c,"error");player.listener.complete();check(timed[0]==1,"late completion after timeout is ignored");
@@ -86,7 +86,7 @@ public final class ArabicSpeechLifecycleTest {
   c.preferences.throwApply=true;int persistenceBefore=failed[0];speech.speak(FAJR,.4f,()->failed[0]++);player=PcmAudioPlayer.latest;check(player.volume==.4f,"status persistence failure does not block audio");player.listener.complete();check(failed[0]==persistenceBefore+1,"status persistence failure does not block continuation");c.preferences.throwApply=false;
   MainActivity.throwNotify=true;int notificationBefore=failed[0];speech.speak(FAJR,1f,()->failed[0]++);player=PcmAudioPlayer.latest;player.listener.complete();check(failed[0]==notificationBefore+1,"UI event failure cannot block playback continuation");MainActivity.throwNotify=false;
   PcmAudioPlayer.synchronousComplete=true;speech.speak(FAJR,1f,()->failed[0]++);status(c,"finished");PcmAudioPlayer.synchronousComplete=false;check(Handler.timers.isEmpty(),"all terminal paths remove timeout");
-  speech.speak(FAJR,1f,()->speech.speak("اقتربت صلاة المغرب",1f,()->replacement[0]++));PcmAudioPlayer first=PcmAudioPlayer.latest;first.listener.complete();player=PcmAudioPlayer.latest;check(player!=first,"completion may start a new clip");first.listener.error(new Exception("late"));status(c,"playing");player.listener.complete();check(replacement[0]==2,"nested replacement survives stale callback");check(Handler.timers.isEmpty(),"nested completion also removes timeout");
+  speech.speak(FAJR,1f,()->speech.speak(FAJR,1f,()->replacement[0]++));PcmAudioPlayer first=PcmAudioPlayer.latest;first.listener.complete();player=PcmAudioPlayer.latest;check(player!=first,"completion may start a new clip");first.listener.error(new Exception("late"));status(c,"playing");player.listener.complete();check(replacement[0]==2,"nested replacement survives stale callback");check(Handler.timers.isEmpty(),"nested completion also removes timeout");
   ArabicSpeech oldService=new ArabicSpeech(c,attributes);oldService.speak(FAJR,1f,()->{});PcmAudioPlayer older=PcmAudioPlayer.latest;
   ArabicSpeech prelude=new ArabicSpeech(c,attributes);prelude.speak(FAJR,1f,()->{});PcmAudioPlayer newest=PcmAudioPlayer.latest;
   oldService.close();ArabicSpeech.recordCancellation(c);status(c,"playing");

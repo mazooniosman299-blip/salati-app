@@ -1,12 +1,12 @@
 <resources>
- <color name="salati_shell">#06121A</color>
- <color name="salati_surface_dark">#08141D</color>
- <color name="salati_surface_light">#FFFFFF</color>
+ <color name="salati_shell">#0B0E13</color>
+ <color name="salati_surface_dark">#15181D</color>
+ <color name="salati_surface_light">#15181D</color>
  <color name="salati_ink_dark">#FFFFFF</color>
- <color name="salati_ink_light">#000000</color>
- <color name="salati_action">#122531</color>
+ <color name="salati_ink_light">#FFFFFF</color>
+ <color name="salati_action">#15181D</color>
  <color name="salati_action_ink">#FFFFFF</color>
- <color name="salati_dialog_surface">#FFFFFF</color>
- <color name="salati_dialog_ink">#000000</color>
- <color name="salati_dialog_accent">#304969</color>
+ <color name="salati_dialog_surface">#15181D</color>
+ <color name="salati_dialog_ink">#FFFFFF</color>
+ <color name="salati_dialog_accent">#AEBCCB</color>
 </resources>

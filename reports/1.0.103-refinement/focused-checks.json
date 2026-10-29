@@ -1,0 +1,599 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "width": 360,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 19,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 61,
+          "y": 117.65625,
+          "bottom": 146.15625,
+          "scroll": 60,
+          "client": 60
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 27,
+          "y": 199.15625,
+          "bottom": 219.546875,
+          "scroll": 145,
+          "client": 145
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 27,
+          "y": 219.546875,
+          "bottom": 260.328125,
+          "scroll": 145,
+          "client": 145
+        }
+      ]
+    },
+    {
+      "width": 360,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 19,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 61,
+          "y": 117.65625,
+          "bottom": 146.15625,
+          "scroll": 60,
+          "client": 60
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 27,
+          "y": 199.15625,
+          "bottom": 219.546875,
+          "scroll": 145,
+          "client": 145
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 27,
+          "y": 219.546875,
+          "bottom": 260.328125,
+          "scroll": 145,
+          "client": 145
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 21,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 67,
+          "y": 116.15625,
+          "bottom": 147.65625,
+          "scroll": 67,
+          "client": 67
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 200.65625,
+          "bottom": 221.046875,
+          "scroll": 154,
+          "client": 154
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 221.046875,
+          "bottom": 261.828125,
+          "scroll": 154,
+          "client": 154
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 21,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 67,
+          "y": 116.15625,
+          "bottom": 147.65625,
+          "scroll": 67,
+          "client": 67
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 200.65625,
+          "bottom": 221.046875,
+          "scroll": 154,
+          "client": 154
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 221.046875,
+          "bottom": 261.828125,
+          "scroll": 154,
+          "client": 154
+        }
+      ]
+    },
+    {
+      "width": 412,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 21,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 67,
+          "y": 116.15625,
+          "bottom": 147.65625,
+          "scroll": 67,
+          "client": 67
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 200.65625,
+          "bottom": 221.046875,
+          "scroll": 165,
+          "client": 165
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 221.046875,
+          "bottom": 261.828125,
+          "scroll": 165,
+          "client": 165
+        }
+      ]
+    },
+    {
+      "width": 412,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 21,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 67,
+          "y": 126.359375,
+          "bottom": 157.859375,
+          "scroll": 67,
+          "client": 67
+        },
+        {
+          "id": "gregorianDate",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 210.859375,
+          "bottom": 231.25,
+          "scroll": 165,
+          "client": 165
+        },
+        {
+          "id": "dateLabel",
+          "size": 12,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 33,
+          "y": 231.25,
+          "bottom": 251.640625,
+          "scroll": 165,
+          "client": 165
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 89,
+          "y": 200,
+          "bottom": 242,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 295,
+          "bottom": 346,
+          "scroll": 125,
+          "client": 125
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 346,
+          "bottom": 397,
+          "scroll": 125,
+          "client": 125
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 89,
+          "y": 200,
+          "bottom": 242,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 295,
+          "bottom": 346,
+          "scroll": 125,
+          "client": 125
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 346,
+          "bottom": 397,
+          "scroll": 125,
+          "client": 125
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 89,
+          "y": 205.25,
+          "bottom": 247.25,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 300.25,
+          "bottom": 325.75,
+          "scroll": 183,
+          "client": 183
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 325.75,
+          "bottom": 376.75,
+          "scroll": 183,
+          "client": 183
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 89,
+          "y": 205.25,
+          "bottom": 247.25,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 300.25,
+          "bottom": 325.75,
+          "scroll": 183,
+          "client": 183
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 55,
+          "y": 325.75,
+          "bottom": 376.75,
+          "scroll": 183,
+          "client": 183
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 152,
+          "y": 166,
+          "bottom": 208,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 118,
+          "y": 261,
+          "bottom": 286.5,
+          "scroll": 232,
+          "client": 232
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 118,
+          "y": 286.5,
+          "bottom": 312,
+          "scroll": 232,
+          "client": 232
+        }
+      ]
+    },
+    {
+      "width": 1366,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 152,
+          "y": 166,
+          "bottom": 208,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 118,
+          "y": 261,
+          "bottom": 286.5,
+          "scroll": 232,
+          "client": 232
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 118,
+          "y": 286.5,
+          "bottom": 312,
+          "scroll": 232,
+          "client": 232
+        }
+      ]
+    },
+    {
+      "width": 1920,
+      "lang": "ar",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 429,
+          "y": 166,
+          "bottom": 208,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 395,
+          "y": 261,
+          "bottom": 286.5,
+          "scroll": 232,
+          "client": 232
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 395,
+          "y": 286.5,
+          "bottom": 312,
+          "scroll": 232,
+          "client": 232
+        }
+      ]
+    },
+    {
+      "width": 1920,
+      "lang": "en",
+      "dates": [
+        {
+          "id": "cityLabel",
+          "size": 28,
+          "color": "rgb(255, 255, 255)",
+          "weight": "800",
+          "overflow": "anywhere",
+          "x": 429,
+          "y": 166,
+          "bottom": 208,
+          "scroll": 89,
+          "client": 89
+        },
+        {
+          "id": "gregorianDate",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 395,
+          "y": 261,
+          "bottom": 286.5,
+          "scroll": 232,
+          "client": 232
+        },
+        {
+          "id": "dateLabel",
+          "size": 15,
+          "color": "rgb(255, 255, 255)",
+          "weight": "600",
+          "overflow": "normal",
+          "x": 395,
+          "y": 286.5,
+          "bottom": 312,
+          "scroll": 232,
+          "client": 232
+        }
+      ]
+    }
+  ],
+  "icons": "Original regular Phosphor book-open/heart/compass; white24px, unchanged paths",
+  "play_touch_target": 44,
+  "visual_play_disc": 36,
+  "stop_preserved": true,
+  "physical_device_tested": false,
+  "page_errors": []
+}

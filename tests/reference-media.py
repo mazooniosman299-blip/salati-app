@@ -37,7 +37,7 @@ try:
   page.click('#qStop');assert page.locator('#qAudio').get_attribute('src') is None
   for width in [320,390,760,1440]:
    page.set_viewport_size({'width':width,'height':1000})
-   for dark in [True,False]:
+   for dark in [True]:
     page.evaluate('(dark)=>document.body.classList.toggle("dark",dark)',dark)
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
   page.locator('.reading-page-sentinel').scroll_into_view_if_needed()
@@ -49,7 +49,7 @@ try:
   page.locator('#verseReciterMenu [data-reciter=afasy]').click()
   page.wait_for_function('document.getElementById("qAudio").getAttribute("src")?.includes("Alafasy")')
   caption=page.locator('#qTrack').inner_text();credit=page.locator('#qTrack').get_attribute('title');stream=page.locator('#qAudio').get_attribute('src')
-  page.click('#theme')
+  page.click('#lang');page.click('#lang')
   assert page.locator('#qTrack').inner_text()==caption and page.locator('#qTrack').get_attribute('title')==credit,'Refresh must retain actual verse/reciter metadata rather than reading selection'
   page.click('#qTransport');page.click('#lang')
   assert 'Al-Baqara' in page.locator('#qTrack').inner_text() and 'Mishary' in page.locator('#qTrack').get_attribute('title')
@@ -61,7 +61,7 @@ try:
   failed.click('header [data-tab=mushaf]')
   failed.wait_for_function('document.getElementById("qTrack").textContent.includes("أعد المحاولة")')
   assert failed.locator('#qTransport').is_disabled()
-  failed.click('#theme')
+  failed.click('#lang');failed.click('#lang')
   assert 'أعد المحاولة' in failed.locator('#qTrack').inner_text(),'Theme changes must not turn a load error into endless loading'
   failed.wait_for_selector('#qRetry')
   failed.unroute('**/quran/data.json');failed.click('#qRetry')
@@ -70,5 +70,5 @@ try:
   assert 'الجزء' in failed.locator('#qTrack').inner_text()
   failed.close()
   assert not errors,errors;b.close()
- print('PASS: Mushaf-only controls, no home player, dynamic surah/juz, one player and audio owner, navigation preserves playback, pause/resume/stop, dark/light responsive layout. Media output mocked.')
+ print('PASS: Mushaf-only controls, no home player, dynamic surah/juz, one player and audio owner, navigation preserves playback, pause/resume/stop, permanent dark responsive layout. Media output mocked.')
 finally:s.shutdown()

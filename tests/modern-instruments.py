@@ -30,7 +30,7 @@ with sync_playwright() as p:
  page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:24.7136,lon:46.6753,zone:'Asia/Riyadh',name:'الرياض',locationSet:true,locationMode:'manual',method:'Auto'}));")
  errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(f'http://127.0.0.1:{server.server_port}',wait_until='domcontentloaded')
- page.wait_for_selector('#approachMinutesPickerOpen',state='attached')
+ page.wait_for_selector('#fajrAnnouncementToggle',state='attached')
  page.wait_for_selector('.nav-selection',state='visible')
  marker=page.locator('.nav-selection');start=marker.bounding_box()['x']
  page.click('[data-tab=settings]');page.wait_for_timeout(50)
@@ -38,7 +38,7 @@ with sync_playwright() as p:
  assert min(start,target)<middle<max(start,target),(start,middle,target,'Motion should interpolate the glass selection')
  page.wait_for_timeout(300)
 
- for dark in [False,True]:
+ for dark in [True]:
   page.click('[data-tab=mushaf]')
   page.evaluate('(dark)=>document.body.classList.toggle("dark",dark)',dark)
   for switch_id in ['qRepeat','qAutoNext']:
@@ -81,14 +81,14 @@ with sync_playwright() as p:
    assert active['color']==ink,(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor').startswith('rgba('),'reference selection must remain translucent glass'
+   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(50, 56, 63)','reference selection must remain translucent glass'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
    assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
    inactive=page.locator('header>.site-nav button:not(.active)').first
    assert inactive.evaluate('(e)=>getComputedStyle(e).color')==ink
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
-    for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e).backgroundColor}))'):
+    for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
      expected_bg=page.evaluate('getComputedStyle(document.body).getPropertyValue("--media-fill").trim()') if style['id']=='qTransport' else None
      if expected_bg:expected_bg=page.locator('#qTransport').evaluate('(e)=>{const x=document.createElement("i");x.style.color="var(--media-fill)";document.body.append(x);const c=getComputedStyle(x).color;x.remove();return c}')
      assert style['bg']==(expected_bg or fill) and style['color']==(ink if style['id']=='qTransport' else 'rgb(255, 255, 255)'),(dark,tab,style)
@@ -98,10 +98,10 @@ with sync_playwright() as p:
     page.keyboard.press('Tab');button.focus()
     focus=button.evaluate('(e)=>({color:getComputedStyle(e).outlineColor,width:getComputedStyle(e).outlineWidth,visible:e.matches(":focus-visible")})')
     assert focus['visible'] and focus['width']=='3px',(dark,focus)
-    assert contrast(focus['color'],'rgb(35, 44, 64)' if dark else 'rgb(255, 255, 255)')>=3,(dark,focus)
+    assert contrast(focus['color'],'rgb(21, 24, 29)')>=3,(dark,focus)
     button.evaluate('(e)=>e.disabled=true');page.wait_for_timeout(200)
     disabled=button.evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,opacity:getComputedStyle(e).opacity})')
-    assert disabled['opacity']=='1' and disabled['bg']!=fill,(dark,disabled)
+    assert disabled['opacity']=='1' and disabled['color']!=ink,(dark,disabled)
     assert contrast(disabled['color'],disabled['bg'])>=4.5,(dark,disabled)
     button.evaluate('(e)=>e.disabled=false');button.blur()
     palette_evidence.append({'dark':dark,'controlFill':fill,'whiteTextContrast':round(contrast('rgb(255, 255, 255)',fill),2),'focus':focus,'disabled':disabled})
@@ -115,29 +115,13 @@ with sync_playwright() as p:
   for selector in ['#audioEnable','#duaToggle','#silentAdhanToggle']:
    box=page.locator(selector).bounding_box()
    assert box is None or box['height']==38,(dark,selector,'stretched switch',box)
-  for selector in ['#previewApproach','#previewFajrPhrase','#previewAdhan','#previewDua','#audioStop']:
+  for selector in ['#previewFajrPhrase','#previewAdhan','#previewDua','#audioStop']:
    style=page.locator(selector).evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,border:getComputedStyle(e).borderColor})')
    assert contrast(style['color'],style['bg'])>=4.5,(dark,selector,style)
-  page.locator('#approachMinutesPickerOpen').scroll_into_view_if_needed();page.wait_for_timeout(100)
-  page.click('#approachMinutesPickerOpen')
-  assert page.locator('#approachMinutesOptions').is_visible()
-  assert page.locator('#approachMinutesOptions [role=option]').count()==3
-  selected=page.locator('#approachMinutesOptions [aria-selected=true]').evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})')
-  assert selected=={'bg':fill,'color':'rgb(255, 255, 255)'},(dark,selected)
-  assert contrast(selected['color'],selected['bg'])>=4.5
-  for style in page.locator('#approachMinutesOptions [aria-selected=false]').evaluate_all('(es)=>es.map(e=>({color:getComputedStyle(e).color}))'):
-   assert style['color']==ink,(dark,style)
-  page.screenshot(path=str(root/f'reports/ui-modern/reminder-menu-{"dark" if dark else "light"}.png'))
-  page.locator('#approachMinutesOptions [data-value="15"]').click()
-  assert page.locator('#approachMinutes').input_value()=='15'
-  assert page.locator('#approachMinutesPickerOpen').get_attribute('aria-expanded')=='false'
-  assert page.evaluate('document.activeElement.id')=='approachMinutesPickerOpen'
-  page.click('#approachMinutesPickerOpen')
-  page.keyboard.press('Home');page.keyboard.press('ArrowDown');page.keyboard.press('Enter')
-  assert page.locator('#approachMinutes').input_value()=='10'
-  assert page.evaluate('JSON.parse(localStorage.salati).audio.approachMinutes')==10
-  page.click('#approachMinutesPickerOpen');page.keyboard.press('Escape')
-  assert not page.locator('#approachMinutesOptions').is_visible()
+  assert page.locator('#approachToggle,#approachMinutes,#previewApproach').count()==0
+  toggle=page.locator('#fajrAnnouncementToggle');toggle.check();toggle.uncheck()
+  assert page.evaluate('JSON.parse(localStorage.salati).audio.fajrAnnouncement')is False
+  toggle.check();assert page.evaluate('JSON.parse(localStorage.salati).audio.fajrAnnouncement')is True
  active_tab=page.locator('header>.site-nav .active').get_attribute('data-tab')
  for expected_direction in ['ltr','rtl']:
   page.click('#lang');page.wait_for_timeout(100)
@@ -145,7 +129,7 @@ with sync_playwright() as p:
   assert page.locator('header>.site-nav .active').get_attribute('data-tab')==active_tab
   marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
   assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(expected_direction,marker_box,active_box,'Language switch must realign the same active tab')
-  if expected_direction=='ltr':assert 'minutes' in page.locator('#approachMinutesPickerOpen').inner_text()
+  if expected_direction=='ltr':assert 'Fajr' in page.locator('#previewFajrPhrase').inner_text()
  page.click('[data-tab=tasbih]');page.click('#reset')
  for _ in range(34):page.click('#counter')
  assert page.locator('#tasbihCount').inner_text()=='34'
@@ -173,7 +157,7 @@ with sync_playwright() as p:
  assert page.locator('#counter').evaluate('(e)=>getComputedStyle(e).transitionDuration')=='0s'
  marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('[data-tab=tasbih]').bounding_box()
  assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(marker_box,active_box,'Reduced motion snaps the selection')
- result={'result':'PASS','widths':[320,390,600,760,1024,1440],'tabs':6,'themes':2,'checks':['no horizontal overflow','24px icons','custom menu selection keyboard Escape focus','tasbih count/reset ring','single Quran switch thumb and high-contrast checked track','Motion sliding glass navigation','same-tab RTL/LTR language realignment','control labels with >=4.5:1 contrast','disabled and focused controls','black/white timer and unselected labels','reduced motion and transparency','crisp Quran text and compact controls'],'pageErrors':errors,'palette':palette_evidence}
+ result={'result':'PASS','widths':[320,390,600,760,1024,1440],'tabs':6,'themes':1,'checks':['no horizontal overflow','24px icons','custom menu selection keyboard Escape focus','tasbih count/reset ring','single Quran switch thumb and high-contrast checked track','Motion sliding glass navigation','same-tab RTL/LTR language realignment','control labels with >=4.5:1 contrast','disabled and focused controls','black/white timer and unselected labels','reduced motion and transparency','crisp Quran text and compact controls'],'pageErrors':errors,'palette':palette_evidence}
  assert not errors,errors
  (root/'reports/ui-modern/verification.json').write_text(json.dumps(result,indent=2)+'\n')
  print(json.dumps(result,indent=2))
