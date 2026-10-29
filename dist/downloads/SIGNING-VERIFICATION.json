@@ -27,24 +27,24 @@
   "private_drive_permissions_owner_only": true,
   "public_project_files_scanned_for_secret_leaks": 161,
   "latest_release": {
-    "version": "1.0.108",
+    "version": "1.0.109",
     "current_release": {
       "application_id": "com.salati.prayer",
-      "version_code": 109,
-      "version_name": "1.0.108",
-      "apk_sha256": "e545cf72659ce2095bf48706abfc1e8fe759f9ffa5da7968ebaaae7572ae00b8",
+      "version_code": 110,
+      "version_name": "1.0.109",
+      "apk_sha256": "abfd4b1e36551dd937f6845f1837f92e192c95d983410524b8576de8f196682d",
       "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
       "key_alias": "salati"
     },
     "same_signing_certificate": true,
     "version_code_increased": true,
-    "apk_bytes": 26002993,
+    "apk_bytes": 26007377,
     "release_build": "PASS",
     "android_lint_errors": 0,
     "android_lint_warnings": 50,
     "prepared_apk_asset_identity": "PASS",
     "preserved_audio_and_quran_files": 23,
-    "scope": "Blue only for on/off switches and audio preview/play/pause/stop. Off #153D7A; on #2563EB. Save/apply/cancel/adjustments/location, menus, navigation, cards and player frame remain charcoal glass. Existing dates, alignment,44px circles,12px footer gaps retained.",
+    "scope": "Dark blue #153D7A only for on/off/audio controls; off #0B2347. Original mosque now covers scene without opacity masks or shadow. Deeper charcoal prayer/menu selection, library check mark centered,18px footer gap, compact reference player with idle Stop hidden and working stop during playback. White library Quran-on-stand and bead Tasbih icons. Charcoal modern surah plaque/field. Existing dates/right alignment and all playback/recordings preserved.",
     "checks": {
       "javascript_commands": 40,
       "switch_audio_colors": {
@@ -65,7 +65,69 @@
             "neutral_other_controls": "PASS"
           }
         ],
-        "published": false,
+        "test_run": true,
+        "page_errors": []
+      },
+      "visual_corrections": {
+        "result": "PASS",
+        "cases": [
+          {
+            "width": 320,
+            "mosque_covers_scene": true,
+            "dark_blue_audio": true,
+            "footer_gap": 14.0,
+            "checkmark_square": true,
+            "idle_stop_hidden": true
+          },
+          {
+            "width": 390,
+            "mosque_covers_scene": true,
+            "dark_blue_audio": true,
+            "footer_gap": 14.0,
+            "checkmark_square": true,
+            "idle_stop_hidden": true
+          },
+          {
+            "width": 760,
+            "mosque_covers_scene": true,
+            "dark_blue_audio": true,
+            "footer_gap": 14.0,
+            "checkmark_square": true,
+            "idle_stop_hidden": true
+          },
+          {
+            "width": 1440,
+            "mosque_covers_scene": true,
+            "dark_blue_audio": true,
+            "footer_gap": 18.0,
+            "checkmark_square": true,
+            "idle_stop_hidden": true
+          }
+        ],
+        "page_errors": [],
+        "physical_device_tested": false
+      },
+      "rendered_colors": {
+        "result": "PASS",
+        "states": 26,
+        "computed_styles": 10302,
+        "failures": [],
+        "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+      },
+      "selection_menus": {
+        "result": "PASS",
+        "checks": [
+          {
+            "width": 390,
+            "menus": 9,
+            "search_selection_focus_back": "PASS"
+          },
+          {
+            "width": 1440,
+            "menus": 9,
+            "search_selection_focus_back": "PASS"
+          }
+        ],
         "page_errors": []
       },
       "reference_glass": {
@@ -116,8 +178,8 @@
               "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
               "border": "rgba(255, 255, 255, 0.14)",
               "radius": "24px",
-              "disc": "rgb(37, 99, 235)",
-              "discBorder": "rgb(59, 130, 246)",
+              "disc": "rgb(21, 61, 122)",
+              "discBorder": "rgb(45, 93, 155)",
               "discSize": 36
             }
           },
@@ -166,8 +228,8 @@
               "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
               "border": "rgba(255, 255, 255, 0.14)",
               "radius": "24px",
-              "disc": "rgb(37, 99, 235)",
-              "discBorder": "rgb(59, 130, 246)",
+              "disc": "rgb(21, 61, 122)",
+              "discBorder": "rgb(45, 93, 155)",
               "discSize": 36
             }
           },
@@ -216,8 +278,8 @@
               "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
               "border": "rgba(255, 255, 255, 0.14)",
               "radius": "24px",
-              "disc": "rgb(37, 99, 235)",
-              "discBorder": "rgb(59, 130, 246)",
+              "disc": "rgb(21, 61, 122)",
+              "discBorder": "rgb(45, 93, 155)",
               "discSize": 36
             }
           },
@@ -266,8 +328,8 @@
               "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
               "border": "rgba(255, 255, 255, 0.14)",
               "radius": "24px",
-              "disc": "rgb(37, 99, 235)",
-              "discBorder": "rgb(59, 130, 246)",
+              "disc": "rgb(21, 61, 122)",
+              "discBorder": "rgb(45, 93, 155)",
               "discSize": 36
             }
           }
@@ -277,7 +339,8 @@
       },
       "theme_keyboard_disabled_navigation": "PASS",
       "reference_media_behavior": "PASS (media mocked)",
-      "button_spacing": "retained"
+      "button_spacing": "PASS18px desktop14px phone",
+      "cache_generation": "PASS144; all offline assets/icons exist"
     },
     "physical_android_device_tested": false,
     "physical_update_install_tested": false,

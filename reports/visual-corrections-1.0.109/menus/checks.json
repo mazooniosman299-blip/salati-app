@@ -1,0 +1,16 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "width": 390,
+      "menus": 9,
+      "search_selection_focus_back": "PASS"
+    },
+    {
+      "width": 1440,
+      "menus": 9,
+      "search_selection_focus_back": "PASS"
+    }
+  ],
+  "page_errors": []
+}

@@ -13,7 +13,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 .prayer-overview{position:relative;isolation:isolate;display:grid;direction:ltr;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr) minmax(0,1fr);grid-template-areas:"place scene upcoming" "times times times";grid-template-rows:minmax(190px,auto) auto;gap:8px 14px;overflow:hidden;min-width:0;padding:10px 14px 10px;border:1px solid var(--line);border-radius:32px;background:var(--surface-solid);box-shadow:inset 0 1px 0 var(--glass-sheen),0 20px 48px #00000022;margin:20px 0}
 .prayer-overview .hero,body.dark .prayer-overview .hero{display:contents;border:0;background:transparent;box-shadow:none}
 .prayer-overview .hero-picture{grid-area:scene;position:relative;inset:auto;z-index:0;display:flex;align-items:flex-end;justify-content:center;align-self:end;pointer-events:none;background:transparent;min-width:0;min-height:0;height:auto}
-.prayer-overview .hero-picture img{width:100%;height:auto;object-fit:contain;object-position:center top;position:static;filter:none;opacity:1;mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.prayer-overview .hero-picture img{width:100%;height:auto;object-fit:contain;object-position:center top;position:static;filter:none;opacity:1;mask-image:none}
 .prayer-overview .hero-picture img[hidden]{display:none}
 .prayer-overview .hero-picture::after{display:none}
 .prayer-overview .location{grid-area:place;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;margin:0;padding:4px 12px;min-height:0;z-index:1;direction:ltr;text-align:left}
@@ -35,7 +35,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 .prayer-overview .prayer .prayer-icon{display:none}
 .prayer-overview .prayer span{font-size:16px;line-height:1.6;font-weight:700;color:var(--ink);white-space:nowrap}
 .prayer-overview .prayer strong{font-size:28px;line-height:1.4;color:var(--ink);margin:0}
-.prayer-overview .prayers .prayer.active,body.dark .prayer-overview .prayers .prayer.active{border:0;border:1px solid rgba(255,255,255,.38);border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(255,255,255,.065));box-shadow:inset 0 1px 0 rgba(255,255,255,.2);color:var(--ink)}
+.prayer-overview .prayers .prayer.active,body.dark .prayer-overview .prayers .prayer.active{border:1px solid #3C4248;border-radius:22px;background:linear-gradient(145deg,#1C2026,#121519);box-shadow:inset 0 1px 0 rgba(255,255,255,.035);color:var(--ink)}
 /* Compact player: heading and metadata above a single live transport/timeline. */
 #mushaf .legacy-play-action{display:none}
 #mushaf .recitation-player{display:grid;direction:ltr;grid-template-columns:auto minmax(0,1fr) 44px;grid-template-rows:auto auto;align-items:center;gap:12px 14px;padding:16px 18px;margin:18px 0 0;border:1px solid var(--glass-edge);border-radius:24px;background:linear-gradient(170deg,var(--glass-sheen),transparent 65%),var(--input-fill);box-shadow:inset 0 1px 0 var(--glass-sheen);backdrop-filter:none;-webkit-backdrop-filter:none}
@@ -117,8 +117,10 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 @media(max-width:760px){.prayer-overview{--place-font:21px;--date-font:14px}}
 @media(max-width:360px){.prayer-overview{--place-font:19px}}
 
-/* Edge feathering integrates the original photograph without filtering its interior. */
-.prayer-overview .hero-picture img{mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent),linear-gradient(180deg,transparent,#000 8%,#000 97%,transparent);mask-composite:intersect;-webkit-mask-composite:source-in;mask-size:100% 100%}
+/* Display the original photo without opacity masks or drop shadows. */
+.prayer-overview .hero-picture{align-self:stretch;height:100%;min-height:190px;overflow:hidden}
+.prayer-overview .hero-picture img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;mask:none;-webkit-mask:none;filter:none;box-shadow:none}
+@media(max-width:760px){.prayer-overview .hero-picture{height:auto;min-height:0;aspect-ratio:1120/322}}
 
 /* Every action, including formerly text-only actions, shares the approved material. */
 button{background-color:var(--card);border-color:var(--glass-edge);box-shadow:inset 0 1px 0 var(--glass-sheen)}
@@ -213,7 +215,7 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-
  background:linear-gradient(150deg,rgba(255,255,255,.035),transparent 70%),#0B0E13;box-shadow:none;color:#FFFFFF;text-align:start;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option[aria-selected=true],.choice-option[aria-checked=true],.voice-option[aria-pressed=true]){
- background:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.035)),#0B0E13;border-color:rgba(255,255,255,.4);
+ background:#15181D;border-color:#3C4248;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled){border-color:rgba(255,255,255,.6)}
 .choice-sheet .choice-badge,.voice-sheet .voice-symbol{width:38px;height:38px;flex:0 0 38px;padding:8px;border:0;border-radius:12px;background:rgba(255,255,255,.065);color:#FFFFFF;font-size:17px;display:grid;place-items:center}
@@ -235,7 +237,7 @@ body.dark dialog.choice-sheet input[type=search]:focus-visible,body.dark dialog.
 body.dark input:not([type=checkbox]):not([type=range]):focus-visible,body.dark textarea:focus-visible,body.dark select:focus-visible{border-color:rgba(255,255,255,.55);outline:0;box-shadow:none}
 
 /* Footer actions need a real layout gap; inline HTML whitespace is not spacing. */
-footer>div{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;max-width:100%}
+footer>div{display:flex;align-items:center;justify-content:center;column-gap:18px;row-gap:14px;flex-wrap:wrap;max-width:100%;padding:6px 0}
 footer>div>button{margin:0;flex:0 1 auto;max-width:100%}
 
 /* Keyboard focus stays on the existing frame: no second ring or luminous halo. */
@@ -262,24 +264,41 @@ body.dark header>.site-nav .nav-icon-button:focus-visible{border-color:rgba(255,
 
 /* Both switch positions stay blue; brightness and thumb position identify the state. */
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle),body.dark #settings .announcement-settings input.compact-switch,
-body.dark .prayer-switches input[type=checkbox],body.dark .quran-play-options input[type=checkbox]{background:#153D7A;border:1px solid #3B82F6;box-shadow:none}
+body.dark .prayer-switches input[type=checkbox],body.dark .quran-play-options input[type=checkbox]{background:var(--action-off);border:1px solid var(--action-edge);box-shadow:none}
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true],body.dark #settings .announcement-settings input.compact-switch:checked,
-body.dark .prayer-switches input[type=checkbox]:checked,body.dark .quran-play-options input[type=checkbox]:checked{background:#2563EB;border-color:#3B82F6;box-shadow:none}
+body.dark .prayer-switches input[type=checkbox]:checked,body.dark .quran-play-options input[type=checkbox]:checked{background:var(--action-fill);border-color:var(--action-edge);box-shadow:none}
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thumb,body.dark .prayer-switches input::after,body.dark .quran-play-options input::before{background:#FFFFFF}
-body.dark :is(#qPlay,#qStop,#audioStop):disabled{background:#153D7A;border-color:#3B82F6;color:rgba(255,255,255,.6)}
-#mushaf .reference-player #qTransport::before{background:#2563EB;border-color:#3B82F6;box-shadow:none}
-#mushaf .reference-player #qTransport:hover::before{background:#1D4ED8}
-#mushaf .reference-player #qTransport:active::before{background:#1E40AF}
+body.dark :is(#qPlay,#qStop,#audioStop):disabled{background:var(--action-off);border-color:var(--action-edge);color:rgba(255,255,255,.6)}
+#mushaf .reference-player #qTransport::before{background:var(--action-fill);border-color:var(--action-edge);box-shadow:none}
+#mushaf .reference-player #qTransport:hover::before{background:var(--action-hover)}
+#mushaf .reference-player #qTransport:active::before{background:var(--action-pressed)}
 
-#mushaf .reference-player #qTransport:disabled::before{background:#153D7A}
-#qFollowToggle{accent-color:#2563EB}
+#mushaf .reference-player #qTransport:disabled::before{background:var(--action-off)}
+#qFollowToggle{accent-color:var(--action-fill)}
 
 body.dark #tasbih .tasbih-panel .counter:focus-visible{outline:0;border-color:rgba(255,255,255,.65)}
 
-body.dark #audioEnable.audio-toggle:not(.is-on),body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=false]{background:#153D7A;border-color:#3B82F6;box-shadow:none}
-body.dark #audioEnable.audio-toggle.is-on,body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=true]{background:#2563EB;border-color:#3B82F6;box-shadow:none}
+body.dark #audioEnable.audio-toggle:not(.is-on),body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=false]{background:var(--action-off);border-color:var(--action-edge);box-shadow:none}
+body.dark #audioEnable.audio-toggle.is-on,body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=true]{background:var(--action-fill);border-color:var(--action-edge);box-shadow:none}
 
 body.dark #mushaf :is(#qPlay,#qStop,#qFollowTransport):not(:disabled){background:var(--action-fill);border-color:var(--action-edge);color:#FFFFFF}
 body.dark #mushaf :is(#qPlay,#qStop,#qFollowTransport):hover:not(:disabled){background:var(--action-hover)}
 body.dark #mushaf :is(#qPlay,#qStop,#qFollowTransport):active:not(:disabled){background:var(--action-pressed)}
-body.dark #mushaf :is(#qPlay,#qStop):disabled{background:#153D7A;border-color:#3B82F6;color:rgba(255,255,255,.6)}
+body.dark #mushaf :is(#qPlay,#qStop):disabled{background:var(--action-off);border-color:var(--action-edge);color:rgba(255,255,255,.6)}
+
+/* Final reference alignment: quiet charcoal frames, dark blue audio controls. */
+footer>div>button{border-radius:14px;padding:10px 18px}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-mark,.voice-check){display:grid;place-items:center;width:24px;height:24px;flex:0 0 24px;font-size:0;line-height:0;border:0;box-shadow:none;border-radius:0;background-color:transparent;background-image:none}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .choice-mark:not(:empty),body.dark dialog.voice-sheet .voice-option[aria-pressed=true] .voice-check{background-image:url('icons/check.svg');background-repeat:no-repeat;background-position:center;background-size:21px 21px}
+body.dark #mushaf .reference-player #qStop{grid-row:1;grid-column:1;width:44px;height:44px;min-width:44px;padding:10px;border-radius:50%;display:grid;place-items:center}
+body.dark #mushaf .reference-player #qStop:disabled{display:none}
+#mushaf .reference-player #qStop img{width:18px;height:18px;display:block}
+#mushaf .reference-player .recitation-caption{grid-column:1/-1}
+#mushaf .reference-player:has(#qStop:not(:disabled)) .recitation-caption{grid-column:2/-1}
+#mushaf .reference-player .recitation-times{min-width:32px}
+#mushaf .reference-player #qDuration{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+#mushaf .reference-player #qDuration::before{content:none}
+#mushaf .reference-player{padding:14px 18px;gap:8px 12px}
+body.dark #mushaf .mushaf-sheet .quran-surah-title{min-height:52px;padding:10px 18px;margin:12px 0 16px;border:1px solid #32383F;border-radius:16px;background:#15181D;box-shadow:inset 0 1px 0 rgba(255,255,255,.035);font-size:20px;line-height:1.6}
+body.dark #mushaf #qSurahPickerOpen{border:1px solid #32383F;border-radius:16px;background:#15181D;min-height:58px;padding:10px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+@media(max-width:760px){#mushaf .reference-player{padding:12px 10px;gap:8px}footer>div{column-gap:14px;row-gap:14px}body.dark #mushaf .mushaf-sheet .quran-surah-title{font-size:18px}}

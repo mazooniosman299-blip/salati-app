@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "width": 320,
+      "mosque_covers_scene": true,
+      "dark_blue_audio": true,
+      "footer_gap": 14.0,
+      "checkmark_square": true,
+      "idle_stop_hidden": true
+    },
+    {
+      "width": 390,
+      "mosque_covers_scene": true,
+      "dark_blue_audio": true,
+      "footer_gap": 14.0,
+      "checkmark_square": true,
+      "idle_stop_hidden": true
+    },
+    {
+      "width": 760,
+      "mosque_covers_scene": true,
+      "dark_blue_audio": true,
+      "footer_gap": 14.0,
+      "checkmark_square": true,
+      "idle_stop_hidden": true
+    },
+    {
+      "width": 1440,
+      "mosque_covers_scene": true,
+      "dark_blue_audio": true,
+      "footer_gap": 18.0,
+      "checkmark_square": true,
+      "idle_stop_hidden": true
+    }
+  ],
+  "page_errors": [],
+  "physical_device_tested": false
+}

@@ -5,7 +5,7 @@ from threading import Thread
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from playwright.sync_api import sync_playwright
 import json
-root=Path(__file__).resolve().parents[1];out=root/'reports/audio-controls-1.0.108';out.mkdir(parents=True,exist_ok=True)
+root=Path(__file__).resolve().parents[1];out=root/'reports/audio-controls-1.0.109';out.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*a):pass
 s=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')));Thread(target=s.serve_forever,daemon=True).start();checks=[]
@@ -20,7 +20,7 @@ try:
    assert len(nav)==6 and all(x['bg']=='rgb(4, 5, 9)'and'linear-gradient'in x['gradient']and x['border']=='rgba(255, 255, 255, 0.14)'for x in nav),nav
    assert all(x['radius']==('16px'if width<=760 else'20px')for x in nav),nav
    player=page.locator('.reference-player');styles=player.evaluate('(e)=>{let c=getComputedStyle(e),d=getComputedStyle(e.querySelector("#qTransport"),"::before");return{bg:c.backgroundColor,image:c.backgroundImage,border:c.borderTopColor,radius:c.borderRadius,disc:d.backgroundColor,discBorder:d.borderTopColor,discSize:parseFloat(d.width)+2*parseFloat(d.borderLeftWidth)}}')
-   assert styles['bg']=='rgb(4, 5, 9)'and styles['disc']=='rgb(37, 99, 235)'and styles['border']=='rgba(255, 255, 255, 0.14)'and styles['radius']=='24px'and styles['discBorder']=='rgb(59, 130, 246)'and styles['discSize']==36,styles
+   assert styles['bg']=='rgb(4, 5, 9)'and styles['disc']=='rgb(21, 61, 122)'and styles['border']=='rgba(255, 255, 255, 0.14)'and styles['radius']=='24px'and styles['discBorder']=='rgb(45, 93, 155)'and styles['discSize']==36,styles
    assert page.locator('#qTransport').bounding_box()['width']==44
    if width in [390,1440]:
     player.screenshot(path=str(out/f'player-{width}.png'));page.locator('header>.site-nav').screenshot(path=str(out/f'navigation-{width}.png'));page.screenshot(path=str(out/f'mushaf-{width}.png'))

@@ -1,0 +1,12 @@
+{
+  "collection": "hugeicons",
+  "source": "https://github.com/iconify/icon-sets/blob/master/json/hugeicons.json",
+  "license": {
+    "title": "MIT",
+    "spdx": "MIT"
+  },
+  "icons": {
+    "quran-01": "8291aa60f93a5cb8592eccb04437220dfe2d43c810ffdb335fac64ab51e255f4",
+    "tasbih": "a1af6186d95d012cb16a10774a2040921775a4e39e66ace8317aaa3736ca5b0a"
+  }
+}

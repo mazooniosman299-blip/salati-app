@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "width": 390,
+      "switches": 9,
+      "checkboxes": 2,
+      "playback_only_blue": "PASS",
+      "neutral_other_controls": "PASS"
+    },
+    {
+      "width": 1440,
+      "switches": 9,
+      "checkboxes": 2,
+      "playback_only_blue": "PASS",
+      "neutral_other_controls": "PASS"
+    }
+  ],
+  "test_run": true,
+  "page_errors": []
+}
