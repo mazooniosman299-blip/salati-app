@@ -45,7 +45,7 @@ for name in ['widget_background.xml','widget_glass_header.xml','widget_glass_str
    if key in [ns+'color',ns+'startColor',ns+'centerColor',ns+'endColor'] and value.startswith('#'):
     rgb=value[-6:];r,g,b=[int(rgb[i:i+2],16) for i in (0,2,4)]
     if element.tag=='stroke':continue
-    assert rgb.upper() in ['040509','0B0E13','15181D','32383F'],f'{name}: unexpected native surface {value}'
+    assert rgb.upper() in ['040509','0B0E13','15181D','32383F','FFFFFF'],f'{name}: unexpected native surface {value}'
 print('PASS: shared colors cover all first-party styles and native widget glass surfaces.')
 activity=(root/'android/app/src/main/java/com/salati/prayer/MainActivity.java').read_text()
 assert '#171717' not in activity and '#CCCCCC' not in activity and '#D4B87F' not in activity,'Native confirmation must use the reference palette, not gray/gold literals'

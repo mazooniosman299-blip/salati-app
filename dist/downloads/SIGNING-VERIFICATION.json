@@ -27,12 +27,12 @@
   "private_drive_permissions_owner_only": true,
   "public_project_files_scanned_for_secret_leaks": 161,
   "latest_release": {
-    "version": "1.0.103",
+    "version": "1.0.104",
     "current_release": {
       "application_id": "com.salati.prayer",
-      "version_code": 104,
-      "version_name": "1.0.103",
-      "apk_sha256": "6a6c3c79e3da4610a1f9bc9355f69413cc6a21e30d2a523e65c8943f7ec0cbff",
+      "version_code": 105,
+      "version_name": "1.0.104",
+      "apk_sha256": "50f5153c78f6d3034e6b146917d0c3e26017750070e5237331f72cfb2389c2da",
       "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
       "key_alias": "salati"
     },
@@ -43,56 +43,33 @@
     "android_lint_errors": 0,
     "android_lint_warnings": 45,
     "prepared_apk_asset_identity": "PASS",
-    "original_audio_and_quran_files_byte_identical": 10,
-    "approach_reminders_removed": true,
-    "legacy_alarm_5103_cancelled_on_migration": true,
-    "fajr_recordings": {
-      "version": "1.0.103",
-      "recordings": [
-        {
-          "file": "fajr-user-approved-1.0.103.mp3",
-          "source": "User supplied salati_fajr_salah_khayrun_min_alnawm.mp3",
-          "sha256": "9204596c44b45f494b372838ddbd1ff35caf0a17cc4735a069c9f479a6b84db9",
-          "duration": 19.748571,
-          "synthetic": false,
-          "processing": "None. User file copied byte-for-byte.",
-          "recording_type": "user-supplied human recording",
-          "rights_status": "No documented redistribution license available",
-          "redistribution_license_verified": false
-        }
-      ],
-      "user_authorized_use_after_rights_disclosure": true,
-      "user_instruction": "User directed use of attached file after being informed that no documented redistribution permission was available.",
-      "approach_recordings_removed": true,
-      "fajr_playback_occurrences": 1,
-      "subjective_audio_listening_performed": false
-    },
-    "tests": {
+    "preserved_audio_and_quran_files": 23,
+    "changes": [
+      "Translucent prayer selection instead of solid gray in web and Android widget",
+      "White Phosphor book-open emblem matches approved navigation icon",
+      "White Kaaba outlines and ray improve Qibla clarity",
+      "Visible neutral glass button edges, complete Fajr toggle track and white Quran option thumbs in both states",
+      "Neutral white captions replace blue-tinted secondary text; selected navigation remains translucent"
+    ],
+    "checks": {
       "javascript_commands": 40,
-      "native_reminders": "PASS",
-      "activity_owner": "PASS",
-      "adhan_lifecycle": "PASS",
-      "theme": "PASS",
-      "rendered_color_states": 26,
-      "rendered_styles_checked": 9434,
-      "rendered_palette_failures": 0,
-      "responsive_dark_layout": "PASS",
-      "quran_reference_media": "PASS",
-      "player_reference": "PASS",
-      "real_browser_mp3_and_offline_preview": "PASS",
-      "apk_assets": "PASS"
+      "theme_and_interaction_checks": "PASS",
+      "rendered_colors": {
+        "result": "PASS",
+        "states": 26,
+        "computed_styles": 9346,
+        "failures": [],
+        "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+      },
+      "reference_widget": "PASS",
+      "reference_media_behavior": "PASS",
+      "original_mosque_pixels": "PASS",
+      "player_geometry": "PASS",
+      "four_width_glass_clarity": "reports/glass-clarity-1.0.104/checks.json"
     },
     "physical_android_device_tested": false,
     "physical_update_install_tested": false,
-    "subjective_audio_listening_performed": false,
-    "rights_note": "No documented redistribution permission available. Exact attachment used at user explicit direction after disclosure; this is not a verified license.",
-    "palette": [
-      "#0B0E13",
-      "#040509",
-      "#15181D",
-      "#32383F",
-      "#FFFFFF",
-      "#AEBCCB"
-    ]
+    "audio_recordings_changed": false,
+    "fajr_rights_status": "Unchanged user-directed recording; no verified redistribution permission. No new recording or rights assertion."
   }
 }

@@ -35,7 +35,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 .prayer-overview .prayer .prayer-icon{display:none}
 .prayer-overview .prayer span{font-size:16px;line-height:1.6;font-weight:700;color:var(--ink);white-space:nowrap}
 .prayer-overview .prayer strong{font-size:28px;line-height:1.4;color:var(--ink);margin:0}
-.prayer-overview .prayers .prayer.active,body.dark .prayer-overview .prayers .prayer.active{border:0;border-radius:20px;background:var(--nav-selection-fill);box-shadow:inset 0 1px 0 var(--glass-sheen);color:var(--ink)}
+.prayer-overview .prayers .prayer.active,body.dark .prayer-overview .prayers .prayer.active{border:0;border:1px solid rgba(255,255,255,.14);border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));box-shadow:inset 0 1px 0 rgba(255,255,255,.12);color:var(--ink)}
 /* Compact player: heading and metadata above a single live transport/timeline. */
 #mushaf .legacy-play-action{display:none}
 #mushaf .recitation-player{display:grid;direction:ltr;grid-template-columns:auto minmax(0,1fr) 44px;grid-template-rows:auto auto;align-items:center;gap:12px 14px;padding:16px 18px;margin:18px 0 0;border:1px solid var(--glass-edge);border-radius:24px;background:linear-gradient(170deg,var(--glass-sheen),transparent 65%),var(--input-fill);box-shadow:inset 0 1px 0 var(--glass-sheen);backdrop-filter:none;-webkit-backdrop-filter:none}
@@ -123,12 +123,12 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 /* Every action, including formerly text-only actions, shares the approved material. */
 button{background-color:var(--control-fill);border-color:var(--control-edge);box-shadow:inset 0 1px 0 var(--glass-sheen)}
 button:not(:disabled){color:#FFFFFF}button:disabled{color:var(--control-disabled-ink);opacity:1}
-body.dark button{color:#FFFFFF;background-color:var(--control-fill);border:1px solid var(--line)}
+body.dark button{color:#FFFFFF;background-color:var(--control-fill);border:1px solid var(--control-edge)}
 body.dark #tasbih .tasbih-reset,body.dark #settings .adjust-reset{color:#FFFFFF;background:var(--control-fill);border:1px solid var(--line)}
 body.dark button:disabled{color:var(--control-disabled-ink);opacity:1}
 
 /* Reference media: compact header, original stop control, fine timeline, small visual play disc. */
-#mushaf .reference-player{--media-edge:#32383F;--media-track:#32383F;--line:var(--media-edge);--control-edge:var(--media-edge);width:100%;max-width:none;padding:12px 16px;gap:8px 12px}
+#mushaf .reference-player{--media-edge:rgba(255,255,255,.34);--media-track:rgba(255,255,255,.3);--line:var(--media-edge);--control-edge:var(--media-edge);width:100%;max-width:none;padding:12px 16px;gap:8px 12px}
 #mushaf .reference-player .recitation-caption{grid-column:2/-1}
 #mushaf .reference-player #qStop{grid-row:1;grid-column:1;justify-self:start;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-height:44px;padding:4px;font-size:11px;border-radius:12px}
 #mushaf .reference-player #qTransport{position:relative;isolation:isolate;width:44px;height:44px;padding:0;border:0;background:transparent;box-shadow:none}
@@ -139,3 +139,35 @@ body.dark button:disabled{color:var(--control-disabled-ink);opacity:1}
 
 /* Keep first-party hyperlinks in the explicit palette, including visited citations. */
 a:any-link{color:var(--ink)}
+
+/* Reference correction: bright neutral glass edges and a complete visible switch track. */
+body.dark button:not([role=switch]):not(.nav-icon-button):not(#qTransport),
+body.dark #settings .announcement-settings .audio-buttons button,
+body.dark #mushaf .mushaf-tools button,body.dark #mushaf .font-tools button,
+body.dark #qibla .compass-actions button{
+ border-color:var(--control-edge);background-image:linear-gradient(160deg,rgba(255,255,255,.09),transparent 70%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 3px 9px rgba(0,0,0,.18);color:#FFFFFF;
+}
+body.dark button:not(:disabled):hover{border-color:#FFFFFF}
+body.dark button:disabled{border-color:rgba(255,255,255,.2);box-shadow:none;background-image:none}
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle),
+body.dark #settings .announcement-settings input.compact-switch{
+ border:1px solid rgba(255,255,255,.46);background:#040509;box-shadow:inset 0 1px 0 rgba(255,255,255,.1);
+}
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true],
+body.dark #settings .announcement-settings input.compact-switch:checked{
+ border-color:#FFFFFF;background:linear-gradient(155deg,rgba(255,255,255,.2),rgba(255,255,255,.08)),#040509;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.24);
+}
+body.dark .prayer-switches input[type=checkbox],body.dark .quran-play-options input[type=checkbox]{border-color:rgba(255,255,255,.46)}
+body.dark .prayer-switches input[type=checkbox]:checked{border-color:#FFFFFF;background:rgba(255,255,255,.12)}
+body.dark .quran-play-options input[type=checkbox]:checked{border-color:#FFFFFF;background:var(--control-fill)}
+body.dark .quran-play-options input[type=checkbox]::before{background:#FFFFFF}
+/* The existing Kaaba geometry uses white faces/bands on deep charcoal, without colored shading. */
+#qibla .kaaba-icon path{fill:#FFFFFF;stroke:none}
+#qibla .kaaba-icon path:nth-child(-n+3){fill:#040509;stroke:#FFFFFF;stroke-width:1.8;stroke-linejoin:round}
+#qibla .qibla-card .kaaba-icon{filter:none}
+#qibla .qibla-card .compass{border-color:rgba(255,255,255,.46);box-shadow:inset 0 0 0 10px #040509,0 0 0 1px rgba(255,255,255,.08)}
+#qibla .qibla-card .compass::after{border-color:rgba(255,255,255,.32)}
+#qibla .qibla-card .cardinal,#qibla .qibla-card .north,#qibla .qibla-reading p{color:#FFFFFF}
+#qibla .qibla-card .qibla-ray{background:#FFFFFF}

@@ -1,0 +1,63 @@
+{
+  "result": "PASS",
+  "widths": [
+    {
+      "width": 360,
+      "selection": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "image": "linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024))",
+        "radius": "15px"
+      },
+      "fajr_button": {
+        "border": "rgba(255, 255, 255, 0.46)",
+        "width": "1px",
+        "color": "rgb(255, 255, 255)",
+        "bg": "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 70%)"
+      }
+    },
+    {
+      "width": 390,
+      "selection": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "image": "linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024))",
+        "radius": "15px"
+      },
+      "fajr_button": {
+        "border": "rgba(255, 255, 255, 0.46)",
+        "width": "1px",
+        "color": "rgb(255, 255, 255)",
+        "bg": "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 70%)"
+      }
+    },
+    {
+      "width": 760,
+      "selection": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "image": "linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024))",
+        "radius": "15px"
+      },
+      "fajr_button": {
+        "border": "rgba(255, 255, 255, 0.46)",
+        "width": "1px",
+        "color": "rgb(255, 255, 255)",
+        "bg": "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 70%)"
+      }
+    },
+    {
+      "width": 1550,
+      "selection": {
+        "fill": "rgba(0, 0, 0, 0)",
+        "image": "linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.024))",
+        "radius": "28px"
+      },
+      "fajr_button": {
+        "border": "rgba(255, 255, 255, 0.46)",
+        "width": "1px",
+        "color": "rgb(255, 255, 255)",
+        "bg": "linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0) 70%)"
+      }
+    }
+  ],
+  "page_errors": [],
+  "physical_device_tested": false
+}

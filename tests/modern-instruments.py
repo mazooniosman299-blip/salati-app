@@ -81,7 +81,7 @@ with sync_playwright() as p:
    assert active['color']==ink,(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(50, 56, 63)','reference selection must remain translucent glass'
+   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(255, 255, 255, 0.055)','reference selection must remain translucent glass'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
    assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
    inactive=page.locator('header>.site-nav button:not(.active)').first

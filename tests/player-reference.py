@@ -21,7 +21,7 @@ try:
    assert box['width']>=parent['width']*.9,(width,box,parent)
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    styles=player.evaluate('(e)=>{const s=getComputedStyle(e),play=getComputedStyle(e.querySelector("#qTransport"),"::before"),seek=getComputedStyle(e.querySelector("#qSeek"));return{edge:s.borderTopColor,disc:play.borderTopColor,track:seek.getPropertyValue("--line").trim(),edgeToken:s.getPropertyValue("--media-edge").trim(),trackToken:s.getPropertyValue("--media-track").trim()}}')
-   assert styles=={'edge':'rgb(50, 56, 63)','disc':'rgb(50, 56, 63)','track':'#32383F','edgeToken':'#32383F','trackToken':'#32383F'},styles
+   assert styles=={'edge':'rgba(255, 255, 255, 0.34)','disc':'rgba(255, 255, 255, 0.34)','track':'rgba(255,255,255,.3)','edgeToken':'rgba(255,255,255,.34)','trackToken':'rgba(255,255,255,.3)'},styles
    assert page.locator('#qStop').is_visible()and page.locator('#qTransport').bounding_box()['width']==44
    if width>=1366:assert box['width']/box['height']>=8,(width,box)
    if width in[390,1600]:player.screenshot(path=str(out/'screenshots'/f'player-ar-{width}-v2.png'))

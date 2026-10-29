@@ -10,7 +10,7 @@ with zipfile.ZipFile(apk) as z:
   if file.is_file():
    relative=file.relative_to(payload).as_posix()
    assert z.read('assets/www/'+relative)==file.read_bytes(),relative
- for name in ['style-v1.0.103.css','light-theme-v1.0.103.css','salati-design-v1.0.103.css','reference-layout-v1.0.103.css','app-v1.0.103.js','public-pages.css','public-page-theme.js','privacy.html']:
+ for name in ['style-v1.0.104.css','light-theme-v1.0.104.css','salati-design-v1.0.104.css','reference-layout-v1.0.104.css','app-v1.0.104.js','public-pages.css','public-page-theme.js','privacy.html']:
   assert z.read('assets/www/'+name)==(root/'dist'/name).read_bytes(),name
  native_entry=next((n for n in z.namelist()if n.endswith('/widget_reference_mosque.png')),None)
  if native_entry is None:
@@ -28,6 +28,6 @@ with zipfile.ZipFile(apk) as z:
  with Image.open(io.BytesIO(z.read(native_entry))) as packaged,Image.open(root/'dist/images/mosque-reference-original.png') as approved:
   assert packaged.convert('RGBA').tobytes()==approved.convert('RGBA').tobytes(),'Compiled native image pixels differ from approved original crop'
  html=z.read('assets/www/index.html')
- assert b'app-v1.0.103.js' in html and b'style-v1.0.103.css' in html
- assert b'var(--control-fill);color:var(--control-ink);border-radius:20px' in z.read('assets/www/style-v1.0.103.css')
-print('PASS: all prepared Android assets match APK bytes; current web code/style/public-page assets match their source; entrypoint uses 1.0.103.')
+ assert b'app-v1.0.104.js' in html and b'style-v1.0.104.css' in html
+ assert b'var(--control-fill);color:var(--control-ink);border-radius:20px' in z.read('assets/www/style-v1.0.104.css')
+print('PASS: all prepared Android assets match APK bytes; current web code/style/public-page assets match their source; entrypoint uses 1.0.104.')
