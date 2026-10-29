@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "states": 26,
+  "computed_styles": 10326,
+  "failures": [],
+  "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+}

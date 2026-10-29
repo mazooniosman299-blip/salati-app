@@ -11,7 +11,7 @@ class Quiet(SimpleHTTPRequestHandler):
 s=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')));Thread(target=s.serve_forever,daemon=True).start()
 scan=r'''()=>{
  const findings=[];let inspected=0;
- function unexpected(color){const parts=color.match(/[\d.]+/g);if(!parts||parts.length<3)return false;let[r,g,b,a=1]=parts.map(Number);if(color.startsWith('color(srgb ')){r*=255;g*=255;b*=255;}if(a<=.01)return false;const key=[r,g,b].map(Math.round).join(',');return !['11,14,19','4,5,9','21,24,29','50,56,63','255,255,255','174,188,203','0,0,0'].includes(key);}
+ function unexpected(color){const parts=color.match(/[\d.]+/g);if(!parts||parts.length<3)return false;let[r,g,b,a=1]=parts.map(Number);if(color.startsWith('color(srgb ')){r*=255;g*=255;b*=255;}if(a<=.01)return false;const key=[r,g,b].map(Math.round).join(',');return !['11,14,19','4,5,9','21,24,29','50,56,63','255,255,255','174,188,203','0,0,0','37,99,235','29,78,216','30,64,175','59,130,246'].includes(key);}
 
  for(const e of document.querySelectorAll('body *')){
   const rect=e.getBoundingClientRect(),base=getComputedStyle(e);

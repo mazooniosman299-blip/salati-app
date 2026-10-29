@@ -1,0 +1,207 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "width": 320,
+      "navigation": [
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        }
+      ],
+      "player": {
+        "bg": "rgb(4, 5, 9)",
+        "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+        "border": "rgba(255, 255, 255, 0.14)",
+        "radius": "24px",
+        "disc": "rgb(4, 5, 9)",
+        "discBorder": "rgba(255, 255, 255, 0.25)",
+        "discSize": 36
+      }
+    },
+    {
+      "width": 390,
+      "navigation": [
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        }
+      ],
+      "player": {
+        "bg": "rgb(4, 5, 9)",
+        "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+        "border": "rgba(255, 255, 255, 0.14)",
+        "radius": "24px",
+        "disc": "rgb(4, 5, 9)",
+        "discBorder": "rgba(255, 255, 255, 0.25)",
+        "discSize": 36
+      }
+    },
+    {
+      "width": 760,
+      "navigation": [
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "16px"
+        }
+      ],
+      "player": {
+        "bg": "rgb(4, 5, 9)",
+        "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+        "border": "rgba(255, 255, 255, 0.14)",
+        "radius": "24px",
+        "disc": "rgb(4, 5, 9)",
+        "discBorder": "rgba(255, 255, 255, 0.25)",
+        "discSize": 36
+      }
+    },
+    {
+      "width": 1440,
+      "navigation": [
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        },
+        {
+          "bg": "rgb(4, 5, 9)",
+          "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+          "border": "rgba(255, 255, 255, 0.14)",
+          "radius": "20px"
+        }
+      ],
+      "player": {
+        "bg": "rgb(4, 5, 9)",
+        "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+        "border": "rgba(255, 255, 255, 0.14)",
+        "radius": "24px",
+        "disc": "rgb(4, 5, 9)",
+        "discBorder": "rgba(255, 255, 255, 0.25)",
+        "discSize": 36
+      }
+    }
+  ],
+  "page_errors": [],
+  "published": false
+}

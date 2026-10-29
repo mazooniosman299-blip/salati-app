@@ -5,7 +5,7 @@ from threading import Thread
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from playwright.sync_api import sync_playwright
 import json
-root=Path(__file__).resolve().parents[1];out=root/'reports/1.0.103-refinement';checks=[]
+root=Path(__file__).resolve().parents[1];out=root/'reports/action-glass-1.0.107';(out/'screenshots').mkdir(parents=True,exist_ok=True);checks=[]
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 s=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')));Thread(target=s.serve_forever,daemon=True).start()
@@ -21,7 +21,7 @@ try:
    assert box['width']>=parent['width']*.9,(width,box,parent)
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
    styles=player.evaluate('(e)=>{const s=getComputedStyle(e),play=getComputedStyle(e.querySelector("#qTransport"),"::before"),seek=getComputedStyle(e.querySelector("#qSeek"));return{edge:s.borderTopColor,disc:play.borderTopColor,track:seek.getPropertyValue("--line").trim(),edgeToken:s.getPropertyValue("--media-edge").trim(),trackToken:s.getPropertyValue("--media-track").trim()}}')
-   assert styles=={'edge':'rgba(255, 255, 255, 0.34)','disc':'rgba(255, 255, 255, 0.46)','track':'rgba(255,255,255,.3)','edgeToken':'rgba(255,255,255,.34)','trackToken':'rgba(255,255,255,.3)'},styles
+   assert styles=={'edge':'rgba(255, 255, 255, 0.14)','disc':'rgba(255, 255, 255, 0.25)','track':'rgba(255,255,255,.3)','edgeToken':'rgba(255,255,255,.14)','trackToken':'rgba(255,255,255,.3)'},styles
    assert page.locator('#qStop').is_visible()and page.locator('#qTransport').bounding_box()['width']==44
    if width>=1366:assert box['width']/box['height']>=8,(width,box)
    if width in[390,1600]:player.screenshot(path=str(out/'screenshots'/f'player-ar-{width}-v2.png'))

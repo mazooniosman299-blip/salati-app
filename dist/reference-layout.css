@@ -141,15 +141,15 @@ body.dark button:disabled{color:var(--control-disabled-ink);opacity:1}
 a:any-link{color:var(--ink)}
 
 /* Supplied reference: deep glass actions, white type and reflective white edges. */
-body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]),
+body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]):not([data-adhkar-category]):not(.location-back),
 body.dark a.primary,body.dark #settings .announcement-settings .audio-buttons button:not(:disabled),
 body.dark #mushaf .mushaf-tools button:not(:disabled),body.dark #mushaf .font-tools button:not(:disabled),
 body.dark #qibla .compass-actions button:not(:disabled){
- border-color:var(--control-edge);background:linear-gradient(160deg,rgba(255,255,255,.1),transparent 68%),var(--control-fill);color:#FFFFFF;
+ border-color:var(--action-edge);background:var(--action-fill);color:#FFFFFF;
  box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 3px 10px rgba(0,0,0,.2);
 }
-body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]):hover:not(:disabled),body.dark a.primary:hover{background:linear-gradient(160deg,rgba(255,255,255,.16),transparent 68%),var(--control-hover);border-color:#FFFFFF}
-body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]):active:not(:disabled),body.dark a.primary:active{background:linear-gradient(160deg,rgba(255,255,255,.065),transparent 68%),var(--control-pressed)}
+body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]):not([data-adhkar-category]):not(.location-back):hover:not(:disabled),body.dark a.primary:hover{background:var(--action-hover);border-color:#FFFFFF}
+body.dark button:not([role=switch]):not(:disabled):not(.nav-icon-button):not(#qTransport):not(.choice-trigger):not(.choice-option):not(.voice-option):not([role=option]):not([aria-haspopup]):not(.choice-close):not(#voicePickerClose):not([role=menuitemradio]):not([data-adhkar-category]):not(.location-back):active:not(:disabled),body.dark a.primary:active{background:var(--action-pressed)}
 body.dark button:disabled{color:var(--control-disabled-ink);background:var(--control-disabled);border-color:var(--control-edge);box-shadow:none;background-image:none}
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle),
 body.dark #settings .announcement-settings input.compact-switch{
@@ -249,7 +249,19 @@ body.dark :is(button,a,input,select,textarea):focus-visible,
 body.dark header>.site-nav .nav-icon-button:focus-visible,
 body.dark #settings .announcement-settings input.compact-switch:focus-visible,
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle):focus-visible{
- --control-edge:rgba(255,255,255,.65);--glass-edge:rgba(255,255,255,.65);outline:0;border-color:rgba(255,255,255,.65);
+ --action-edge:rgba(255,255,255,.65);--control-edge:rgba(255,255,255,.65);--glass-edge:rgba(255,255,255,.65);outline:0;border-color:rgba(255,255,255,.65);
 }
 body.dark dialog.choice-sheet :is(.choice-option,.choice-close):focus-visible,
 body.dark dialog.voice-sheet :is(.voice-option,#voicePickerClose):focus-visible{outline:0;box-shadow:none;border-color:rgba(255,255,255,.55)}
+
+/* Exact reference material is independent from the blue action palette. */
+header>.site-nav{border:1px solid rgba(255,255,255,.1);border-radius:26px;padding:6px;background:rgba(4,5,9,.78);gap:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+header>.site-nav .nav-icon-button,body.dark header>.site-nav .nav-icon-button.active{border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,rgba(255,255,255,.065),transparent 67%),#040509;box-shadow:inset 0 1px 0 rgba(255,255,255,.035);border-radius:20px}
+header>.site-nav .nav-selection{border:0;background:rgba(255,255,255,.035);box-shadow:none}
+#mushaf .reference-player{--media-edge:rgba(255,255,255,.14);background:linear-gradient(170deg,rgba(255,255,255,.065),transparent 75%),#040509;border:1px solid var(--media-edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#mushaf .reference-player #qTransport::before{border-color:rgba(255,255,255,.25);background:linear-gradient(160deg,rgba(255,255,255,.065),transparent 72%),#040509;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+#mushaf .reference-player #qTransport:hover::before{background:linear-gradient(160deg,rgba(255,255,255,.12),transparent 72%),#040509}
+#mushaf .reference-player #qTransport:active::before{background:#040509}
+@media(max-width:760px){header>.site-nav{border:1px solid rgba(255,255,255,.1);border-radius:21px;padding:3px 4px calc(3px + var(--nav-safe-bottom));gap:4px;background:rgba(4,5,9,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}header>.site-nav .nav-icon-button,body.dark header>.site-nav .nav-icon-button.active{border-radius:16px}}
+
+body.dark header>.site-nav .nav-icon-button:focus-visible{border-color:rgba(255,255,255,.65);outline:0}

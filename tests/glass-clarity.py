@@ -46,7 +46,7 @@ try:
    toggle.evaluate('(e)=>e.checked=false')
    border=page.locator('#previewFajrPhrase').evaluate('(e)=>{let c=getComputedStyle(e);return{border:c.borderTopColor,width:c.borderTopWidth,color:c.color,bg:c.backgroundColor}}')
    assert border['border']=='rgba(255, 255, 255, 0.46)'and border['width']=='1px',border
-   assert border['color']=='rgb(255, 255, 255)'and border['bg']=='rgb(4, 5, 9)',border
+   assert border['color']=='rgb(255, 255, 255)'and border['bg']=='rgb(37, 99, 235)',border
    page.locator('#previewFajrPhrase').scroll_into_view_if_needed();page.screenshot(path=str(out/f'settings-{width}.png'))
    for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click(f'[data-tab={tab}]');page.wait_for_timeout(80)

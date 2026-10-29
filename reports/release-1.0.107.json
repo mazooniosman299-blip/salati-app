@@ -1,0 +1,1096 @@
+{
+  "version": "1.0.107",
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 108,
+    "version_name": "1.0.107",
+    "apk_sha256": "e27ce8dcd9326181b3eae28b801e558e5ef8501ab7fe8d00a3d32bbd3787753c",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "version_code_increased": true,
+  "apk_bytes": 26002993,
+  "release_build": "PASS",
+  "android_lint_errors": 0,
+  "android_lint_warnings": 50,
+  "prepared_apk_asset_identity": "PASS",
+  "preserved_audio_and_quran_files": 23,
+  "scope": "Blue action buttons isolated from independent charcoal/white navigation, fields, selection menus and reference Quran player. New glass rail/frame, dark compact playback disc. Existing dates, alignment,44px circles,12px footer gaps retained.",
+  "checks": {
+    "javascript_commands": 40,
+    "actions": {
+      "result": "PASS",
+      "checks": [
+        {
+          "width": 390,
+          "tab": "times",
+          "actions": [
+            {
+              "id": "locate",
+              "text": "حدد موقعي",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "tab": "mushaf",
+          "actions": [
+            {
+              "id": "qSmaller",
+              "text": "A−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "qLarger",
+              "text": "A+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "qBookmark",
+              "text": "حفظ علامة القراءة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "tab": "dhikr",
+          "actions": [
+            {
+              "id": "adhkarReset",
+              "text": "إعادة عدّ المعروض",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 100",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 100",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "tab": "qibla",
+          "actions": [
+            {
+              "id": "compassEnable",
+              "text": "تحديد القبلة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "tab": "tasbih",
+          "actions": [
+            {
+              "id": "counter",
+              "text": "تسبيح",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "reset",
+              "text": "إعادة العدّ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "tab": "settings",
+          "actions": [
+            {
+              "id": "zoneAuto",
+              "text": "تلقائي حسب موقعي",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewFajrPhrase",
+              "text": "تجربة عبارة الفجر",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewAdhan",
+              "text": "استماع للأذان",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewDua",
+              "text": "استماع لدعاء الوسيلة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "audioStop",
+              "text": "إيقاف الصوت",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "resetPrayerAdjustments",
+              "text": "إعادة تعيين",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "applyPrayerAdjustments",
+              "text": "تطبيق",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "cancelPrayerAdjustments",
+              "text": "إلغاء",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "حفظ الإعدادات",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "تحميل تطبيق أندرويد APK",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "times",
+          "actions": [
+            {
+              "id": "locate",
+              "text": "حدد موقعي",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "mushaf",
+          "actions": [
+            {
+              "id": "qSmaller",
+              "text": "A−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "qLarger",
+              "text": "A+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "qBookmark",
+              "text": "حفظ علامة القراءة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "dhikr",
+          "actions": [
+            {
+              "id": "adhkarReset",
+              "text": "إعادة عدّ المعروض",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 100",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 3",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "نسخ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "ذكرتُه · 0 / 100",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "qibla",
+          "actions": [
+            {
+              "id": "compassEnable",
+              "text": "تحديد القبلة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "tasbih",
+          "actions": [
+            {
+              "id": "counter",
+              "text": "تسبيح",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "reset",
+              "text": "إعادة العدّ",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        },
+        {
+          "width": 1440,
+          "tab": "settings",
+          "actions": [
+            {
+              "id": "zoneAuto",
+              "text": "تلقائي حسب موقعي",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewFajrPhrase",
+              "text": "تجربة عبارة الفجر",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewAdhan",
+              "text": "استماع للأذان",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "previewDua",
+              "text": "استماع لدعاء الوسيلة",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "audioStop",
+              "text": "إيقاف الصوت",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "resetPrayerAdjustments",
+              "text": "إعادة تعيين",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "−",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "+",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "applyPrayerAdjustments",
+              "text": "تطبيق",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "cancelPrayerAdjustments",
+              "text": "إلغاء",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "حفظ الإعدادات",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            },
+            {
+              "id": "",
+              "text": "تحميل تطبيق أندرويد APK",
+              "bg": "rgb(37, 99, 235)",
+              "ink": "rgb(255, 255, 255)"
+            }
+          ]
+        }
+      ],
+      "white_action_contrast": 5.16855556002256,
+      "page_errors": [],
+      "published": false
+    },
+    "reference_glass": {
+      "result": "PASS",
+      "cases": [
+        {
+          "width": 320,
+          "navigation": [
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            }
+          ],
+          "player": {
+            "bg": "rgb(4, 5, 9)",
+            "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+            "border": "rgba(255, 255, 255, 0.14)",
+            "radius": "24px",
+            "disc": "rgb(4, 5, 9)",
+            "discBorder": "rgba(255, 255, 255, 0.25)",
+            "discSize": 36
+          }
+        },
+        {
+          "width": 390,
+          "navigation": [
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            }
+          ],
+          "player": {
+            "bg": "rgb(4, 5, 9)",
+            "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+            "border": "rgba(255, 255, 255, 0.14)",
+            "radius": "24px",
+            "disc": "rgb(4, 5, 9)",
+            "discBorder": "rgba(255, 255, 255, 0.25)",
+            "discSize": 36
+          }
+        },
+        {
+          "width": 760,
+          "navigation": [
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "16px"
+            }
+          ],
+          "player": {
+            "bg": "rgb(4, 5, 9)",
+            "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+            "border": "rgba(255, 255, 255, 0.14)",
+            "radius": "24px",
+            "disc": "rgb(4, 5, 9)",
+            "discBorder": "rgba(255, 255, 255, 0.25)",
+            "discSize": 36
+          }
+        },
+        {
+          "width": 1440,
+          "navigation": [
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            },
+            {
+              "bg": "rgb(4, 5, 9)",
+              "gradient": "linear-gradient(160deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 67%), none",
+              "border": "rgba(255, 255, 255, 0.14)",
+              "radius": "20px"
+            }
+          ],
+          "player": {
+            "bg": "rgb(4, 5, 9)",
+            "image": "linear-gradient(170deg, rgba(255, 255, 255, 0.067), rgba(0, 0, 0, 0) 75%), none",
+            "border": "rgba(255, 255, 255, 0.14)",
+            "radius": "24px",
+            "disc": "rgb(4, 5, 9)",
+            "discBorder": "rgba(255, 255, 255, 0.25)",
+            "discSize": 36
+          }
+        }
+      ],
+      "page_errors": [],
+      "published": false
+    },
+    "rendered_colors": {
+      "result": "PASS",
+      "states": 26,
+      "computed_styles": 10326,
+      "failures": [],
+      "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
+    },
+    "theme_keyboard_disabled_navigation": "PASS",
+    "reference_media_behavior": "PASS",
+    "button_spacing": "PASS"
+  },
+  "independent_review": "reports/review-1.0.107.md",
+  "review_findings": "Category/back-navigation blue leak and active-tab keyboard focus priority fixed; both regression checks PASS and source re-reviewed. No important remaining scope findings.",
+  "physical_android_device_tested": false,
+  "physical_update_install_tested": false,
+  "native_font_scale_render_tested": false,
+  "audio_recordings_changed": false,
+  "mosque_photo_changed": false,
+  "fajr_rights_status": "Unchanged user-directed recording; no verified redistribution permission. No new recording or rights assertion."
+}

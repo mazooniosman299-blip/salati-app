@@ -1,11 +1,7 @@
-# Salati1.0.106 — latest glass reference acceptance
+# Salati1.0.107 action/reference separation
 
 final result: passed
 
-Latest user instruction supersedes the former blue controls: use dark glass and clear white text/icons, all selection lists share the supplied Surah-list reference. All nine menus were inspected at390/1440 widths. Search/selected-row styling, circular close controls, focus return, Escape, Android back, search/change events and filtered-reader arrow navigation passed. One keyboard regression was identified by independent review, fixed and verified in Chromium.
+Latest explicit correction: blue is only for action commands; independent dark glass reference for all navigation, selector fields, option rows and Mushaf media. Compared actual rendered navigation/player/settings phone/desktop screenshots with the supplied visual. White library icons, charcoal frames and compact dark playback disc preserved. Actions #2563EB with white contrast5.17:1; hover/pressed states verified. Do not reuse action variables for glass materials.
 
-Widget keeps original mosque and its placement; large city + larger white dates below it remain on physical left. Coming-prayer/name/countdown align to physical right. Six-time strip remains aligned and the active prayer glass frame is stronger. Web dates18px desktop/14px phone; native dates14sp preferred/minimum12sp with explicit left gravity. Physical native font-scale rendering has not been tested; minimum widget sizes can still be constrained at very large system fonts.
-
-All12 +/- controls and both close-button families are44x44, centered and functional at five widths. Footer actions have12px gap; button groups checked across six tabs/four widths. Search no longer has a double white outline or glow; a single border is the keyboard focus indicator. Text/icons stay white. Original recordings and mosque unchanged.
-
-Evidence: reports/reference-ui-1.0.106/, reports/rendered-colors-1.0.106.json, reports/release-1.0.106.json and reports/review-1.0.106.md. These prove automatic checks and inspected web screenshots, not physical phone/install/audio-output or zero possible defects.
+Independent review found category/back navigation leaked blue and active navigation lost keyboard focus border. Both fixed, browser regressions passed and source re-reviewed. Shared nine-menu106 layout, widget date/right alignment,44px circles and footer12px gaps preserved. Current APK matches prepared assets, builds/lints/signs with original certificate. No physical device/install/native font-scale or subjective audio claim. Evidence: reports/release-1.0.107.json, reports/action-glass-1.0.107 and reports/review-1.0.107.md.

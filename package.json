@@ -27,7 +27,7 @@
     "test:dark-matte": "python3 tests/dark-matte.py",
     "test:fajr-only": "node tests/fajr-only.cjs",
     "test:selection-menus": "python3 tests/selection-menus.py",
-    "test:reference-controls": "python3 tests/reference-controls.py && python3 tests/circular-controls.py"
+    "test:reference-controls": "python3 tests/action-scope.py && python3 tests/circular-controls.py && python3 tests/glass-material-scope.py"
   },
   "keywords": [],
   "author": "",
