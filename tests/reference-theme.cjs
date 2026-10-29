@@ -8,9 +8,9 @@ const contrast=(a,b)=>{const [lo,hi]=[luminance(a),luminance(b)].sort((x,y)=>x-y
 const [r,g,b]=rgb(tokens.bg);
 assert.equal(tokens.bg,'#0B0E13');assert.equal(tokens.card,'#15181D');assert.equal(tokens.line,'#32383F');
 assert.equal(tokens.ink,'#FFFFFF');assert(contrast(tokens.ink,tokens.card)>=7);
-assert(luminance(tokens['control-fill'])<.2,'reference controls are dark glass with white symbols, not opaque white discs');
+assert.equal(tokens['control-fill'],'#2563EB','latest user direction requires saturated blue controls');
 assert(contrast(tokens['control-ink'],tokens['control-fill'])>=4.5);
 const alpha=Number(tokens['glass-fill'].match(/,([.\d]+)\)$/)[1]);
 assert(alpha>=.75&&alpha<=.9,'glass must reveal the tinted backdrop instead of stacking nearly opaque gray surfaces');
 assert(contrast(tokens['progress-fill'],tokens['progress-track'])>=3,'audio progress must remain distinct from its track');
-console.log('PASS: reference exact matte charcoal palette, white text, translucent glass and readable control/progress contrast.');
+console.log('PASS: charcoal background with requested saturated blue actions, white text, translucent glass and readable control/progress contrast.');

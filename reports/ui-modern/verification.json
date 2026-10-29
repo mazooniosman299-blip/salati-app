@@ -28,16 +28,16 @@
   "palette": [
     {
       "dark": true,
-      "controlFill": "rgb(21, 24, 29)",
-      "whiteTextContrast": 17.79,
+      "controlFill": "rgb(37, 99, 235)",
+      "whiteTextContrast": 5.17,
       "focus": {
         "color": "rgb(255, 255, 255)",
         "width": "3px",
         "visible": true
       },
       "disabled": {
-        "bg": "rgb(21, 24, 29)",
-        "color": "rgba(255, 255, 255, 0.6)",
+        "bg": "rgb(23, 37, 84)",
+        "color": "rgba(255, 255, 255, 0.65)",
         "opacity": "1"
       }
     }

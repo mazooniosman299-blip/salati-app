@@ -1,3 +1,11 @@
+# Approved blue actions —1.0.105
+
+final result: passed
+
+Latest user request supersedes the former no-blue action palette. Saturated #2563EB opaque actions with white labels and distinguishable blue hover/pressed/checked states, on the existing charcoal/glass background. Inspected actual desktop/mobile settings, adjustment controls and location dialog screenshots. See reports/blue-actions-preview/README.md and checks.json for exact scope, measured contrast and limitations. User approved the exact rendered preview. Final release1.0.105 uses the same assets and styling; see reports/release-1.0.105.json.
+
+## Previous published1.0.104 QA
+
 # Salati 1.0.104 — targeted reference corrections
 
 final result: passed

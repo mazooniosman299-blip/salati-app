@@ -27,15 +27,16 @@
   "private_drive_permissions_owner_only": true,
   "public_project_files_scanned_for_secret_leaks": 161,
   "latest_release": {
-    "version": "1.0.104",
+    "version": "1.0.105",
     "current_release": {
       "application_id": "com.salati.prayer",
-      "version_code": 105,
-      "version_name": "1.0.104",
-      "apk_sha256": "f1d4d01a06de876d40c31680cefe22a5913388670ed2dbad61aad75169517a4c",
+      "version_code": 106,
+      "version_name": "1.0.105",
+      "apk_sha256": "65cd448121e9cc6adf6654d55d6795286d9a69ae3a8d030098a7beea050197af",
       "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
       "key_alias": "salati"
     },
+    "user_approved_rendered_blue_preview": true,
     "same_signing_certificate": true,
     "version_code_increased": true,
     "apk_bytes": 25998660,
@@ -45,11 +46,11 @@
     "prepared_apk_asset_identity": "PASS",
     "preserved_audio_and_quran_files": 23,
     "changes": [
-      "Translucent prayer selection instead of solid gray in web and Android widget",
-      "White Phosphor book-open emblem matches approved navigation icon",
-      "White Kaaba outlines and ray improve Qibla clarity",
-      "Visible neutral glass button edges, complete Fajr toggle track and white Quran option thumbs in both states",
-      "Neutral white captions replace blue-tinted secondary text; selected navigation remains translucent"
+      "User-approved saturated blue action fill #2563EB with white labels",
+      "Blue hover #1D4ED8 and pressed #1E40AF states; distinct disabled controls",
+      "Shared blue checked toggles and action/selector/location buttons",
+      "Blue active navigation while preserving inactive glass panels and white icons",
+      "Native Android action/dialog accent matches the web controls"
     ],
     "checks": {
       "javascript_commands": 40,
@@ -61,15 +62,16 @@
         "failures": [],
         "checks": "Exact final palette for computed text, fill, stroke, backgrounds, active borders and outlines; black is allowed for monochrome masks/icons. Transparent colors excluded; actual photographs and OS/third-party UI are not palette tokens."
       },
-      "reference_widget": "PASS",
+      "six_pages_and_location_blue_actions": "PASS",
+      "white_blue_contrast": 5.16855556002256,
       "reference_media_behavior": "PASS",
-      "original_mosque_pixels": "PASS",
-      "player_geometry": "PASS",
-      "four_width_glass_clarity": "reports/glass-clarity-1.0.104/checks.json"
+      "player_geometry_five_widths": "PASS",
+      "apk_assets": "PASS"
     },
     "physical_android_device_tested": false,
     "physical_update_install_tested": false,
     "audio_recordings_changed": false,
+    "mosque_photo_changed": false,
     "fajr_rights_status": "Unchanged user-directed recording; no verified redistribution permission. No new recording or rights assertion."
   }
 }
