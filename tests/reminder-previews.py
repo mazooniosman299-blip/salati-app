@@ -21,16 +21,16 @@ with sync_playwright() as p:
   try:page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('جارٍ تشغيل')",timeout=8000)
   except Exception:
    print('PREVIEW DEBUG',button,page.locator('#announcementStatus').text_content(),errors);raise
-  page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=8000)
+  page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  # Install and take control before testing offline; this tests the actual service-worker fetch path.
  page.evaluate("async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));}")
  context.set_offline(True)
- for filename in ['approach-fajr','approach-dhuhr','approach-asr','approach-maghrib','approach-isha','fajr-phrase']:
+ for filename in ['approach-hayya-human-v1','fajr-phrase-human-v1']:
   assert page.evaluate("async name=>{const response=await fetch('audio/reminders/'+name+'.mp3');return response.ok&&(await response.arrayBuffer()).byteLength>1000}",filename)
  page.locator('#previewFajrPhrase').click()
- page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=8000)
+ page.wait_for_function("document.getElementById('announcementStatus').textContent.includes('انتهى')",timeout=35000)
  assert not errors,errors
- (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':2,'offline_cached_clips':6,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
+ (root/'reports/ui-modern/reminder-previews.json').write_text(json.dumps({'result':'PASS','real_browser_previews':2,'offline_cached_clips':2,'offline_fajr_preview':True,'page_errors':errors},indent=2)+'\n')
  browser.close()
 server.shutdown()
-print('PASS: both real reminder previews finish, all six clips served offline, offline Fajr preview completes without installed speech voices.')
+print('PASS: both real reminder previews finish, both real clips served offline, offline Fajr preview completes without installed speech voices.')

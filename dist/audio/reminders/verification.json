@@ -1,68 +1,36 @@
-[
-  {
-    "file": "approach-fajr.mp3",
-    "duration": 2.9529024943310658,
+{
+  "recordings": [
+    {
+      "file": "approach-hayya-human-v1.mp3",
+      "recording_type": "recorded-human",
+      "phrase": "حي على الصلاة",
+      "duration_seconds": 10.8,
+      "source_excerpt_seconds": [
+        63.5,
+        74.3
+      ],
+      "sha256": "9a1bf07368cab2926ce4328bbfb662efdb52c4543152338d3b5edd3bcb40ff26",
+      "synthetic": false
+    },
+    {
+      "file": "fajr-phrase-human-v1.mp3",
+      "recording_type": "recorded-human",
+      "phrase": "الصلاة خير من النوم",
+      "duration_seconds": 19.75,
+      "source_excerpt_seconds": [
+        25.85,
+        45.6
+      ],
+      "sha256": "adabd1e6d8435dea1c5081040e6af2a56f0173c1a4106a101144aeaee6e2c6a4",
+      "synthetic": false
+    }
+  ],
+  "approach_prayer_names": "notification only; user selected the shared human call",
+  "signal_checks": {
     "sample_rate": 44100,
     "channels": 1,
-    "peak_dbfs": -3.9,
     "clipped_samples": 0,
-    "sha256": "c8931a1697d8d9a4352faf66cf79d18796609c2e4667d2baae5a4eb6f7566fe1",
-    "source_sha256": "e016aa12fed434df129bc39e20e3a6f34a28e1915e1cf17bb52ee667e389a34a",
-    "gain_db": 1.465
+    "peak_below_dbfs": -4
   },
-  {
-    "file": "approach-dhuhr.mp3",
-    "duration": 2.9760090702947846,
-    "sample_rate": 44100,
-    "channels": 1,
-    "peak_dbfs": -3.97,
-    "clipped_samples": 0,
-    "sha256": "fd6878aa2bef4808959f09abca26531cd66db15e15380d7a5b1acb4c0e955859",
-    "source_sha256": "a9f594d0aafb26bb6dd42f7cffd6ce4694a541fbbec80df6218d843d9d55ce24",
-    "gain_db": 1.193
-  },
-  {
-    "file": "approach-asr.mp3",
-    "duration": 3.0,
-    "sample_rate": 44100,
-    "channels": 1,
-    "peak_dbfs": -3.36,
-    "clipped_samples": 0,
-    "sha256": "c5dafd6bad8a8edfbaf4b5dc99153a1e86dd95c5c38a9946bdbe99c67c5d265d",
-    "source_sha256": "59d27af7df5d4cd73e2ad5e52f1ae894d105804c1dee3f1ce2047a0b0aaf7d1d",
-    "gain_db": 1.951
-  },
-  {
-    "file": "approach-maghrib.mp3",
-    "duration": 3.0960090702947847,
-    "sample_rate": 44100,
-    "channels": 1,
-    "peak_dbfs": -3.85,
-    "clipped_samples": 0,
-    "sha256": "4f19358591c259796615d1a7ab70235e457ec3dc06a06d91fb1761a979d9319b",
-    "source_sha256": "4512341774283b6ea36fc0ffa0f83f0a2cc19516c5a68fb740fac8bfcdf98300",
-    "gain_db": 0.308
-  },
-  {
-    "file": "approach-isha.mp3",
-    "duration": 3.240249433106576,
-    "sample_rate": 44100,
-    "channels": 1,
-    "peak_dbfs": -3.88,
-    "clipped_samples": 0,
-    "sha256": "c79884fcc6ab9553495ed41a80f2289fed135a90be76b54aa15bc714491cb1a2",
-    "source_sha256": "b19b277548b98096566a3f43dda863fce9439be50743e021eb4dae57563dcf9c",
-    "gain_db": 1.211
-  },
-  {
-    "file": "fajr-phrase.mp3",
-    "duration": 2.832018140589569,
-    "sample_rate": 44100,
-    "channels": 1,
-    "peak_dbfs": -3.96,
-    "clipped_samples": 0,
-    "sha256": "9a7e62fe2615c65d8bda3931ca8ec20e2b4a8a7e6175198537fe80413939d641",
-    "source_sha256": "c9182ad40401fd35a901bc7f7547427c1239a1c64276eea4d8aaa7d8492a5a7e",
-    "gain_db": -0.52
-  }
-]
+  "listening_review": "No subjective model listening; source attribution and ASR used, samples provided for user listening."
+}

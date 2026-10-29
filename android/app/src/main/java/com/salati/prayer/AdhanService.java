@@ -29,7 +29,7 @@ public final class AdhanService extends Service{
   }else play(name);return START_NOT_STICKY;
  }
  void onAudioFocusChange(int change){focusState.change(change);if(focusState.stopped){finishPlayback("stopped");return;}if(prelude!=null&&focusState.paused){prelude.close();prelude=null;}if(!focusState.paused&&prelude==null&&pendingRecording!=null){String recording=pendingRecording;pendingRecording=null;play(recording);return;}applyFocus();}
- void applyFocus(){if(player==null||settings==null)return;float preferred=(float)Math.max(0,Math.min(1,settings.optDouble("volume",1.0)));player.setVolume(focusState.volume(preferred));player.setPaused(focusState.paused);}
+ void applyFocus(){if(settings==null)return;float preferred=(float)Math.max(0,Math.min(1,settings.optDouble("volume",1.0)));if(prelude!=null)prelude.setVolume(focusState.volume(preferred));if(player!=null){player.setVolume(focusState.volume(preferred));player.setPaused(focusState.paused);}}
  void play(String name){
   if(player!=null)player.stop();
   String file="qatami-user-v2".equals(name)?"qatami-original-v4.ogg":name+("wasilah".equals(name)?"":"-clean-v3")+".mp3";

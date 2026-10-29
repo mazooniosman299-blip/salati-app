@@ -42,9 +42,10 @@ import android.content.Context;import android.media.AudioAttributes;
 class PcmAudioPlayer {
  interface Listener {void complete();void error(Exception error);}
  static PcmAudioPlayer latest;static boolean throwPlay,throwConstructor,synchronousComplete;
- Listener listener;String path;AudioAttributes attributes;float volume;int stopped,played;
+ Listener listener;String path;AudioAttributes attributes;float volume;int stopped,played,volumeChanges;
  PcmAudioPlayer(Context context){if(throwConstructor)throw new IllegalStateException("constructor failed");latest=this;}
  void play(String path,AudioAttributes attributes,float volume,Listener listener){this.path=path;this.attributes=attributes;this.volume=volume;this.listener=listener;played++;if(throwPlay)throw new IllegalStateException("missing asset");if(synchronousComplete)listener.complete();}
+ void setVolume(float value){volume=value;volumeChanges++;}
  void stop(){stopped++;}
 }''',
     'com/salati/prayer/MainActivity.java': '''package com.salati.prayer;
@@ -59,16 +60,19 @@ public final class ArabicSpeechLifecycleTest {
  public static void main(String[] args){
   Context c=new Context();AudioAttributes attributes=new AudioAttributes();ArabicSpeech speech=new ArabicSpeech(c,attributes);int[] done={0};
   speech.speak(FAJR,.35f,()->done[0]++);PcmAudioPlayer player=PcmAudioPlayer.latest;
-  check(player.path.equals("www/audio/reminders/fajr-phrase.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
+  check(player.path.equals("www/audio/reminders/fajr-phrase-human-v1.mp3"),"Fajr uses bundled phrase");check(player.attributes==attributes&&Math.abs(player.volume-.35f)<.001,"PCM inherits audio route and saved volume");
   status(c,"playing");check(MainActivity.events.get(0).equals("loading"),"loading precedes playing");check(done[0]==0,"adhan waits for clip completion");
-  player.listener.complete();player.listener.complete();player.listener.error(new Exception("late"));
+  speech.setVolume(.0875f);check(Math.abs(player.volume-.0875f)<.0001,"ducked volume reaches active PCM prelude");speech.setVolume(.35f);check(Math.abs(player.volume-.35f)<.0001,"focus gain restores configured volume");
+  speech.setVolume(.6f);check(player.volume==.6f,"live user volume reaches active prelude");speech.setVolume(2f);check(player.volume==1f,"live volume clamps high values");speech.setVolume(-1f);check(player.volume==0f,"live volume clamps negative values");
+  int validChanges=player.volumeChanges;speech.setVolume(Float.NaN);speech.setVolume(Float.POSITIVE_INFINITY);speech.setVolume(Float.NEGATIVE_INFINITY);check(player.volumeChanges==validChanges,"invalid live volume never reaches PCM");
+  player.listener.complete();speech.setVolume(.8f);check(player.volumeChanges==validChanges,"volume update after close is harmless");player.listener.complete();player.listener.error(new Exception("late"));
   check(done[0]==1&&player.stopped==1,"continuation and cleanup happen exactly once");status(c,"finished");check(Handler.timers.isEmpty(),"completion clears timeout");
   String[] keys={"fajr","dhuhr","asr","maghrib","isha"},names={"الفجر","الظهر","العصر","المغرب","العشاء"};
-  for(int i=0;i<keys.length;i++){speech.speak("اقتربت صلاة "+names[i],1f,()->done[0]++);player=PcmAudioPlayer.latest;check(player.path.equals("www/audio/reminders/approach-"+keys[i]+".mp3"),"prayer maps to own recording: "+keys[i]);player.listener.complete();}
+  for(int i=0;i<keys.length;i++){speech.speak("اقتربت صلاة "+names[i],1f,()->done[0]++);player=PcmAudioPlayer.latest;check(player.path.equals("www/audio/reminders/approach-hayya-human-v1.mp3"),"prayer maps to own recording: "+keys[i]);player.listener.complete();}
   final int[] old={0},replacement={0};speech.speak(FAJR,.5f,()->old[0]++);PcmAudioPlayer stale=PcmAudioPlayer.latest;speech.speak("اقتربت صلاة العصر",.7f,()->replacement[0]++);player=PcmAudioPlayer.latest;
   check(stale.stopped==1,"rapid replacement stops old clip");stale.listener.complete();stale.listener.error(new Exception("late"));check(old[0]==0&&replacement[0]==0,"stale callback cannot finish replacement");status(c,"playing");player.listener.complete();check(replacement[0]==1,"replacement continues exactly once");
   speech.speak(FAJR,1f,()->old[0]++);player=PcmAudioPlayer.latest;speech.close();player.listener.complete();player.listener.error(new Exception("late"));Handler.advance(9000);check(old[0]==0&&Handler.timers.isEmpty(),"explicit close suppresses callbacks and deadlines");
-  final int[] timed={0};speech.speak(FAJR,1f,()->timed[0]++);player=PcmAudioPlayer.latest;Handler.advance(7999);check(timed[0]==0,"clip may run up to deadline");Handler.advance(1);check(timed[0]==1&&player.stopped==1,"timeout releases player and continues adhan");status(c,"error");player.listener.complete();check(timed[0]==1,"late completion after timeout is ignored");
+  final int[] timed={0};speech.speak(FAJR,1f,()->timed[0]++);player=PcmAudioPlayer.latest;Handler.advance(14000);check(timed[0]==0,"a complete human phrase must not be cut at the old synthetic deadline");Handler.advance(15999);check(timed[0]==0,"clip may run up to deadline");Handler.advance(1);check(timed[0]==1&&player.stopped==1,"timeout releases player and continues adhan");status(c,"error");player.listener.complete();check(timed[0]==1,"late completion after timeout is ignored");
   final int[] failed={0};speech.speak(FAJR,2f,()->failed[0]++);player=PcmAudioPlayer.latest;check(player.volume==1f,"volume clamps to one");player.listener.error(new Exception("decoder failure"));check(failed[0]==1,"decode error continues adhan");status(c,"error");
   PcmAudioPlayer.throwPlay=true;speech.speak(FAJR,.5f,()->failed[0]++);player=PcmAudioPlayer.latest;check(failed[0]==2&&player.volume==.5f&&player.stopped==1,"synchronous missing asset releases player and continues");status(c,"error");PcmAudioPlayer.throwPlay=false;
   PcmAudioPlayer.throwConstructor=true;speech.speak(FAJR,1f,()->failed[0]++);check(failed[0]==3,"constructor failure continues adhan");status(c,"error");PcmAudioPlayer.throwConstructor=false;

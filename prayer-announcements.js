@@ -1,8 +1,8 @@
 import {duePrayer} from './audio-controller.js';
 
 const PRAYER_NAMES={fajr:'الفجر',dhuhr:'الظهر',asr:'العصر',maghrib:'المغرب',isha:'العشاء'};
-const CLIPS=Object.fromEntries(Object.entries(PRAYER_NAMES).map(([key,name])=>['اقتربت صلاة '+name,'audio/reminders/approach-'+key+'.mp3']));
-CLIPS['الصلاة خير من النوم']='audio/reminders/fajr-phrase.mp3';
+const CLIPS=Object.fromEntries(Object.entries(PRAYER_NAMES).map(([key,name])=>['اقتربت صلاة '+name,'audio/reminders/approach-hayya-human-v1.mp3']));
+CLIPS['الصلاة خير من النوم']='audio/reminders/fajr-phrase-human-v1.mp3';
 
 // Short, same-origin recordings work without installed voices or a speech service.
 // Browser scheduling remains foreground only; Android owns background delivery.
@@ -33,7 +33,7 @@ export class PrayerAnnouncements{
    try{
     player=new this.Audio(src);this.player=player;player.preload='auto';player.volume=volume;
     player.onended=()=>finish('finished');player.onerror=()=>finish('error');
-    timer=this.setTimer(()=>finish('timeout'),12000);this.emit('loading');
+    timer=this.setTimer(()=>finish('timeout'),30000);this.emit('loading');
     // Call play synchronously while a preview click still owns user activation.
     Promise.resolve(player.play()).then(()=>{if(!done&&gen===this.generation)this.emit('playing')},error=>finish(error?.name==='NotAllowedError'?'blocked':'error'));
    }catch{finish('error')}

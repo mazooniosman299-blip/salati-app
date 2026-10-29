@@ -1,0 +1,156 @@
+{
+  "version": "1.0.99",
+  "current_release": {
+    "application_id": "com.salati.prayer",
+    "version_code": 100,
+    "version_name": "1.0.99",
+    "apk_sha256": "493e92e60534419ab353ab4818c65813d760cce16d2cbb4a39e5d5e84e76ca1c",
+    "certificate_sha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+    "key_alias": "salati"
+  },
+  "same_signing_certificate": true,
+  "version_code_increased": true,
+  "apk_bytes": 25747980,
+  "packaged_assets_verified": 358,
+  "all_packaged_assets_match_final_preparation": true,
+  "original_adhan_files_byte_identical": true,
+  "original_adhan_files_verified": 6,
+  "only_approved_human_reminder_recordings_packaged": true,
+  "human_reminder_recordings": {
+    "recordings": [
+      {
+        "file": "approach-hayya-human-v1.mp3",
+        "recording_type": "recorded-human",
+        "phrase": "حي على الصلاة",
+        "duration_seconds": 10.8,
+        "source_excerpt_seconds": [
+          63.5,
+          74.3
+        ],
+        "sha256": "9a1bf07368cab2926ce4328bbfb662efdb52c4543152338d3b5edd3bcb40ff26",
+        "synthetic": false
+      },
+      {
+        "file": "fajr-phrase-human-v1.mp3",
+        "recording_type": "recorded-human",
+        "phrase": "الصلاة خير من النوم",
+        "duration_seconds": 19.75,
+        "source_excerpt_seconds": [
+          25.85,
+          45.6
+        ],
+        "sha256": "adabd1e6d8435dea1c5081040e6af2a56f0173c1a4106a101144aeaee6e2c6a4",
+        "synthetic": false
+      }
+    ],
+    "approach_prayer_names": "notification only; user selected the shared human call",
+    "signal_checks": {
+      "sample_rate": 44100,
+      "channels": 1,
+      "clipped_samples": 0,
+      "peak_below_dbfs": -4
+    },
+    "listening_review": "No subjective model listening; source attribution and ASR used, samples provided for user listening."
+  },
+  "user_approved_approach_phrase": "حي على الصلاة; individual prayer name in notification",
+  "synthetic_reminder_files_and_generation_scripts_removed": true,
+  "human_asset_immutable_paths": true,
+  "javascript_test_commands": 37,
+  "android_release_build_passed": true,
+  "android_lint_errors": 0,
+  "android_lint_warnings": 34,
+  "native_reminder_lifecycle_focus_tests_passed": true,
+  "browser_layout_keyboard_and_theme_tests": {
+    "result": "PASS",
+    "widths": [
+      320,
+      390,
+      600,
+      760,
+      1024,
+      1440
+    ],
+    "tabs": 6,
+    "themes": 2,
+    "checks": [
+      "no horizontal overflow",
+      "24px icons",
+      "custom menu selection keyboard Escape focus",
+      "tasbih count/reset ring",
+      "single Quran switch thumb and neutral checked track",
+      "Motion sliding glass navigation",
+      "same-tab RTL/LTR language realignment",
+      "white labels with >=4.5:1 contrast",
+      "disabled and focused controls",
+      "black/white timer and unselected labels",
+      "reduced motion and transparency",
+      "crisp Quran text and compact controls"
+    ],
+    "pageErrors": [],
+    "palette": [
+      {
+        "dark": false,
+        "controlFill": "rgb(48, 48, 48)",
+        "whiteTextContrast": 13.2,
+        "focus": {
+          "color": "rgb(68, 68, 68)",
+          "width": "3px",
+          "visible": true
+        },
+        "disabled": {
+          "bg": "rgb(228, 228, 228)",
+          "color": "rgb(80, 80, 80)",
+          "opacity": "1"
+        }
+      },
+      {
+        "dark": true,
+        "controlFill": "rgb(68, 68, 68)",
+        "whiteTextContrast": 9.74,
+        "focus": {
+          "color": "rgb(255, 255, 255)",
+          "width": "3px",
+          "visible": true
+        },
+        "disabled": {
+          "bg": "rgb(41, 41, 41)",
+          "color": "rgb(255, 255, 255)",
+          "opacity": "1"
+        }
+      }
+    ]
+  },
+  "real_browser_previews_and_offline": {
+    "result": "PASS",
+    "real_browser_previews": 2,
+    "offline_cached_clips": 2,
+    "offline_fajr_preview": true,
+    "page_errors": []
+  },
+  "photographs": {
+    "source": "dist/images/MOSQUE-SOURCE.txt",
+    "day_author": "Mauricio Krupka Buendia",
+    "night_author": "Reyyan",
+    "license": "https://www.pexels.com/license/",
+    "generated": false,
+    "processing": "conventional close crop and WebP encoding",
+    "same_building_day_night": true,
+    "water_or_reflections": false
+  },
+  "modern_libraries": {
+    "@phosphor-icons/core": "^2.1.1",
+    "motion": "^14.7.1"
+  },
+  "dependency_audit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "physical_android_device_tested": false,
+  "physical_update_install_tested": false,
+  "subjective_audio_listening_performed": false,
+  "notes": "reports/review-1.0.99.md"
+}

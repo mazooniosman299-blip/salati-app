@@ -1,48 +1,82 @@
-# Offline Arabic reminder recordings
+# Final human recording candidates for revision199
 
-All six packaged MP3 files are newly generated fixed recordings of the Microsoft
-Edge `ar-SA-HamedNeural` native Arabic male preset, created on 2026-10-28.
-They are generic synthetic speech, with no imam, human reciter, or cloned voice
-attribution. They are not downloaded adhan recordings.
+No audio was generated, synthesized, cloned or assembled from individual words.
+Both files are contiguous excerpts of existing recordings. No speaker names
+need appear in the application interface; this document preserves provenance.
 
-| File | Spoken text |
-|---|---|
-| approach-fajr.mp3 | اقترب موعد صلاة الفجر |
-| approach-dhuhr.mp3 | اقترب موعد صلاة الظهر |
-| approach-asr.mp3 | اقترب موعد صلاة العصر |
-| approach-maghrib.mp3 | اقترب موعد صلاة المغرب |
-| approach-isha.mp3 | اقترب موعد صلاة العشاء |
-| fajr-phrase.mp3 | الصلاة خير من النوم |
+## Approach notification — existing owner-supplied recording
 
-The files are bundled offline. Playback does not use an installed Arabic speech
-engine, call a remote speech service, require credentials, or synthesize speech
-at runtime.
+File: qatami-hayya-alasalah-human-preview.mp3
+Spoken phrase: حي على الصلاة
+Duration:10.8seconds
+Source: existing dist/audio/qatami-original-v4.ogg, original owner-supplied
+MP4 «أروع ما قد تسمعه في حياتك .. أذان من الشيخ ناصر القطامي [GN1f4LNoTUs].mp4».
+Attribution to Nasser Al-Qatami comes from the owner's supplied recording/file
+name; no independent performer license was supplied. See existing
+`dist/audio/SOURCES.txt` for recording history.
 
-## Provider and rights provenance
+Source range:63.5–74.3seconds. The first complete occurrence begins after the
+63.0–63.7s pause and ends before the next occurrence starts about74.5s. Cropping
+preserves the complete phrase and its natural tail. Unprompted Whisper medium
+full-context transcription recognized «حي على الصلاة» across the two repeated
+occurrences; isolated-crop transcription returned «هيا على الصلاة», an ASR
+orthographic variation. No spoken words were altered or replaced.
 
-Service: Microsoft Edge online speech, preset `ar-SA-HamedNeural`.
-Generation client: https://github.com/rany2/edge-tts
-Client software license: LGPL-3.0. This is the client software's license; it does
-not itself grant recording/output rights in Microsoft's generated speech.
-The generated output remains subject to the provider's applicable terms:
-https://www.microsoft.com/servicesagreement
-No Creative Commons, MIT, or other independent audio-content license is asserted.
-No affiliation or endorsement by Microsoft, an imam, or a reciter is implied.
+Decoded peak:−4.22dBFS; clipped samples:0.
+SHA256:9a1bf07368cab2926ce4328bbfb662efdb52c4543152338d3b5edd3bcb40ff26
 
-## Reproduction and processing
+The user explicitly approved this phrase for approach reminders, with the
+individual prayer name displayed in the notification.
 
-`generate_sources.py` documents optional build-time creation with edge-tts.
-`prepare_audio.py` converts the approved originals to 44.1 kHz mono MP3 at
-96 kbps, removes metadata and normalizes conservatively with 3.5dB peak headroom
-before encoding. It does not trim spoken words or change pitch/speed. No music,
-noise reduction, voice conversion or reciter imitation was applied.
-Generation is optional development tooling; the packaged app needs only MP3s.
+## Fajr wake phrase — recorded sheikh from online audio library
 
-`verification.json` records original/output SHA-256, decoded output duration,
-sample rate, channel count, decoded peak, and clipping counts.
-`transcripts.json` records independent unprompted Whisper medium ASR of all six
-original generated files; each returned the intended phrase verbatim.
+File: fajr-phrase-mishary-human-preview.mp3
+Spoken phrase: الصلاة خير من النوم
+Duration:19.75seconds
+Source page: https://soundcloud.com/r-da-wakrim/2014-1
+Title: الصلاة خير من النوم2014
+Uploader: Réda Wakrim
+SoundCloud creation metadata:2014-01-21T16:58:12Z
+SoundCloud track ID:130653706
+Source duration:71.047256seconds
+Source file: mishary-fajr-2014-source.m4a (public normal SoundCloud audio stream)
+Source SHA256:25bb3fc180573c010c41e221b2af93ff390bba700858f8c32e04c4108dd4e659
 
-No subjective human listening was performed in this environment. Numerical and
-transcription checks do not establish subjective voice quality or guarantee
-perfect pronunciation. The source audio is a native Arabic preset throughout.
+The uploader's primary description states:
+«الصلاة خير من النوم بصوت الشيخ مشاري العفاسي
+من هندستي
+أسألكم الدعاء عن ظهر الغيبب
+المرجو نشرها فالدال على الخير كفاعله»
+
+This credits the recorded voice to Sheikh Mishary Alafasy and the audio
+engineering to the uploader, who expressly asks that it be shared. The2014
+source is an existing recorded performance, not a newly generated/AI voice.
+Speaker attribution is based on the published source description and has not
+been independently authenticated directly with the reciter.
+
+Rights: publisher enabled downloads (downloadable=true) and explicitly invites
+sharing. SoundCloud metadata remains all-rights-reserved. No formal independent
+Creative Commons/open-content license or direct reciter rights grant is asserted.
+Full source-page evidence is preserved in mishary-fajr-source.json.
+
+Source excerpt25.85–45.60seconds contains one whole occurrence and its natural
+reverberation tail, ending before the next occurrence. Unprompted Whisper medium
+ASR on the original-quality decoded excerpt returned exactly:
+«الصلاة خير من النوم» (0.00–18.88s of the19.75s crop).
+
+Decoded peak:−4.23dBFS; clipped samples:0.
+SHA256:adabd1e6d8435dea1c5081040e6af2a56f0173c1a4106a101144aeaee6e2c6a4
+
+## Processing and review limits
+
+Only contiguous cropping, conservative gain attenuation, conversion to mono
+44.1kHz and128kbps MP3 encoding were applied. No time stretch, pitch changes,
+word rearrangement, denoising, synthesis, imitation or voice cloning was used.
+
+The model cannot subjectively listen in this environment. ASR and signal checks
+verify content/levels within their limits; the user should hear the provided
+recordings before an update. Do not claim that measurements prove voice quality.
+
+Use only these two selected human files in the app. Do not package rejected
+Ramy alternatives, old synthetic reminders, or any speech-generator scripts.
+No app files were modified by this private preparation task.
