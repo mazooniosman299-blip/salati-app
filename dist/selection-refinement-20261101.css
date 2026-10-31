@@ -130,3 +130,13 @@ body.dark #mushaf #qVerses .quran-text .is-reciting .ayah-number{
   border:0!important;
   box-shadow:none!important;
 }
+
+/* Higher-specificity nonselected tile rule overrides older phone defaults. */
+body.dark #times .prayer-overview #prayers .prayer:not(.active){
+  background:rgba(5,8,13,.62)!important;
+  border-color:rgba(163,175,189,.34)!important;
+}
+/* Selected blue fill remains the focus indication; never draw a selection ring. */
+body.dark header>.site-nav .nav-icon-button.active:focus-visible{
+  outline:none!important;outline-width:0!important;box-shadow:none!important;
+}
