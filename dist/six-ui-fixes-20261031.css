@@ -96,8 +96,8 @@ body.dark #qibla .qibla-card .compass::before{
 body.dark #qibla .qibla-card .compass::after{
   border-color:rgba(212,182,128,.55)!important;
 }
-body.dark #qibla .qibla-card .cardinal,
-body.dark #qibla .qibla-card .compass .north{
+body.dark #qibla #qiblaDial .cardinal,
+body.dark #qibla #qiblaDial .north{
   color:#F5F3EA!important;opacity:1!important;font-weight:800!important;
 }
 body.dark #qibla .qibla-card .qibla-ray{
