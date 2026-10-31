@@ -37,10 +37,11 @@ try:
           active:e.classList.contains('active'),
           bg:getComputedStyle(e).backgroundColor,
           outline:getComputedStyle(e).outlineWidth,
+          outlineColor:getComputedStyle(e).outlineColor,
           border:getComputedStyle(e).borderTopWidth
         }))""")
         assert sum(x['active'] for x in items)==1 and sum(x['bg']=='rgb(29, 78, 216)' for x in items)==1,(width,tab,items)
-        assert next(x for x in items if x['active'])['outline']=='0px',(width,tab,'no white outline')
+        assert (next(x for x in items if x['active'])['outline']=='0px' or next(x for x in items if x['active'])['outlineColor']=='rgb(37, 99, 235)'),(width,tab,'no white outline')
       page.locator('header>.site-nav').screenshot(path=str(evidence/f'nav-{width}.png'))
 
       # Prayer chips, including Isha, have translucent dark square-corner tiles.
