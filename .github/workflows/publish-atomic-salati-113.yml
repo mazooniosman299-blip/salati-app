@@ -106,6 +106,7 @@ jobs:
       - name: Refuse stale binary and test exact Cloudflare production output
         env:
           SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+          SALATI_WEB_ALREADY_BUILT: '1'
         run: |
           npm run build:cloudflare
           npm test
