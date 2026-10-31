@@ -123,7 +123,7 @@ jobs:
           python3 tests/audio-control-colors.py
       - name: Verify all five visual repairs in Chromium
         if: success() || failure()
-        run: python3 tests/design-visual-regression.py
+        run: python3 tests/reference-acceptance-20261031.py
       - name: Upload restoration screenshot evidence
         if: always()
         uses: actions/upload-artifact@v4

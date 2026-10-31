@@ -1,17 +1,24 @@
+'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs');
-const css=fs.readFileSync('dist/design-restoration-v1.0.110.css','utf8');
+const css=fs.readFileSync('dist/design-restoration-v1.0.112.css','utf8');
 const html=fs.readFileSync('dist/index.html','utf8');
 const sw=fs.readFileSync('dist/sw.js','utf8');
-assert(html.includes('href="design-restoration-v1.0.110.css"'),'Original design owner must be loaded');
-assert(html.indexOf('design-restoration-v1.0.110.css')>html.indexOf('reference-layout-v1.0.109.css'),'The reference stylesheet must load last');
-assert(sw.includes('salati-shell-v152'),'Invalidate stale color assets');
-for(const literal of ['--salati-page:#0B0E13','--salati-deep:#040509','--salati-card:#15181D','--salati-border:#32383F','--salati-select:#20252B'])
- assert(css.includes(literal),'Missing approved original palette '+literal);
-for(const target of ['dialog.choice-sheet','.choice-option[aria-selected="true"]','#qibla .qibla-card','.prayer-overview #prayers .prayer.active','.quran-reading-page','#mushaf .reference-player'])
- assert(css.includes(target),'Missing material surface '+target);
-assert(css.includes('background-image:linear-gradient(160deg,rgba(255,255,255,.025),transparent 75%)!important'),'Restore gentle original glass depth');
-assert(!css.includes('#1C232A')&&!css.includes('#2E3740')&&!css.includes('#202A35'),'No new navy gray palette');
-assert(!css.includes('#A0ADBA')&&!css.includes('#596774'),'No unapproved high contrast gray borders');
-assert(!css.includes('/* Canonical charcoal surface system'),'No additional competing color systems');
-assert.equal((css.match(/{/g)||[]).length,(css.match(/}/g)||[]).length,'Balanced CSS');
-console.log('PASS: exact 2026-10-29 charcoal palette and one authoritative stylesheet');
+assert(html.startsWith('<!doctype html>') && html.includes('</body></html>'),'Restore complete HTML; never publish placeholder');
+for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTransport','qStop','qSeek']){
+ assert(html.includes('id="'+id+'"'),'Missing functional DOM node '+id);
+}
+assert(html.includes('href="design-restoration-v1.0.112.css"'),'Reference layer is loaded');
+assert(html.indexOf('design-restoration-v1.0.112.css')>html.indexOf('reference-layout-v1.0.109.css'),'Final CSS must win in cascade');
+assert(sw.includes("salati-shell-v153")&&sw.includes('design-restoration-v1.0.112.css'),'Service worker caches current design');
+for(const literal of ['--bg:#0B0E13','--card:#040509','--action-fill:#2563EB','background:#2563EB!important','background-image:linear-gradient(180deg,#12151A,#040509)']){
+ assert(css.includes(literal),'Approved palette or player missing: '+literal);
+}
+for(const target of ['dialog.choice-sheet','dialog.voice-sheet','dialog.uniform-menu','.floating-menu','#mushaf .reference-player','#mushaf .reference-player #qTransport::before','#mushaf .reference-player #qStop:not(:disabled)']){
+ assert(css.includes(target),'Missing material styling for '+target);
+}
+const action=css.match(/\/\* One color owner:[\s\S]*?body\.dark header>\.site-nav \.nav-icon-button,/);
+assert(action && action[0].includes('background:#0B0E13!important'),'Generic enabled buttons must remain charcoal');
+assert(!action[0].includes('background:#153D7A!important'),'Old broad blue-button rule must be removed');
+assert(css.includes('border:0!important;outline:0!important'),'Menu frame must not be white');
+assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS');
+console.log('PASS: complete homepage, six tabs, vivid blue Quran playback, charcoal buttons and frameless menus');
