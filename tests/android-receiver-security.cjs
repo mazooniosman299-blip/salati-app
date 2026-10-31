@@ -17,4 +17,5 @@ assert(activity.includes('static boolean trustedGeoOrigin(String origin)'), 'Nat
 assert(activity.includes('if(!trustedGeoOrigin(origin))'), 'Geolocation must not use prefix-based origin checks');
 assert(!activity.includes('origin.startsWith(ORIGIN)'), 'A deceptive subdomain must never be trusted for geolocation');
 assert(activity.includes('s.setSafeBrowsingEnabled(true)'), 'Android WebView safe browsing must stay active');
+assert(activity.includes('Manifest.permission.ACCESS_COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED){callback.invoke(origin,true,false);return;}'), 'Approximate location permission must be accepted without repeated dialogs');
 console.log('PASS: receiver, exact WebView origin and geolocation permissions security.');
