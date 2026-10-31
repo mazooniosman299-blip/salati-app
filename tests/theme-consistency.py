@@ -24,7 +24,7 @@ for name in ['style.css','light-theme.css','salati-design.css','city-pages.css',
     if is_gray(color):issues.append(f'{name}:{declaration.source_line}: {selector}: {declaration.name}=#{color}')
 assert not issues,'Neutral grays bypass the shared reference palette:\n'+'\n'.join(issues)
 # Protect the complete new approved palette, not merely absence of neutral gray.
-approved={'0B0E13','040509','15181D','32383F','FFFFFF','AEBCCB','AAB4C2','D6A84F','E3B85C','35BFA3','000000','2563EB','1D4ED8','1E40AF','3B82F6','153D7A','0B2347','1A4D91','102E5B','2D5D9B','3C4248','1C2026','121519','111318','080A0F','101712'}
+approved={'0B0E13','040509','15181D','32383F','FFFFFF','AEBCCB','AAB4C2','D6A84F','E3B85C','D6A84F','000000','2563EB','1D4ED8','1E40AF','3B82F6','153D7A','0B2347','1A4D91','102E5B','2D5D9B','3C4248','1C2026','121519','111318','080A0F','101712'}
 for name in ['style.css','light-theme.css','salati-design.css','city-pages.css','public-pages.css','reference-layout.css']:
  for rule in rules(tinycss2.parse_stylesheet((root/'dist'/name).read_text())):
   selector=tinycss2.serialize(rule.prelude)

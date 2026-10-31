@@ -19,6 +19,7 @@ assert.equal(tokens.ink, '#FFFFFF', 'Never dim normal text');
 assert.equal(tokens.muted, '#AAB4C2', 'Use the approved readable muted label color');
 assert.equal(tokens['control-disabled-ink'], '#FFFFFF', 'Disabled text must remain legible');
 assert.equal(tokens['action-fill'], '#153D7A', 'Approved play/stop blue');
+assert.equal(tokens.accent, '#D6A84F', 'Navigation accent uses gold, not green');
 assert(tokens['progress-track'].includes('.55'), 'Clear progress track');
 assert(html.includes('href="reference-layout-v1.0.109.css"'), 'App uses the edited CSS');
 assert(html.includes('href="light-theme-v1.0.109.css"'), 'App uses the edited palette');
