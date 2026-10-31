@@ -1,0 +1,315 @@
+/* Salati visual restoration — user-approved charcoal, readable surfaces and blue ON switches.
+   2026-10-31. This is intentionally loaded AFTER reference-layout CSS.
+   No light theme, neon, glow, overlays, or modification of saved user settings. */
+:root { color-scheme:dark; }
+body.dark { background:#0B0E13; color:#FFFFFF; }
+
+/* ON means BLUE; OFF means CHARCOAL. Keep white thumbs and original dimensions.
+   Target all current checkbox switches and the custom ARIA switches. */
+body.dark #settings .prayer-switches input[type=checkbox]:checked,
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #settings #fajrAnnouncementToggle:checked,
+body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
+body.dark #settings #audioEnable[aria-checked="true"],
+body.dark #settings #audioEnable.is-on,
+body.dark #settings #duaToggle[aria-checked="true"],
+body.dark #settings #silentAdhanToggle[aria-checked="true"] {
+  background:#2563EB!important;
+  background-color:#2563EB!important;
+  background-image:none!important;
+  border:1px solid #60A5FA!important;
+  box-shadow:none!important;
+  opacity:1;
+}
+body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
+body.dark #settings .announcement-settings input.compact-switch:not(:checked),
+body.dark #settings #fajrAnnouncementToggle:not(:checked),
+body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
+body.dark #settings #audioEnable[aria-checked="false"],
+body.dark #settings #duaToggle[aria-checked="false"],
+body.dark #settings #silentAdhanToggle[aria-checked="false"] {
+  background:#15181D!important;
+  background-color:#15181D!important;
+  background-image:none!important;
+  border:1px solid #75818E!important;
+  box-shadow:none!important;
+}
+body.dark #settings .prayer-switches input[type=checkbox]::after,
+body.dark #settings .announcement-settings input.compact-switch::before,
+body.dark #settings .announcement-settings input.compact-switch::after,
+body.dark #mushaf .quran-play-options input[type=checkbox]::before,
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thumb {
+  background:#FFFFFF!important;
+  box-shadow:none!important;
+}
+body.dark #mushaf #qFollowToggle { accent-color:#2563EB; }
+body.dark #settings :is(.prayer-switches,.announcement-settings) input[type=checkbox],
+body.dark #mushaf .quran-play-options input[type=checkbox],
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) {
+  transition:none!important;
+}
+
+/* Lift the reading surface off the page without turning the entire site gray. */
+body.dark #mushaf .mushaf-toolbar {
+  background:#171D25;
+  border:1px solid #485665;
+  box-shadow:none;
+  color:#FFFFFF;
+}
+body.dark #mushaf .mushaf-heading :is(h2,p,.eyebrow),
+body.dark #mushaf .mushaf-toolbar :is(strong,span,label,.note),
+body.dark #mushaf .mushaf-sheet :is(.quran-text,.mushaf-page-head,.mushaf-page-number) {
+  color:#FFFFFF;
+  opacity:1;
+}
+body.dark #mushaf .mushaf-sheet,
+body.dark #mushaf #qSheet {
+  background:#121820;
+  color:#FFFFFF;
+  border-color:#4A5664;
+  box-shadow:none;
+}
+body.dark #mushaf .quran-reading-page {
+  background:#1A232D;
+  color:#FFFFFF;
+  border:1px solid #667484;
+  outline:1px solid rgba(255,255,255,.14);
+  outline-offset:-6px;
+  box-shadow:none;
+}
+body.dark #mushaf .quran-reading-page .quran-text,
+body.dark #mushaf .mushaf-verses .quran-text,
+body.dark #mushaf #qVerses {
+  color:#FFFFFF;
+  opacity:1;
+  line-height:1.95;
+}
+body.dark #mushaf .quran-reading-page .quran-surah-title,
+body.dark #mushaf .mushaf-sheet .quran-surah-title {
+  background:#27323D;
+  color:#FFFFFF;
+  border:1px solid #627183;
+  box-shadow:none;
+}
+body.dark #mushaf .reference-player,
+body.dark #mushaf .recitation-player.reference-player {
+  background:#212B36;
+  border:1px solid #718092;
+  box-shadow:none;
+}
+body.dark #mushaf .recitation-caption :is(strong,.quran-track),
+body.dark #mushaf .recitation-times,
+body.dark #mushaf .quran-play-options label {
+  color:#FFFFFF;
+  opacity:1;
+}
+body.dark #mushaf .reference-player #qSeek {
+  accent-color:#76B0F5;
+}
+body.dark #mushaf .reference-player #qTransport::before,
+body.dark #mushaf .reference-player #qStop:not(:disabled) {
+  background:#2563EB;
+  border-color:#60A5FA;
+  box-shadow:none;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before,
+body.dark #mushaf .reference-player #qStop:hover:not(:disabled) { background:#3B82F6; }
+body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen) {
+  background:#212A34;
+  border-color:#647486;
+  color:#FFFFFF;
+}
+
+/* The compass should be readable even before permission/location is granted. */
+body.dark #qibla .qibla-card {
+  background:#171F28;
+  border:1px solid #536375;
+  box-shadow:none;
+  color:#FFFFFF;
+}
+body.dark #qibla .qibla-card .compass {
+  background:radial-gradient(circle at 45% 35%,#283645 0%,#1B2530 70%,#151B24 100%);
+  border:2px solid #8698AC;
+  box-shadow:inset 0 0 0 9px #171F28;
+}
+body.dark #qibla .qibla-card .compass::before {
+  background:repeating-conic-gradient(from 0deg,rgba(250,252,255,.95) 0deg 1deg,transparent 1deg 5deg);
+}
+body.dark #qibla .qibla-card .compass::after { border:1px solid #8190A2; }
+body.dark #qibla .qibla-card :is(.north,.cardinal) {
+  color:#FFFFFF;
+  opacity:1;
+  font-weight:800;
+}
+body.dark #qibla .qibla-card .phone-target {
+  background:#263443;
+  color:#FFFFFF;
+  border:1px solid #9BB0C7;
+}
+body.dark #qibla .qibla-card .qibla-ray {
+  background:linear-gradient(#FFFFFF,rgba(255,255,255,.45));
+}
+body.dark #qibla .qibla-card .kaaba-icon { filter:none; }
+body.dark #qibla .qibla-card .kaaba-icon path[fill="#32383F"] { fill:#40566C; }
+body.dark #qibla .qibla-card .dial-center {
+  background:#FFFFFF;
+  border-color:#263443;
+  box-shadow:0 0 0 1px #A5B4C5;
+}
+body.dark #qibla .qibla-card :is(#bearing,#headingValue,#compassStatus,.qibla-reading p) {
+  color:#FFFFFF;
+  opacity:1;
+}
+body.dark #qibla #compassStatus,
+body.dark #qibla .qibla-reading #headingValue {
+  background:#222D39;
+  border:1px solid #637286;
+}
+body.dark #qibla .compass-actions button {
+  background:#263443;
+  border-color:#91A7BD;
+  color:#FFFFFF;
+}
+
+/* Calm, legible picker: substantial row surfaces, balanced badges and search. */
+body.dark dialog.choice-sheet,
+body.dark dialog.voice-sheet {
+  background:#141A22;
+  border:1px solid #637286;
+  box-shadow:0 18px 44px rgba(0,0,0,.38);
+  color:#FFFFFF;
+}
+body.dark dialog.choice-sheet .choice-heading h2,
+body.dark dialog.voice-sheet .voice-sheet-header h2 { color:#FFFFFF; }
+body.dark dialog.choice-sheet .choice-search-wrap input,
+body.dark dialog.voice-sheet .choice-search-wrap input,
+body.dark dialog.uniform-menu input.menu-search {
+  background-color:#202A35;
+  border-color:#6A7A8C;
+  color:#FFFFFF;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option) {
+  background:#202933;
+  background-image:none;
+  border:1px solid #526170;
+  border-radius:16px;
+  min-height:64px;
+  box-shadow:none;
+  color:#FFFFFF;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
+ :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]) {
+  background:#2B3947;
+  background-image:none;
+  border-color:#A0B5CB;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol) {
+  background:#323E4B;
+  border:1px solid #59697C;
+  border-radius:11px;
+  color:#FFFFFF;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled) {
+  background:#2B3744;
+  border-color:#B1C3D5;
+}
+body.dark dialog.choice-sheet .choice-close,
+body.dark dialog.voice-sheet #voicePickerClose {
+  background:#26313D;
+  border-color:#728397;
+  color:#FFFFFF;
+}
+
+/* Leave physical scroll space below form controls when mobile navigation floats over the page. */
+@media (max-width:760px) {
+  body.dark #settings { padding-bottom:calc(var(--mobile-nav-height, 72px) + 150px); }
+  body.dark #mushaf { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
+  body.dark #qibla { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
+  body.dark #settings .prayer-switches { scroll-margin-block:140px; }
+}
+/* Selected options stay visibly selected even when the pointer is over them. */
+body.dark dialog.choice-sheet .choice-option[aria-selected="true"]:hover,
+body.dark dialog.choice-sheet .choice-option[aria-checked="true"]:hover,
+body.dark dialog.voice-sheet .voice-option[aria-pressed="true"]:hover {
+  background:#2B3947;
+  border-color:#A0B5CB;
+}
+@media (max-width:600px) {
+  body.dark #mushaf .mushaf-toolbar { padding:15px 13px; }
+  body.dark #mushaf .quran-reading-page { padding:16px 12px; }
+  body.dark #qibla .qibla-card { padding:22px 16px; }
+  body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option) {
+    min-height:60px;padding:10px 12px;
+  }
+}
+
+
+/* Some location/time buttons retained old greenish ink despite permanent dark mode.
+   Pin their actual DOM colors rather than relying on old palette specificity. */
+body.dark #times button:not(:disabled),
+body.dark #times #locate,
+body.dark #settings #locate {
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+}
+body.dark #times #locate,
+body.dark #settings #locate {
+  background:#15181D!important;
+  border:1px solid #728193!important;
+  box-shadow:none!important;
+}
+
+
+/* Remove the last legacy green action ink. This affects text/icons only;
+   the exclusively blue enabled tracks and Quran transport backgrounds remain. */
+body.dark button:not(:disabled) {
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+}
+
+
+/* Reset outdated translucent teal primary action fills in permanent dark mode,
+   without interfering with Quran audio, compass and counter-specific states. */
+body.dark .primary:not(#qPlay):not(#compassEnable):not(#counter):not(:disabled) {
+  background:#040509!important;
+  background-image:none!important;
+  border-color:rgba(255,255,255,.46)!important;
+  color:#FFFFFF!important;
+}
+
+
+body.dark #tasbih .tasbih-panel #counter:not(:disabled) {
+  background:#040509!important;
+  background-image:none!important;
+  border-color:rgba(255,255,255,.46)!important;
+  color:#FFFFFF!important;
+  box-shadow:none!important;
+}
+
+/* Respect the restored dark reading palette even against legacy injected themes. */
+body.dark #mushaf .quran-reading-page { background-color:#1A232D!important; background-image:none!important; }
+body.dark #mushaf .mushaf-sheet { background-color:#121820!important; }
+body.dark #mushaf .reference-player { background-color:#212B36!important; background-image:none!important; }
+
+
+/* The reference's warm gold follows the active bottom tab, not every tab.
+   Keep the existing Motion/ARIA navigation, with no glow or duplicate underline. */
+body.dark header>.site-nav.has-glass-navigation .nav-selection {
+  background-color:rgba(214,168,79,.24)!important;
+  background-image:linear-gradient(145deg,rgba(214,168,79,.28),rgba(214,168,79,.08))!important;
+  border:1px solid rgba(214,168,79,.78)!important;
+  box-shadow:inset 0 1px 0 rgba(255,228,171,.16)!important;
+}
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active {
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>span,
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>.nav-symbol {
+  color:#D6A84F!important;
+  -webkit-text-fill-color:#D6A84F!important;
+}
+@media(prefers-reduced-motion:reduce) {
+  body.dark header>.site-nav.has-glass-navigation .nav-selection { transition:none!important; }
+}

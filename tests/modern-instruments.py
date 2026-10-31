@@ -78,18 +78,18 @@ with sync_playwright() as p:
    fill=page.evaluate('()=>{const e=document.createElement("span");e.style.color="var(--control-fill)";document.body.append(e);const color=getComputedStyle(e).color;e.remove();return color}')
    ink='rgb(255, 255, 255)' if dark else 'rgb(0, 0, 0)'
    active=page.locator('header>.site-nav .active').evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})')
-   assert active['color']=='rgb(214, 168, 79)',(dark,tab,active)
+   assert active['color']=='rgb(255, 255, 255)',(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(255, 255, 255, 0.035)','reference selection must remain translucent glass'
+   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(214, 168, 79, 0.24)','reference selection must be the requested golden glass'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
    assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
    inactive=page.locator('header>.site-nav button:not(.active)').first
    assert inactive.evaluate('(e)=>getComputedStyle(e).color')==ink
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
-    for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
-     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(37, 99, 235)' if style['id'] in ['qTransport','qPlay'] else fill
+    for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,cls:e.className,tag:e.outerHTML.slice(0,170),color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
+     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(37, 99, 235)' if style['id'] in ['qTransport','qPlay'] else ('rgb(38, 52, 67)' if style['id']=='compassEnable' else fill)
      assert style['bg']==expected and style['color']=='rgb(255, 255, 255)',(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':
