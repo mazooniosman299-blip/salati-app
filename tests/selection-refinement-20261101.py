@@ -106,11 +106,15 @@ try:
       choice=page.locator('#locationAutomaticOption')
       choice.wait_for(state='visible',timeout=10000)
       alignment=choice.evaluate("""e=>{
-        const b=e.getBoundingClientRect(),i=e.querySelector('.location-icon').getBoundingClientRect();
-        return Math.abs((b.top+b.height/2)-(i.top+i.height/2))
+        const b=e.getBoundingClientRect(),w=e.querySelector('.location-mark'),
+              r=w.getBoundingClientRect(),i=e.querySelector('.location-icon').getBoundingClientRect();
+        return {offset:i.top+i.height/2-b.top-b.height/2,
+          button:[b.top,b.height],wrapper:[r.top,r.height],icon:[i.top,i.height],
+          wrapperTop:getComputedStyle(w).top,wrapperTransform:getComputedStyle(w).transform,
+          iconTransform:getComputedStyle(e.querySelector('.location-icon')).transform}
       }""")
-      assert alignment<4,(width,'centered pin',alignment)
       page.locator('#locationAutomaticOption').screenshot(path=str(evidence/f'location-{width}.png'))
+      assert abs(alignment['offset'])<4,(width,'centered pin',alignment)
       page.keyboard.press('Escape')
       for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
         page.click(f'[data-tab={tab}]')
