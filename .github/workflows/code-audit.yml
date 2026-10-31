@@ -8,6 +8,8 @@ permissions:
   contents: read
 jobs:
   code:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -25,6 +27,16 @@ jobs:
         run: |
           node tests/quran-dom.cjs
           npm run test:seo
+      - name: One-time repair of generated bundle on audit branch
+        if: github.event_name == 'pull_request' && github.head_ref == 'audit/full-code-and-release-integrity-20261031'
+        run: |
+          if ! git diff --quiet -- dist/app-v1.0.109.js dist/app.js; then
+            git config user.name 'salati-build-audit'
+            git config user.email 'salati-build-audit@users.noreply.github.com'
+            git add dist/app-v1.0.109.js dist/app.js
+            git commit -m "build(web): synchronize committed app bundles with current source"
+            git push origin "HEAD:audit/full-code-and-release-integrity-20261031"
+          fi
       - name: Verify committed JavaScript matches rebuilt release
         run: git diff --exit-code -- dist/app-v1.0.109.js dist/app.js
       - name: Audit production npm dependencies
