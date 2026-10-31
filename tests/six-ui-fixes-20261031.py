@@ -35,7 +35,7 @@ try:
                 line:getComputedStyle(e,'::after').backgroundColor,
                 width:e.getBoundingClientRect().width})""")
             idle=page.locator('[data-tab=times]').evaluate("e=>getComputedStyle(e,'::after').content")
-            assert 'rgba(187, 198, 211' in active['shadow'] and active['line']=='rgb(244, 246, 250)' and active['width']>36,(width,'active nav',active)
+            assert 'rgba(230, 235, 241' in active['shadow'] and active['line']=='rgb(244, 246, 250)' and active['width']>36,(width,'active nav',active)
             assert idle=='none',(width,'idle nav',idle)
             page.wait_for_function("document.querySelector('#qSurah').options.length >=114")
             # 3. Quran contents, not just outer leaf, have a separate readable surface.
