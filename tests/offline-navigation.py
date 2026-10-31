@@ -26,8 +26,8 @@ try:
    assert page.locator('#cityLabel').inner_text()=='الرياض'
    page.wait_for_function('document.querySelector(".hero-picture img")?.naturalWidth===1120')
    assert page.locator('.hero-picture img').get_attribute('src')=='images/mosque-reference-original.png'
-   page.click('[data-tab=mushaf]');page.wait_for_function('document.querySelector("#mushaf:not([hidden]) .mushaf-verses")?.innerText.trim().length>0')
-   assert page.locator('.mushaf-verses').inner_text().strip(),'Bundled Quran data must load offline after nested navigation'
+   page.click('[data-tab=mushaf]');page.wait_for_function('document.querySelector("#mushaf:not([hidden]) .mushaf-verses")?.textContent.trim().length>0')
+   assert page.locator('.mushaf-verses').text_content().strip(),'Bundled Quran data must load offline after nested navigation'
   assert not errors,errors
   b.close()
  print('PASS: real controlled Chromium resolves Arabic/English offline deep links to cached root, boots navigation and loads Quran data.')
