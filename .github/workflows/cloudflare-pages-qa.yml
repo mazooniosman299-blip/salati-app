@@ -21,6 +21,8 @@ jobs:
         env:
           SALATI_PUBLIC_ORIGIN: https://salati-qa-example.pages.dev
         run: npm run build:cloudflare
+      - name: Regressions on the exact Cloudflare production build
+        run: npm test
       - name: Verify all navigation/SEO/PWA assets
         env:
           SALATI_PUBLIC_ORIGIN: https://salati-qa-example.pages.dev
