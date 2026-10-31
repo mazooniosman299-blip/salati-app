@@ -74,3 +74,33 @@ jobs:
           name: salati-full-tree-audit
           path: reports/full-source-audit-latest.json
           if-no-files-found: ignore
+
+
+  browser-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run build
+      - name: Install real Chromium browser and UI test dependencies
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Test dark theme and audio colors in Chromium
+        run: |
+          python3 tests/dark-matte.py
+          python3 tests/audio-control-colors.py
+      - name: Test every core tab and interaction
+        run: python3 tests/modern-instruments.py
+      - name: Test service worker offline navigation
+        run: python3 tests/offline-navigation.py
