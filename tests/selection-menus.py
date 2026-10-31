@@ -29,7 +29,7 @@ try:
     search=d.locator('input[type=search]:visible');search.focus();focus=search.evaluate('(e)=>({outline:getComputedStyle(e).outlineWidth,shadow:getComputedStyle(e).boxShadow,border:getComputedStyle(e).borderTopWidth})');assert focus=={'outline':'0px','shadow':'none','border':'1px'},(trigger,focus)
     rows=d.locator('button.choice-option,button.voice-option');assert rows.count()>0,trigger
     styles=rows.evaluate_all('(es)=>es.filter(e=>!e.hidden).slice(0,5).map(e=>{let c=getComputedStyle(e);return{selected:e.matches("[aria-selected=true],[aria-checked=true],[aria-pressed=true]"),bg:c.backgroundColor,image:c.backgroundImage,radius:c.borderRadius,color:c.color}})')
-    assert all(x['bg']==('rgb(43, 57, 71)'if x['selected']else x['bg'])and x['color']=='rgb(255, 255, 255)'and x['radius']=='16px'and x['image']=='none' and (x['selected'] or x['bg'] in ('rgb(32, 41, 51)','rgb(43, 55, 68)')) for x in styles),(trigger,styles)
+    assert all(x['bg']==('rgb(29, 42, 56)'if x['selected']else x['bg'])and x['color']=='rgb(255, 255, 255)'and x['radius']=='16px'and x['image']=='none' and (x['selected'] or x['bg'] in ('rgb(19, 27, 37)','rgb(28, 40, 53)')) for x in styles),(trigger,styles)
     close=d.locator('.choice-close,#voicePickerClose');cb=close.bounding_box();assert cb['width']==cb['height']==44,(trigger,cb)
     closecolor=close.evaluate('(e)=>getComputedStyle(e).backgroundColor');assert closecolor not in ['rgb(37, 99, 235)','rgb(29, 78, 216)'],closecolor
     d.screenshot(path=str(out/f'{trigger}-{width}.png'));page.keyboard.press('Escape');assert not d.is_visible(),trigger
