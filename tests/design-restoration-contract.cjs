@@ -5,7 +5,7 @@ const marker='design-restoration-v1.0.110.css';
 assert(html.includes('<link rel="stylesheet" href="'+marker+'">'),'Restored CSS must be loaded by main app');
 assert(html.indexOf(marker)>html.indexOf('reference-layout-v1.0.109.css'),'Restored CSS must override legacy charcoal styles');
 assert(sw.includes("'./"+marker+"'"),'New PWA cache must include restored CSS');
-assert(sw.includes("salati-shell-v150"),'Old cached CSS must be invalidated');
+assert(sw.includes("salati-shell-v151"),'Old cached CSS must be invalidated');
 for(const selector of ['.prayer-switches input[type=checkbox]:checked','#fajrAnnouncementToggle','.announcement-settings input.compact-switch:checked','#audioEnable[aria-checked="true"]','.quran-play-options input[type=checkbox]:checked','#mushaf .quran-reading-page','#mushaf .reference-player','#qibla .qibla-card .compass','dialog.choice-sheet','.choice-option']) {
  assert(css.includes(selector),'Missing restoration target: '+selector);
 }
