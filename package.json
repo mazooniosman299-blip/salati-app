@@ -33,7 +33,9 @@
     "test:provider-cache": "node tests/provider-cache-expiry.cjs && node tests/provider-bundle-integrity.cjs",
     "test:adhan-resume": "node tests/adhan-resume-integrity.cjs && bash scripts/test-audio-focus.sh",
     "test:security": "node tests/android-receiver-security.cjs",
-    "test:widget-outline": "node tests/widget-active-outline.cjs"
+    "test:widget-outline": "node tests/widget-active-outline.cjs",
+    "build:cloudflare": "node scripts/build-cloudflare-pages.cjs",
+    "test:cloudflare": "node tests/cloudflare-deployment.cjs"
   },
   "keywords": [],
   "author": "",

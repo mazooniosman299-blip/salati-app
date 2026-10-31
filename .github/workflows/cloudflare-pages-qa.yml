@@ -1,0 +1,36 @@
+name: Salati Cloudflare Pages release QA
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  cloudflare-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build exact Cloudflare Pages release
+        env:
+          SALATI_PUBLIC_ORIGIN: https://salati-qa-example.pages.dev
+        run: npm run build:cloudflare
+      - name: Verify all navigation/SEO/PWA assets
+        env:
+          SALATI_PUBLIC_ORIGIN: https://salati-qa-example.pages.dev
+        run: npm run test:cloudflare
+      - name: Check generated site for unexpected large files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          assets=[f for f in Path('dist').rglob('*') if f.is_file()]
+          assert assets
+          assert all(f.stat().st_size<=25*1024*1024 for f in assets)
+          print('PASS:',len(assets),'Cloudflare Pages assets')
+          PY
