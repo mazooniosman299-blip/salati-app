@@ -39,7 +39,7 @@ try:
             assert idle=='none',(width,'idle nav',idle)
             page.wait_for_function("document.querySelector('#qSurah').options.length >=114")
             # 3. Quran contents, not just outer leaf, have a separate readable surface.
-            panel=page.locator('#mushaf .quran-reading-page .mushaf-verses').first
+            panel=page.locator('#mushaf .quran-reading-page .quran-text').first
             panel.wait_for(state='visible',timeout=15000)
             reading=panel.evaluate("""e=>({background:getComputedStyle(e).backgroundColor,
                border:getComputedStyle(e).borderTopWidth,color:getComputedStyle(e).color})""")

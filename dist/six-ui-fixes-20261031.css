@@ -58,7 +58,7 @@ body.dark #times .prayer-overview #prayers .prayer.active{
 
 /* 3. Distinct reading panels *inside* each surah, not an empty dark page.
    Retain the previously tested reading-leaf background and Quran font. */
-body.dark #mushaf .quran-reading-page .mushaf-verses{
+body.dark #mushaf .quran-reading-page .quran-text{
   background:#20262E!important;
   border:1px solid rgba(181,198,187,.22)!important;
   border-radius:16px!important;
@@ -160,7 +160,7 @@ body.dark header>.site-nav .nav-icon-button.active .nav-symbol{
     gap:4px;padding-inline:4px;
   }
   body.dark #settings .prayer-switches>label{min-width:0}
-  body.dark #mushaf .quran-reading-page .mushaf-verses{
+  body.dark #mushaf .quran-reading-page .quran-text{
     padding:14px 12px!important;
   }
   body.dark header>.site-nav .nav-icon-button.active::after{
