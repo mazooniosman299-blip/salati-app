@@ -87,19 +87,19 @@ try:
       verse.evaluate("e=>e.classList.remove('is-reciting')")
       page.locator('#qSheet').screenshot(path=str(evidence/f'quran-{width}.png'))
 
-      # Exactly one selected checkmark for an adhan voice.
+      # Preserve the selected voice and waveform; remove both check visuals.
       page.click('[data-tab=settings]')
       page.locator('#audioVoice').evaluate("""e=>{e.value='nufais';e.dispatchEvent(new Event('change',{bubbles:true}))}""")
       page.click('#voicePickerOpen')
       marks=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>({
         picked:e.getAttribute('aria-pressed'),
-        mark:getComputedStyle(e.querySelector('.voice-check')).display,
+        checks:e.querySelectorAll('.voice-check').length,
         tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
-        audio:getComputedStyle(e.querySelector('.voice-symbol')).display
+        waveform:getComputedStyle(e.querySelector('.voice-symbol svg')).display
       }))""")
-      assert sum(x['tick']=='"✓"' for x in marks)==1 and all(x['mark']=='none' for x in marks),(width,'one visible tick',marks)
-      assert all((x['tick']=='"✓"')==(x['picked']=='true') for x in marks),(width,'checked voice',marks)
-      assert next(x for x in marks if x['picked']=='true')['audio']=='grid'
+      assert sum(x['picked']=='true' for x in marks)==1,(width,'selected voice',marks)
+      assert all(x['checks']==0 and x['tick'] in ('none','normal') for x in marks),(width,'no checks',marks)
+      assert all(x['waveform']!='none' for x in marks),(width,'keep wave',marks)
       page.locator('#voicePickerList').screenshot(path=str(evidence/f'voices-{width}.png'))
       page.click('#voicePickerClose')
       assert page.locator('#settings .audio-card>.eyebrow').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
@@ -107,12 +107,10 @@ try:
       choice=page.locator('#locationAutomaticOption')
       choice.wait_for(state='visible',timeout=10000)
       alignment=choice.evaluate("""e=>{
-        const b=e.getBoundingClientRect(),w=e.querySelector('.location-mark'),
-              r=w.getBoundingClientRect(),i=e.querySelector('.location-icon').getBoundingClientRect();
-        return {offset:i.top+i.height/2-b.top-b.height/2,
-          button:[b.top,b.height],wrapper:[r.top,r.height],icon:[i.top,i.height],
-          wrapperTop:getComputedStyle(w).top,wrapperTransform:getComputedStyle(w).transform,
-          iconTransform:getComputedStyle(e.querySelector('.location-icon')).transform}
+        const icon=e.querySelector('.location-icon').getBoundingClientRect();
+        const title=e.querySelector('.choice-option-text');
+        const b=title.getBoundingClientRect(),line=parseFloat(getComputedStyle(title).lineHeight);
+        return {offset:icon.top+icon.height/2-b.top-line/2};
       }""")
       page.locator('#locationAutomaticOption').screenshot(path=str(evidence/f'location-{width}.png'))
       assert abs(alignment['offset'])<4,(width,'centered pin',alignment)
@@ -123,7 +121,7 @@ try:
       assert not errors,(width,'browser errors',errors)
       checks.append({'width':width,'six_tabs_blue_only':True,'prayer_tiles_square':True,'notes_white':True,
         'small_surah_ornament':True,'recitation_no_box':True,'follow_checkbox_blue':True,
-        'one_voice_tick':True,'location_icon_centered':True,'runtime_errors':0})
+        'zero_voice_ticks':True,'location_icon_centered':True,'runtime_errors':0})
       page.close()
     browser.close()
   (evidence/'results.json').write_text(json.dumps({'passed':True,'checks':checks},ensure_ascii=False,indent=2)+'\n')
