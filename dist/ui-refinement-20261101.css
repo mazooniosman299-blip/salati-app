@@ -113,15 +113,13 @@ body.dark #settings .audio-buttons :is(#audioStop,#previewAdhan,#previewDua,#pre
   }
 }
 /* Reading leaf is parchment ONLY inside verses and surah plaques. */
-body.dark #mushaf .quran-reading-page .quran-text,
-body.dark #mushaf .mushaf-sheet .mushaf-verses{
+body.dark #mushaf .quran-reading-page .quran-text{
   background:#F6F0E4!important;color:#27231E!important;
   border:1px solid #DCD0B8!important;border-radius:15px!important;
   padding:18px clamp(13px,2.5vw,28px)!important;
   box-shadow:none!important;text-shadow:none!important;
 }
-body.dark #mushaf .quran-reading-page .quran-text [data-ayah],
-body.dark #mushaf .mushaf-sheet .mushaf-verses [data-ayah]{
+body.dark #mushaf .quran-reading-page .quran-text [data-ayah]{
   color:#27231E!important;text-shadow:none!important;
 }
 body.dark #mushaf .quran-reading-page .quran-surah-title,
@@ -292,4 +290,11 @@ body.dark #mushaf .mushaf-verses [data-ayah] .ayah-number{
    The original independent nav-selection indicator still animates position. */
 body.dark header>.site-nav .nav-icon-button{
   transition:none!important;
+}
+
+/* Reading-stage remains charcoal; parchment is only inside real verses. */
+body.dark #mushaf #qSheet,
+body.dark #mushaf #qVerses{
+  background:#151A22!important;
+  color:#FFFFFF!important;
 }
