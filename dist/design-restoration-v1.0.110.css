@@ -69,7 +69,9 @@ body.dark header>.site-nav .nav-icon-button.active{
   background-image:linear-gradient(180deg,#1E2229,#0A0C10)!important;
 }
 body.dark header>.site-nav .nav-icon-button>.nav-symbol{color:#FFFFFF!important;filter:none!important;}
-body.dark header>.site-nav .nav-selection{display:none!important;}
+body.dark header>.site-nav .nav-selection{display:block!important;background:rgba(255,255,255,.035)!important;background-image:none!important;border:0!important;box-shadow:none!important;pointer-events:none}
+body.dark header>.site-nav .nav-selection::before,
+body.dark header>.site-nav .nav-selection::after{content:none!important;display:none!important;}
 
 @media (max-width:760px){
   body.dark header>.site-nav{
@@ -339,7 +341,7 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled){
 @media(max-width:760px){
   html{scroll-padding-bottom:calc(var(--mobile-nav-height,65px) + 28px);}
   body.dark :is(#times,#mushaf,#qibla,#dhikr,#tasbih,#settings){
-    padding-bottom:calc(var(--mobile-nav-height,65px) + 128px);
+    padding-bottom:28px;
   }
   body.dark #mushaf .reference-player{border-radius:18px!important;padding:12px!important;}
 }
