@@ -45,11 +45,11 @@ try:
    page.screenshot(path=str(out/f'settings-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.querySelector("#qSurah").options.length>=114')
-   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(37, 99, 235)'
+   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(16, 21, 28)'
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
-   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(37, 99, 235)'
+   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(24, 36, 51)'
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)
