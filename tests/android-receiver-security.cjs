@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const manifest=fs.readFileSync('android/app/src/main/AndroidManifest.xml','utf8');
+const receive=(name)=>manifest.match(new RegExp('<receiver\\s+android:name="\\.'+name+'"[^>]*>'))?.[0]||'';
+assert(receive('RestoreReceiver').includes('android:exported="false"'),'System-only receiver must not be public');
+assert(receive('PrayerReceiver').includes('android:exported="false"'),'Adhan receiver must remain private');
+assert(manifest.includes('android.intent.action.BOOT_COMPLETED'),'Preserve restore on reboot');
+assert(manifest.includes('android.intent.action.TIME_SET'),'Preserve clock adjustment');
+assert(manifest.includes('android.intent.action.TIMEZONE_CHANGED'),'Preserve timezone change');
+assert(manifest.includes('android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED'),'Preserve alarm permission changes');
+assert(manifest.includes('android:usesCleartextTraffic="false"'),'Disable cleartext');
+assert(manifest.includes('android:allowBackup="false"'),'Disable backup of stored location/preferences');
+console.log('PASS: receiver security and system rescheduling actions.');
