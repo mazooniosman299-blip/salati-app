@@ -43,8 +43,18 @@ try:
    player=page.locator('#mushaf .reference-player')
    styles=player.evaluate("""e=>{const s=getComputedStyle(e);return {bg:s.backgroundColor,gradient:s.backgroundImage,border:s.borderTopColor,opacity:s.opacity}}""")
    assert styles['bg']=='rgb(4, 5, 9)' and 'linear-gradient' in styles['gradient'] and '0.16' in styles['border'],(width,styles)
-   seek=page.locator('#qSeek').evaluate("""e=>{let s=getComputedStyle(e),w=getComputedStyle(e,'::-webkit-slider-runnable-track');return {cssTrack:s.getPropertyValue('--progress-track').trim(),mediaTrack:s.getPropertyValue('--media-track').trim(),track:w.backgroundColor,trackHeight:w.height}}""")
-   assert seek['cssTrack']=='#4B5767' and seek['mediaTrack']=='#4B5767' and seek['track']=='rgb(75, 87, 103)' and seek['trackHeight']=='4px',(width,'reference progress mismatch',seek)
+   seek=page.locator('#qSeek').evaluate("""e=>{
+     let s=getComputedStyle(e);
+     const selector='body.dark #mushaf .recitation-player.reference-player #qSeek::-webkit-slider-runnable-track';
+     const rule=[...document.styleSheets].flatMap(sheet=>[...sheet.cssRules]).find(rule=>rule.selectorText===selector);
+     return {cssTrack:s.getPropertyValue('--progress-track').trim(),
+       mediaTrack:s.getPropertyValue('--media-track').trim(),
+       trackRuleColor:rule?.style.backgroundColor,
+       trackRuleHeight:rule?.style.height,
+       visibleSliderHeight:e.getBoundingClientRect().height};
+   }""")
+   assert seek['cssTrack']=='#4B5767' and seek['mediaTrack']=='#4B5767' and seek['trackRuleColor']=='#4b5767' and seek['trackRuleHeight']=='4px',(width,'reference progress mismatch',seek)
+   page.locator('#qSeek').screenshot(path=str(out/f'quran-progress-{width}.png'))
 
    assert page.locator('#qTransport').is_visible()
    transport=page.locator('#qTransport').evaluate("(e)=>getComputedStyle(e,'::before').backgroundColor")
