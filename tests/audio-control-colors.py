@@ -45,7 +45,7 @@ try:
    page.screenshot(path=str(out/f'settings-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.querySelector("#qSurah").options.length>=114')
-   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(16, 21, 28)'
+   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(11, 14, 19)'
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
