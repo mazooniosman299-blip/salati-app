@@ -90,7 +90,7 @@ try:
             nav=active.evaluate("""e=>({bg:getComputedStyle(e).backgroundColor,
                 underline:getComputedStyle(e,'::after').backgroundColor,
                 icon:getComputedStyle(e.querySelector('.nav-symbol')).color})""")
-            assert nav['bg']!='rgb(32, 40, 35)' and nav['underline']=='rgb(184, 194, 206)' and nav['icon']=='rgb(255, 255, 255)',(viewport,nav)
+            assert nav['bg']!='rgb(32, 40, 35)' and nav['underline']=='rgb(244, 246, 250)' and nav['icon']=='rgb(255, 255, 255)',(viewport,nav)
             page.locator('header>.site-nav').screenshot(path=str(out/f'nav-{viewport}.png'))
             # Redesigned two-column instrument on desktop and stacked on mobile,
             # but keep the original sensor/needle/heading DOM elements.
