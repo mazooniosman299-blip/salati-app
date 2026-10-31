@@ -13,7 +13,7 @@ assert(header.includes('/sw.js')&&header.includes('no-cache'),'Service worker up
 for(const f of ['index.html','privacy.html','sitemap.xml','robots.txt']){
   assert(!read(f).includes('salati-world-prayer.sprytitan65.chatgpt.site'),f+' contains old host');
 }
-assert(sw.includes("salati-shell-v163"),'Offline cache revision must include latest verified PWA release');
+assert(sw.includes("salati-shell-v164"),'Offline cache revision must include latest verified PWA release');
 for(const asset of ['manifest.json','app-v1.0.109.js','reference-layout-v1.0.109.css',
 'light-theme-v1.0.109.css','images/mosque-reference-original.png',
 'fonts/AmiriQuran-Regular.ttf','quran/data.json']){
@@ -26,18 +26,18 @@ for(const url of urls){
   const rel=new URL(url).pathname.slice(1);
   assert(fs.existsSync(path.join(root,rel||'index.html')),'Sitemap page is missing: '+rel);
 }
-const apkUrl='/downloads/salati-1.0.114.apk';
+const apkUrl='/downloads/salati-1.0.115.apk';
 assert(home.includes('href="'+apkUrl+'"'),'Website must download APK from same origin without GitHub navigation');
-const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.114','manifest.json');
-assert(header.includes('Content-Disposition: attachment; filename="salati-1.0.114.apk"'),'APK must download as an attachment');
-assert(fs.existsSync(path.join(root,'downloads','salati-1.0.114.apk')),'Cloudflare build must contain verified signed APK');
+const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.115','manifest.json');
+assert(header.includes('Content-Disposition: attachment; filename="salati-1.0.115.apk"'),'APK must download as an attachment');
+assert(fs.existsSync(path.join(root,'downloads','salati-1.0.115.apk')),'Cloudflare build must contain verified signed APK');
 
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
-assert(manifest.version==='1.0.114'&&manifest.versionCode===115&&manifest.applicationId==='com.salati.prayer');
+assert(manifest.version==='1.0.115'&&manifest.versionCode===116&&manifest.applicationId==='com.salati.prayer');
 const crypto=require('node:crypto'),signedHash=crypto.createHash('sha256');
 let totalBytes=0;
 for(let i=0;i<manifest.partCount;i++){
-  const p=path.join(__dirname,'..','apk-release-parts','v1.0.114','part'+String(i).padStart(2,'0')+'.bin');
+  const p=path.join(__dirname,'..','apk-release-parts','v1.0.115','part'+String(i).padStart(2,'0')+'.bin');
   const buffer=fs.readFileSync(p);
   signedHash.update(buffer);totalBytes+=buffer.length;
 }
