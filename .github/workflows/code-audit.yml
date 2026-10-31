@@ -34,7 +34,7 @@ jobs:
           node - <<'NODE'
           const fs=require('node:fs');
           const html=fs.readFileSync('dist/index.html','utf8');
-          const match=html.match(/src="(app-v[\\d.]+\\.js)"/);
+          const match=html.match(/src="(app-v[\d.]+\.js)"/);
           if(!match)throw Error('Missing versioned app bundle');
           const bundled=fs.readFileSync('dist/'+match[1],'utf8');
           if(!bundled.includes('mobileScrollport')||!bundled.includes('gregorianDate'))
