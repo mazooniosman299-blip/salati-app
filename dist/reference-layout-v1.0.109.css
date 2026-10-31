@@ -316,7 +316,7 @@ body.dark #mushaf #qSurahPickerOpen{border:1px solid #32383F;border-radius:16px;
  --control-disabled:#040509;--control-pressed:#080A0F;
  --switch-off:#040509;--input-fill:#040509;
  --instrument-surface:#040509;--reading-surface:#040509;
- --action-fill:#20252B;--action-hover:#272D34;
+ --action-fill:#15181D;--action-hover:#15181D;
  --action-pressed:#15181D;--action-off:#040509;
 }
 body,body.dark{background:#0B0E13;color:#FFFFFF;color-scheme:dark}
@@ -365,23 +365,23 @@ body.dark #mushaf .reference-player #qTransport{
  color:#FFFFFF;opacity:1;filter:none;
 }
 body.dark #mushaf .reference-player #qTransport::before{
- background:#20252B;border:1px solid #596571;box-shadow:none;
+ background:#15181D;border:1px solid #32383F;box-shadow:none;
 }
 body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{
- background:#272D34;border-color:#596571;
+ background:#15181D;border-color:#32383F;
 }
 body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{
  background:#15181D;
 }
 body.dark #mushaf .reference-player #qTransport:disabled::before{
- background:#040509;border-color:#596571;
+ background:#040509;border-color:#32383F;
 }
 body.dark #mushaf .reference-player #qStop:not(:disabled){
- background:#20252B;border:1px solid #596571;color:#FFFFFF;
+ background:#15181D;border:1px solid #32383F;color:#FFFFFF;
  border-radius:50%;box-shadow:none;
 }
 body.dark #mushaf .reference-player #qStop:hover:not(:disabled){
- background:#272D34;
+ background:#15181D;
 }
 body.dark #mushaf .reference-player #qStop:disabled{
  display:none;background:#040509;border-color:var(--glass-edge);
@@ -424,7 +424,7 @@ body.dark #audioStop:disabled{background:var(--control-disabled);border-color:va
  --reading-surface:#040509;
  --input-fill:#040509;
  --switch-off:#040509;
- --action-fill:#20252B;
+ --action-fill:#15181D;
 }
 body.dark :is(
  .note,.eyebrow,.time-context,.calculation-context,.time-source a,
@@ -487,13 +487,13 @@ body.dark #mushaf .reference-player :is(#qTransport,#qStop){
  opacity:1;color:#FFFFFF;filter:none;
 }
 body.dark #mushaf .reference-player #qTransport::before{
- background:#20252B;border-color:#596571;
+ background:#15181D;border-color:#32383F;
 }
-body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#272D34}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#15181D}
 body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{background:#15181D}
 body.dark #mushaf .reference-player #qTransport:disabled::before{background:#040509}
-body.dark #mushaf .reference-player #qStop:not(:disabled){background:#20252B;border-color:#596571;color:#FFFFFF}
-body.dark #mushaf .reference-player #qStop:hover:not(:disabled){background:#272D34}
+body.dark #mushaf .reference-player #qStop:not(:disabled){background:#15181D;border-color:#32383F;color:#FFFFFF}
+body.dark #mushaf .reference-player #qStop:hover:not(:disabled){background:#15181D}
 
 
 /* Browser-verified: disabled prayer toggles keep the exact reference charcoal,
@@ -536,9 +536,9 @@ body.dark #settings .announcement-settings input.compact-switch:checked,
 body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
 body.dark input[data-audio-prayer]:checked,
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true] {
-  background:#20252B!important;
-  background-color:#20252B!important;
-  border-color:#596571!important;
+  background:#15181D!important;
+  background-color:#15181D!important;
+  border-color:#32383F!important;
   box-shadow:none!important;
 }
 body.dark #settings .prayer-switches input[type=checkbox]:checked::after,
