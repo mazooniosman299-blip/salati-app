@@ -68,6 +68,7 @@ try:
             positions=[]
             for checked in [False,True]:
                 input1.evaluate('(e,state)=>{e.checked=state}',checked)
+                page.wait_for_timeout(220)  # wait for CSS 160ms thumb transition
                 positions.append(input1.evaluate("e=>getComputedStyle(e,'::after').transform"))
             assert positions[0]!=positions[1] and '20' in positions[1],(width,'switch states',positions)
             page.locator('#settings .prayer-switches').screenshot(path=str(dest/f'adhan-{width}.png'))
