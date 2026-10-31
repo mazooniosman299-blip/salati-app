@@ -27,23 +27,24 @@ try:
   assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')==rgb('#0B0E13')
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
-   # Golden selection must visibly slide to each active tab while blue switches stay independent.
+   # Neutral translucent glass indicator must slide; no gold on any active icon.
    page.click('[data-tab=times]')
    page.wait_for_timeout(320)
    marker=page.locator('header>.site-nav .nav-selection')
-   assert marker.is_visible(),(width,'missing gold marker')
+   assert marker.is_visible(),(width,'missing sliding selection')
    start=marker.bounding_box()['x']
    page.click('[data-tab=mushaf]')
    page.wait_for_timeout(55)
    mid=marker.bounding_box()['x']
    dest=page.locator('[data-tab=mushaf]').bounding_box()['x']
-   assert min(start,dest)<mid<max(start,dest),(width,'gold sliding animation missing',start,mid,dest)
+   assert min(start,dest)<mid<max(start,dest),(width,'charcoal sliding animation missing',start,mid,dest)
    page.wait_for_timeout(290)
-   gold=marker.evaluate("(e)=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,gradient:getComputedStyle(e).backgroundImage})")
-   assert gold['bg']=='rgba(214, 168, 79, 0.24)' and gold['gradient'].startswith('linear-gradient'),(width,gold)
-   assert page.locator('[data-tab=mushaf]').evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgba(0, 0, 0, 0)',(width,'opaque active tile hides gold')
-   assert page.locator('[data-tab=mushaf] .nav-symbol').evaluate("(e)=>getComputedStyle(e).color")=='rgb(214, 168, 79)',(width,'active gold icon missing')
-   page.screenshot(path=str(out/f'gold-sliding-nav-{width}.png'))
+   neutral=marker.evaluate("(e)=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,gradient:getComputedStyle(e).backgroundImage})")
+   assert neutral['bg']=='rgba(255, 255, 255, 0.035)' and neutral['gradient']=='none',(width,neutral)
+   assert page.locator('[data-tab=mushaf]').evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(11, 16, 23)',(width,'active tile must match charcoal')
+   assert page.locator('[data-tab=mushaf] .nav-symbol').evaluate("(e)=>getComputedStyle(e).color")=='rgb(255, 255, 255)',(width,'active icon must be white')
+   assert marker.evaluate("(e)=>getComputedStyle(e,'::after').content")=='none',(width,'unexpected gold underline')
+   page.screenshot(path=str(out/f'charcoal-sliding-nav-{width}.png'))
    page.click('[data-tab=settings]')
    toggles=page.locator('[data-audio-prayer],#fajrAnnouncementToggle,#audioEnable,#duaToggle,#silentAdhanToggle')
    assert toggles.count()==9
@@ -65,9 +66,9 @@ try:
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
    reader=page.locator('.quran-reading-page').first
-   assert bg(reader)==rgb('#1A232D'),(width,'reader',bg(reader))
+   assert bg(reader)==rgb('#141B23'),(width,'reader',bg(reader))
    player=page.locator('#mushaf .reference-player')
-   assert bg(player)==rgb('#212B36'),(width,'player',bg(player))
+   assert bg(player)==rgb('#0B1017'),(width,'player',bg(player))
    assert page.locator('#qVerses').inner_text().strip(),'Quran text must not disappear'
    assert page.locator('#qTransport').is_visible(),'Audio player play/pause control must remain visible'
    for key in ['qRepeat','qAutoNext']:
@@ -81,7 +82,7 @@ try:
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#202933'),rgb('#2B3947')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#17212B'),rgb('#232D39')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
    dialog.screenshot(path=str(out/f'surah-picker-{width}.png'))
    page.keyboard.press('Escape')
@@ -91,13 +92,13 @@ try:
    assert compass.is_visible()
    image=compass.evaluate("(e)=>getComputedStyle(e).backgroundImage")
    assert 'radial-gradient' in image,(width,'qibla surface',image)
-   assert bg(page.locator('#qibla .qibla-card'))==rgb('#171F28')
+   assert bg(page.locator('#qibla .qibla-card'))==rgb('#101720')
    page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
   assert not errors,errors
   browser.close()
- print('PASS: gold sliding bottom selection, blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
+ print('PASS: graphite sliding selection (no gold), blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
 finally:
  server.shutdown()
