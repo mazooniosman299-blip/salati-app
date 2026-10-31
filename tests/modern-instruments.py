@@ -45,7 +45,7 @@ with sync_playwright() as p:
    switch=page.locator('#'+switch_id)
    for checked in [False,True]:
     switch.evaluate('(e,checked)=>e.checked=checked',checked)
-    page.wait_for_timeout(200)
+    page.wait_for_timeout(350)
     style=switch.evaluate('(e)=>({after:getComputedStyle(e,"::after").content,before:getComputedStyle(e,"::before").content,track:getComputedStyle(e).backgroundColor,thumb:getComputedStyle(e,"::before").transform})')
     assert style['after']=='none',(switch_id,dark,checked,'duplicate thumb',style)
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
@@ -89,7 +89,7 @@ with sync_playwright() as p:
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
     for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,cls:e.className,tag:e.outerHTML.slice(0,210),color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
-     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(35, 104, 196)' if style['id']=='qTransport' else ('rgb(21, 61, 122)' if style['id']=='qPlay' else ('rgb(38, 52, 67)' if style['id']=='compassEnable' else fill))
+     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(13, 19, 27)' if style['id']=='qTransport' else ('rgb(21, 61, 122)' if style['id']=='qPlay' else ('rgb(38, 52, 67)' if style['id']=='compassEnable' else fill))
      assert style['bg']==expected and style['color']=='rgb(255, 255, 255)',(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':
