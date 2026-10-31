@@ -44,3 +44,21 @@ jobs:
       - name: Build unsigned debug APK
         working-directory: android
         run: bash gradlew :app:assembleDebug --no-daemon
+
+  whole-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse source and data, validate local assets and archive integrity
+        run: python3 scripts/full-source-audit.py
+      - name: Upload machine-readable audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-full-tree-audit
+          path: reports/full-source-audit-latest.json
+          if-no-files-found: ignore
