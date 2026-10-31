@@ -218,6 +218,13 @@ body.dark dialog.voice-sheet #voicePickerClose {
   color:#FFFFFF;
 }
 
+/* Leave physical scroll space below form controls when mobile navigation floats over the page. */
+@media (max-width:760px) {
+  body.dark #settings { padding-bottom:calc(var(--mobile-nav-height, 72px) + 150px); }
+  body.dark #mushaf { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
+  body.dark #qibla { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
+  body.dark #settings .prayer-switches { scroll-margin-block:140px; }
+}
 @media (max-width:600px) {
   body.dark #mushaf .mushaf-toolbar { padding:15px 13px; }
   body.dark #mushaf .quran-reading-page { padding:16px 12px; }
