@@ -83,6 +83,7 @@ try:
                 fg:getComputedStyle(e).color,sample:getComputedStyle(e.querySelector('[data-ayah]')).color})""")
             assert colors=={'bg':'rgb(246, 240, 228)','fg':'rgb(39, 35, 30)',
                             'sample':'rgb(39, 35, 30)'},(viewport,'reading',colors)
+            assert page.locator('#qVerses').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(21, 26, 34)',(viewport,'outer Quran container must remain charcoal')
             page.locator('#qSheet').screenshot(path=str(out/f'quran-{viewport}.png'))
             # Active navigation is graphite (no green), visible on desktop and mobile.
             active=page.locator('header>.site-nav .nav-icon-button.active')
