@@ -13,7 +13,7 @@ assert(header.includes('/sw.js')&&header.includes('no-cache'),'Service worker up
 for(const f of ['index.html','privacy.html','sitemap.xml','robots.txt']){
   assert(!read(f).includes('salati-world-prayer.sprytitan65.chatgpt.site'),f+' contains old host');
 }
-assert(sw.includes("salati-shell-v161"),'Offline cache revision must include latest verified PWA release');
+assert(sw.includes("salati-shell-v162"),'Offline cache revision must include latest verified PWA release');
 for(const asset of ['manifest.json','app-v1.0.109.js','reference-layout-v1.0.109.css',
 'light-theme-v1.0.109.css','images/mosque-reference-original.png',
 'fonts/AmiriQuran-Regular.ttf','quran/data.json']){
@@ -26,11 +26,11 @@ for(const url of urls){
   const rel=new URL(url).pathname.slice(1);
   assert(fs.existsSync(path.join(root,rel||'index.html')),'Sitemap page is missing: '+rel);
 }
-const apkUrl='/downloads/salati-1.0.112.apk';
+const apkUrl='/downloads/salati-1.0.113.apk';
 assert(home.includes('href="'+apkUrl+'"'),'Website must download APK from same origin without GitHub navigation');
 const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.112','manifest.json');
-assert(header.includes('Content-Disposition: attachment; filename="salati-1.0.112.apk"'),'APK must download as an attachment');
-assert(fs.existsSync(path.join(root,'downloads','salati-1.0.112.apk')),'Cloudflare build must contain verified signed APK');
+assert(header.includes('Content-Disposition: attachment; filename="salati-1.0.113.apk"'),'APK must download as an attachment');
+assert(fs.existsSync(path.join(root,'downloads','salati-1.0.113.apk')),'Cloudflare build must contain verified signed APK');
 
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
 assert(manifest.version==='1.0.112'&&manifest.versionCode===113&&manifest.applicationId==='com.salati.prayer');
