@@ -508,3 +508,14 @@ body.dark #settings .announcement-settings input.compact-switch:checked,
 body.dark #mushaf .quran-play-options input[type=checkbox]:checked{
  background:#15181D!important;border-color:rgba(255,255,255,.86);
 }
+
+
+/* Explicit input targeting survives disabled/checked native form styling. */
+body.dark input[data-audio-prayer]:not(:checked),
+body.dark input[data-audio-prayer]:disabled:not(:checked){
+ background-color:#040509!important;background-image:none!important;
+}
+body.dark input[data-audio-prayer]:checked,
+body.dark input[data-audio-prayer]:disabled:checked{
+ background-color:#15181D!important;background-image:none!important;
+}
