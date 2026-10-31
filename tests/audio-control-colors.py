@@ -30,7 +30,7 @@ try:
    assert switches.count()==9
    for switch in switches.all():
     original=switch.evaluate('(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute("aria-checked")==="true"')
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(21, 61, 122)')]:
+    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(37, 99, 235)')]:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
      page.wait_for_timeout(100)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
@@ -40,20 +40,20 @@ try:
     switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',original)
    for key in ['previewFajrPhrase','previewAdhan','previewDua','audioStop','resetPrayerAdjustments','applyPrayerAdjustments','cancelPrayerAdjustments','locationPickerOpen','methodPickerOpen']:
     actual=page.locator('#'+key).evaluate('(e)=>getComputedStyle(e).backgroundColor')
-    assert actual not in ['rgb(21, 61, 122)','rgb(26, 77, 145)','rgb(11, 35, 71)'],(width,key,actual)
+    assert actual not in ['rgb(37, 99, 235)','rgb(26, 77, 145)','rgb(11, 35, 71)'],(width,key,actual)
    page.locator('#previewFajrPhrase').scroll_into_view_if_needed()
    page.screenshot(path=str(out/f'settings-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.querySelector("#qSurah").options.length>=114')
-   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(21, 61, 122)'
+   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(37, 99, 235)'
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
-   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(21, 61, 122)'
+   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(37, 99, 235)'
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(21, 61, 122)')]:
+    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(37, 99, 235)')]:
      el.evaluate('(e,v)=>e.checked=v',enabled)
      actual=el.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      assert actual==color,(width,key,enabled,actual)
@@ -63,7 +63,7 @@ try:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab)
     nav=page.locator('header>.site-nav .nav-icon-button').evaluate_all('(es)=>es.map(e=>getComputedStyle(e).backgroundColor)')
-    assert all(c not in ['rgb(21, 61, 122)','rgb(26, 77, 145)','rgb(11, 35, 71)'] for c in nav),nav
+    assert all(c not in ['rgb(37, 99, 235)','rgb(26, 77, 145)','rgb(11, 35, 71)'] for c in nav),nav
    checks.append({'width':width,'switches':9,'checkboxes':2,'blue_exclusive_to_play_stop':True,'horizontal_overflow':False})
   assert not errors,errors
   browser.close()

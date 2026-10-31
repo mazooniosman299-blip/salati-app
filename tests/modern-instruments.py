@@ -50,7 +50,7 @@ with sync_playwright() as p:
     assert style['after']=='none',(switch_id,dark,checked,'duplicate thumb',style)
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
     if checked:
-     assert style['track']=='rgb(21, 61, 122)',(switch_id,dark,style)
+     assert style['track']=='rgb(37, 99, 235)',(switch_id,dark,style)
      assert abs(float(style['thumb'].split(',')[-2])-18)<.2,(switch_id,dark,style)
      assert contrast('rgb(255, 255, 255)',style['track'])>=4.5
   page.wait_for_function('document.querySelector("#qVerses [data-ayah] .ayah-number")!==null')
@@ -89,7 +89,7 @@ with sync_playwright() as p:
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
     for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
-     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(21, 61, 122)' if style['id'] in ['qTransport','qPlay'] else fill
+     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(37, 99, 235)' if style['id'] in ['qTransport','qPlay'] else fill
      assert style['bg']==expected and style['color']=='rgb(255, 255, 255)',(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':
@@ -97,7 +97,7 @@ with sync_playwright() as p:
     page.keyboard.press('Tab');button.focus()
     focus=button.evaluate('(e)=>({color:getComputedStyle(e).borderTopColor,width:getComputedStyle(e).outlineWidth,visible:e.matches(":focus-visible")})')
     assert focus['visible'] and focus['width']=='0px',(dark,focus)
-    assert contrast(focus['color'],'rgb(21, 61, 122)')>=3,(dark,focus)
+    assert contrast(focus['color'],'rgb(37, 99, 235)')>=3,(dark,focus)
     button.evaluate('(e)=>e.disabled=true');page.wait_for_timeout(200)
     disabled=button.evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,opacity:getComputedStyle(e).opacity})')
     assert disabled['opacity']=='1' and disabled['color']==ink,(dark,disabled)
