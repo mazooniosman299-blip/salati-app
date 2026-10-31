@@ -27,6 +27,17 @@ try:
   assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')==rgb('#0B0E13')
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
+   # The mobile dock has its own viewport band; the content scrollport must
+   # end ABOVE it, even before the user scrolls or focuses a control.
+   if width<761:
+    navbox=page.locator('header>.site-nav').bounding_box()
+    mainbox=page.locator('main').bounding_box()
+    assert mainbox['y']+mainbox['height']<=navbox['y']-2,(width,'fixed dock obstructs the main scrollport',mainbox,navbox)
+    assert page.locator('main').evaluate('(e)=>getComputedStyle(e).overflowY')=='auto',(width,'main must be the independent scrollport')
+    page.locator('main').evaluate('(e)=>e.scrollTop=e.scrollHeight')
+    page.wait_for_timeout(60)
+    assert page.locator('main').evaluate('(e)=>e.scrollTop>0'),'Scrollport must reveal tall prayer content without a page-overlap'
+    page.locator('main').evaluate('(e)=>e.scrollTop=0')
    # Neutral translucent glass indicator must slide; no gold on any active icon.
    page.click('[data-tab=times]')
    page.wait_for_timeout(320)
@@ -52,7 +63,7 @@ try:
    assert toggles.count()==9
    for toggle in toggles.all():
     original=toggle.evaluate("(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute('aria-checked')==='true'")
-    for on,expected in [(False,'#15181D'),(True,'#2563EB')]:
+    for on,expected in [(False,'#15181D'),(True,'#15181D')]:
      toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else {e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",on)
      color=bg(toggle)
      assert color==rgb(expected),(width,toggle.get_attribute('id'),toggle.get_attribute('data-audio-prayer'),on,color,expected)
@@ -63,7 +74,7 @@ try:
     page.wait_for_timeout(80)
     boxes=page.evaluate("""() => {const s=document.querySelector('#settings .prayer-switches').getBoundingClientRect(),n=document.querySelector('header>.site-nav').getBoundingClientRect();return {switchBottom:s.bottom,navTop:n.top}}""")
     assert boxes['switchBottom']+8<=boxes['navTop'],('Mobile navigation must not cover prayer toggles',boxes)
-   page.screenshot(path=str(out/f'blue-switches-{width}.png'))
+   page.screenshot(path=str(out/f'matte-switches-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
@@ -78,7 +89,7 @@ try:
    for key in ['qRepeat','qAutoNext']:
     checkbox=page.locator('#'+key)
     checkbox.evaluate('(e)=>e.checked=true')
-    assert bg(checkbox)==rgb('#2563EB'),(width,key,bg(checkbox))
+    assert bg(checkbox)==rgb('#15181D'),(width,key,bg(checkbox))
     checkbox.evaluate('(e)=>e.checked=false')
    page.locator('.quran-reading-page').first.screenshot(path=str(out/f'quran-page-{width}.png'))
    player.screenshot(path=str(out/f'quran-player-{width}.png'))
@@ -86,7 +97,7 @@ try:
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#15181D'),rgb('#20252B')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#15181D'),rgb('#15181D')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
    # Assert materials rather than a token's mere presence in the CSS file.
    plain=dialog.locator('.choice-option[aria-selected="false"]').first
@@ -94,7 +105,7 @@ try:
    assert bg(plain)==rgb('#15181D'),(width,'unselected surah material',bg(plain))
    assert 'linear-gradient' in plain.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'unselected material must retain subtle depth')
    if selected.count():
-    assert bg(selected)==rgb('#20252B'),(width,'selected surah material',bg(selected))
+    assert bg(selected)==rgb('#15181D'),(width,'selected surah material',bg(selected))
     assert 'linear-gradient' in selected.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'selected material must retain depth')
    assert bg(dialog)==rgb('#0B0E13'),(width,'modal material',bg(dialog))
    assert bg(dialog.locator('input[type=search]'))==rgb('#15181D'),(width,'search material')
@@ -143,8 +154,15 @@ try:
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
+  # A first-time user without GPS must still see today's Gregorian date.
+  first_use=browser.new_page(service_workers='block',viewport={'width':390,'height':844})
+  first_use.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
+  first_use.wait_for_function("document.getElementById('gregorianDate').textContent.trim().length>0")
+  assert first_use.locator('#gregorianDate').inner_text().strip(), 'Date cannot disappear while location is missing'
+  first_use.screenshot(path=str(out/'date-without-geolocation-390.png'))
+  first_use.close()
   assert not errors,errors
   browser.close()
- print('PASS: graphite sliding selection (no gold), blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
+ print('PASS: graphite sliding selection (no gold), charcoal ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
 finally:
  server.shutdown()

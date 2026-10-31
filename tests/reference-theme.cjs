@@ -6,9 +6,9 @@ const rgb=h=>{if(h.startsWith('#'))return h.slice(1).match(/../g).map(v=>parseIn
 const luminance=h=>rgb(h).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);
 const contrast=(a,b)=>{const [lo,hi]=[luminance(a),luminance(b)].sort((x,y)=>x-y);return(hi+.05)/(lo+.05)};
 const [r,g,b]=rgb(tokens.bg);
-assert.equal(tokens.bg,'#0B0E13');assert.equal(tokens.card,'#040509');assert.equal(tokens.line,'rgba(255,255,255,.28)');
+assert.equal(tokens.bg,'#0B0E13');assert.equal(tokens.card,'#040509');assert.equal(tokens.line,'#32383F');
 assert.equal(tokens.ink,'#FFFFFF');assert(contrast(tokens.ink,tokens.card)>=7);
-assert.equal(tokens['control-fill'],'#040509','glass controls stay charcoal');assert.equal(tokens['action-fill'],'#2563EB','only action buttons use approved blue');assert(contrast('#FFFFFF',tokens['action-fill'])>=4.5);
+assert.equal(tokens['control-fill'],'#040509','glass controls stay charcoal');assert.equal(tokens['action-fill'],'#15181D','every action remains neutral charcoal');assert(contrast('#FFFFFF',tokens['action-fill'])>=4.5);
 assert(contrast(tokens['control-ink'],tokens['control-fill'])>=4.5);
 const alpha=Number(tokens['glass-fill'].match(/,([.\d]+)\)$/)[1]);
 assert(alpha>=.75&&alpha<=.9,'glass must reveal the tinted backdrop instead of stacking nearly opaque gray surfaces');
