@@ -72,19 +72,27 @@ try:
    }))""")
    assert all(x['label']=='rgb(255, 255, 255)' and x['time']=='rgb(255, 255, 255)' for x in colors),(width,'white prayer labels',colors)
 
-   # Only one selected voice; none of the two checkmark visuals remains.
+   # One selected check at physical left; original waveform stays on right.
    page.click('#voicePickerOpen')
    for voice in ('qatami','nufais','makkah','aqsa'):
     page.evaluate("""v=>{const el=document.querySelector('#audioVoice');el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))}""",voice)
-    options=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>({
-      active:e.getAttribute('aria-pressed')==='true',
-      checkNodes:e.querySelectorAll('.voice-check').length,
-      tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
-      waveform:getComputedStyle(e.querySelector('.voice-symbol svg')).display
-    }))""")
+    options=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>{
+ const a=e.getBoundingClientRect(),c=e.querySelector('.voice-check'),cr=c.getBoundingClientRect();
+ const w=e.querySelector('.voice-symbol svg'),wr=w.getBoundingClientRect();
+ return {value:e.dataset.voiceOption,active:e.getAttribute('aria-pressed')==='true',
+   checkCount:e.querySelectorAll('.voice-check').length,
+   checkDisplay:getComputedStyle(c).display,
+   generated:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
+   waveform:getComputedStyle(w).display,
+   left:cr.left-a.left,checkWidth:cr.width,checkMidY:cr.top+cr.height/2-a.top-a.height/2,
+   waveRight:a.right-wr.right};
+})""")
     assert sum(x['active'] for x in options)==1,(width,voice,'one selected',options)
-    assert all(x['checkNodes']==0 and x['tick'] in ('none','normal') for x in options),(width,voice,'no checks',options)
-    assert all(x['waveform']!='none' for x in options),(width,voice,'keep waveform',options)
+    assert sum(x['checkDisplay']=='flex' for x in options)==1,(width,voice,'one visible check',options)
+    assert all(x['checkCount']==1 and x['generated'] in ('none','normal') for x in options),(width,voice,'no duplicate checks',options)
+    chosen=next(x for x in options if x['active'])
+    assert chosen['checkDisplay']=='flex' and 8<=chosen['left']<=27,(width,voice,'check at left',options)
+    assert all(x['waveform']!='none' and x['waveRight']<55 for x in options),(width,voice,'wave remains right',options)
    page.locator('#voicePickerList').screenshot(path=str(out/f'voices-{width}.png'))
    page.click('#voicePickerClose')
 
