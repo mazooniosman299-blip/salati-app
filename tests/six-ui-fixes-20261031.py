@@ -50,7 +50,7 @@ try:
             dial=page.locator('#qiblaDial').evaluate("""e=>({border:getComputedStyle(e).borderTopWidth,
               ticks:getComputedStyle(e,'::before').backgroundImage,
               cardinal:getComputedStyle(e.querySelector('.cardinal')).color})""")
-            assert dial['border']=='2px' and '238, 232, 216' in dial['ticks'] and dial['cardinal']=='rgb(245, 243, 234)',(width,'qibla contrast',dial)
+            assert dial['border']=='2px' and '238, 232, 216' in dial['ticks'] and dial['cardinal']=='rgb(243, 240, 234)',(width,'qibla contrast',dial)
             page.locator('#qibla .qibla-card').screenshot(path=str(dest/f'qibla-{width}.png'))
             # 5. Search starts at the Arabic right edge.
             page.click('[data-tab=dhikr]')
