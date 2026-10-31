@@ -89,7 +89,7 @@ with sync_playwright() as p:
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
     for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,cls:e.className,tag:e.outerHTML.slice(0,170),color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
-     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(37, 99, 235)' if style['id'] in ['qTransport','qPlay'] else fill
+     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(37, 99, 235)' if style['id'] in ['qTransport','qPlay'] else ('rgb(38, 52, 67)' if style['id']=='compassEnable' else fill)
      assert style['bg']==expected and style['color']=='rgb(255, 255, 255)',(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':
