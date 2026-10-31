@@ -118,7 +118,13 @@ try:
    loc=page.locator('#locationMenu')
    loc.wait_for(state='visible')
    assert bg(loc)==rgb('#10161C'),(width,'location sheet material')
-   assert bg(loc.locator('.choice-option[aria-selected="false"]:not(:disabled)').first)==rgb('#1C232A'),(width,'location option material')
+   # Pointer remains over the now-open dialog after clicking the trigger; move
+   # away and let the 280ms hover transition settle before checking base fill.
+   page.mouse.move(0,0)
+   page.wait_for_timeout(360)
+   ordinary=loc.locator('.choice-option[aria-selected="false"]:not(:disabled)').first
+   ordinary_color=bg(ordinary)
+   assert ordinary_color==rgb('#1C232A'),(width,'location option material',ordinary_color,ordinary.evaluate('(e)=>({hover:e.matches(":hover"),transition:getComputedStyle(e).transition,gradient:getComputedStyle(e).backgroundImage})'))
    loc.screenshot(path=str(out/f'location-picker-{width}.png'))
    page.keyboard.press('Escape')
    assert not loc.is_visible()
