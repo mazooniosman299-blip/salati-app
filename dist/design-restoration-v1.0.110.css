@@ -242,3 +242,19 @@ body.dark dialog.voice-sheet .voice-option[aria-pressed="true"]:hover {
     min-height:60px;padding:10px 12px;
   }
 }
+
+
+/* Some location/time buttons retained old greenish ink despite permanent dark mode.
+   Pin their actual DOM colors rather than relying on old palette specificity. */
+body.dark #times button:not(:disabled),
+body.dark #times #locate,
+body.dark #settings #locate {
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+}
+body.dark #times #locate,
+body.dark #settings #locate {
+  background:#15181D!important;
+  border:1px solid #728193!important;
+  box-shadow:none!important;
+}
