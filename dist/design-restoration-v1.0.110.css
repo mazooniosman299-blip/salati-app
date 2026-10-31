@@ -292,24 +292,203 @@ body.dark #mushaf .mushaf-sheet { background-color:#121820!important; }
 body.dark #mushaf .reference-player { background-color:#212B36!important; background-image:none!important; }
 
 
-/* The reference's warm gold follows the active bottom tab, not every tab.
-   Keep the existing Motion/ARIA navigation, with no glow or duplicate underline. */
-body.dark header>.site-nav.has-glass-navigation .nav-selection {
-  background-color:rgba(214,168,79,.24)!important;
-  background-image:linear-gradient(145deg,rgba(214,168,79,.28),rgba(214,168,79,.08))!important;
-  border:1px solid rgba(214,168,79,.78)!important;
-  box-shadow:inset 0 1px 0 rgba(255,228,171,.16)!important;
+
+
+/* Exact requested reference: no gold or teal. The selected tab remains translucent
+   graphite glass, while the pre-existing Motion indicator slides smoothly. */
+:root,body.dark {
+ --salati-ref-base:#0B0E13;
+ --salati-ref-panel:#0B1017;
+ --salati-ref-border:rgba(255,255,255,.13);
+ --salati-ref-motion:cubic-bezier(.22,.61,.36,1);
 }
+body.dark { background:#0B0E13;color:#FFFFFF; }
+body.dark header>.site-nav {
+ background:#080C12;
+ background-image:linear-gradient(180deg,#0F141B 0%,#080B11 100%);
+ border:1px solid rgba(255,255,255,.13);
+ border-radius:28px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active,
 body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active {
-  background:transparent!important;
-  border-color:transparent!important;
-  box-shadow:none!important;
+ background:#0B1017!important;
+ background-image:linear-gradient(180deg,#151A21 0%,#0D1219 62%,#090D13 100%)!important;
+ border:1px solid rgba(255,255,255,.14)!important;
+ border-radius:23px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 16px rgba(0,0,0,.15)!important;
+ color:#FFFFFF!important;
+ -webkit-text-fill-color:#FFFFFF!important;
+ transition:background-color 280ms var(--salati-ref-motion),border-color 280ms var(--salati-ref-motion),
+            box-shadow 280ms var(--salati-ref-motion),transform 180ms var(--salati-ref-motion);
 }
-body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>span,
-body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>.nav-symbol {
-  color:#D6A84F!important;
-  -webkit-text-fill-color:#D6A84F!important;
+body.dark header>.site-nav .nav-icon-button:hover:not(:disabled) {
+ border-color:rgba(255,255,255,.24)!important;
+ transform:translateY(-1px);
 }
-@media(prefers-reduced-motion:reduce) {
-  body.dark header>.site-nav.has-glass-navigation .nav-selection { transition:none!important; }
+body.dark header>.site-nav .nav-icon-button:active{transform:translateY(0)}
+body.dark header>.site-nav .nav-icon-button .nav-symbol,
+body.dark header>.site-nav .nav-icon-button.active .nav-symbol,
+body.dark header>.site-nav .nav-icon-button.active>span {
+ color:#FFFFFF!important;
+ -webkit-text-fill-color:#FFFFFF!important;
+ opacity:1;
+ filter:none;
+}
+/* Existing JS moves the single overlay from tab to tab. Do NOT add a golden stripe. */
+body.dark header>.site-nav .nav-selection,
+body.dark header>.site-nav.has-glass-navigation .nav-selection {
+ background:rgba(255,255,255,.035)!important;
+ background-image:none!important;
+ border:0!important;
+ border-radius:19px;
+ box-shadow:none!important;
+ pointer-events:none;
+}
+body.dark header>.site-nav .nav-selection::before,
+body.dark header>.site-nav .nav-selection::after { content:none!important;display:none!important; }
+body.dark header>.site-nav .nav-icon-button.active {
+ border-color:rgba(255,255,255,.25)!important;
+}
+body.dark .brand,
+body.dark .brand small,
+body.dark .eyebrow,
+body.dark .note,
+body.dark .time-context,
+body.dark .quran-track,
+body.dark .verse p,
+body.dark .calculation-context summary {
+ color:#FFFFFF!important;
+}
+body.dark #times #locate,
+body.dark #settings #locate,
+body.dark .prayer-overview .location #locate {
+ color:#FFFFFF!important;
+ background:#111820!important;
+ border:1px solid rgba(255,255,255,.24)!important;
+ box-shadow:none!important;
+}
+body.dark .prayer.active,
+body.dark .prayer.active span { color:#FFFFFF!important; }
+body.dark .prayer.active {box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;}
+body.dark .setup-reminder {border-color:rgba(255,255,255,.22)!important;}
+
+/* Quran audio matches the screenshot: near-black player, soft gradient and white
+   play button icon. Blue is reserved for ON switches, never an idle play circle. */
+body.dark #mushaf .reference-player,
+body.dark #mushaf .recitation-player.reference-player {
+ background-color:#0B1017!important;
+ background-image:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,0) 75%)!important;
+ border:1px solid rgba(255,255,255,.14)!important;
+ border-radius:26px;
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 7px 20px rgba(0,0,0,.20)!important;
+}
+body.dark #mushaf .reference-player .recitation-caption strong {
+ color:#FFFFFF!important;font-weight:800;
+}
+body.dark #mushaf .reference-player .quran-track {
+ color:rgba(255,255,255,.79)!important;
+}
+body.dark #mushaf .reference-player #qTransport {
+ background:#10151C!important;
+ background-image:none!important;
+ border:1px solid rgba(255,255,255,.30)!important;
+ border-radius:50%;
+ box-shadow:none!important;
+ color:#FFFFFF!important;
+ transition:transform 180ms var(--salati-ref-motion),background-color 280ms var(--salati-ref-motion)!important;
+}
+body.dark #mushaf .reference-player #qTransport::before {
+ background:#10151C!important;
+ background-image:none!important;
+ border:1px solid rgba(255,255,255,.24)!important;
+ box-shadow:none!important;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before {
+ background:#17212D!important;
+}
+body.dark #mushaf .reference-player #qTransport:active{transform:scale(.97)}
+body.dark #mushaf .reference-player #qSeek {
+ --progress-track:#596373;
+ --progress-fill:#FFFFFF;
+ accent-color:#FFFFFF!important;
+}
+body.dark #mushaf #qStop:not(:disabled) {
+ background:#182433!important;border-color:rgba(255,255,255,.26)!important;
+}
+body.dark #mushaf .mushaf-toolbar{
+ background:#101720;
+ background-image:linear-gradient(180deg,rgba(255,255,255,.03),transparent);
+ border:1px solid rgba(255,255,255,.18);
+}
+body.dark #mushaf :is(.quran-reading-page,.mushaf-sheet) {
+ background:#141B23!important;
+ background-image:none!important;
+ border-color:rgba(255,255,255,.19)!important;
+}
+body.dark #mushaf :is(.quran-surah-title,.mushaf-page-head,.reading-page-heading,.mushaf-page-number,.reading-page-number) {
+ color:#FFFFFF!important;
+ border-color:rgba(255,255,255,.20)!important;
+ text-shadow:none!important;
+}
+body.dark #mushaf .quran-reading-page .quran-surah-title {
+ background:#19222C!important;
+ box-shadow:none!important;
+}
+body.dark #mushaf .mushaf-credit a {color:#FFFFFF!important;}
+
+/* Qibla legible on charcoal; no gold, heavy halos or desaturated gray. */
+body.dark #qibla .qibla-card { background:#101720;border-color:rgba(255,255,255,.20); }
+body.dark #qibla .qibla-card .compass {
+ background:radial-gradient(circle at 45% 32%,#233040 0%,#141D28 66%,#0C121B 100%);
+ border-color:#8999AC;
+ box-shadow:inset 0 0 0 9px #101720;
+}
+body.dark #qibla .qibla-card :is(.cardinal,.north) {color:#FFFFFF;opacity:1;}
+
+/* Pickers and rows retain clearly separated graphite layers and white text. */
+body.dark dialog.choice-sheet,body.dark dialog.voice-sheet {
+ background:#111821;border-color:rgba(255,255,255,.22);
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option) {
+ background:#17212B;
+ background-image:none;
+ border:1px solid rgba(255,255,255,.19);
+ color:#FFFFFF;
+ transition:background-color 280ms var(--salati-ref-motion),border-color 280ms var(--salati-ref-motion),
+            transform 180ms var(--salati-ref-motion);
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
+ :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]) {
+ background:#232D39;
+ border-color:rgba(255,255,255,.38);
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled){
+ border-color:rgba(255,255,255,.30);
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):active{
+ transform:scale(.997);
+}
+/* Keep ON toggle blue as requested earlier, without tinting surrounding controls. */
+body.dark #settings .prayer-switches input[type=checkbox]:checked,
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
+body.dark input[data-audio-prayer]:checked,
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true] {
+ background:#2563EB!important;
+ border-color:#3B82F6!important;
+}
+@media(max-width:760px){
+ body.dark header>.site-nav {border-radius:22px;}
+ body.dark header>.site-nav .nav-icon-button,
+ body.dark header>.site-nav .nav-icon-button.active {border-radius:16px;}
+ body.dark header>.site-nav .nav-selection {border-radius:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ body.dark header>.site-nav .nav-icon-button,
+ body.dark #mushaf .reference-player #qTransport,
+ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){
+  transition:none!important;transform:none!important;
+ }
 }
