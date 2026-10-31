@@ -37,8 +37,10 @@ jobs:
           java-version: '17'
       - name: Accept licenses and install Android SDK 36
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          SDK_MANAGER="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+          test -x "$SDK_MANAGER"
+          yes | "$SDK_MANAGER" --licenses >/dev/null || true
+          "$SDK_MANAGER" "platforms;android-36" "build-tools;36.0.0"
       - name: Build unsigned debug APK
         working-directory: android
         run: bash gradlew :app:assembleDebug --no-daemon
