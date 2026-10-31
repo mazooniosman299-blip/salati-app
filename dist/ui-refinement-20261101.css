@@ -227,9 +227,12 @@ body.dark #qibla .qibla-information{
   min-width:0;direction:rtl;text-align:right;
 }
 body.dark #qibla .qibla-reading{
-  background:#191E25!important;border:1px solid rgba(207,216,227,.17)!important;
+  /* Clear matte separation from the surrounding charcoal panel, no washed overlay. */
+  background:#242B33!important;
+  border:1px solid #667381!important;
   border-radius:18px!important;padding:18px 20px!important;
-  text-align:right!important;
+  opacity:1!important;filter:none!important;
+  box-shadow:none!important;text-align:right!important;
 }
 body.dark #qibla .qibla-reading #bearing{
   font-size:clamp(38px,4.4vw,54px)!important;color:#F7F4EE!important;
@@ -237,12 +240,12 @@ body.dark #qibla .qibla-reading #bearing{
   margin:0 0 7px!important;
 }
 body.dark #qibla .qibla-reading p{
-  color:#D1D6DA!important;font-size:13px!important;
+  color:#FFFFFF!important;opacity:1!important;font-size:13px!important;
   font-weight:700!important;
 }
 body.dark #qibla .qibla-reading #headingValue{
-  background:#0F141A!important;color:#F0F2F2!important;
-  border:1px solid rgba(200,210,222,.17)!important;
+  background:#11161D!important;color:#FFFFFF!important;
+  border:1px solid #687583!important;
   border-radius:10px!important;padding:6px 12px!important;
   margin-top:11px!important;
 }
