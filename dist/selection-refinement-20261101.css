@@ -164,11 +164,11 @@ body.dark .location-sheet .location-automatic{
 }
 body.dark .location-sheet .location-automatic .location-mark{
   position:absolute!important;
-  top:50%!important;bottom:auto!important;
+  top:calc(50% - 7.5px)!important;bottom:auto!important;
   inset-inline-start:13px!important;inset-inline-end:auto!important;
   display:grid!important;place-items:center!important;
   width:15px!important;height:15px!important;
-  transform:translateY(-50%)!important;margin:0!important;
+  transform:none!important;margin:0!important;
 }
 body.dark .location-sheet .location-automatic .location-icon{
   position:static!important;top:auto!important;bottom:auto!important;
