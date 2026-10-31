@@ -1,0 +1,27 @@
+name: Salati full code checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  code:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Full JavaScript regression suite
+        run: npm test
+      - name: Compile the web app
+        run: npm run build
+      - name: Android-independent Java unit policies
+        run: bash scripts/test-audio-focus.sh
+      - name: Native Quran background policy tests
+        run: bash scripts/test-quran-background.sh
