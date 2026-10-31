@@ -30,7 +30,7 @@ try:
    assert switches.count()==9
    for switch in switches.all():
     original=switch.evaluate('(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute("aria-checked")==="true"')
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(37, 99, 235)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(37, 99, 235)')]:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
      page.wait_for_timeout(100)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
@@ -53,7 +53,7 @@ try:
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(37, 99, 235)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(37, 99, 235)')]:
      el.evaluate('(e,v)=>e.checked=v',enabled)
      actual=el.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      assert actual==color,(width,key,enabled,actual)
