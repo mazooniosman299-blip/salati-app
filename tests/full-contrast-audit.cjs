@@ -18,7 +18,7 @@ assert.equal(tokens.card, '#040509', 'Exact supplied screenshot card color');
 assert.equal(tokens.ink, '#FFFFFF', 'Never dim normal text');
 assert.equal(tokens.muted, '#AEBCCB', 'Use the approved readable muted label color');
 assert.equal(tokens['control-disabled-ink'], '#FFFFFF', 'Disabled text must remain legible');
-assert.equal(tokens['action-fill'], '#20252B', 'Neutral approved action fill');
+assert.equal(tokens['action-fill'], '#15181D', 'Neutral approved action fill');
 assert.equal(tokens.accent, '#FFFFFF', 'Navigation accent must match the user reference white, without gold');
 assert(tokens['progress-track'].includes('.55'), 'Clear progress track');
 assert(html.includes('href="reference-layout-v1.0.109.css"'), 'App uses the edited CSS');
@@ -33,7 +33,7 @@ for (const id of ['.note','.eyebrow','.quran-track','.qibla-card .cardinal','.ta
 }
 assert(appendix.includes('body.dark input::placeholder'), 'Placeholder must not look disabled');
 assert(appendix.includes('opacity:1!important'), 'Disabled controls must not fade');
-assert(appendix.includes('background:#20252B!important'), 'Selected switches use neutral charcoal');
+assert(appendix.includes('background:#15181D!important'), 'Selected switches use neutral charcoal');
 assert(appendix.includes('body.dark #mushaf .reference-player #qTransport::before'));
 assert(appendix.includes('body.dark #mushaf .reference-player #qStop:not(:disabled)'));
 assert(!appendix.includes('background:#32383F'), 'No pale gray backgrounds introduced in new fixes');
