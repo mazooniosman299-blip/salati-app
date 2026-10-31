@@ -93,12 +93,13 @@ try:
       page.click('#voicePickerOpen')
       marks=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>({
         picked:e.getAttribute('aria-pressed'),
-        mark:getComputedStyle(e.querySelector('.voice-check')).visibility,
+        mark:getComputedStyle(e.querySelector('.voice-check')).display,
+        tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
         audio:getComputedStyle(e.querySelector('.voice-symbol')).display
       }))""")
-      assert sum(x['mark']=='visible' for x in marks)==1,(width,'single check',marks)
-      assert all((x['mark']=='visible')==(x['picked']=='true') for x in marks),(width,'checked voice',marks)
-      assert next(x for x in marks if x['picked']=='true')['audio']=='none'
+      assert sum(x['tick']=='"✓"' for x in marks)==1 and all(x['mark']=='none' for x in marks),(width,'one visible tick',marks)
+      assert all((x['tick']=='"✓"')==(x['picked']=='true') for x in marks),(width,'checked voice',marks)
+      assert next(x for x in marks if x['picked']=='true')['audio']=='grid'
       page.locator('#voicePickerList').screenshot(path=str(evidence/f'voices-{width}.png'))
       page.click('#voicePickerClose')
       assert page.locator('#settings .audio-card>.eyebrow').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
