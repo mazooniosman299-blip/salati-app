@@ -25,7 +25,7 @@ try:
     page.click(f'[data-tab={tab}]');assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab)
     if width in [390,1440]:page.screenshot(path=str(out/f'{tab}-{width}.png'))
    page.locator('#previewFajrPhrase').scroll_into_view_if_needed();page.mouse.move(0,0)
-   assert page.locator('#previewFajrPhrase').evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(21, 61, 122)'
+   assert page.locator('#previewFajrPhrase').evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(4, 5, 9)'
    page.screenshot(path=str(out/f'audio-{width}.png'))
    buttons=page.locator('footer>div>button');a,c=[el.bounding_box() for el in buttons.all()];horizontal=max(a['x'],c['x'])-min(a['x']+a['width'],c['x']+c['width']);vertical=max(a['y'],c['y'])-min(a['y']+a['height'],c['y']+c['height']);assert max(horizontal,vertical)>=13,(width,a,c)
    page.locator('footer').screenshot(path=str(out/f'footer-{width}.png'))
@@ -34,7 +34,7 @@ try:
    assert page.locator('.mushaf-emblem').get_attribute('src')=='icons/quran.svg'
    title=page.locator('.quran-surah-title').first;assert title.evaluate('(e)=>getComputedStyle(e).boxShadow')!='rgb(50, 56, 63) 0px 0px 0px 4px inset';title.evaluate('(e)=>e.scrollIntoView({block:"center"})');title.screenshot(path=str(out/f'surah-title-{width}.png'))
    page.click('#qSurahPickerOpen');mark=page.locator('#choiceList [aria-selected=true] .choice-mark');mark.scroll_into_view_if_needed();assert 'icons/check.svg' in mark.evaluate('(e)=>getComputedStyle(e).backgroundImage');assert mark.evaluate('(e)=>getComputedStyle(e).fontSize')=='0px';box=mark.bounding_box();assert box['width']==box['height']==24
-   page.locator('#choicePicker').screenshot(path=str(out/f'menu-{width}.png'));page.keyboard.press('Escape');checks.append({'width':width,'mosque_covers_scene':True,'dark_blue_audio':True,'footer_gap':max(horizontal,vertical),'checkmark_square':True,'idle_stop_hidden':True})
+   page.locator('#choicePicker').screenshot(path=str(out/f'menu-{width}.png'));page.keyboard.press('Escape');checks.append({'width':width,'mosque_covers_scene':True,'blue_play_stop_only':True,'footer_gap':max(horizontal,vertical),'checkmark_square':True,'idle_stop_hidden':True})
   assert not errors,errors;b.close()
- (out/'checks.json').write_text(json.dumps({'result':'PASS','cases':checks,'page_errors':errors,'physical_device_tested':False},indent=2)+'\n');print('PASS: original mosque fills scene without masks; dark blue playback, spaced footer, charcoal surah plaques and fixed library check marks; six pages at four widths.')
+ (out/'checks.json').write_text(json.dumps({'result':'PASS','cases':checks,'page_errors':errors,'physical_device_tested':False},indent=2)+'\n');print('PASS: original mosque fills scene without masks; dark blue Quran transport only, spaced footer, charcoal surah plaques and fixed library check marks; six pages at four widths.')
 finally:s.shutdown()
