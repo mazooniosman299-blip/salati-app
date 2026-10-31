@@ -171,6 +171,16 @@ jobs:
           name: salati-restoration-latest-screenshots
           path: reports/design-restoration-2026-10-31/
           if-no-files-found: ignore
+      - name: Verify all six new UI repairs in real Chromium
+        if: success() || failure()
+        run: python3 tests/six-ui-fixes-20261031.py
+      - name: Archive six-fix screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-six-visual-repair-evidence
+          path: reports/six-visual-fixes/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
