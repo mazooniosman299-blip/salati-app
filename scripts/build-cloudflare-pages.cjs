@@ -24,15 +24,12 @@ function canonicalOrigin(){
 const origin=canonicalOrigin();
 require('./build-web.cjs');
 
-// Serve the previously signed, SHA-256 verified APK from OUR OWN domain.
-// This is the immutable 1.0.112 release; never re-sign or relabel it.
-// The 15 public source parts are already in the repository, so the build
-// needs no private key, external GitHub redirect, or network access.
+// Publish ONLY the signed APK whose version and full web-asset fingerprint
+// match this exact website build. The release guard fails deployment otherwise.
+// The original private signing key never leaves secure local signing.
 const crypto=require('node:crypto');
-const releaseParts=path.join(root,'apk-release-parts','v1.0.112');
-const signedRelease=JSON.parse(fs.readFileSync(path.join(releaseParts,'manifest.json'),'utf8'));
-if(signedRelease.filename!=='salati-1.0.112.apk'||signedRelease.applicationId!=='com.salati.prayer')
-  throw Error('Unexpected signed release manifest; refusing unsafe download');
+const signedRelease=require('./release-guard.cjs').verifiedManifest();
+const releaseParts=path.join(root,'apk-release-parts','v'+signedRelease.version);
 const signedPath=path.join(dist,'downloads',signedRelease.filename);
 const tempPath=signedPath+'.pending';
 let signedSize=0;
@@ -77,9 +74,9 @@ fs.writeFileSync(path.join(dist,'_headers'),[
 '/*.html','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/sitemap.xml','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/robots.txt','  Cache-Control: no-cache, max-age=0, must-revalidate','',
-'/downloads/salati-1.0.112.apk',
+'/downloads/'+signedRelease.filename,
 '  Content-Type: application/vnd.android.package-archive',
-'  Content-Disposition: attachment; filename="salati-1.0.112.apk"',
+'  Content-Disposition: attachment; filename="'+signedRelease.filename+'"',
 '  X-Content-Type-Options: nosniff',
 '  Cache-Control: public, max-age=3600',''
 ].join('\n'));
