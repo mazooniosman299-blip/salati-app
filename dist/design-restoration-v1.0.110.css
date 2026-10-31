@@ -15,7 +15,7 @@ html,body,body.dark{
   background:var(--salati-page)!important;color:var(--salati-white);
   color-scheme:dark;
 }
-body.dark :is(.card,.adhkar-library,.tasbih-card,.tasbih-panel){
+body.dark :is(.card,.tasbih-card){
   background-color:#15181D;
   background-image:linear-gradient(165deg,rgba(255,255,255,.025),transparent 55%);
   border-color:#32383F;
@@ -45,7 +45,7 @@ body.dark header>.site-nav .nav-icon-button.active>.nav-symbol{color:#FFFFFF!imp
 body.dark header>.site-nav .nav-icon-button.active{border-color:#66727E!important;}
 body.dark header>.site-nav .nav-selection,
 body.dark header>.site-nav.has-glass-navigation .nav-selection{
-  background:rgba(255,255,255,.025)!important;
+  background:rgba(255,255,255,.035)!important;
   background-image:none!important;
   border:0!important;
   box-shadow:none!important;
@@ -207,6 +207,10 @@ body.dark #mushaf .reference-player #qTransport::before{
   box-shadow:none!important;
 }
 body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#15181D!important;}
+body.dark #mushaf .reference-player #qStop:not(:disabled){
+  background:#15181D!important;border-color:#58636E!important;color:#FFFFFF!important;
+}
+body.dark #mushaf .reference-player #qStop:not(:disabled):hover{background:#20252B!important;}
 body.dark #mushaf .reference-player #qSeek{--progress-fill:#FFFFFF;--progress-track:#5D6772;accent-color:#FFFFFF!important;}
 body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen):not(:disabled){
   background:#15181D!important;border-color:#46515C!important;color:#FFFFFF!important;
