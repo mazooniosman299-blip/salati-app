@@ -1,0 +1,558 @@
+/* Salati design restoration v1.0.113 — buttons #153D7A, frameless lists, deep charcoal */
+/* Salati — buttons dark blue #153D7A, lists frameless soft pills, deep charcoal surfaces */
+:root,body.dark{
+  color-scheme:dark;
+  --bg:#0B0E13;
+  --card:#040509;
+  --ink:#FFFFFF;
+  --muted:#AEBCCB;
+  --line:rgba(255,255,255,.1);
+  --surface-solid:#040509;
+  --glass-fill:#0B0E13;
+  --glass-edge:rgba(255,255,255,.1);
+  --glass-sheen:rgba(255,255,255,.04);
+  --input-fill:#0B0E13;
+  --control-fill:#0B0E13;
+  --control-edge:rgba(255,255,255,.12);
+  --control-hover:#15181D;
+  --control-ink:#FFFFFF;
+  --media-fill:#040509;
+  --media-top:rgba(255,255,255,.05);
+  --media-edge:rgba(255,255,255,.1);
+  --media-track:#4A5560;
+  --progress-fill:#FFFFFF;
+  --progress-track:#4A5560;
+  --caption-ink:#AEBCCB;
+  --action-fill:#2563EB;
+  --action-hover:#1D4ED8;
+  --action-pressed:#1E40AF;
+  --action-edge:#3B82F6;
+  --action-off:#0B2347;
+  --nav-selection-fill:rgba(255,255,255,.03);
+  --selected:rgba(255,255,255,.06);
+  --accent:#FFFFFF;
+  --prayer-highlight:rgba(255,255,255,.12);
+}
+
+html,body,body.dark{
+  background:#0B0E13!important;
+  color:#FFFFFF!important;
+  color-scheme:dark;
+}
+
+body.dark :is(.card,.tasbih-card,.qibla-card){
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(165deg,rgba(255,255,255,.03),transparent 55%)!important;
+  border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  border-radius:24px;
+}
+
+body.dark header>.site-nav{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  gap:8px!important;
+  padding:0!important;
+}
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active{
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+  background:#0B0E13!important;
+  background-image:linear-gradient(180deg,#1A1D24,#080A0E)!important;
+  border:0!important;
+  border-radius:20px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 1px 3px rgba(0,0,0,.4)!important;
+  opacity:1!important;
+}
+body.dark header>.site-nav .nav-icon-button.active{
+  background-image:linear-gradient(180deg,#1E2229,#0A0C10)!important;
+}
+body.dark header>.site-nav .nav-icon-button>.nav-symbol{color:#FFFFFF!important;filter:none!important;}
+body.dark header>.site-nav .nav-selection{
+  display:block!important;
+  pointer-events:none!important;
+  position:absolute!important;
+  background:rgba(255,255,255,.035)!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:17px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+  opacity:1!important;
+}
+
+@media (max-width:760px){
+  body.dark header>.site-nav{
+    background:#040509!important;
+    border:0!important;
+    border-radius:22px!important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+    gap:6px!important;
+    padding:6px!important;
+    inset:auto 8px 8px!important;
+  }
+  body.dark header>.site-nav .nav-icon-button{border-radius:16px!important;height:52px!important;}
+}
+
+/* One color owner: only audio playback and enabled switches use vivid blue.
+   Ordinary commands, settings and menu options remain approved charcoal. */
+body.dark button:not(:disabled),
+body.dark .primary:not(:disabled),
+body.dark #settings button:not(:disabled),
+body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen):not(:disabled),
+body.dark #times #locate,
+body.dark #settings #locate,
+body.dark #qibla .compass-actions button:not(:disabled){
+  background:#0B0E13!important;
+  background-image:none!important;
+  border:0!important;
+  color:#FFFFFF!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+  opacity:1!important;
+}
+body.dark button:hover:not(:disabled),
+body.dark .primary:hover:not(:disabled),
+body.dark #settings button:hover:not(:disabled){
+  background:#15181D!important;
+}
+body.dark button:active:not(:disabled){background:#12151A!important;}
+body.dark #mushaf :is(#qPlay,#qStop):not(:disabled){
+  background:#2563EB!important;background-image:none!important;
+  border:0!important;color:#FFFFFF!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20)!important;
+}
+body.dark #mushaf :is(#qPlay,#qStop):hover:not(:disabled){background:#1D4ED8!important;}
+body.dark #mushaf :is(#qPlay,#qStop):active:not(:disabled){background:#1E40AF!important;}
+
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button:hover{
+  background:#0B0E13!important;
+  background-image:linear-gradient(180deg,#1A1D24,#080A0E)!important;
+  border:0!important;
+  color:#FFFFFF!important;
+}
+
+body.dark :is(.choice-trigger,.compact-select-options button):not(:disabled){
+  background:#0B0E13!important;
+  border:0!important;
+  color:#FFFFFF!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+
+body.dark :is(.eyebrow,.note,.time-context,.quran-track,.verse p,.choice-option-detail,.voice-choice-note){
+  color:#AEBCCB!important;opacity:1!important;
+}
+
+/* Lists — frameless soft pills */
+body.dark dialog.choice-sheet,
+body.dark dialog.voice-sheet,
+body.dark dialog.uniform-menu{
+  background:#040509!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:28px!important;
+  box-shadow:0 24px 60px rgba(0,0,0,.7)!important;
+  color:#FFFFFF!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .sheet-handle{
+  background:#3A424C!important;opacity:1;border:0!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .choice-heading h2,
+body.dark dialog.voice-sheet .voice-sheet-header h2{color:#FFFFFF!important;}
+
+body.dark dialog.choice-sheet .choice-search-wrap input,
+body.dark dialog.voice-sheet .choice-search-wrap input,
+body.dark dialog.uniform-menu input.menu-search{
+  background:#0B0E13!important;
+  border:0!important;
+  color:#FFFFFF!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  border-radius:16px!important;
+}
+
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option),
+body.dark dialog.uniform-menu .menu-option,
+body.dark .floating-menu button{
+  background:#0B0E13!important;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.03),transparent 75%)!important;
+  border:0!important;
+  border-radius:16px!important;
+  min-height:56px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)!important;
+  opacity:1!important;
+  color:#FFFFFF!important;
+  margin-block:4px!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled),
+body.dark dialog.uniform-menu .menu-option:hover,
+body.dark .floating-menu button:hover{
+  background:#12151A!important;
+  border:0!important;
+}
+
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
+  :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]),
+body.dark dialog.uniform-menu .menu-option[aria-selected="true"],
+body.dark .floating-menu button[aria-checked="true"],
+body.dark .floating-menu button[aria-selected="true"]{
+  background:#15181D!important;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.05),transparent 75%)!important;
+  border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol){
+  background:#0B0E13!important;
+  border:0!important;
+  border-radius:10px!important;
+  color:#FFFFFF!important;
+}
+body.dark dialog.choice-sheet .choice-close,
+body.dark dialog.voice-sheet #voicePickerClose{
+  background:#0B0E13!important;
+  border:0!important;
+  color:#FFFFFF!important;
+  border-radius:50%!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-mark,.voice-check){
+  color:#FFFFFF!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option-detail,.voice-choice-note){
+  color:#AEBCCB!important;
+}
+
+body.dark .prayer-overview{
+  background:#040509!important;
+  background-image:none!important;
+  border:0!important;
+}
+body.dark .prayer-overview #prayers{
+  background:#040509!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:20px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)!important;
+}
+body.dark .prayer-overview #prayers .prayer{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+body.dark .prayer-overview #prayers .prayer.active{
+  background:#15181D!important;
+  background-image:none!important;
+  border:0!important;
+  border-radius:16px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+body.dark .prayer-overview #prayers .prayer.active :is(span,strong){
+  color:#FFFFFF!important;opacity:1!important;
+}
+
+body.dark #qibla .qibla-card{
+  background:#0B0E13!important;
+  border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+body.dark #qibla .qibla-card .compass{
+  background:radial-gradient(circle at 45% 35%,#1A1D24,#0B0E13 70%,#040509)!important;
+  border:0!important;
+  box-shadow:inset 0 0 0 10px #0B0E13!important;
+}
+body.dark #qibla .qibla-card .phone-target,
+body.dark #qibla .compass-actions button{
+  background:#0B0E13!important;border:0!important;color:#FFFFFF!important;
+}
+body.dark #qibla :is(#compassStatus,.qibla-reading #headingValue){
+  background:#0B0E13!important;border:0!important;color:#FFFFFF!important;
+}
+
+body.dark #mushaf .mushaf-toolbar{
+  background:#0B0E13!important;
+  border:0!important;
+}
+body.dark #mushaf :is(.mushaf-sheet,.quran-reading-page){
+  background:#0B0E13!important;
+  border:0!important;
+  color:#FFFFFF!important;
+}
+body.dark #mushaf .quran-reading-page .quran-surah-title{
+  background:#0B0E13!important;border:0!important;
+}
+
+body.dark #mushaf .reference-player,
+body.dark #mushaf .recitation-player.reference-player{
+  background:#040509!important;
+  background-image:linear-gradient(180deg,#12151A,#040509)!important;
+  border:0!important;
+  border-radius:22px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 2px 8px rgba(0,0,0,.4)!important;
+  padding:14px 16px!important;
+}
+body.dark #mushaf .reference-player .recitation-caption strong{color:#FFFFFF!important;font-weight:800!important;}
+body.dark #mushaf .reference-player :is(.quran-track,.recitation-times){color:#AEBCCB!important;}
+
+body.dark #mushaf .reference-player #qTransport{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  width:40px!important;height:40px!important;padding:0!important;position:relative!important;
+}
+body.dark #mushaf .reference-player #qTransport::before{
+  content:""!important;position:absolute!important;inset:2px!important;z-index:-1!important;
+  border-radius:50%!important;
+  background:#2563EB!important;
+  border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22)!important;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#1D4ED8!important;}
+body.dark #mushaf .reference-player #qTransport svg{fill:#FFFFFF!important;color:#FFFFFF!important;}
+
+body.dark #mushaf .reference-player #qSeek{
+  --progress-fill:#FFFFFF!important;--progress-track:#4A5560!important;accent-color:#FFFFFF!important;
+}
+body.dark #mushaf .reference-player #qSeek::-webkit-slider-runnable-track{height:3px!important;background:#4A5560!important;}
+body.dark #mushaf .reference-player #qSeek::-webkit-slider-thumb{
+  width:14px!important;height:14px!important;margin-top:-5.5px!important;
+  background:#FFFFFF!important;border:0!important;border-radius:50%!important;
+}
+
+body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
+body.dark #settings .announcement-settings input.compact-switch:not(:checked),
+body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
+body.dark input[data-audio-prayer]:not(:checked),
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="false"]{
+  background:#0B0E13!important;
+  background-image:none!important;
+  border:0!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)!important;
+}
+body.dark #settings .prayer-switches input[type=checkbox]:checked,
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
+body.dark input[data-audio-prayer]:checked,
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"],
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle).is-on{
+  background:#2563EB!important;
+  background-image:none!important;
+  border:0!important;
+  accent-color:#2563EB!important;
+}
+body.dark #mushaf .quran-play-options input[type=checkbox]::before,
+body.dark #settings .prayer-switches input[type=checkbox]::after,
+body.dark #settings .announcement-settings input.compact-switch::before,
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thumb{
+  background:#FFFFFF!important;
+}
+
+body.dark #tasbih .tasbih-panel #counter:not(:disabled){
+  background:#040509!important;border:0!important;color:#FFFFFF!important;
+}
+
+@media(max-width:760px){
+  html{scroll-padding-bottom:calc(var(--mobile-nav-height,65px) + 28px);}
+  body.dark :is(#times,#mushaf,#qibla,#dhikr,#tasbih,#settings){
+    padding-bottom:calc(var(--mobile-nav-height,65px) + 128px);
+  }
+  body.dark #mushaf .reference-player{border-radius:18px!important;padding:12px!important;}
+}
+
+/* Reference fidelity — final layer: thin graphite navigation, readable labels,
+   integrated near-black player and truly frameless option surfaces. */
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active{
+  border:1px solid rgba(174,188,203,.13)!important;
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(180deg,#1A1D24 0%,#080A0E 100%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 2px 8px rgba(0,0,0,.35)!important;
+  color:#FFFFFF!important;opacity:1!important;
+}
+body.dark header>.site-nav .nav-icon-button:focus-visible{outline:2px solid #6195F5!important;outline-offset:-3px!important;}
+body.dark #mushaf .reference-player,
+body.dark #mushaf .recitation-player.reference-player{
+  background-color:#040509!important;
+  background-image:linear-gradient(180deg,#12151A,#040509)!important;
+  border:1px solid rgba(174,188,203,.13)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+}
+body.dark #mushaf .reference-player #qTransport::before{
+  background:#2563EB!important;border:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 7px rgba(37,99,235,.25)!important;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#1D4ED8!important;}
+body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{background:#1E40AF!important;}
+body.dark #mushaf .reference-player #qTransport:disabled::before{background:#153D7A!important;}
+body.dark #mushaf .reference-player #qStop:not(:disabled){
+ background:#2563EB!important;color:#FFFFFF!important;border:0!important;
+}
+body.dark #mushaf .reference-player #qStop:hover:not(:disabled){background:#1D4ED8!important;}
+body.dark #mushaf .reference-player #qStop:disabled{display:none!important;}
+body.dark #mushaf .reference-player :is(.quran-track,.recitation-times){
+ color:#AEBCCB!important;opacity:1!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet,dialog.uniform-menu,.floating-menu){
+ border:0!important;outline:0!important;
+ background-color:#040509!important;color:#FFFFFF!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet,dialog.uniform-menu,.floating-menu)
+ :is(.choice-option,.voice-option,.menu-option,button,input[type=search]){
+ border:0!important;box-shadow:none!important;opacity:1!important;
+ color:#FFFFFF!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet,dialog.uniform-menu,.floating-menu)
+ :is(.choice-option,.voice-option,.menu-option,button):focus-visible{
+ outline:2px solid #6195F5!important;outline-offset:-2px!important;
+}
+body.dark :is(.choice-option-detail,.voice-choice-note,.quran-track,.note,.eyebrow){
+ color:#AEBCCB!important;opacity:1!important;
+}
+
+
+/* 2026-10-31 visual repair: explicit five-part mobile acceptance.
+   Existing audio colors/functions and permanent dark mode remain unchanged. */
+
+/* 1. Quran reading leaf must stand apart from the near-black app canvas. */
+body.dark #mushaf :is(.mushaf-sheet,.quran-reading-page){
+  --reading-surface:#151A22;
+  background:#151A22!important;
+  background-image:none!important;
+  color:#FFFFFF!important;
+  border:1px solid rgba(199,212,227,.27)!important;
+  outline:0!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 5px 16px rgba(0,0,0,.16)!important;
+}
+body.dark #mushaf .mushaf-sheet :is(.quran-surah-title,.quran-page-heading),
+body.dark #mushaf .quran-reading-page .quran-surah-title{
+  background:#1B222C!important;
+  border:1px solid rgba(207,220,237,.18)!important;
+  color:#FFFFFF!important;
+}
+body.dark #mushaf :is(.mushaf-verses,.quran-text,.mushaf-page-number,.reading-page-number){
+  color:#FFFFFF!important;opacity:1!important;
+}
+
+/* 2. Remove the duplicated mobile bottom spacer; retain one nav-safe clearance
+   in main, not a second 193px gap under every tab. */
+@media(max-width:760px){
+  body.dark main{
+    padding-bottom:calc(var(--mobile-nav-height,65px) + 16px)!important;
+  }
+  body.dark main>section.tab{
+    padding-bottom:10px!important;
+    min-height:0!important;
+    margin-bottom:0!important;
+  }
+  body.dark main>footer{
+    margin-top:12px!important;
+    padding-top:12px!important;
+  }
+  body.dark #qibla .qibla-card{margin-bottom:10px!important;}
+  body.dark #mushaf .mushaf-credit{margin-bottom:4px!important;}
+  html{scroll-padding-bottom:calc(var(--mobile-nav-height,65px) + 16px)!important;}
+}
+
+/* 3. Qibla compass: stronger matte material and crisp scale (no blue/glow). */
+body.dark #qibla .qibla-card{
+  background:#11161E!important;
+  background-image:none!important;
+  border:1px solid rgba(205,218,234,.23)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+body.dark #qibla .qibla-card .compass{
+  background:radial-gradient(circle at 50% 43%,#212936 0%,#151B25 58%,#0E1219 100%)!important;
+  border:2px solid rgba(226,235,245,.65)!important;
+  box-shadow:inset 0 0 0 10px #10151C,0 0 0 1px rgba(226,235,245,.17)!important;
+}
+body.dark #qibla .qibla-card .compass::after{
+  border:1px solid rgba(226,235,245,.42)!important;
+}
+body.dark #qibla .qibla-card :is(.cardinal,.north,#bearing,#headingValue,#compassStatus,.qibla-reading p){
+  color:#FFFFFF!important;opacity:1!important;
+}
+body.dark #qibla .qibla-card .compass-mode{
+  background:#10151C!important;
+  color:#FFFFFF!important;opacity:1!important;
+  border:1px solid rgba(208,219,234,.34)!important;
+}
+body.dark #qibla .qibla-card .qibla-ray{
+  background:#FFFFFF!important;filter:none!important;
+}
+
+/* 4. One continuous visible prayer overview frame, with six distinct chips. */
+body.dark #times .prayer-overview{
+  border:1px solid rgba(207,220,237,.25)!important;
+  background-color:#080B10!important;
+  background-image:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)!important;
+}
+body.dark #times .prayer-overview #prayers{
+  background:#080B10!important;
+  background-image:none!important;
+  border:1px solid rgba(205,218,234,.18)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+  gap:3px!important;
+}
+body.dark #times .prayer-overview #prayers .prayer,
+body.dark #times .prayer-overview #prayers .prayer:not(.active){
+  background:#12171F!important;
+  background-image:none!important;
+  border:1px solid rgba(205,218,234,.17)!important;
+  border-radius:13px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045)!important;
+  color:#FFFFFF!important;
+}
+body.dark #times .prayer-overview #prayers .prayer.active{
+  background:#242B36!important;
+  background-image:none!important;
+  border:1px solid rgba(224,234,245,.55)!important;
+  border-radius:13px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.085)!important;
+}
+body.dark #times .prayer-overview #prayers .prayer :is(span,strong){
+  color:#FFFFFF!important;opacity:1!important;
+}
+
+/* 5. Six individually boxed navigation icons match the browser on mobile. */
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active{
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(180deg,#1A1D24 0%,#080A0E 100%)!important;
+  border:1px solid rgba(205,218,234,.19)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 2px 6px rgba(0,0,0,.25)!important;
+  border-radius:17px!important;
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+  opacity:1!important;
+}
+body.dark header>.site-nav .nav-icon-button .nav-symbol,
+body.dark header>.site-nav .nav-icon-button svg{
+  opacity:1!important;color:#FFFFFF!important;
+}
+@media(max-width:760px){
+  body.dark header>.site-nav{
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    gap:5px!important;
+    padding:5px!important;
+    background:#040509!important;
+    border:1px solid rgba(205,218,234,.12)!important;
+    border-radius:20px!important;
+  }
+  body.dark header>.site-nav .nav-icon-button,
+  body.dark header>.site-nav .nav-icon-button.active{
+    display:flex!important;flex-direction:column!important;
+    justify-content:center!important;align-items:center!important;
+    min-width:0!important;
+    height:55px!important;min-height:55px!important;
+    padding:4px 1px!important;
+    gap:2px!important;
+    border-radius:15px!important;
+  }
+  body.dark header>.site-nav .nav-icon-button .nav-symbol{
+    width:23px!important;height:23px!important;flex:none!important;
+  }
+  body.dark header>.site-nav .nav-icon-button>span{
+    font-size:clamp(8px,2.45vw,11px)!important;
+    font-weight:800!important;white-space:nowrap!important;
+    line-height:1.3!important;
+  }
+}
