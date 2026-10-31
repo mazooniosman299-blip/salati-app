@@ -1,7 +1,7 @@
 name: Salati four screenshot root-cause acceptance (NO DEPLOY)
 on:
   push:
-    branches: [fix/four-root-ui-issues-20261101]
+    branches: [fix/four-root-ui-issues-20261101, release/salati-four-fixes-v114-20261101]
   pull_request:
     branches: [production]
 permissions:
@@ -48,3 +48,43 @@ jobs:
             reports/user-visual-audit-20261101/
             reports/selection-refinement-20261101/
           if-no-files-found: ignore
+
+  android-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Prepare exactly matching offline website in Android WebView
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+      - name: Ensure Android SDK 36 and signing utilities are available
+        run: |
+          SDK_MANAGER="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+          test -x "$SDK_MANAGER"
+          yes | "$SDK_MANAGER" --licenses >/dev/null || true
+          "$SDK_MANAGER" "platforms;android-36" "build-tools;36.0.0"
+      - name: Build unsigned APK for safe local signing only — never publish
+        working-directory: android
+        run: |
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+          test -s app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Upload private staging APK and verification tools
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.114-unsigned-for-original-key
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            /usr/local/lib/android/sdk/build-tools/36.0.0/lib/apksigner.jar
+            /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
+          retention-days: 3
+          if-no-files-found: error
