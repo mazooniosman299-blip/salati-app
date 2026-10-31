@@ -1,4 +1,4 @@
-"""Screenshot acceptance: blue is exclusive to Quran play/pause and stop."""
+"""Screenshot acceptance: All interface controls use original neutral charcoal without active blue."""
 from pathlib import Path
 from functools import partial
 from threading import Thread
@@ -30,7 +30,7 @@ try:
    assert switches.count()==9
    for switch in switches.all():
     original=switch.evaluate('(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute("aria-checked")==="true"')
-    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(37, 99, 235)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(32, 37, 43)')]:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
      page.wait_for_timeout(100)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
@@ -53,7 +53,7 @@ try:
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)
-    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(37, 99, 235)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(32, 37, 43)')]:
      el.evaluate('(e,v)=>e.checked=v',enabled)
      actual=el.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      assert actual==color,(width,key,enabled,actual)
@@ -64,10 +64,10 @@ try:
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab)
     nav=page.locator('header>.site-nav .nav-icon-button').evaluate_all('(es)=>es.map(e=>getComputedStyle(e).backgroundColor)')
     assert all(c not in ['rgb(37, 99, 235)','rgb(26, 77, 145)','rgb(11, 35, 71)'] for c in nav),nav
-   checks.append({'width':width,'switches':9,'checkboxes':2,'blue_exclusive_to_play_stop':True,'horizontal_overflow':False})
+   checks.append({'width':width,'switches':9,'checkboxes':2,'charcoal_controls_without_blue':True,'horizontal_overflow':False})
   assert not errors,errors
   browser.close()
  (out/'checks.json').write_text(json.dumps({'result':'PASS','cases':checks,'physical_device_tested':False},indent=2)+'\n')
- print('PASS: screenshot charcoal, blue only Quran play/stop, neutral settings, 6 tabs, 2 widths.')
+ print('PASS: screenshot charcoal, neutral play/stop, neutral settings, 6 tabs, 2 widths.')
 finally:
  s.shutdown()
