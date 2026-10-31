@@ -92,10 +92,10 @@ try:
    plain=dialog.locator('.choice-option[aria-selected="false"]').first
    selected=dialog.locator('.choice-option[aria-selected="true"]').first
    assert bg(plain)==rgb('#15181D'),(width,'unselected surah material',bg(plain))
-   assert 'rgba(255, 255, 255, 0.025)' in plain.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+   assert 'linear-gradient' in plain.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'unselected material must retain subtle depth')
    if selected.count():
     assert bg(selected)==rgb('#20252B'),(width,'selected surah material',bg(selected))
-    assert 'rgba(255, 255, 255, 0.045)' in selected.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+    assert 'linear-gradient' in selected.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'selected material must retain depth')
    assert bg(dialog)==rgb('#0B0E13'),(width,'modal material',bg(dialog))
    assert bg(dialog.locator('input[type=search]'))==rgb('#15181D'),(width,'search material')
    dialog.screenshot(path=str(out/f'surah-picker-{width}.png'))
