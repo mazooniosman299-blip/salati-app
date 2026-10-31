@@ -101,6 +101,8 @@ jobs:
           python3 tests/dark-matte.py
           python3 tests/audio-control-colors.py
       - name: Test every core tab and interaction
+        if: success() || failure()
         run: python3 tests/modern-instruments.py
       - name: Test service worker offline navigation
+        if: success() || failure()
         run: python3 tests/offline-navigation.py
