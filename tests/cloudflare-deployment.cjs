@@ -13,7 +13,7 @@ assert(header.includes('/sw.js')&&header.includes('no-cache'),'Service worker up
 for(const f of ['index.html','privacy.html','sitemap.xml','robots.txt']){
   assert(!read(f).includes('salati-world-prayer.sprytitan65.chatgpt.site'),f+' contains old host');
 }
-assert(sw.includes("salati-shell-v148"),'Offline cache revision must include latest verified PWA release');
+assert(sw.includes("salati-shell-v149"),'Offline cache revision must include latest verified PWA release');
 for(const asset of ['manifest.json','app-v1.0.109.js','reference-layout-v1.0.109.css',
 'light-theme-v1.0.109.css','images/mosque-reference-original.png',
 'fonts/AmiriQuran-Regular.ttf','quran/data.json']){
