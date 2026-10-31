@@ -41,7 +41,9 @@ try:
    page.wait_for_timeout(290)
    neutral=marker.evaluate("(e)=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,gradient:getComputedStyle(e).backgroundImage})")
    assert neutral['bg']=='rgba(255, 255, 255, 0.035)' and neutral['gradient']=='none',(width,neutral)
-   assert page.locator('[data-tab=mushaf]').evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(11, 16, 23)',(width,'active tile must match charcoal')
+   assert page.locator('[data-tab=mushaf]').evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgb(11, 14, 19)',(width,'active tile must match charcoal')
+   tile_gradient=page.locator('[data-tab=mushaf]').evaluate('(e)=>getComputedStyle(e).backgroundImage')
+   assert 'rgb(27, 30, 37)' in tile_gradient and 'rgb(4, 5, 9)' in tile_gradient,(width,'tile should use approved neutral charcoal gradient',tile_gradient)
    assert page.locator('[data-tab=mushaf] .nav-symbol').evaluate("(e)=>getComputedStyle(e).color")=='rgb(255, 255, 255)',(width,'active icon must be white')
    assert marker.evaluate("(e)=>getComputedStyle(e,'::after').content")=='none',(width,'unexpected gold underline')
    page.screenshot(path=str(out/f'charcoal-sliding-nav-{width}.png'))
@@ -68,7 +70,9 @@ try:
    reader=page.locator('.quran-reading-page').first
    assert bg(reader)==rgb('#15181D'),(width,'reader',bg(reader))
    player=page.locator('#mushaf .reference-player')
-   assert bg(player)==rgb('#0B1017'),(width,'player',bg(player))
+   assert bg(player)==rgb('#040509'),(width,'player',bg(player))
+   player_gradient=player.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+   assert 'rgb(23, 26, 31)' in player_gradient and 'rgb(4, 5, 9)' in player_gradient,(width,'player should use near-black neutral gradient',player_gradient)
    assert page.locator('#qVerses').inner_text().strip(),'Quran text must not disappear'
    assert page.locator('#qTransport').is_visible(),'Audio player play/pause control must remain visible'
    for key in ['qRepeat','qAutoNext']:
