@@ -140,3 +140,11 @@ body.dark #times .prayer-overview #prayers .prayer:not(.active){
 body.dark header>.site-nav .nav-icon-button.active:focus-visible{
   outline:none!important;outline-width:0!important;box-shadow:none!important;
 }
+
+/* Focus must never resurrect a white selection frame. Keep a blue,
+   keyboard-accessible focus cue if the browser exposes one. */
+body.dark header>.site-nav button.nav-icon-button:focus-visible,
+body.dark header>.site-nav button.nav-icon-button.active:focus-visible{
+  outline-color:#2563EB!important;
+  border-color:transparent!important;
+}
