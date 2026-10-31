@@ -266,3 +266,13 @@ body.dark button:not(:disabled) {
   color:#FFFFFF!important;
   -webkit-text-fill-color:#FFFFFF!important;
 }
+
+
+/* Reset outdated translucent teal primary action fills in permanent dark mode,
+   without interfering with Quran audio, compass and counter-specific states. */
+body.dark .primary:not(#qPlay):not(#compassEnable):not(#counter):not(:disabled) {
+  background:#040509!important;
+  background-image:none!important;
+  border-color:rgba(255,255,255,.46)!important;
+  color:#FFFFFF!important;
+}
