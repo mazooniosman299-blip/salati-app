@@ -1,0 +1,147 @@
+name: Publish Salati website and signed APK together
+on:
+  push:
+    branches:
+      - fix/atomic-web-apk-release-20261101
+    paths:
+      - release-proof/v1.0.113/metadata.json
+      - release-proof/v1.0.113/signature-block.zlib.b64
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  atomic-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build exact website and prepare native WebView payload
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+      - name: Retrieve immutable unsigned Android build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          RUN="$(python3 -c 'import json;print(json.load(open("release-proof/v1.0.113/metadata.json"))["ciRunId"])')"
+          gh run download "$RUN" --repo "$GITHUB_REPOSITORY" --name 'salati-1.0.113-unsigned-for-original-key' --dir /tmp/salati-ci
+          find /tmp/salati-ci -name app-release-unsigned.apk -size +10M
+          find /tmp/salati-ci -name apksigner.jar
+      - name: Create disposable signing certificate — never import private production key
+        shell: bash
+        run: |
+          set -euo pipefail
+          keytool -genkeypair -keystore /tmp/salati-dummy.jks -storepass temporary123 \
+            -keypass temporary123 -alias temporary -keyalg RSA -keysize 2048 \
+            -validity 2 -dname 'CN=Temporary ZIP Normalizer' >/dev/null 2>&1
+          UNSIGNED="$(find /tmp/salati-ci -name app-release-unsigned.apk | head -1)"
+          SIGNER="$(find /tmp/salati-ci -name apksigner.jar | head -1)"
+          test -n "$UNSIGNED" && test -n "$SIGNER"
+          java -jar "$SIGNER" sign --v1-signing-enabled false --v4-signing-enabled false \
+            --ks /tmp/salati-dummy.jks --ks-key-alias temporary \
+            --ks-pass pass:temporary123 --key-pass pass:temporary123 \
+            --out /tmp/salati-dummy.apk "$UNSIGNED"
+      - name: Restore original-key signature and verify complete APK identity
+        run: |
+          set -euo pipefail
+          UNSIGNED="$(find /tmp/salati-ci -name app-release-unsigned.apk | head -1)"
+          SIGNER="$(find /tmp/salati-ci -name apksigner.jar | head -1)"
+          mkdir -p /tmp/salati-new
+          python3 scripts/reconstruct-verified-apk.py \
+            --unsigned "$UNSIGNED" --dummy /tmp/salati-dummy.apk \
+            --proof release-proof/v1.0.113/signature-block.zlib.b64 \
+            --manifest release-proof/v1.0.113/metadata.json \
+            --output /tmp/salati-new/salati-1.0.113.apk
+          java -jar "$SIGNER" verify --verbose --print-certs /tmp/salati-new/salati-1.0.113.apk > /tmp/apk-verify.txt
+          grep -F 'Verified using v2 scheme (APK Signature Scheme v2): true' /tmp/apk-verify.txt
+          grep -F 'Verified using v3 scheme (APK Signature Scheme v3): true' /tmp/apk-verify.txt
+          grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/apk-verify.txt
+          AAPT="${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools/36.0.0/aapt2"
+          test -x "$AAPT"
+          "$AAPT" dump badging /tmp/salati-new/salati-1.0.113.apk | grep -F "name='com.salati.prayer' versionCode='114' versionName='1.0.113'"
+          python3 scripts/verify-native-web-assets.py /tmp/salati-new/salati-1.0.113.apk
+      - name: Prepare matching immutable APK chunks and release manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          root=Path('.')
+          apk=Path('/tmp/salati-new/salati-1.0.113.apk').read_bytes()
+          meta=json.loads(Path('release-proof/v1.0.113/metadata.json').read_text())
+          hash_web=json.loads(subprocess.check_output(['node','scripts/release-fingerprint.cjs'],text=True))
+          directory=root/'apk-release-parts'/'v1.0.113'
+          directory.mkdir(parents=True,exist_ok=True)
+          size=1_800_000
+          chunks=[apk[i:i+size] for i in range(0,len(apk),size)]
+          for i,part in enumerate(chunks):
+              (directory/f'part{i:02d}.bin').write_bytes(part)
+          manifest={
+              'version':'1.0.113','versionCode':114,'applicationId':'com.salati.prayer',
+              'filename':'salati-1.0.113.apk','size':len(apk),
+              'sha256':hashlib.sha256(apk).hexdigest(),
+              'certificateSha256':meta['certificateSha256'],
+              'partCount':len(chunks),'chunkBytes':size,
+              'webFingerprint':hash_web['sha256']
+          }
+          (directory/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          (root/'apk-release-parts'/'current.json').write_text(json.dumps({'version':'1.0.113'},indent=2)+'\n')
+          print('SOURCE FINGERPRINT:',hash_web)
+          print('RELEASE MANIFEST:',manifest)
+          PY
+      - name: Refuse stale binary and test exact Cloudflare production output
+        env:
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+          SALATI_WEB_ALREADY_BUILT: '1'
+        run: |
+          npm run build:cloudflare
+          npm test
+          npm run test:cloudflare
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          manifest=json.loads(Path('apk-release-parts/v1.0.113/manifest.json').read_text())
+          apk=Path('dist/downloads/salati-1.0.113.apk').read_bytes()
+          assert len(apk)==manifest['size']
+          assert hashlib.sha256(apk).hexdigest()==manifest['sha256']
+          print('Verified website bundle includes latest signed APK:',manifest['version'])
+          PY
+      - name: Publish immutable signed GitHub release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          APK=/tmp/salati-new/salati-1.0.113.apk
+          if ! gh release view v1.0.113 >/dev/null 2>&1; then
+            gh release create v1.0.113 "$APK" --target "$GITHUB_SHA" \
+              --title 'صلاتي — Salati 1.0.113' \
+              --notes 'نفس تصميم الموقع العام، رقم بناء 114، وتوقيع أندرويد الأصلي. لا يتم نشر الموقع دون ملف APK مطابق.'
+          fi
+          gh release download v1.0.113 --pattern 'salati-1.0.113.apk' --dir /tmp/salati-public
+          sha256sum /tmp/salati-public/salati-1.0.113.apk
+          cmp -s "$APK" /tmp/salati-public/salati-1.0.113.apk
+      - name: Atomically promote matched website and APK to production branch
+        run: |
+          set -euo pipefail
+          git config user.name 'Salati Verified Release'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apk-release-parts/current.json apk-release-parts/v1.0.113
+          git commit -m 'release: website + original-key signed APK 1.0.113 passed matching SHA-256 gate'
+          git fetch origin production
+          git merge-base --is-ancestor origin/production HEAD
+          git push origin HEAD:production
+          echo 'Released matched website/APK; Cloudflare production deploys only production branch.'
