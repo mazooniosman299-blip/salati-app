@@ -35,7 +35,7 @@ body.dark #mushaf #qVerses .quran-text .ayah-number{
   unicode-bidi:isolate!important;
 }
 body.dark #mushaf #qVerses .quran-text [data-ayah] .ayah-number{
-  background-color:transparent!important;color:#634924!important;
+  background-color:#F5E9D6!important;color:#634924!important;
 }
 /* A compact, readable printed-style folio number, not an empty black strip. */
 body.dark #mushaf #qVerses .quran-reading-page{
