@@ -181,6 +181,16 @@ jobs:
           name: salati-six-visual-repair-evidence
           path: reports/six-visual-fixes/
           if-no-files-found: ignore
+      - name: Test all toggle shapes and redesigned Qibla in Chromium
+        if: success() || failure()
+        run: python3 tests/control-qibla-20261101.py
+      - name: Upload controls and new Qibla screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-control-qibla-review
+          path: reports/control-qibla-20261101/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
