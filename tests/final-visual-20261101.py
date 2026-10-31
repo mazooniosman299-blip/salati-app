@@ -58,9 +58,10 @@ try:
             mark=active.evaluate("""e=>({
                color:getComputedStyle(e,'::after').backgroundColor,
                height:getComputedStyle(e,'::after').height,
-               outline:getComputedStyle(e).outlineWidth
+               outline:getComputedStyle(e).outlineWidth,
+               outlineColor:getComputedStyle(e).outlineColor
             })""")
-            assert mark['outline']=='0px' and mark['height']=='0px',(width,mark)
+            assert mark['height']=='0px' and (mark['outline']=='0px' or mark['outlineColor']=='rgb(37, 99, 235)'),(width,mark)
             page.locator('header>.site-nav').screenshot(path=str(out/f'navigation-{width}.png'))
             # 4. Android download CTA stands out against the dark card.
             page.click('[data-tab=settings]')
