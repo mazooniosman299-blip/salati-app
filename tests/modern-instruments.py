@@ -50,7 +50,7 @@ with sync_playwright() as p:
     assert style['after']=='none',(switch_id,dark,checked,'duplicate thumb',style)
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
     if checked:
-     assert style['track']=='rgb(21, 24, 29)',(switch_id,dark,style)
+     assert style['track']=='rgb(35, 104, 196)',(switch_id,dark,style)
      assert abs(float(style['thumb'].split(',')[-2])-18)<.2,(switch_id,dark,style)
      assert contrast('rgb(255, 255, 255)',style['track'])>=4.5
   page.wait_for_function('document.querySelector("#qVerses [data-ayah] .ayah-number")!==null')
@@ -89,7 +89,7 @@ with sync_playwright() as p:
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
    for selector in ['.primary:not(:disabled)','#counter:not(:disabled)','#mushaf #qTransport:not(:disabled)']:
     for style in page.locator(selector).evaluate_all('(es)=>es.map(e=>({id:e.id,color:getComputedStyle(e).color,bg:getComputedStyle(e,e.id==="qTransport"?"::before":undefined).backgroundColor}))'):
-     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(21, 61, 122)' if style['id'] in ['qTransport','qPlay'] else fill
+     action_fill=page.evaluate('getComputedStyle(document.body).getPropertyValue("--action-fill").trim()');expected='rgb(35, 104, 196)' if style['id']=='qTransport' else ('rgb(21, 61, 122)' if style['id']=='qPlay' else ('rgb(38, 52, 67)' if style['id']=='compassEnable' else fill))
      assert style['bg']==expected and style['color']=='rgb(255, 255, 255)',(dark,tab,style)
      assert contrast(style['color'],style['bg'])>=4.5,(dark,style)
    if tab=='tasbih':

@@ -1,4 +1,4 @@
-"""Screenshot acceptance: blue is exclusive to Quran play/pause and stop."""
+"""Screenshot acceptance: blue enabled switches and Quran audio, neutral non-action controls."""
 from pathlib import Path
 from functools import partial
 from threading import Thread
@@ -30,7 +30,7 @@ try:
    assert switches.count()==9
    for switch in switches.all():
     original=switch.evaluate('(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute("aria-checked")==="true"')
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(21, 24, 29)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(35, 104, 196)')]:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
      page.wait_for_timeout(100)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
@@ -40,20 +40,20 @@ try:
     switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',original)
    for key in ['previewFajrPhrase','previewAdhan','previewDua','audioStop','resetPrayerAdjustments','applyPrayerAdjustments','cancelPrayerAdjustments','locationPickerOpen','methodPickerOpen']:
     actual=page.locator('#'+key).evaluate('(e)=>getComputedStyle(e).backgroundColor')
-    assert actual not in ['rgb(21, 61, 122)','rgb(26, 77, 145)','rgb(11, 35, 71)'],(width,key,actual)
+    assert actual not in ['rgb(35, 104, 196)','rgb(47, 121, 218)'],(width,key,actual)
    page.locator('#previewFajrPhrase').scroll_into_view_if_needed()
    page.screenshot(path=str(out/f'settings-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.querySelector("#qSurah").options.length>=114')
-   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(21, 61, 122)'
+   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(35, 104, 196)'
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
-   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(21, 61, 122)'
+   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(35, 104, 196)'
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)
-    for enabled,color in [(False,'rgb(4, 5, 9)'),(True,'rgb(21, 24, 29)')]:
+    for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(35, 104, 196)')]:
      el.evaluate('(e,v)=>e.checked=v',enabled)
      actual=el.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      assert actual==color,(width,key,enabled,actual)
@@ -63,11 +63,11 @@ try:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab)
     nav=page.locator('header>.site-nav .nav-icon-button').evaluate_all('(es)=>es.map(e=>getComputedStyle(e).backgroundColor)')
-    assert all(c not in ['rgb(21, 61, 122)','rgb(26, 77, 145)','rgb(11, 35, 71)'] for c in nav),nav
-   checks.append({'width':width,'switches':9,'checkboxes':2,'blue_exclusive_to_play_stop':True,'horizontal_overflow':False})
+    assert all(c not in ['rgb(35, 104, 196)','rgb(47, 121, 218)'] for c in nav),nav
+   checks.append({'width':width,'switches':9,'checkboxes':2,'blue_only_for_on_switches_and_audio':True,'horizontal_overflow':False})
   assert not errors,errors
   browser.close()
  (out/'checks.json').write_text(json.dumps({'result':'PASS','cases':checks,'physical_device_tested':False},indent=2)+'\n')
- print('PASS: screenshot charcoal, blue only Quran play/stop, neutral settings, 6 tabs, 2 widths.')
+ print('PASS: screenshot charcoal, blue ON switches and Quran transport, neutral settings, 6 tabs, 2 widths.')
 finally:
  s.shutdown()
