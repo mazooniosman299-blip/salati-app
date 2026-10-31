@@ -32,8 +32,9 @@ try:
    assert toggles.count()==9
    for toggle in toggles.all():
     original=toggle.evaluate("(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute('aria-checked')==='true'")
-    for on,expected in [(False,'#15181D'),(True,'#2368C4')]:
+    for on,expected in [(False,'#15181D'),(True,'#2368C4')]: 
      toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else {e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",on)
+     page.wait_for_timeout(340)
      color=bg(toggle)
      assert color==rgb(expected),(width,toggle.get_attribute('id'),toggle.get_attribute('data-audio-prayer'),on,color,expected)
     toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",original)
@@ -48,23 +49,25 @@ try:
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
    reader=page.locator('.quran-reading-page').first
-   assert bg(reader)==rgb('#1A232D'),(width,'reader',bg(reader))
+   assert bg(reader)==rgb('#141C25'),(width,'reader',bg(reader))
    player=page.locator('#mushaf .reference-player')
-   assert bg(player)==rgb('#212B36'),(width,'player',bg(player))
+   assert bg(player)==rgb('#0B1017'),(width,'player',bg(player))
    assert page.locator('#qVerses').inner_text().strip(),'Quran text must not disappear'
    assert page.locator('#qTransport').is_visible(),'Audio player play/pause control must remain visible'
    for key in ['qRepeat','qAutoNext']:
     checkbox=page.locator('#'+key)
     checkbox.evaluate('(e)=>e.checked=true')
+    page.wait_for_timeout(340)
     assert bg(checkbox)==rgb('#2368C4'),(width,key,bg(checkbox))
     checkbox.evaluate('(e)=>e.checked=false')
+    page.wait_for_timeout(340)
    page.locator('.quran-reading-page').first.screenshot(path=str(out/f'quran-page-{width}.png'))
    player.screenshot(path=str(out/f'quran-player-{width}.png'))
    page.click('#qSurahPickerOpen')
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#202933'),rgb('#2B3947')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#131B25'),rgb('#1D2A38')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
    dialog.screenshot(path=str(out/f'surah-picker-{width}.png'))
    page.keyboard.press('Escape')
@@ -74,7 +77,7 @@ try:
    assert compass.is_visible()
    image=compass.evaluate("(e)=>getComputedStyle(e).backgroundImage")
    assert 'radial-gradient' in image,(width,'qibla surface',image)
-   assert bg(page.locator('#qibla .qibla-card'))==rgb('#171F28')
+   assert bg(page.locator('#qibla .qibla-card'))==rgb('#101720')
    page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
