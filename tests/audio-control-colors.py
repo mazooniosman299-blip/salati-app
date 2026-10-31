@@ -34,7 +34,9 @@ try:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
      page.wait_for_timeout(100)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
-     assert actual==color,(width,switch.get_attribute('id'),switch.get_attribute('data-audio-prayer'),enabled,actual,switch.evaluate('(e)=>({tag:e.outerHTML.slice(0,210),parent:e.parentElement?.parentElement?.className,body:document.body.className,inline:e.getAttribute("style")})')))
+      if actual!=color:
+       detail=switch.evaluate('(e)=>({tag:e.outerHTML.slice(0,210),parent:e.parentElement?.parentElement?.className,body:document.body.className,inline:e.getAttribute("style")})')
+       raise AssertionError((width,switch.get_attribute('id'),switch.get_attribute('data-audio-prayer'),enabled,actual,detail))
     switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',original)
    for key in ['previewFajrPhrase','previewAdhan','previewDua','audioStop','resetPrayerAdjustments','applyPrayerAdjustments','cancelPrayerAdjustments','locationPickerOpen','methodPickerOpen']:
     actual=page.locator('#'+key).evaluate('(e)=>getComputedStyle(e).backgroundColor')
