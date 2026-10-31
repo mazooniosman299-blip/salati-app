@@ -52,7 +52,7 @@ try:
    assert toggles.count()==9
    for toggle in toggles.all():
     original=toggle.evaluate("(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute('aria-checked')==='true'")
-    for on,expected in [(False,'#15181D'),(True,'#2563EB')]:
+    for on,expected in [(False,'#15181D'),(True,'#20252B')]:
      toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else {e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",on)
      color=bg(toggle)
      assert color==rgb(expected),(width,toggle.get_attribute('id'),toggle.get_attribute('data-audio-prayer'),on,color,expected)
@@ -63,7 +63,7 @@ try:
     page.wait_for_timeout(80)
     boxes=page.evaluate("""() => {const s=document.querySelector('#settings .prayer-switches').getBoundingClientRect(),n=document.querySelector('header>.site-nav').getBoundingClientRect();return {switchBottom:s.bottom,navTop:n.top}}""")
     assert boxes['switchBottom']+8<=boxes['navTop'],('Mobile navigation must not cover prayer toggles',boxes)
-   page.screenshot(path=str(out/f'blue-switches-{width}.png'))
+   page.screenshot(path=str(out/f'matte-switches-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
@@ -78,7 +78,7 @@ try:
    for key in ['qRepeat','qAutoNext']:
     checkbox=page.locator('#'+key)
     checkbox.evaluate('(e)=>e.checked=true')
-    assert bg(checkbox)==rgb('#2563EB'),(width,key,bg(checkbox))
+    assert bg(checkbox)==rgb('#20252B'),(width,key,bg(checkbox))
     checkbox.evaluate('(e)=>e.checked=false')
    page.locator('.quran-reading-page').first.screenshot(path=str(out/f'quran-page-{width}.png'))
    player.screenshot(path=str(out/f'quran-player-{width}.png'))
@@ -145,6 +145,6 @@ try:
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
   assert not errors,errors
   browser.close()
- print('PASS: graphite sliding selection (no gold), blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
+ print('PASS: graphite sliding selection (no gold), charcoal ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
 finally:
  server.shutdown()
