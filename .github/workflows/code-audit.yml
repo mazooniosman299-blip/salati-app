@@ -87,7 +87,7 @@ jobs:
       - name: Upload unsigned build and SDK signature tools (private staging only)
         uses: actions/upload-artifact@v4
         with:
-          name: salati-1.0.111-unsigned-for-original-key
+          name: salati-1.0.112-unsigned-for-original-key
           path: |
             android/app/build/outputs/apk/release/app-release-unsigned.apk
             /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
