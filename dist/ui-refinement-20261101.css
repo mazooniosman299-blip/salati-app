@@ -227,15 +227,17 @@ body.dark #qibla .qibla-information{
   min-width:0;direction:rtl;text-align:right;
 }
 body.dark #qibla .qibla-reading{
-  /* Clear matte separation from the surrounding charcoal panel, no washed overlay. */
-  background:#242B33!important;
-  border:1px solid #667381!important;
+  /* Approved exact dark matte bearing rectangle ONLY; compass is untouched. */
+  background:#11161B!important;
+  background-image:none!important;
+  border:1px solid #4C5863!important;
   border-radius:18px!important;padding:18px 20px!important;
   opacity:1!important;filter:none!important;
+  -webkit-backdrop-filter:none!important;backdrop-filter:none!important;
   box-shadow:none!important;text-align:right!important;
 }
 body.dark #qibla .qibla-reading #bearing{
-  font-size:clamp(38px,4.4vw,54px)!important;color:#F7F4EE!important;
+  font-size:clamp(38px,4.4vw,54px)!important;color:#FFFFFF!important;
   text-align:right!important;line-height:1.2!important;
   margin:0 0 7px!important;
 }
@@ -244,8 +246,8 @@ body.dark #qibla .qibla-reading p{
   font-weight:700!important;
 }
 body.dark #qibla .qibla-reading #headingValue{
-  background:#11161D!important;color:#FFFFFF!important;
-  border:1px solid #687583!important;
+  background:#0A0E12!important;color:#FFFFFF!important;
+  border:1px solid #65717D!important;
   border-radius:10px!important;padding:6px 12px!important;
   margin-top:11px!important;
 }
