@@ -36,9 +36,10 @@ try:
     for expected in [False,True,False]:
      el.evaluate('(e,v)=>e.checked=v',expected)
      page.wait_for_timeout(180)
-     m=el.evaluate("""e=>{let r=e.getBoundingClientRect(),s=getComputedStyle(e),p=getComputedStyle(e,'::after');
-     let a=p.transform; let n=new DOMMatrixReadOnly(a);return{w:r.width,h:r.height,radius:s.borderRadius,thumbW:parseFloat(p.width),thumbH:parseFloat(p.height),thumbRadius:p.borderRadius,thumbLeft:parseFloat(p.left),translation:n.m41,trackColor:s.backgroundColor,thumbColor:p.backgroundColor,checked:e.checked}}""")
+     m=el.evaluate("""e=>{let r=e.getBoundingClientRect(),s=getComputedStyle(e),p=getComputedStyle(e,'::before');
+     let a=p.transform; let n=new DOMMatrixReadOnly(a);return{w:r.width,h:r.height,radius:s.borderRadius,thumbW:parseFloat(p.width),thumbH:parseFloat(p.height),thumbRadius:p.borderRadius,thumbLeft:parseFloat(p.left),translation:n.m41,trackColor:s.backgroundColor,thumbColor:p.backgroundColor,extra:getComputedStyle(e,'::after').content,checked:e.checked}}""")
      assert m['w']==54 and m['h']==32 and m['thumbW']==24 and m['thumbH']==24,(width,id,expected,m)
+     assert m['extra']=='none',(width,id,'duplicate thumb',m)
      assert m['thumbRadius']=='50%' and m['thumbLeft']==4 and m['thumbColor']=='rgb(255, 255, 255)',(width,id,expected,m)
      assert abs(m['translation']-(22 if expected else 0))<.2,(width,id,expected,m)
      assert m['trackColor']==('rgb(37, 99, 235)' if expected else 'rgb(11, 14, 19)'),(width,id,expected,m)
