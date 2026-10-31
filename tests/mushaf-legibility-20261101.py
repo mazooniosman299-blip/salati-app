@@ -62,6 +62,7 @@ try:
       assert selected.get_attribute('aria-pressed')=='true'
       assert selected.locator('.voice-symbol').evaluate("e=>getComputedStyle(e).display")=='none'
       assert selected.locator('.voice-check').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
+      assert page.locator('#voicePickerList [data-voice-option=qatami] .voice-check').evaluate("e=>getComputedStyle(e).visibility")=='hidden'
       page.screenshot(path=str(out/f'voice-{width}.png'))
       page.click('#voicePickerClose')
       page.click('[data-tab=dhikr]')
@@ -74,6 +75,8 @@ try:
       page.locator('.adhkar-card').first.screenshot(path=str(out/f'adhkar-{width}.png'))
       footer=page.locator('main>footer')
       assert footer.evaluate('e=>getComputedStyle(e).justifyContent')=='center'
+      if width<=600:
+        assert footer.evaluate("e=>parseFloat(getComputedStyle(e).paddingBottom)")<=24
       assert footer.locator('#privacy').is_visible()
       footer.screenshot(path=str(out/f'footer-{width}.png'))
       for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
