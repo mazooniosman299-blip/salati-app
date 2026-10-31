@@ -8,6 +8,6 @@ assert.match(main,/if\(!PrayerSchedule\.pendingDueOnResume\(this,resumeAt\)\)Pra
 assert.match(schedule,/static boolean pendingDueOnResume\(Context c,long now\)/,'schedule helper absent');
 assert.match(schedule,/valid\(c,at,prayer\),exactAlarmsAllowed\(c\),at,now/,'reuse original event+permission validation');
 assert.match(schedule,/\(prayer\+at\)\.equals\(delivered\)/,'do not preserve a delivered alarm');
-assert.match(policy,/!alreadyDelivered && now >= scheduled && mayPlay/,'don't preserve future or delivered alarms');
+assert.match(policy,/!alreadyDelivered && now >= scheduled && mayPlay/,"Reject future or delivered alarms");
 assert.match(receiver,/PrayerSchedule\.scheduleNext\(c,Math\.max\(time,now\)\)/,'real alarm delivery must continue to schedule following event');
 console.log('PASS: resume guard, validation, deduplication and next-alarm delivery code paths linked.');
