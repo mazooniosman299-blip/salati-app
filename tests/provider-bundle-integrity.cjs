@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const source=fs.readFileSync('prayer-provider.js','utf8');
+const app=fs.readFileSync('dist/app-v1.0.109.js','utf8');
+const alias=fs.readFileSync('dist/app.js','utf8');
+const worker=fs.readFileSync('dist/sw.js','utf8');
+const html=fs.readFileSync('dist/index.html','utf8');
+assert.equal(app,alias,'Both deployed application files must match');
+assert(source.includes('MAX_OFFLINE_CACHE_AGE_MS=45*86400000'));
+assert(source.includes('!validMonth(record,p.year,p.month)'));
+assert(app.includes('>3888e6||!x0('),'Deployed bundle must reject expired/incomplete calendars');
+assert(worker.includes('salati-shell-v146'),'PWA caches need a new shell revision');
+assert(html.includes('src="app-v1.0.109.js'),'HTML must link the checked release artifact');
+new vm.Script(app,{filename:'dist/app-v1.0.109.js'});
+console.log('PASS: deployed JS syntax, original source/build parity and cache refresh.');
