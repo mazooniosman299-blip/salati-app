@@ -285,3 +285,8 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled) {
   color:#FFFFFF!important;
   box-shadow:none!important;
 }
+
+/* Respect the restored dark reading palette even against legacy injected themes. */
+body.dark #mushaf .quran-reading-page { background-color:#1A232D!important; background-image:none!important; }
+body.dark #mushaf .mushaf-sheet { background-color:#121820!important; }
+body.dark #mushaf .reference-player { background-color:#212B36!important; background-image:none!important; }
