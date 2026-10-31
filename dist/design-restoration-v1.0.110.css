@@ -5,31 +5,31 @@
   color-scheme:dark;
   --salati-page:#0B0E13;
   --salati-deep:#040509;
-  --salati-card:#15181D;
-  --salati-border:#32383F;
+  --salati-card:#0B0E13;
+  --salati-border:#2A2F36;
   --salati-white:#FFFFFF;
   --salati-secondary:#AEBCCB;
-  --salati-select:#20252B;
+  --salati-select:#15181D;
   --bg:#0B0E13;
   --card:#040509;
   --ink:#FFFFFF;
   --muted:#AEBCCB;
-  --line:#32383F;
+  --line:#2A2F36;
   --surface-solid:#040509;
   --glass-fill:#0B0E13;
-  --glass-edge:#32383F;
+  --glass-edge:#2A2F36;
   --glass-sheen:rgba(255,255,255,.04);
-  --input-fill:#15181D;
-  --control-fill:#15181D;
-  --control-edge:#46515C;
-  --control-hover:#20252B;
+  --input-fill:#0B0E13;
+  --control-fill:#0B0E13;
+  --control-edge:#3A424C;
+  --control-hover:#15181D;
   --control-ink:#FFFFFF;
   --media-fill:#040509;
   --media-top:rgba(255,255,255,.05);
-  --media-edge:#32383F;
-  --media-track:#5D6772;
+  --media-edge:#2A2F36;
+  --media-track:#4A5560;
   --progress-fill:#FFFFFF;
-  --progress-track:#5D6772;
+  --progress-track:#4A5560;
   --caption-ink:#D4DCE5;
   --action-fill:#153D7A;
   --action-hover:#0F2F5E;
@@ -37,6 +37,7 @@
   --action-edge:#1E4A8C;
   --action-off:#0B2347;
   --nav-selection-fill:rgba(255,255,255,.03);
+  --selected:rgba(255,255,255,.06);
 }
 
 html,body,body.dark{
@@ -45,12 +46,12 @@ html,body,body.dark{
   color-scheme:dark;
 }
 
-/* ===== Global surfaces ===== */
+/* ===== Global surfaces — deep charcoal ===== */
 body.dark :is(.card,.tasbih-card,.qibla-card){
-  background-color:#15181D!important;
-  background-image:linear-gradient(165deg,rgba(255,255,255,.025),transparent 55%)!important;
-  border:1px solid #32383F!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.035)!important;
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(165deg,rgba(255,255,255,.03),transparent 55%)!important;
+  border:1px solid #2A2F36!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
   border-radius:24px;
 }
 
@@ -105,7 +106,6 @@ body.dark header>.site-nav .nav-selection::after{
   content:none!important;display:none!important;
 }
 
-/* Mobile bottom nav — match reference strip */
 @media (max-width:760px){
   body.dark header>.site-nav{
     background:#040509!important;
@@ -137,22 +137,23 @@ body.dark :is(button,input,select,.choice-trigger,.choice-option):disabled{
 }
 
 body.dark :is(.choice-trigger,.compact-select-options button):not(:disabled){
-  background-color:#15181D!important;
-  border-color:#46515C!important;
+  background-color:#0B0E13!important;
+  border-color:#2A2F36!important;
   color:#FFFFFF!important;
 }
 body.dark :is(.choice-trigger,.compact-select-options button)[aria-selected="true"]{
-  background:#20252B!important;border-color:#87939E!important;
+  background:#15181D!important;border-color:#4A5560!important;
 }
 
-/* ===== Dialogs / sheets ===== */
+/* ===== Dialogs / sheets — deep charcoal matching reference ===== */
 body.dark dialog.choice-sheet,
-body.dark dialog.voice-sheet{
-  background-color:#0B0E13!important;
-  background-image:linear-gradient(150deg,rgba(255,255,255,.025),transparent 60%)!important;
-  border:1px solid #32383F!important;
+body.dark dialog.voice-sheet,
+body.dark dialog.uniform-menu{
+  background-color:#040509!important;
+  background-image:linear-gradient(150deg,rgba(255,255,255,.03),transparent 60%)!important;
+  border:1px solid #2A2F36!important;
   border-radius:28px!important;
-  box-shadow:0 24px 70px rgba(0,0,0,.55)!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.65)!important;
   color:#FFFFFF!important;
 }
 @media (min-width:760px){
@@ -164,54 +165,76 @@ body.dark dialog.voice-sheet{
   body.dark dialog.voice-sheet .choice-search-wrap input{min-height:58px;height:58px;}
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .sheet-handle{
-  background:#555F69!important;opacity:1;
+  background:#3A424C!important;opacity:1;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .choice-heading h2,
 body.dark dialog.voice-sheet .voice-sheet-header h2{color:#FFFFFF!important;}
+
+/* Search field — same deep charcoal */
 body.dark dialog.choice-sheet .choice-search-wrap input,
 body.dark dialog.voice-sheet .choice-search-wrap input,
 body.dark dialog.uniform-menu input.menu-search{
-  background-color:#15181D!important;
-  border:1px solid #46515C!important;
+  background-color:#0B0E13!important;
+  border:1px solid #2A2F36!important;
   color:#FFFFFF!important;
   box-shadow:none!important;
   opacity:1!important;
+  border-radius:16px!important;
 }
-body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){
-  background-color:#15181D!important;
-  background-image:linear-gradient(160deg,rgba(255,255,255,.025),transparent 75%)!important;
-  border:1px solid #424B55!important;
-  border-radius:18px!important;
-  min-height:64px;
+
+/* List rows — deep charcoal like nav/player reference */
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option),
+body.dark dialog.uniform-menu .menu-option,
+body.dark .floating-menu button{
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.03),transparent 75%)!important;
+  border:1px solid #2A2F36!important;
+  border-radius:16px!important;
+  min-height:56px;
   box-shadow:none!important;
-  opacity:1!important;color:#FFFFFF!important;
+  opacity:1!important;
+  color:#FFFFFF!important;
 }
-body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled){
-  border-color:#71808E!important;
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled),
+body.dark dialog.uniform-menu .menu-option:hover,
+body.dark .floating-menu button:hover{
+  border-color:#4A5560!important;
+  background-color:#101318!important;
 }
+
+/* Selected row — slightly lifted charcoal, white check */
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
   :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]),
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
-  :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]):hover{
-  background-color:#20252B!important;
-  background-image:linear-gradient(160deg,rgba(255,255,255,.045),transparent 75%)!important;
-  border-color:#87939E!important;
-}
-body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol){
+  :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]):hover,
+body.dark dialog.uniform-menu .menu-option[aria-selected="true"],
+body.dark .floating-menu button[aria-checked="true"],
+body.dark .floating-menu button[aria-selected="true"]{
   background-color:#15181D!important;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.05),transparent 75%)!important;
+  border-color:#4A5560!important;
+}
+
+/* Badges / icons on the left of each row */
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol){
+  background-color:#0B0E13!important;
   background-image:none!important;
-  border:1px solid #505A65!important;
-  border-radius:11px!important;
+  border:1px solid #3A424C!important;
+  border-radius:10px!important;
   color:#FFFFFF!important;
 }
+
+/* Close button */
 body.dark dialog.choice-sheet .choice-close,
 body.dark dialog.voice-sheet #voicePickerClose{
-  background-color:#15181D!important;
-  border-color:#65717C!important;
+  background-color:#0B0E13!important;
+  border:1px solid #2A2F36!important;
   color:#FFFFFF!important;
+  border-radius:50%!important;
 }
+
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option-detail,.voice-choice-note){
-  color:#D4DCE5!important;opacity:1!important;
+  color:#AEBCCB!important;opacity:1!important;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-mark,.voice-check){
   color:#FFFFFF!important;
@@ -221,17 +244,17 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-mark,.voice-ch
 body.dark .prayer-overview{
   background-color:#040509!important;
   background-image:linear-gradient(155deg,#101318,#040509 90%)!important;
-  border-color:#32383F!important;
+  border-color:#2A2F36!important;
 }
 body.dark .prayer-overview #prayers{
   background-color:#040509!important;
   background-image:linear-gradient(180deg,#0D1015,#040509)!important;
-  border-color:#32383F!important;
+  border-color:#2A2F36!important;
 }
 body.dark .prayer-overview #prayers .prayer.active{
-  background-color:#15181D!important;
-  background-image:linear-gradient(145deg,#1C2026,#121519)!important;
-  border:2px solid #596571!important;
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(145deg,#1C2026,#0E1116)!important;
+  border:2px solid #4A5560!important;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
 }
 body.dark .prayer-overview #prayers .prayer.active :is(span,strong){
@@ -239,50 +262,49 @@ body.dark .prayer-overview #prayers .prayer.active :is(span,strong){
 }
 body.dark #times #locate,
 body.dark #settings #locate{
-  background:#15181D!important;border-color:#46515C!important;color:#FFFFFF!important;
+  background:#0B0E13!important;border-color:#2A2F36!important;color:#FFFFFF!important;
 }
 
 /* ===== Qibla ===== */
 body.dark #qibla .qibla-card{
-  background-color:#15181D!important;
-  background-image:linear-gradient(150deg,#191D23,#101318)!important;
-  border:1px solid #32383F!important;
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(150deg,#12151A,#0B0E13)!important;
+  border:1px solid #2A2F36!important;
   box-shadow:none!important;
 }
 body.dark #qibla .qibla-card .compass{
-  background:radial-gradient(circle at 45% 35%,#1E242B 0%,#15181D 70%,#0B0E13 100%)!important;
-  border-color:#788590!important;
-  box-shadow:inset 0 0 0 10px #15181D!important;
+  background:radial-gradient(circle at 45% 35%,#1A1D24 0%,#0B0E13 70%,#040509 100%)!important;
+  border-color:#4A5560!important;
+  box-shadow:inset 0 0 0 10px #0B0E13!important;
 }
-body.dark #qibla .qibla-card .compass::after{border-color:#64717E!important;}
+body.dark #qibla .qibla-card .compass::after{border-color:#3A424C!important;}
 body.dark #qibla .qibla-card .phone-target,
 body.dark #qibla .compass-actions button{
-  background:#15181D!important;border-color:#66737F!important;color:#FFFFFF!important;
+  background:#0B0E13!important;border-color:#3A424C!important;color:#FFFFFF!important;
 }
 body.dark #qibla .qibla-card .dial-center{
-  border-color:#15181D!important;box-shadow:0 0 0 1px #788590!important;
+  border-color:#0B0E13!important;box-shadow:0 0 0 1px #4A5560!important;
 }
 body.dark #qibla :is(#compassStatus,.qibla-reading #headingValue){
-  background:#15181D!important;border-color:#46515C!important;color:#FFFFFF!important;
+  background:#0B0E13!important;border-color:#2A2F36!important;color:#FFFFFF!important;
 }
 
-/* ===== Mushaf + reference player — exact match to screenshot ===== */
+/* ===== Mushaf + reference player ===== */
 body.dark #mushaf .mushaf-toolbar{
-  background-color:#15181D!important;
-  background-image:linear-gradient(150deg,#191D22,#11151A)!important;
-  border-color:#32383F!important;
+  background-color:#0B0E13!important;
+  background-image:linear-gradient(150deg,#12151A,#0B0E13)!important;
+  border-color:#2A2F36!important;
 }
 body.dark #mushaf :is(.mushaf-sheet,.quran-reading-page){
-  background-color:#15181D!important;
+  background-color:#0B0E13!important;
   background-image:none!important;
-  border-color:#32383F!important;
+  border-color:#2A2F36!important;
   color:#FFFFFF!important;
 }
 body.dark #mushaf .quran-reading-page .quran-surah-title{
-  background:#15181D!important;border-color:#46515C!important;
+  background:#0B0E13!important;border-color:#2A2F36!important;
 }
 
-/* Player bar — deep charcoal capsule like the reference image */
 body.dark #mushaf .reference-player,
 body.dark #mushaf .recitation-player.reference-player{
   background-color:#040509!important;
@@ -306,7 +328,6 @@ body.dark #mushaf .reference-player :is(.quran-track,.recitation-times){
   font-size:13px!important;
 }
 
-/* Play button — circular, charcoal with subtle edge */
 body.dark #mushaf .reference-player #qTransport{
   background:transparent!important;
   border:0!important;
@@ -329,7 +350,7 @@ body.dark #mushaf .reference-player #qTransport::before{
 }
 body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{
   background:#15181D!important;
-  border-color:#58636E!important;
+  border-color:#4A5560!important;
 }
 body.dark #mushaf .reference-player #qTransport svg{
   width:15px!important;
@@ -338,18 +359,16 @@ body.dark #mushaf .reference-player #qTransport svg{
   color:#FFFFFF!important;
 }
 
-/* Stop button — charcoal only */
 body.dark #mushaf .reference-player #qStop:not(:disabled){
-  background:#15181D!important;
-  border-color:#46515C!important;
+  background:#0B0E13!important;
+  border-color:#2A2F36!important;
   color:#FFFFFF!important;
   border-radius:12px!important;
 }
 body.dark #mushaf .reference-player #qStop:not(:disabled):hover{
-  background:#20252B!important;
+  background:#15181D!important;
 }
 
-/* Progress bar — thin track, white thumb like reference */
 body.dark #mushaf .reference-player #qSeek{
   --progress-fill:#FFFFFF!important;
   --progress-track:#4A5560!important;
@@ -384,19 +403,19 @@ body.dark #mushaf .reference-player #qSeek::-moz-range-thumb{
 }
 
 body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen):not(:disabled){
-  background:#15181D!important;
-  border-color:#46515C!important;
+  background:#0B0E13!important;
+  border-color:#2A2F36!important;
   color:#FFFFFF!important;
 }
 
-/* ===== Toggles — charcoal off / subtle on (no bright blue) ===== */
+/* ===== Toggles — charcoal ===== */
 body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
 body.dark #settings .announcement-settings input.compact-switch:not(:checked),
 body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
 body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="false"]{
-  background:#15181D!important;
+  background:#0B0E13!important;
   background-image:none!important;
-  border-color:#75818E!important;
+  border-color:#3A424C!important;
 }
 body.dark #settings .prayer-switches input[type=checkbox]:checked,
 body.dark #settings .announcement-settings input.compact-switch:checked,
@@ -404,8 +423,8 @@ body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
 body.dark input[data-audio-prayer]:checked,
 body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"]{
   background:#2A2F36!important;
-  background-image:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.04))!important;
-  border-color:#87939E!important;
+  background-image:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03))!important;
+  border-color:#4A5560!important;
 }
 body.dark #mushaf .quran-play-options input[type=checkbox]::before,
 body.dark #settings .prayer-switches input[type=checkbox]::after,
@@ -414,7 +433,7 @@ body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thum
   background:#FFFFFF!important;
 }
 
-/* Blue ONLY for Quran play / stop when active */
+/* Blue ONLY for Quran play / stop */
 body.dark :is(#qPlay,#qStop):not(:disabled){
   background:#153D7A!important;
   border-color:#1E4A8C!important;
@@ -431,7 +450,7 @@ body.dark :is(#qPlay,#qStop):active:not(:disabled){
 body.dark #tasbih .tasbih-panel #counter:not(:disabled){
   background:#040509!important;
   background-image:none!important;
-  border-color:#596571!important;
+  border-color:#3A424C!important;
   color:#FFFFFF!important;
 }
 body.dark #tasbih .tasbih-panel #counter:not(:disabled):focus-visible{
@@ -454,7 +473,7 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled):focus-visible{
   }
 }
 @media(max-width:600px){
-  body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){min-height:60px;}
+  body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){min-height:56px;}
   body.dark header>.site-nav .nav-icon-button,
   body.dark header>.site-nav .nav-icon-button.active{border-radius:16px!important;}
 }
