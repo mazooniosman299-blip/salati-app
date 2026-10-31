@@ -278,3 +278,12 @@ body.dark #qibla .qibla-help{
   body.dark #qibla .qibla-reading{padding:14px 16px!important;}
   body.dark #qibla #qiblaDial .qibla-ray{height:72px!important;}
 }
+
+/* Verse number contrast against its actual element background. */
+body.dark #mushaf #qVerses [data-ayah] .ayah-number,
+body.dark #mushaf .mushaf-verses [data-ayah] .ayah-number{
+  color:#624729!important;
+  background:#E9DDC9!important;
+  border:1px solid #D1C0A5!important;
+  text-shadow:none!important;
+}
