@@ -27,6 +27,23 @@ try:
   assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')==rgb('#0B0E13')
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
+   # Golden selection must visibly slide to each active tab while blue switches stay independent.
+   page.click('[data-tab=times]')
+   page.wait_for_timeout(320)
+   marker=page.locator('header>.site-nav .nav-selection')
+   assert marker.is_visible(),(width,'missing gold marker')
+   start=marker.bounding_box()['x']
+   page.click('[data-tab=mushaf]')
+   page.wait_for_timeout(55)
+   mid=marker.bounding_box()['x']
+   dest=page.locator('[data-tab=mushaf]').bounding_box()['x']
+   assert min(start,dest)<mid<max(start,dest),(width,'gold sliding animation missing',start,mid,dest)
+   page.wait_for_timeout(290)
+   gold=marker.evaluate("(e)=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,gradient:getComputedStyle(e).backgroundImage})")
+   assert gold['bg']=='rgba(214, 168, 79, 0.24)' and gold['gradient'].startswith('linear-gradient'),(width,gold)
+   assert page.locator('[data-tab=mushaf]').evaluate("(e)=>getComputedStyle(e).backgroundColor")=='rgba(0, 0, 0, 0)',(width,'opaque active tile hides gold')
+   assert page.locator('[data-tab=mushaf] .nav-symbol').evaluate("(e)=>getComputedStyle(e).color")=='rgb(214, 168, 79)',(width,'active gold icon missing')
+   page.screenshot(path=str(out/f'gold-sliding-nav-{width}.png'))
    page.click('[data-tab=settings]')
    toggles=page.locator('[data-audio-prayer],#fajrAnnouncementToggle,#audioEnable,#duaToggle,#silentAdhanToggle')
    assert toggles.count()==9
@@ -81,6 +98,6 @@ try:
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
   assert not errors,errors
   browser.close()
- print('PASS: blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
+ print('PASS: gold sliding bottom selection, blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
 finally:
  server.shutdown()
