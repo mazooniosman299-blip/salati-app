@@ -28,7 +28,7 @@ try:
    dates=page.locator('#cityLabel,#gregorianDate,#dateLabel').evaluate_all('(es)=>es.map(e=>{const c=getComputedStyle(e),r=e.getBoundingClientRect();return {id:e.id,size:c.fontSize,weight:c.fontWeight,font:c.fontFamily,color:c.color,opacity:c.opacity,x:r.x,y:r.y,right:r.right,bottom:r.bottom}})')
    for date in dates[1:]:
     for field in ['font','color','opacity']:assert date[field]==dates[0][field],(width,field,dates)
-    assert float(date['size'].removesuffix('px'))<float(dates[0]['size'].removesuffix('px'))
+    assert date['size']==dates[0]['size'] and date['weight']==dates[0]['weight'],(width,'date must match city typography',dates)
     assert date['color']=='rgb(255, 255, 255)'and date['opacity']=='1'
    assert page.locator('.hero-info small').count()==0
    assert page.locator('.hero-info').evaluate('(e)=>e.getBoundingClientRect().x>document.querySelector(".location").getBoundingClientRect().x')
@@ -71,5 +71,5 @@ try:
   assert first_paint.locator('body').evaluate('(e)=>getComputedStyle(e).colorScheme')=='dark'
   first_paint.close();browser.close()
  (out/'acceptance.json').write_text(json.dumps({'result':'PASS','checks':checks,'page_errors':errors,'physical_device_tested':False},indent=2)+'\n')
- print('PASS: permanent dark theme, preserved settings, large city/smaller white date styles, correct right-side live title/name/countdown, original image, six tabs/menus at seven required widths, RTL/LTR and reload.')
+ print('PASS: permanent dark theme, preserved settings, city and dates matching size and weight, correct right-side live title/name/countdown, original image, six tabs/menus at seven required widths, RTL/LTR and reload.')
 finally:server.shutdown()
