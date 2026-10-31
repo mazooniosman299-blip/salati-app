@@ -9,7 +9,7 @@ for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTranspor
 }
 assert(html.includes('href="design-restoration-v1.0.113.css"'),'Reference layer is loaded');
 assert(html.indexOf('design-restoration-v1.0.113.css')>html.indexOf('reference-layout-v1.0.109.css'),'Final CSS must win in cascade');
-assert(sw.includes("salati-shell-v159")&&sw.includes('design-restoration-v1.0.113.css'),'Service worker caches current design');
+assert(sw.includes("salati-shell-v160")&&sw.includes('design-restoration-v1.0.113.css'),'Service worker caches current design');
 for(const literal of ['--bg:#0B0E13','--card:#040509','--action-fill:#2563EB','background:#2563EB!important','background-image:linear-gradient(180deg,#12151A,#040509)']){
  assert(css.includes(literal),'Approved palette or player missing: '+literal);
 }
