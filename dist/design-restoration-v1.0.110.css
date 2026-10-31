@@ -8,6 +8,7 @@ body.dark { background:#0B0E13; color:#FFFFFF; }
    Target all current checkbox switches and the custom ARIA switches. */
 body.dark #settings .prayer-switches input[type=checkbox]:checked,
 body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #settings #fajrAnnouncementToggle:checked,
 body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
 body.dark #settings #audioEnable[aria-checked="true"],
 body.dark #settings #audioEnable.is-on,
@@ -22,6 +23,7 @@ body.dark #settings #silentAdhanToggle[aria-checked="true"] {
 }
 body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
 body.dark #settings .announcement-settings input.compact-switch:not(:checked),
+body.dark #settings #fajrAnnouncementToggle:not(:checked),
 body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
 body.dark #settings #audioEnable[aria-checked="false"],
 body.dark #settings #duaToggle[aria-checked="false"],
@@ -224,6 +226,13 @@ body.dark dialog.voice-sheet #voicePickerClose {
   body.dark #mushaf { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
   body.dark #qibla { padding-bottom:calc(var(--mobile-nav-height, 72px) + 90px); }
   body.dark #settings .prayer-switches { scroll-margin-block:140px; }
+}
+/* Selected options stay visibly selected even when the pointer is over them. */
+body.dark dialog.choice-sheet .choice-option[aria-selected="true"]:hover,
+body.dark dialog.choice-sheet .choice-option[aria-checked="true"]:hover,
+body.dark dialog.voice-sheet .voice-option[aria-pressed="true"]:hover {
+  background:#2B3947;
+  border-color:#A0B5CB;
 }
 @media (max-width:600px) {
   body.dark #mushaf .mushaf-toolbar { padding:15px 13px; }
