@@ -38,7 +38,12 @@ try:
      assert color==rgb(expected),(width,toggle.get_attribute('id'),toggle.get_attribute('data-audio-prayer'),on,color,expected)
     toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",original)
    toggles.evaluate_all("""(es)=>es.forEach(e=>{if(e instanceof HTMLInputElement)e.checked=true;else{e.setAttribute('aria-checked','true');e.classList.add('is-on')}})""")
-   page.locator('#settings .prayer-switches').screenshot(path=str(out/f'blue-switches-{width}.png'))
+   if width<761:
+    page.locator('#settings .prayer-switches').evaluate("(e)=>e.scrollIntoView({block:'center',behavior:'instant'})")
+    page.wait_for_timeout(80)
+    boxes=page.evaluate("""() => {const s=document.querySelector('#settings .prayer-switches').getBoundingClientRect(),n=document.querySelector('header>.site-nav').getBoundingClientRect();return {switchBottom:s.bottom,navTop:n.top}}""")
+    assert boxes['switchBottom']+8<=boxes['navTop'],('Mobile navigation must not cover prayer toggles',boxes)
+   page.screenshot(path=str(out/f'blue-switches-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
