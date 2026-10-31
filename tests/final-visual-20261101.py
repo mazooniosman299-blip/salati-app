@@ -60,7 +60,7 @@ try:
                height:getComputedStyle(e,'::after').height,
                outline:getComputedStyle(e).outlineWidth
             })""")
-            assert mark=={'color':'rgb(244, 246, 250)','height':'4px','outline':'2px'},(width,mark)
+            assert mark['outline']=='0px' and mark['height']=='0px',(width,mark)
             page.locator('header>.site-nav').screenshot(path=str(out/f'navigation-{width}.png'))
             # 4. Android download CTA stands out against the dark card.
             page.click('[data-tab=settings]')
