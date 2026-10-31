@@ -22,7 +22,10 @@ function canonicalOrigin(){
   return 'https://'+hostname+(parsed.port?':'+parsed.port:'');
 }
 const origin=canonicalOrigin();
-require('./build-web.cjs');
+if(process.env.SALATI_WEB_ALREADY_BUILT!=='1')require('./build-web.cjs');
+// Release CI builds once, computes its fingerprint and reuses that identical
+// output here. Rebuilding again would mutate generated HTML and invalidate
+// the signed build's exact-source proof.
 
 // Publish ONLY the signed APK whose version and full web-asset fingerprint
 // match this exact website build. The release guard fails deployment otherwise.
