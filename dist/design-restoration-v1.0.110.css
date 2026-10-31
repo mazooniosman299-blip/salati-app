@@ -339,7 +339,7 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled){
 @media(max-width:760px){
   html{scroll-padding-bottom:calc(var(--mobile-nav-height,65px) + 28px);}
   body.dark :is(#times,#mushaf,#qibla,#dhikr,#tasbih,#settings){
-    padding-bottom:calc(var(--mobile-nav-height,65px) + 128px);
+    padding-bottom:28px;
   }
   body.dark #mushaf .reference-player{border-radius:18px!important;padding:12px!important;}
 }
