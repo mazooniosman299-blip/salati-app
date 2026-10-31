@@ -8,10 +8,14 @@ permissions:
   contents: read
 jobs:
   code:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -21,6 +25,14 @@ jobs:
         run: npm test
       - name: Compile the web app
         run: npm run build
+      - name: Run remaining web/SEO/Quran DOM tests
+        run: |
+          node tests/quran-dom.cjs
+          npm run test:seo
+      - name: Verify committed JavaScript matches rebuilt release
+        run: git diff --exit-code -- dist/app-v1.0.109.js dist/app.js
+      - name: Audit production npm dependencies
+        run: npm audit --omit=dev --audit-level=moderate
       - name: Android-independent Java unit policies
         run: bash scripts/test-audio-focus.sh
       - name: Native Quran background policy tests
@@ -44,3 +56,53 @@ jobs:
       - name: Build unsigned debug APK
         working-directory: android
         run: bash gradlew :app:assembleDebug --no-daemon
+
+  whole-tree:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Parse source and data, validate local assets and archive integrity
+        run: python3 scripts/full-source-audit.py
+      - name: Upload machine-readable audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-full-tree-audit
+          path: reports/full-source-audit-latest.json
+          if-no-files-found: ignore
+
+
+  browser-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - run: npm run build
+      - name: Install real Chromium browser and UI test dependencies
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Test dark theme and audio colors in Chromium
+        run: |
+          python3 tests/dark-matte.py
+          python3 tests/audio-control-colors.py
+      - name: Test every core tab and interaction
+        if: success() || failure()
+        run: python3 tests/modern-instruments.py
+      - name: Test service worker offline navigation
+        if: success() || failure()
+        run: python3 tests/offline-navigation.py
