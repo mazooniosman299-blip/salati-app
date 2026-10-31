@@ -396,3 +396,37 @@ body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) {
  body.dark header>.site-nav{border-radius:20px;}
  body.dark header>.site-nav .nav-icon-button,body.dark header>.site-nav .nav-icon-button.active{border-radius:15px;}
 }
+
+
+/* The requested sliding GOLD indicator BELOW the active navigation tile.
+   The existing JS moves .nav-selection across the tabs; the line rides with it.
+   Keep the reference charcoal tiles and blue enabled switches untouched. */
+body.dark header>.site-nav .nav-selection {
+  z-index:3;
+  pointer-events:none;
+  overflow:visible;
+  border:0;
+  background:rgba(255,255,255,.035);
+  box-shadow:none;
+}
+body.dark header>.site-nav .nav-selection::after {
+  content:"";
+  position:absolute;
+  display:block;
+  width:min(68px,48%);
+  height:3px;
+  bottom:-3px;
+  left:50%;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:#C6A66B;
+  box-shadow:none;
+  pointer-events:none;
+}
+@media(max-width:760px){
+  body.dark header>.site-nav .nav-selection::after {
+    height:2.5px;
+    width:min(50px,48%);
+    bottom:-2px;
+  }
+}
