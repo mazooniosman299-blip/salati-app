@@ -38,7 +38,7 @@ assert(appendix.includes('body.dark #mushaf .reference-player #qStop:not(:disabl
 assert(!appendix.includes('background:#32383F'), 'No pale gray backgrounds introduced in new fixes');
 assert(quran.includes('stroke-width="2.1"'), 'Mushaf icon stays readable');
 assert(nav.includes('stroke-width="2.1"'), 'Navigation Mushaf icon stays readable');
-assert(nativeSelection.includes('#FF040509') && nativeSelection.includes('#BBFFFFFF'));
+assert(nativeSelection.includes('#FF15181D') && nativeSelection.includes('#E6FFFFFF') && nativeSelection.includes('android:width="2dp"'), 'Native active prayer capsule must use the approved high-contrast outline');
 assert(nativeStrip.includes('#E6040509') && nativeStrip.includes('#F0040509'));
 assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length, 'CSS braces');
 console.log('PASS: reference colors, six tabs, all label groups, neutral switches, white icons, blue Quran transport only, APK widget and versioned assets.');
