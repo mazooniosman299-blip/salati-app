@@ -143,6 +143,23 @@ try:
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
+  # A real hit-test: settings control must be fully visible above the fixed dock.
+  page.set_viewport_size({'width':390,'height':844})
+  page.click('[data-tab=settings]')
+  nav=page.locator('header>.site-nav').bounding_box()
+  main=page.locator('main').bounding_box()
+  assert main['y']+main['height']<=nav['y']-2,('mobile dock obscures scroll region',main,nav)
+  assert page.locator('main').evaluate('(e)=>getComputedStyle(e).overflowY')=='auto'
+  voice=page.locator('#voicePickerOpen')
+  voice.scroll_into_view_if_needed()
+  vb=voice.bounding_box()
+  assert vb['y']+vb['height']<=nav['y']-2,('voice selector obscured by dock',vb,nav)
+  hit=page.evaluate('''([x,y])=>{let e=document.elementFromPoint(x,y);return e?.closest('#voicePickerOpen')?.id||e?.tagName}''',[vb['x']+vb['width']/2,vb['y']+vb['height']/2])
+  assert hit=='voicePickerOpen',('dock steals settings click',hit,vb,nav)
+  page.screenshot(path=str(out/'settings-dock-no-overlap-390x844.png'))
+  page.click('[data-tab=dhikr]')
+  page.locator('main').evaluate('(e)=>e.scrollTop=e.scrollHeight')
+  page.screenshot(path=str(out/'adhkar-dock-no-overlap-390x844.png'))
   assert not errors,errors
   browser.close()
  print('PASS: graphite sliding selection (no gold), blue ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
