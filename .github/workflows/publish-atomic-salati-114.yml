@@ -91,7 +91,7 @@ jobs:
           for i,part in enumerate(chunks):
               (directory/f'part{i:02d}.bin').write_bytes(part)
           manifest={
-              'version':'1.0.114','versionCode':114,'applicationId':'com.salati.prayer',
+              'version':'1.0.114','versionCode':115,'applicationId':'com.salati.prayer',
               'filename':'salati-1.0.114.apk','size':len(apk),
               'sha256':hashlib.sha256(apk).hexdigest(),
               'certificateSha256':meta['certificateSha256'],
