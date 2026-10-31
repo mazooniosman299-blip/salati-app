@@ -27,6 +27,17 @@ try:
   assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')==rgb('#0B0E13')
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
+   # The mobile dock has its own viewport band; the content scrollport must
+   # end ABOVE it, even before the user scrolls or focuses a control.
+   if width<761:
+    navbox=page.locator('header>.site-nav').bounding_box()
+    mainbox=page.locator('main').bounding_box()
+    assert mainbox['y']+mainbox['height']<=navbox['y']-2,(width,'fixed dock obstructs the main scrollport',mainbox,navbox)
+    assert page.locator('main').evaluate('(e)=>getComputedStyle(e).overflowY')=='auto',(width,'main must be the independent scrollport')
+    page.locator('main').evaluate('(e)=>e.scrollTop=e.scrollHeight')
+    page.wait_for_timeout(60)
+    assert page.locator('main').evaluate('(e)=>e.scrollTop>0'),'Scrollport must reveal tall prayer content without a page-overlap'
+    page.locator('main').evaluate('(e)=>e.scrollTop=0')
    # Neutral translucent glass indicator must slide; no gold on any active icon.
    page.click('[data-tab=times]')
    page.wait_for_timeout(320)
