@@ -155,3 +155,24 @@ body.dark header>.site-nav button.nav-icon-button.active:focus-visible{
 body.dark header>.site-nav .nav-icon-button:not(.active):focus-visible{
   box-shadow:inset 0 0 0 2px #74A7FF!important;
 }
+
+/* Precisely center the automatic-location pin within the entire option row.
+   The badge is anchored to the button center, not its text baseline. */
+body.dark .location-sheet .location-automatic{
+  position:relative!important;
+  padding-inline-start:40px!important;
+}
+body.dark .location-sheet .location-automatic .location-mark{
+  position:absolute!important;
+  top:50%!important;bottom:auto!important;
+  inset-inline-start:13px!important;inset-inline-end:auto!important;
+  display:grid!important;place-items:center!important;
+  width:15px!important;height:15px!important;
+  transform:translateY(-50%)!important;margin:0!important;
+}
+body.dark .location-sheet .location-automatic .location-icon{
+  position:static!important;top:auto!important;bottom:auto!important;
+  transform:none!important;
+  width:15px!important;height:15px!important;
+  margin:0!important;
+}
