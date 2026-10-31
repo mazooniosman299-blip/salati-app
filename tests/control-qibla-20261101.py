@@ -99,7 +99,7 @@ try:
                         '#headingValue','#compassStatus','#compassEnable']:
                 assert page.locator(key).count()==1,(viewport,key)
             dash=page.locator('#qibla .qibla-dashboard')
-            columns=dash.evaluate('e=>getComputedStyle(e).gridTemplateColumns.split(" ").length')
+            columns=dash.evaluate("e=>{const s=getComputedStyle(e);return s.display==='flex'&&s.flexDirection==='column'?1:0}")
             assert columns==1,(viewport,'columns',columns)
             dial=page.locator('#qiblaDial').evaluate("""e=>{const b=e.getBoundingClientRect(),s=getComputedStyle(e);
                 return {width:b.width,height:b.height,background:s.backgroundImage,border:s.borderTopWidth}}""")
