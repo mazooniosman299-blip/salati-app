@@ -147,6 +147,16 @@ jobs:
       - name: Validate five phone design fixes with live Chromium
         if: success() || failure()
         run: python3 tests/phone-visual-five.py
+      - name: Verify Quran playback circle and two switches in real Chromium
+        if: success() || failure()
+        run: python3 tests/quran-transport-switch-geometry.py
+      - name: Upload Quran controls shape screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-quran-controls-shape
+          path: reports/quran-controls-geometry/
+          if-no-files-found: ignore
       - name: Archive phone design evidence
         if: always()
         uses: actions/upload-artifact@v4
