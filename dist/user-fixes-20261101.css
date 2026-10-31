@@ -33,10 +33,14 @@ body.dark .location-sheet .choice-option .choice-option-text{
   text-align:start!important;
 }
 
-/* Selected muezzin remains in its original row and keeps its waveform icon.
-   Remove BOTH check visuals rather than relocating or replacing one of them.
-   aria-pressed and the selected-row surface continue to show the choice. */
-body.dark #voicePickerList .voice-option .voice-check{display:none!important;}
+/* Approved voice picker: keep the original right-hand waveform for ALL rows;
+   a single real SVG check appears on the PHYSICAL LEFT only for the selected row.
+   No generated checkmarks or UI relocation. RTL layout and voice order unchanged. */
+body.dark #voicePickerList .voice-option{
+  position:relative!important;
+  padding-left:58px!important;
+  padding-right:15px!important;
+}
 body.dark #voicePickerList .voice-option .voice-symbol,
 body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-symbol{
   display:grid!important;place-items:center!important;
@@ -45,9 +49,32 @@ body.dark #voicePickerList .voice-option .voice-symbol svg,
 body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-symbol svg{
   display:block!important;
 }
-body.dark #voicePickerList .voice-option .voice-symbol::after,
-body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-symbol::after{
+body.dark #voicePickerList .voice-option .voice-symbol::after{
   content:none!important;display:none!important;
+}
+body.dark #voicePickerList .voice-option .voice-check{
+  position:absolute!important;
+  left:16px!important;right:auto!important;
+  inset-inline-start:auto!important;inset-inline-end:auto!important;
+  top:50%!important;bottom:auto!important;
+  transform:translateY(-50%)!important;
+  width:28px!important;height:28px!important;flex:none!important;
+  padding:0!important;margin:0!important;
+  display:none!important;
+  align-items:center!important;justify-content:center!important;
+  background:transparent!important;border:0!important;
+  color:#FFFFFF!important;opacity:1!important;
+}
+body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-check{
+  display:flex!important;visibility:visible!important;opacity:1!important;
+}
+body.dark #voicePickerList .voice-option:not([aria-pressed="true"]) .voice-check{
+  display:none!important;visibility:hidden!important;
+}
+body.dark #voicePickerList .voice-option .voice-check svg{
+  display:block!important;width:25px!important;height:25px!important;
+  fill:none!important;stroke:#FFFFFF!important;stroke-width:2.4!important;
+  opacity:1!important;
 }
 
 /* 3 — Every surah label remains INSIDE the ornamental center in one line.
