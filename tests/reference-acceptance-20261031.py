@@ -22,7 +22,10 @@ try:
   errors=[]
   page.on('pageerror',lambda e:errors.append(str(e)))
   page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual'}))")
-  page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
+  response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
+  page.wait_for_timeout(1300)
+  diagnostics={'status':response.status if response else None,'errors':errors,'links':page.locator('link[rel=stylesheet]').count(),'script':page.locator('script[src]').count(),'nav_selection':page.locator('.nav-selection').count(),'ready':page.evaluate('document.readyState')}
+  assert not errors and diagnostics['nav_selection']==1,('Bootstrap failed',diagnostics)
   assert page.locator('html').get_attribute('dir')=='rtl'
   assert page.locator('link[href="design-restoration-v1.0.112.css"]').count()==1
   page.wait_for_function("document.querySelector('#qSurah').options.length>=114")
