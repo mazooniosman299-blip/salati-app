@@ -16,7 +16,7 @@ const tokens = Object.fromEntries([...palette.matchAll(/--([\w-]+):([^;]+)/g)].m
 assert.equal(tokens.bg, '#0B0E13', 'Exact supplied screenshot page color');
 assert.equal(tokens.card, '#040509', 'Exact supplied screenshot card color');
 assert.equal(tokens.ink, '#FFFFFF', 'Never dim normal text');
-assert.equal(tokens.muted, '#FFFFFF', 'Never render hints as pale gray');
+assert.equal(tokens.muted, '#AAB4C2', 'Use the approved readable muted label color');
 assert.equal(tokens['control-disabled-ink'], '#FFFFFF', 'Disabled text must remain legible');
 assert.equal(tokens['action-fill'], '#153D7A', 'Approved play/stop blue');
 assert(tokens['progress-track'].includes('.55'), 'Clear progress track');

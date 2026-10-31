@@ -529,3 +529,46 @@ body.dark #mushaf .quran-play-options input[type=checkbox],
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle){
  transition:none!important;animation:none!important;
 }
+
+/* Brand color correction: restore Salati identity colors while retaining the dark matte base. */
+:root {
+  --salati-teal: #35BFA3;
+  --salati-gold: #D6A84F;
+  --salati-gold-bright: #E3B85C;
+  --salati-muted: #AAB4C2;
+}
+body.dark header > .site-nav .nav-icon-button.active,
+body.dark header > .site-nav .nav-icon-button:hover,
+body.dark nav .active {
+  color: var(--salati-teal);
+  border-bottom-color: var(--salati-teal);
+}
+body.dark header > .site-nav .nav-icon-button.active {
+  border-color: rgba(53,191,163,.48);
+  background: rgba(53,191,163,.10);
+}
+body.dark .brand { color: var(--salati-gold-bright); }
+body.dark .brand small,
+body.dark .eyebrow,
+body.dark .note,
+body.dark .time-context,
+body.dark .location-date p,
+body.dark .quran-track { color: var(--salati-muted); }
+body.dark .location #locate {
+  color: #101712;
+  background: var(--salati-gold);
+  border-color: var(--salati-gold-bright);
+  box-shadow: 0 4px 16px rgba(214,168,79,.18);
+}
+body.dark .location #locate:hover { background: var(--salati-gold-bright); }
+body.dark .prayer-overview .location #locate {
+  color: #101712;
+  background: var(--salati-gold);
+  border-color: var(--salati-gold-bright);
+}
+body.dark .prayer.active,
+body.dark .prayer.active span { color: var(--salati-gold-bright); }
+body.dark .prayer.active { box-shadow: inset 0 -3px 0 var(--salati-gold); }
+body.dark .setup-reminder { border-color: rgba(53,191,163,.45); }
+body.dark .calculation-context summary { color: var(--salati-teal); }
+body.dark .verse p { color: var(--salati-gold-bright); }

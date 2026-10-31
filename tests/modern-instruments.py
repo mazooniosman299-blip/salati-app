@@ -78,7 +78,7 @@ with sync_playwright() as p:
    fill=page.evaluate('()=>{const e=document.createElement("span");e.style.color="var(--control-fill)";document.body.append(e);const color=getComputedStyle(e).color;e.remove();return color}')
    ink='rgb(255, 255, 255)' if dark else 'rgb(0, 0, 0)'
    active=page.locator('header>.site-nav .active').evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color})')
-   assert active['color']==ink,(dark,tab,active)
+   assert active['color']=='rgb(53, 191, 163)',(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
    assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(255, 255, 255, 0.035)','reference selection must remain translucent glass'
