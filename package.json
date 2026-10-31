@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node tests/prayer-engine.cjs && node tests/quran.cjs && node tests/quran-audio.cjs && node tests/quran-progress.cjs && node tests/native-quran.cjs && node tests/quran-follow.cjs && node tests/quran-offline.cjs && node tests/quran-download-controls.cjs && node tests/native-schedule.cjs && node tests/location.cjs && node tests/world-location.cjs && node tests/location-picker.cjs && node tests/country-search.cjs && node tests/popover-menus.cjs && node tests/light-theme.cjs && node tests/tab-controls.cjs && node tests/adhan-toggle.cjs && node tests/adhkar.cjs && node tests/prayer-provider.cjs && node tests/prayer-preferences.cjs && node tests/native-audio.cjs && node tests/audio-voice.cjs && node tests/prayer-refresh.cjs && node tests/auto-city-times.cjs && node tests/native-sync.cjs && node tests/preferences-storage.cjs && node tests/back-navigation.cjs && node tests/tasbih-controls.cjs && node tests/review-regressions.cjs && node tests/audio-storage.cjs && node tests/review-round-two.cjs && node tests/infrastructure-regressions.cjs && node tests/audio-cache-recovery.cjs && node tests/timezone-choice.cjs && node tests/prayer-announcements.cjs && node tests/reminder-offline.cjs && node tests/human-recordings.cjs && node tests/reference-theme.cjs && node tests/fresh-review-regressions.cjs && node tests/fajr-only.cjs",
+    "test": "node tests/prayer-engine.cjs && node tests/quran.cjs && node tests/quran-audio.cjs && node tests/quran-progress.cjs && node tests/native-quran.cjs && node tests/quran-follow.cjs && node tests/quran-offline.cjs && node tests/quran-download-controls.cjs && node tests/native-schedule.cjs && node tests/location.cjs && node tests/world-location.cjs && node tests/location-picker.cjs && node tests/country-search.cjs && node tests/popover-menus.cjs && node tests/light-theme.cjs && node tests/tab-controls.cjs && node tests/adhan-toggle.cjs && node tests/adhkar.cjs && node tests/prayer-provider.cjs && node tests/prayer-preferences.cjs && node tests/native-audio.cjs && node tests/audio-voice.cjs && node tests/prayer-refresh.cjs && node tests/auto-city-times.cjs && node tests/native-sync.cjs && node tests/preferences-storage.cjs && node tests/back-navigation.cjs && node tests/tasbih-controls.cjs && node tests/review-regressions.cjs && node tests/audio-storage.cjs && node tests/review-round-two.cjs && node tests/infrastructure-regressions.cjs && node tests/audio-cache-recovery.cjs && node tests/timezone-choice.cjs && node tests/prayer-announcements.cjs && node tests/reminder-offline.cjs && node tests/human-recordings.cjs && node tests/reference-theme.cjs && node tests/fresh-review-regressions.cjs && node tests/fajr-only.cjs && node tests/full-contrast-audit.cjs",
     "build": "node scripts/build-web.cjs",
     "test:quran-background": "bash scripts/test-quran-background.sh",
     "test:audio-focus": "bash scripts/test-audio-focus.sh",
@@ -28,7 +28,8 @@
     "test:fajr-only": "node tests/fajr-only.cjs",
     "test:selection-menus": "python3 tests/selection-menus.py",
     "test:reference-controls": "python3 tests/audio-control-colors.py && python3 tests/circular-controls.py",
-    "test:visual-corrections": "python3 tests/visual-corrections.py"
+    "test:visual-corrections": "python3 tests/visual-corrections.py",
+    "test:contrast": "node tests/full-contrast-audit.cjs"
   },
   "keywords": [],
   "author": "",
