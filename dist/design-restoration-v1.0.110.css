@@ -290,3 +290,26 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled) {
 body.dark #mushaf .quran-reading-page { background-color:#1A232D!important; background-image:none!important; }
 body.dark #mushaf .mushaf-sheet { background-color:#121820!important; }
 body.dark #mushaf .reference-player { background-color:#212B36!important; background-image:none!important; }
+
+
+/* The reference's warm gold follows the active bottom tab, not every tab.
+   Keep the existing Motion/ARIA navigation, with no glow or duplicate underline. */
+body.dark header>.site-nav.has-glass-navigation .nav-selection {
+  background-color:rgba(214,168,79,.24)!important;
+  background-image:linear-gradient(145deg,rgba(214,168,79,.28),rgba(214,168,79,.08))!important;
+  border:1px solid rgba(214,168,79,.78)!important;
+  box-shadow:inset 0 1px 0 rgba(255,228,171,.16)!important;
+}
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active {
+  background:transparent!important;
+  border-color:transparent!important;
+  box-shadow:none!important;
+}
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>span,
+body.dark header>.site-nav.has-glass-navigation .nav-icon-button.active>.nav-symbol {
+  color:#D6A84F!important;
+  -webkit-text-fill-color:#D6A84F!important;
+}
+@media(prefers-reduced-motion:reduce) {
+  body.dark header>.site-nav.has-glass-navigation .nav-selection { transition:none!important; }
+}
