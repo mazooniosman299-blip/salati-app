@@ -1,0 +1,55 @@
+name: Publish verified Salati APK 1.0.112
+on:
+  push:
+    branches:
+      - fix/salati-six-visual-issues-20261031
+    paths:
+      - .github/workflows/publish-salati-apk.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  signed-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reassemble and checksum signed release from binary chunks
+        run: python3 scripts/assemble-release-apk.py
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Verify original signing certificate and APK package identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="dist/downloads/salati-1.0.112.apk"
+          TOOLS="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)"
+          test -x "$TOOLS/apksigner"
+          "$TOOLS/apksigner" verify --verbose --print-certs "$APK" > /tmp/salati-apk-verification.txt
+          grep -F "Verified using v2 scheme (APK Signature Scheme v2): true" /tmp/salati-apk-verification.txt
+          grep -Fi "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e" /tmp/salati-apk-verification.txt
+          "$TOOLS/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='113' versionName='1.0.112'"
+          echo "Original release certificate and Android package identity verified."
+      - name: Publish stable GitHub Release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="dist/downloads/salati-1.0.112.apk"
+          if gh release view v1.0.112 >/dev/null 2>&1; then
+            gh release upload v1.0.112 "$APK" --clobber
+          else
+            gh release create v1.0.112 "$APK" --target "$GITHUB_SHA" --title "صلاتي | Salati 1.0.112" --notes "تحسينات المصحف والبوصلة والأزرار. حزمة Android موقعة بشهادة صلاتي الأصلية ومتحقق من بصمة SHA-256."
+          fi
+      - name: Verify released APK download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release view v1.0.112 --json assets --jq '.assets[].name' | grep -Fx salati-1.0.112.apk
+          gh release download v1.0.112 --pattern 'salati-1.0.112.apk' --dir /tmp/salati-released
+          echo "a9456505a283c4241a4de8fd392c66488ffcdc8e51eb8c1ded4e19cd47879401  /tmp/salati-released/salati-1.0.112.apk" | sha256sum -c -
