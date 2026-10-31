@@ -65,9 +65,13 @@ try:
             page.click('header [data-tab=mushaf]')
             page.wait_for_function("document.querySelector('#qSurah').options.length>=114")
             for key in ['#qTransport','#qStop']:
-                box=page.locator(key).evaluate("""e=>{const r=e.getBoundingClientRect();const s=getComputedStyle(e);
+                control=page.locator(key)
+                # The idle Stop button is deliberately hidden by product logic.
+                if key=='#qStop': control.evaluate("e=>e.disabled=false")
+                box=control.evaluate("""e=>{const r=e.getBoundingClientRect();const s=getComputedStyle(e);
                     return [r.width,r.height,s.borderRadius]}""")
                 assert box==[44,44,'50%'],(viewport,key,box)
+                if key=='#qStop': control.evaluate("e=>e.disabled=true")
             for key in ['#qRepeat','#qAutoNext']:
                 dims=page.locator(key).evaluate("""e=>{const r=e.getBoundingClientRect(),t=getComputedStyle(e,'::before');
                     return [r.width,r.height,t.width,t.height]}""")
