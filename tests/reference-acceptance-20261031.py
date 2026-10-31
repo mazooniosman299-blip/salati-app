@@ -27,7 +27,7 @@ try:
   diagnostics={'status':response.status if response else None,'errors':errors,'links':page.locator('link[rel=stylesheet]').count(),'script':page.locator('script[src]').count(),'nav_selection':page.locator('.nav-selection').count(),'ready':page.evaluate('document.readyState')}
   assert not errors and diagnostics['nav_selection']==1,('Bootstrap failed',diagnostics)
   assert page.locator('html').get_attribute('dir')=='rtl'
-  assert page.locator('link[href="design-restoration-v1.0.112.css"]').count()==1
+  assert page.locator('link[href="design-restoration-v1.0.113.css"]').count()==1
   page.click('[data-tab=mushaf]')
   page.wait_for_function("document.querySelector('#qSurah').options.length>=114")
   for width in (390,1440):
