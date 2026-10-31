@@ -124,6 +124,16 @@ jobs:
       - name: Verify all five visual repairs in Chromium
         if: success() || failure()
         run: python3 tests/reference-acceptance-20261031.py
+      - name: Validate five phone design fixes with live Chromium
+        if: success() || failure()
+        run: python3 tests/phone-visual-five.py
+      - name: Archive phone design evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-five-phone-visual-screenshots
+          path: reports/phone-five-visual/
+          if-no-files-found: ignore
       - name: Upload restoration screenshot evidence
         if: always()
         uses: actions/upload-artifact@v4
