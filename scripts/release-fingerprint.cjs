@@ -28,7 +28,14 @@ function fingerprint(directory=DIST){
   const hash=crypto.createHash('sha256');
   for(const {rel,file} of selected){
     hash.update(rel+'\0','utf8');
-    const data=fs.readFileSync(file);
+    // Cloudflare replaces the verified legacy canonical host with the deployment host.
+    // Normalize ONLY that hosting substitution; all other application bytes remain hashed.
+    const original=fs.readFileSync(file);
+    const data=(rel==='index.html'||rel==='manifest.json')
+      ?Buffer.from(original.toString('utf8').replace(
+        /https:\/\/(?:salati-world-prayer\.(?:sprytitan65|mazenosman968)\.chatgpt\.site|[a-z0-9.-]+\.pages\.dev)/gi,
+        'https://salati-release-origin.invalid'), 'utf8')
+      :original;
     const len=Buffer.alloc(8);
     len.writeBigUInt64LE(BigInt(data.length));
     hash.update(len);
