@@ -80,7 +80,7 @@ try:
                 cells.first.evaluate("e=>e.classList.add('active')")
             active_prayer=page.locator('#prayers .prayer.active').first.evaluate("""e=>({border:getComputedStyle(e).borderTopColor,
                 shadow:getComputedStyle(e).boxShadow})""")
-            assert active_prayer['border']=='rgba(151, 170, 143, 0.52)' and '255, 255, 255' not in active_prayer['shadow'],(width,'active prayer',active_prayer)
+            assert active_prayer['border']=='rgb(185, 198, 214)' and '204, 213, 224' in active_prayer['shadow'],(width,'active prayer',active_prayer)
             page.locator('#times .prayer-overview').screenshot(path=str(dest/f'prayers-{width}.png'))
             for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
                 page.click(f'[data-tab={tab}]')

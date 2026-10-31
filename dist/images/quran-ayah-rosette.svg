@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" role="img" aria-hidden="true">
+<g fill="#E5D6BD" stroke="#9F855A" stroke-width="1.6">
+<path d="M40 3L50 13L64 10L67 25L77 40L67 55L64 70L50 67L40 77L30 67L16 70L13 55L3 40L13 25L16 10L30 13Z"/>
+<path d="M40 9L49 17L61 16L63 28L70 40L63 52L61 64L49 63L40 71L31 63L19 64L17 52L10 40L17 28L19 16L31 17Z" fill="#F8F1E4" stroke-width="1.3"/>
+<circle cx="40" cy="40" r="25" fill="#F5E9D6"/>
+<circle cx="40" cy="40" r="20" fill="#FBF6EB" stroke="#C9AE81" stroke-width="1.3"/>
+</g>
+<g fill="#A5885D"><circle cx="40" cy="8" r="2"/><circle cx="40" cy="72" r="2"/><circle cx="8" cy="40" r="2"/><circle cx="72" cy="40" r="2"/></g>
+</svg>

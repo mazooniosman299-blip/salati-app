@@ -201,6 +201,16 @@ jobs:
           name: salati-final-visual-acceptance
           path: reports/final-five/
           if-no-files-found: ignore
+      - name: Validate authentic Mushaf ornaments, verse rosettes, white copy and footer
+        if: success() || failure()
+        run: python3 tests/mushaf-legibility-20261101.py
+      - name: Archive Mushaf acceptance screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushaf-ornament-contrast-evidence
+          path: reports/mushaf-acceptance/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
