@@ -47,6 +47,17 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Prepare exact offline PWA payload for Android
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          test -f android/app/src/main/assets/www/style-v1.0.109.css
+          test -f android/app/src/main/assets/www/app-v1.0.109.js
       - name: Accept licenses and install Android SDK 36
         run: |
           SDK_MANAGER="$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
