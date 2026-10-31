@@ -35,7 +35,7 @@ try:
                 line:getComputedStyle(e,'::after').backgroundColor,
                 width:e.getBoundingClientRect().width})""")
             idle=page.locator('[data-tab=times]').evaluate("e=>getComputedStyle(e,'::after').content")
-            assert 'rgba(187, 198, 211' in active['shadow'] and active['line']=='rgb(184, 194, 206)' and active['width']>36,(width,'active nav',active)
+            assert 'rgba(187, 198, 211' in active['shadow'] and active['line']=='rgb(244, 246, 250)' and active['width']>36,(width,'active nav',active)
             assert idle=='none',(width,'idle nav',idle)
             page.wait_for_function("document.querySelector('#qSurah').options.length >=114")
             # 3. Quran contents, not just outer leaf, have a separate readable surface.
@@ -43,7 +43,7 @@ try:
             panel.wait_for(state='visible',timeout=15000)
             reading=panel.evaluate("""e=>({background:getComputedStyle(e).backgroundColor,
                border:getComputedStyle(e).borderTopWidth,color:getComputedStyle(e).color})""")
-            assert reading=={'background':'rgb(246, 240, 228)','border':'1px','color':'rgb(39, 35, 30)'},(width,'Quran page',reading)
+            assert reading=={'background':'rgb(246, 240, 228)','border':'0px','color':'rgb(39, 35, 30)'},(width,'Quran page',reading)
             page.locator('#qSheet').screenshot(path=str(dest/f'quran-{width}.png'))
             # 4. Qibla tick scale and directions must be high-contrast.
             page.click('[data-tab=qibla]')
