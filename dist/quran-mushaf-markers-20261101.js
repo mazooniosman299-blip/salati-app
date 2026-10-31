@@ -17,6 +17,12 @@
   }
   const refresh=()=>{
     root.querySelectorAll('.ayah-number:not([data-mushaf-ornament])').forEach(normalizeMarker);
+    root.querySelectorAll('.reading-page-number:not([data-mushaf-ornament])').forEach(mark=>{
+      const original=mark.textContent.trim();
+      const normalized=original.replace(/[0-9]/g,arabicDigit);
+      if(normalized!==original)mark.textContent=normalized;
+      mark.dataset.mushafOrnament='1';
+    });
   };
   new MutationObserver(refresh).observe(root,{subtree:true,childList:true});
   refresh();
