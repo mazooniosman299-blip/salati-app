@@ -118,7 +118,7 @@ try:
    loc=page.locator('#locationMenu')
    loc.wait_for(state='visible')
    assert bg(loc)==rgb('#10161C'),(width,'location sheet material')
-   assert bg(loc.locator('.choice-option[aria-selected="false"]').first)==rgb('#1C232A'),(width,'location option material')
+   assert bg(loc.locator('.choice-option[aria-selected="false"]:not(:disabled)').first)==rgb('#1C232A'),(width,'location option material')
    loc.screenshot(path=str(out/f'location-picker-{width}.png'))
    page.keyboard.press('Escape')
    assert not loc.is_visible()
