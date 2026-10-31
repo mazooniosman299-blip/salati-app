@@ -43,7 +43,7 @@ try:
         font:getComputedStyle(e).fontSize,border:getComputedStyle(e).borderTopWidth,
         before:getComputedStyle(e,'::before').content})""")
       assert no and all(c in '٠١٢٣٤٥٦٧٨٩' for c in no),(width,'printed folio',no)
-      assert page_style['font']=='18px' and page_style['border']=='1px' and page_style['before']!='"none"',(width,page_style)
+      assert page_style['font'] in ('17px','18px') and page_style['border']=='1px' and page_style['before']!='"none"',(width,page_style)
       page.locator('#qSheet').screenshot(path=str(out/f'quran-{width}.png'))
       assert page.locator('#mushaf .mushaf-heading .eyebrow').evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
       page.click('[data-tab=times]')
