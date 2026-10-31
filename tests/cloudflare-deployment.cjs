@@ -26,6 +26,12 @@ for(const url of urls){
   const rel=new URL(url).pathname.slice(1);
   assert(fs.existsSync(path.join(root,rel||'index.html')),'Sitemap page is missing: '+rel);
 }
+const apkRel='downloads/salati-1.0.110.apk';
+assert(home.includes('href="'+apkRel+'"'),'Website must link to the newly signed Android release');
+const apkPath=path.join(root,apkRel);
+assert(fs.statSync(apkPath).size===26024631,'Signed release APK size must match');
+const signedApkHash=require('node:crypto').createHash('sha256').update(fs.readFileSync(apkPath)).digest('hex');
+assert(signedApkHash==='6008417361eefb81f9cc5aa3cfa9ca04a99147d86e777244fdfea8d1a1d6d42b','Signed APK is missing, stale, or altered');
 const out=read('ar/prayer-times/muscat.html');
 assert(out.includes(origin+'/'),'Generated public city pages must point to Cloudflare hostname');
 console.log('PASS: Cloudflare domain',origin,'sitemap routes',urls.length,'PWA assets and offline code, caching, canonical and privacy.');
