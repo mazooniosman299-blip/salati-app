@@ -703,3 +703,40 @@ body.dark #mushaf .quran-play-options input:is(#qRepeat,#qAutoNext):focus-visibl
     gap:8px!important;
   }
 }
+
+
+/* Final reference media tones sampled against the supplied charcoal image.
+   Deliberate user override: active playback remains vivid blue #2563EB. */
+body.dark #mushaf .recitation-player.reference-player{
+  --media-track:#4B5767!important;
+  --progress-track:#4B5767!important;
+  background-color:#040509!important;
+  background-image:
+    radial-gradient(ellipse 110% 175% at 2% -25%,rgba(40,45,55,.30),rgba(5,8,12,0) 72%),
+    linear-gradient(180deg,#15191F 0%,#0B0E13 44%,#040509 84%)!important;
+  border:1px solid rgba(167,181,197,.16)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055)!important;
+}
+body.dark #mushaf .recitation-player.reference-player #qSeek{
+  --line:#4B5767!important;
+  --media-track:#4B5767!important;
+  --progress-track:#4B5767!important;
+  accent-color:#FFFFFF!important;
+}
+body.dark #mushaf .recitation-player.reference-player #qSeek::-webkit-slider-runnable-track{
+  background-color:#4B5767!important;
+  background-image:none!important;
+  border:0!important;
+  height:4px!important;
+  border-radius:999px!important;
+}
+body.dark #mushaf .recitation-player.reference-player #qSeek::-moz-range-track{
+  background-color:#4B5767!important;
+  background-image:none!important;
+  border:0!important;
+  height:4px!important;
+  border-radius:999px!important;
+}
+body.dark #mushaf .recitation-player.reference-player #qSeek::-webkit-slider-thumb{
+  margin-top:-5px!important;
+}
