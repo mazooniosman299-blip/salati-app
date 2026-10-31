@@ -39,7 +39,11 @@ try:
    next_box=page.locator('#nextName').bounding_box();timer=page.locator('#countdown').bounding_box();assert timer['y']>=next_box['y']+next_box['height']-1
    for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click('header [data-tab='+tab+']');page.wait_for_timeout(80)
-    page.wait_for_function("document.body.classList.contains('dark') && getComputedStyle(document.getElementById('locate')).color === 'rgb(255, 255, 255)'",timeout=5000)
+    try:
+     page.wait_for_function("document.body.classList.contains('dark') && getComputedStyle(document.getElementById('locate')).color === 'rgb(255, 255, 255)'",timeout=4000)
+    except Exception:
+     print('DARK_DIAGNOSTIC',page.evaluate("""() => ({classes:document.body.className,html:document.documentElement.className,locate:getComputedStyle(document.getElementById('locate')).color,styles:[...document.styleSheets].map(x=>x.href?.split('/').slice(-1)[0]),inline:document.getElementById('locate').outerHTML.slice(0,260)})"""))
+     raise
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'horizontal overflow')
     assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(11, 14, 19)'
     if width<761:
