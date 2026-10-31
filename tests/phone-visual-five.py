@@ -35,7 +35,7 @@ try:
    page.click('[data-tab=mushaf]')
    page.wait_for_function("document.querySelector('#qSurah').options.length >=114")
    reading=page.locator('#qSheet').evaluate("""e=>{let s=getComputedStyle(e),b=getComputedStyle(document.body);return{bg:s.backgroundColor,body:b.backgroundColor,border:s.borderTopWidth,outline:s.outlineWidth,color:s.color}}""")
-   assert reading['bg']=='rgb(21, 26, 34)' and reading['bg']!=reading['body'] and reading['border']=='1px' and reading['color']=='rgb(255, 255, 255)',(width,reading)
+   assert reading['bg']=='rgb(246, 240, 228)' and reading['bg']!=reading['body'] and reading['border']=='0px' and reading['color']=='rgb(39, 35, 30)',(width,reading)
    page.locator('#qSheet').screenshot(path=str(out/f'mushaf-{width}.png'))
    page.click('[data-tab=qibla]')
    qibla=page.locator('#qibla .qibla-card').evaluate("""e=>{let s=getComputedStyle(e);return{bg:s.backgroundColor,border:s.borderTopWidth,color:s.color}}""")
