@@ -75,7 +75,7 @@ body.dark dialog.voice-sheet{
   body.dark dialog.choice-sheet .choice-search-wrap input,
   body.dark dialog.voice-sheet .choice-search-wrap input{min-height:58px;height:58px;}
 }
-body.dark #tasbih #counter:focus-visible{border-color:#FFFFFF!important;}
+body.dark #tasbih .tasbih-panel #counter:not(:disabled):focus-visible{border-color:#FFFFFF!important;}
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .sheet-handle{
   background:#555F69!important;opacity:1;
 }
@@ -248,6 +248,17 @@ body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thum
 body.dark #tasbih .tasbih-panel #counter:not(:disabled){
   background:#040509!important;background-image:none!important;border-color:#596571!important;
   color:#FFFFFF!important;
+}
+/* Reserve usable scrolling space above the persistent mobile navigation. */
+@media(max-width:760px){
+ html{scroll-padding-bottom:calc(var(--mobile-nav-height,65px) + 28px);}
+ body.dark :is(#times,#mushaf,#qibla,#dhikr,#tasbih,#settings){
+   padding-bottom:calc(var(--mobile-nav-height,65px) + 128px);
+ }
+ body.dark :is(#times,#mushaf,#qibla,#dhikr,#tasbih,#settings)
+  :is(button,input,select,.choice-trigger,.card,.verse,.mushaf-toolbar){
+   scroll-margin-block-end:calc(var(--mobile-nav-height,65px) + 24px);
+ }
 }
 @media(max-width:600px){
   body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){min-height:60px;}
