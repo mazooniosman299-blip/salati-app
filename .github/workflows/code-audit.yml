@@ -221,6 +221,16 @@ jobs:
           name: salati-selection-refinement-evidence
           path: reports/selection-refinement-20261101/
           if-no-files-found: ignore
+      - name: Audit all 114 surahs, country pins, muezzin ticks, Kaaba and APK link
+        if: success() || failure()
+        run: python3 tests/user-visual-audit-20261101.py
+      - name: Preserve full user visual verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-all-surahs-pins-visual-audit
+          path: reports/user-visual-audit-20261101/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
