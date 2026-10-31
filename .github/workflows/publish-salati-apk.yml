@@ -5,6 +5,7 @@ on:
       - fix/salati-six-visual-issues-20261031
     paths:
       - .github/workflows/publish-salati-apk.yml
+      - apk-release-parts/v1.0.112/**
   workflow_dispatch:
 permissions:
   contents: write
@@ -52,4 +53,5 @@ jobs:
           set -euo pipefail
           gh release view v1.0.112 --json assets --jq '.assets[].name' | grep -Fx salati-1.0.112.apk
           gh release download v1.0.112 --pattern 'salati-1.0.112.apk' --dir /tmp/salati-released
-          echo "a9456505a283c4241a4de8fd392c66488ffcdc8e51eb8c1ded4e19cd47879401  /tmp/salati-released/salati-1.0.112.apk" | sha256sum -c -
+          EXPECTED="$(python3 -c 'import json;print(json.load(open("apk-release-parts/v1.0.112/manifest.json"))["sha256"])')"
+          printf '%s  %s\n' "$EXPECTED" /tmp/salati-released/salati-1.0.112.apk | sha256sum -c -
