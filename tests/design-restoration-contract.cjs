@@ -5,15 +5,16 @@ const marker='design-restoration-v1.0.110.css';
 assert(html.includes('<link rel="stylesheet" href="'+marker+'">'),'Restored CSS must be loaded by main app');
 assert(html.indexOf(marker)>html.indexOf('reference-layout-v1.0.109.css'),'Restored CSS must override legacy charcoal styles');
 assert(sw.includes("'./"+marker+"'"),'New PWA cache must include restored CSS');
-assert(sw.includes("salati-shell-v147"),'Old cached CSS must be invalidated');
+assert(sw.includes("salati-shell-v148"),'Old cached CSS must be invalidated');
 for(const selector of ['.prayer-switches input[type=checkbox]:checked','#fajrAnnouncementToggle','.announcement-settings input.compact-switch:checked','#audioEnable[aria-checked="true"]','.quran-play-options input[type=checkbox]:checked','#mushaf .quran-reading-page','#mushaf .reference-player','#qibla .qibla-card .compass','dialog.choice-sheet','.choice-option']) {
  assert(css.includes(selector),'Missing restoration target: '+selector);
 }
 assert(css.includes('#2563EB'),'Activated switch must be blue');
-assert(css.includes('rgba(214,168,79,.24)') && css.includes('#D6A84F'),'Gold moving selection must match approved reference');
-assert(css.includes('.nav-icon-button.active {') && css.includes('background:transparent!important'),'Active nav tile must not conceal the sliding gold selection');
-assert(css.includes('#1A232D'),'Quran reading page must separate from near-black body');
-assert(css.includes('#171F28'),'Qibla panel must be legible');
+assert(!css.includes('#D6A84F') && !css.includes('rgba(214,168,79') && !css.includes('#E3B85C'),'No gold is allowed in the user-approved dark reference');
+assert(css.includes('background:rgba(255,255,255,.035)!important'),'Sliding selection must be neutral translucent glass');
+assert(css.includes('transition:background-color 280ms'),'Transitions must remain smooth');
+assert(css.includes('background:#141B23!important'),'Quran reading surface must be legible charcoal');
+assert(css.includes('background:#101720'),'Qibla panel must be legible');
 assert(css.includes('#202933'),'Surah selection rows must be distinct');
 assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS declarations');
 console.log('PASS: five requested visual repairs, correct CSS ordering, and PWA cache update.');

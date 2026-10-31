@@ -19,7 +19,7 @@ assert.equal(tokens.ink, '#FFFFFF', 'Never dim normal text');
 assert.equal(tokens.muted, '#AAB4C2', 'Use the approved readable muted label color');
 assert.equal(tokens['control-disabled-ink'], '#FFFFFF', 'Disabled text must remain legible');
 assert.equal(tokens['action-fill'], '#2563EB', 'Approved play/stop blue');
-assert.equal(tokens.accent, '#D6A84F', 'Navigation accent uses gold, not green');
+assert.equal(tokens.accent, '#FFFFFF', 'Navigation accent must match the user reference white, without gold');
 assert(tokens['progress-track'].includes('.55'), 'Clear progress track');
 assert(html.includes('href="reference-layout-v1.0.109.css"'), 'App uses the edited CSS');
 assert(html.includes('href="light-theme-v1.0.109.css"'), 'App uses the edited palette');
@@ -42,4 +42,4 @@ assert(nav.includes('stroke-width="2.1"'), 'Navigation Mushaf icon stays readabl
 assert(nativeSelection.includes('#FF15181D') && nativeSelection.includes('#E6FFFFFF') && nativeSelection.includes('android:width="2dp"'), 'Native active prayer capsule must use the approved high-contrast outline');
 assert(nativeStrip.includes('#E6040509') && nativeStrip.includes('#F0040509'));
 assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length, 'CSS braces');
-console.log('PASS: reference colors, six tabs, all label groups, neutral switches, white icons, blue Quran transport only, APK widget and versioned assets.');
+console.log('PASS: reference colors, six tabs, neutral selection without gold, blue ON switches, white icons, APK widget and versioned assets.');
