@@ -32,7 +32,7 @@ try:
     original=switch.evaluate('(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute("aria-checked")==="true"')
     for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(35, 104, 196)')]:
      switch.evaluate('(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else{e.setAttribute("aria-checked",String(v));e.classList.toggle("is-on",v);}}',enabled)
-     page.wait_for_timeout(100)
+     page.wait_for_timeout(350)
      actual=switch.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      if actual!=color:
       detail=switch.evaluate('(e)=>({tag:e.outerHTML.slice(0,210),parent:e.parentElement?.parentElement?.className,body:document.body.className,inline:e.getAttribute("style")})')
@@ -45,7 +45,12 @@ try:
    page.screenshot(path=str(out/f'settings-{width}.png'))
    page.click('[data-tab=mushaf]')
    page.wait_for_function('document.querySelector("#qSurah").options.length>=114')
-   assert page.locator('#qTransport').evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(35, 104, 196)'
+   transport=page.locator('#qTransport')
+   assert transport.evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(13, 19, 27)'
+   original_label=transport.get_attribute('aria-label')
+   transport.evaluate('(e)=>e.setAttribute("aria-label","إيقاف مؤقت / Pause")')
+   assert transport.evaluate('(e)=>getComputedStyle(e,"::before").backgroundColor')=='rgb(35, 104, 196)'
+   transport.evaluate('(e,v)=>e.setAttribute("aria-label",v)',original_label)
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
@@ -55,6 +60,7 @@ try:
     el=page.locator('#'+key)
     for enabled,color in [(False,'rgb(21, 24, 29)'),(True,'rgb(35, 104, 196)')]:
      el.evaluate('(e,v)=>e.checked=v',enabled)
+     page.wait_for_timeout(350)
      actual=el.evaluate('(e)=>getComputedStyle(e).backgroundColor')
      assert actual==color,(width,key,enabled,actual)
    assert page.locator('.mushaf-emblem').evaluate('(e)=>getComputedStyle(e).opacity')=='1'
