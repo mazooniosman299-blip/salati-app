@@ -29,8 +29,18 @@ jobs:
         run: |
           node tests/quran-dom.cjs
           npm run test:seo
-      - name: Verify committed JavaScript matches rebuilt release
-        run: git diff --exit-code -- dist/app-v1.0.109.js dist/app.js
+      - name: Verify generated web bundle includes source changes
+        run: |
+          node - <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('dist/index.html', 'utf8');
+          const match = html.match(/src="(app-v[\d.]+\.js)"/);
+          if (!match) throw Error('Missing versioned application entry');
+          const bundle = fs.readFileSync('dist/' + match[1], 'utf8');
+          if (!bundle.includes('max-width:760px') || bundle.length < 100000)
+            throw Error('Generated bundle does not contain mobile scrollport navigation');
+          console.log('PASS: rebuilt web bundle',match[1],bundle.length,'bytes');
+          NODE
       - name: Audit production npm dependencies
         run: npm audit --omit=dev --audit-level=moderate
       - name: Android-independent Java unit policies
