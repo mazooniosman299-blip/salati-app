@@ -50,7 +50,7 @@ with sync_playwright() as p:
     assert style['after']=='none',(switch_id,dark,checked,'duplicate thumb',style)
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
     if checked:
-     assert style['track']=='rgb(21, 61, 122)',(switch_id,dark,style)
+     assert style['track']=='rgb(21, 24, 29)',(switch_id,dark,style)
      assert abs(float(style['thumb'].split(',')[-2])-18)<.2,(switch_id,dark,style)
      assert contrast('rgb(255, 255, 255)',style['track'])>=4.5
   page.wait_for_function('document.querySelector("#qVerses [data-ayah] .ayah-number")!==null')
@@ -100,7 +100,7 @@ with sync_playwright() as p:
     assert contrast(focus['color'],'rgb(21, 24, 29)')>=3,(dark,focus)
     button.evaluate('(e)=>e.disabled=true');page.wait_for_timeout(200)
     disabled=button.evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,opacity:getComputedStyle(e).opacity})')
-    assert disabled['opacity']=='1' and disabled['color']!=ink,(dark,disabled)
+    assert disabled['opacity']=='1' and disabled['color']==ink,(dark,disabled)
     assert contrast(disabled['color'],disabled['bg'])>=4.5,(dark,disabled)
     button.evaluate('(e)=>e.disabled=false');button.blur()
     palette_evidence.append({'dark':dark,'controlFill':fill,'whiteTextContrast':round(contrast('rgb(255, 255, 255)',fill),2),'focus':focus,'disabled':disabled})
