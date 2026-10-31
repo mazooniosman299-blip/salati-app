@@ -35,7 +35,7 @@ try:
                 line:getComputedStyle(e,'::after').backgroundColor,
                 width:e.getBoundingClientRect().width})""")
             idle=page.locator('[data-tab=times]').evaluate("e=>getComputedStyle(e,'::after').content")
-            assert 'rgba(230, 235, 241' in active['shadow'] and active['line']=='rgb(244, 246, 250)' and active['width']>36,(width,'active nav',active)
+            assert active['shadow']=='none' and active['width']>36 and active['line']=='rgba(0, 0, 0, 0)',(width,'active nav',active)
             assert idle=='none',(width,'idle nav',idle)
             page.wait_for_function("document.querySelector('#qSurah').options.length >=114")
             # 3. Quran contents, not just outer leaf, have a separate readable surface.
@@ -80,7 +80,7 @@ try:
                 cells.first.evaluate("e=>e.classList.add('active')")
             active_prayer=page.locator('#prayers .prayer.active').first.evaluate("""e=>({border:getComputedStyle(e).borderTopColor,
                 shadow:getComputedStyle(e).boxShadow})""")
-            assert active_prayer['border']=='rgb(185, 198, 214)' and '204, 213, 224' in active_prayer['shadow'],(width,'active prayer',active_prayer)
+            assert active_prayer['border']=='rgba(160, 178, 198, 0.66)' and '159, 175, 194' in active_prayer['shadow'],(width,'active prayer',active_prayer)
             page.locator('#times .prayer-overview').screenshot(path=str(dest/f'prayers-{width}.png'))
             for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
                 page.click(f'[data-tab={tab}]')
