@@ -3,7 +3,8 @@
 from pathlib import Path
 import sys,zipfile,hashlib
 ROOT=Path(__file__).resolve().parents[1]
-DIST=ROOT/'dist'
+DIST=ROOT/'android'/'app'/'src'/'main'/'assets'/'www'
+WEB=ROOT/'dist'
 apk=Path(sys.argv[1]) if len(sys.argv)>1 else None
 if not apk or not apk.is_file():raise SystemExit('Expected APK filename')
 if apk.stat().st_size>25*1024*1024:raise SystemExit('Signed APK exceeds Pages 25 MiB limit')
@@ -23,6 +24,8 @@ with zipfile.ZipFile(apk) as z:
     if hashlib.sha256(web).digest()!=hashlib.sha256(native).digest():
        raise SystemExit('APK embeds stale '+rel+'; abort publication')
     checked+=1
+    if rel!='index.html' and (WEB/rel).read_bytes()!=web:
+       raise SystemExit('Native payload differs from public site in '+rel)
  # Check all shared first-party styles and scripts, preventing future invisible drift.
  for f in list(DIST.glob('*.css'))+list(DIST.glob('*.js')):
     if 'assets/www/'+f.name not in names:continue
