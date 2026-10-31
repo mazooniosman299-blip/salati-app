@@ -28,16 +28,16 @@ for(const url of urls){
 }
 const apkUrl='/downloads/salati-1.0.113.apk';
 assert(home.includes('href="'+apkUrl+'"'),'Website must download APK from same origin without GitHub navigation');
-const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.112','manifest.json');
+const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.113','manifest.json');
 assert(header.includes('Content-Disposition: attachment; filename="salati-1.0.113.apk"'),'APK must download as an attachment');
 assert(fs.existsSync(path.join(root,'downloads','salati-1.0.113.apk')),'Cloudflare build must contain verified signed APK');
 
 const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
-assert(manifest.version==='1.0.112'&&manifest.versionCode===113&&manifest.applicationId==='com.salati.prayer');
+assert(manifest.version==='1.0.113'&&manifest.versionCode===114&&manifest.applicationId==='com.salati.prayer');
 const crypto=require('node:crypto'),signedHash=crypto.createHash('sha256');
 let totalBytes=0;
 for(let i=0;i<manifest.partCount;i++){
-  const p=path.join(__dirname,'..','apk-release-parts','v1.0.112','part'+String(i).padStart(2,'0')+'.bin');
+  const p=path.join(__dirname,'..','apk-release-parts','v1.0.113','part'+String(i).padStart(2,'0')+'.bin');
   const buffer=fs.readFileSync(p);
   signedHash.update(buffer);totalBytes+=buffer.length;
 }
