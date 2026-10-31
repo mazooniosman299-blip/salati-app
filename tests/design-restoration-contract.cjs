@@ -10,6 +10,8 @@ for(const selector of ['.prayer-switches input[type=checkbox]:checked','#fajrAnn
  assert(css.includes(selector),'Missing restoration target: '+selector);
 }
 assert(css.includes('#2563EB'),'Activated switch must be blue');
+assert(css.includes('rgba(214,168,79,.24)') && css.includes('#D6A84F'),'Gold moving selection must match approved reference');
+assert(css.includes('.nav-icon-button.active {') && css.includes('background:transparent!important'),'Active nav tile must not conceal the sliding gold selection');
 assert(css.includes('#1A232D'),'Quran reading page must separate from near-black body');
 assert(css.includes('#171F28'),'Qibla panel must be legible');
 assert(css.includes('#202933'),'Surah selection rows must be distinct');
