@@ -140,7 +140,7 @@ with sync_playwright() as p:
   for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
    page.click(f'[data-tab="{tab}"]')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
-   assert page.locator('header>.site-nav .nav-symbol').evaluate_all('(icons)=>icons.every(i=>i.getBoundingClientRect().width===24&&i.getBoundingClientRect().height===24)'),(width,tab,'icon')
+   assert page.locator('header>.site-nav .nav-symbol').evaluate_all("""(icons)=>icons.every(i=>{const s=getComputedStyle(i),r=i.getBoundingClientRect();return s.width==='24px'&&s.height==='24px'&&Math.abs(r.width-24)<1&&Math.abs(r.height-24)<1})"""),(width,tab,'icon sizing must remain 24px')
  page.click('[data-tab=mushaf]')
  for selector in ['.mushaf-verses','.quran-text']:
   for styles in page.locator(selector).evaluate_all('(es)=>es.map(e=>({filter:getComputedStyle(e).filter,backdrop:getComputedStyle(e).backdropFilter}))'):
