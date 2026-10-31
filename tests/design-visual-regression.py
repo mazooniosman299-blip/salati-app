@@ -113,6 +113,7 @@ try:
    assert bg(page.locator('#prayers'))==rgb('#0D1217'),(width,'prayer strip surface')
    chosen=page.locator('#prayers .prayer.active')
    if chosen.count():assert bg(chosen)==rgb('#27313B'),(width,'active prayer material')
+   page.click('[data-tab=settings]')
    page.click('#locationPickerOpen')
    loc=page.locator('#locationMenu')
    loc.wait_for(state='visible')
