@@ -76,3 +76,34 @@ body.dark #settings .minute-adjustments .prayer-adjust-row>div:first-child>span,
 body.dark #settings .minute-adjustments .prayer-adjust-row>div:first-child>strong{
   color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;opacity:1!important;
 }
+
+/* 4 — Black Kiswah, restrained gold belt and gold door on the actual Kaaba
+   silhouette. Keep the approved compass and orientation math untouched. */
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-roof{
+  fill:#050505!important;stroke:#B99B5B!important;stroke-width:1!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-left{
+  fill:#070707!important;stroke:#6F6045!important;stroke-width:.75!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-right{
+  fill:#101010!important;stroke:#9B8051!important;stroke-width:.75!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-gold-band{
+  fill:#B6954E!important;stroke:#D9BF82!important;stroke-width:.55!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-gold-pattern{
+  fill:none!important;stroke:#2A2114!important;stroke-width:1.1!important;
+  stroke-linecap:round!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-door-frame{
+  fill:#B89A53!important;stroke:#D3BB7B!important;stroke-width:.7!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-door{
+  fill:#17130D!important;stroke:#A9894E!important;stroke-width:.7!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-door-detail{
+  fill:none!important;stroke:#C6A660!important;stroke-width:.65!important;
+}
+body.dark #qibla #qiblaDial svg.kaaba-icon .kaaba-door-handle{
+  fill:#D3B671!important;stroke:none!important;
+}
