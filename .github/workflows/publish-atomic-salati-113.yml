@@ -68,8 +68,8 @@ jobs:
           grep -F 'Verified using v2 scheme (APK Signature Scheme v2): true' /tmp/apk-verify.txt
           grep -F 'Verified using v3 scheme (APK Signature Scheme v3): true' /tmp/apk-verify.txt
           grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/apk-verify.txt
-          AAPT="$(find /tmp/salati-ci -name aapt -type f | head -1)"
-          chmod +x "$AAPT"
+          AAPT="${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools/36.0.0/aapt2"
+          test -x "$AAPT"
           "$AAPT" dump badging /tmp/salati-new/salati-1.0.113.apk | grep -F "name='com.salati.prayer' versionCode='114' versionName='1.0.113'"
           python3 scripts/verify-native-web-assets.py /tmp/salati-new/salati-1.0.113.apk
       - name: Prepare matching immutable APK chunks and release manifest
