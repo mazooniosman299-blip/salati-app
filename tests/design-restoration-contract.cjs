@@ -18,5 +18,5 @@ assert(css.includes('linear-gradient(180deg,#151B23 0%,#0C1118 74%,#080C12 100%)
 assert(css.includes('cubic-bezier(.22,.61,.36,1)'),'Gentle motion must match user screenshot');
 assert(css.includes('prefers-reduced-motion:reduce'),'Honor reduced-motion preferences');
 assert(css.includes('transition:background-color 280ms'),'Switches and glass must not snap harshly');
-assert.equal((css.match(/\\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS declarations');
+assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS declarations');
 console.log('PASS: five requested visual repairs, correct CSS ordering, and PWA cache update.');
