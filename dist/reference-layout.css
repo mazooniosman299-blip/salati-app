@@ -494,3 +494,17 @@ body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{ba
 body.dark #mushaf .reference-player #qTransport:disabled::before{background:#0B2347}
 body.dark #mushaf .reference-player #qStop:not(:disabled){background:#153D7A;border-color:#2D5D9B;color:#FFFFFF}
 body.dark #mushaf .reference-player #qStop:hover:not(:disabled){background:#1A4D91}
+
+
+/* Browser-verified: disabled prayer toggles keep the exact reference charcoal,
+   rather than reverting to a washed-out UA/legacy track color. */
+body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
+body.dark #settings .announcement-settings input.compact-switch:not(:checked),
+body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked){
+ background:#040509!important;border-color:rgba(255,255,255,.4);
+}
+body.dark #settings .prayer-switches input[type=checkbox]:checked,
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #mushaf .quran-play-options input[type=checkbox]:checked{
+ background:#15181D!important;border-color:rgba(255,255,255,.86);
+}
