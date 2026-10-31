@@ -154,6 +154,13 @@ try:
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
+  # A first-time user without GPS must still see today's Gregorian date.
+  first_use=browser.new_page(service_workers='block',viewport={'width':390,'height':844})
+  first_use.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
+  first_use.wait_for_function("document.getElementById('gregorianDate').textContent.trim().length>0")
+  assert first_use.locator('#gregorianDate').inner_text().strip(), 'Date cannot disappear while location is missing'
+  first_use.screenshot(path=str(out/'date-without-geolocation-390.png'))
+  first_use.close()
   assert not errors,errors
   browser.close()
  print('PASS: graphite sliding selection (no gold), charcoal ON switches (9), Quran reading panels, audio player, 114-surah modal, qibla dial, no overflow on phone/desktop.')
