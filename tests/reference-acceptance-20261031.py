@@ -27,7 +27,7 @@ try:
   diagnostics={'status':response.status if response else None,'errors':errors,'links':page.locator('link[rel=stylesheet]').count(),'script':page.locator('script[src]').count(),'nav_selection':page.locator('.nav-selection').count(),'ready':page.evaluate('document.readyState')}
   assert not errors and diagnostics['nav_selection']==1,('Bootstrap failed',diagnostics)
   assert page.locator('html').get_attribute('dir')=='rtl'
-  assert page.locator('link[href="design-restoration-v1.0.112.css"]').count()==1
+  assert page.locator('link[href="design-restoration-v1.0.113.css"]').count()==1
   page.click('[data-tab=mushaf]')
   page.wait_for_function("document.querySelector('#qSurah').options.length>=114")
   for width in (390,1440):
@@ -37,12 +37,25 @@ try:
    assert nav.count()==6
    tiles=nav.evaluate_all("""els=>els.map(e=>{let s=getComputedStyle(e);return {bg:s.backgroundColor,gradient:s.backgroundImage,border:s.borderTopColor,text:s.color,opacity:s.opacity}})""")
    assert all(t['text']=='rgb(255, 255, 255)' and t['opacity']=='1' and t['bg']=='rgb(11, 14, 19)' and 'linear-gradient' in t['gradient'] for t in tiles),(width,tiles)
-   assert all('0.13' in t['border'] for t in tiles),(width,tiles)
+   assert all('0.19' in t['border'] for t in tiles),(width,tiles)
    page.click('[data-tab=mushaf]')
    assert page.locator('#mushaf .reference-player').is_visible()
    player=page.locator('#mushaf .reference-player')
    styles=player.evaluate("""e=>{const s=getComputedStyle(e);return {bg:s.backgroundColor,gradient:s.backgroundImage,border:s.borderTopColor,opacity:s.opacity}}""")
-   assert styles['bg']=='rgb(4, 5, 9)' and 'linear-gradient' in styles['gradient'] and '0.13' in styles['border'],(width,styles)
+   assert styles['bg']=='rgb(4, 5, 9)' and 'linear-gradient' in styles['gradient'] and '0.16' in styles['border'],(width,styles)
+   seek=page.locator('#qSeek').evaluate("""e=>{
+     let s=getComputedStyle(e);
+     const selector='body.dark #mushaf .recitation-player.reference-player #qSeek::-webkit-slider-runnable-track';
+     const rule=[...document.styleSheets].flatMap(sheet=>[...sheet.cssRules]).find(rule=>rule.selectorText===selector);
+     return {cssTrack:s.getPropertyValue('--progress-track').trim(),
+       mediaTrack:s.getPropertyValue('--media-track').trim(),
+       trackRuleColor:rule?.style.backgroundColor,
+       trackRuleHeight:rule?.style.height,
+       visibleSliderHeight:e.getBoundingClientRect().height};
+   }""")
+   assert seek['cssTrack']=='#4B5767' and seek['mediaTrack']=='#4B5767' and seek['trackRuleColor'] in ('#4b5767','rgb(75, 87, 103)') and seek['trackRuleHeight']=='4px',(width,'reference progress mismatch',seek)
+   page.locator('#qSeek').screenshot(path=str(out/f'quran-progress-{width}.png'))
+
    assert page.locator('#qTransport').is_visible()
    transport=page.locator('#qTransport').evaluate("(e)=>getComputedStyle(e,'::before').backgroundColor")
    assert transport==rgbblue,(width,'play/pause must be vivid blue',transport)

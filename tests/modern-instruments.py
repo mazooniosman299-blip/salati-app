@@ -51,7 +51,7 @@ with sync_playwright() as p:
     assert style['before']=='""',(switch_id,dark,checked,'missing thumb',style)
     if checked:
      assert style['track']=='rgb(37, 99, 235)',(switch_id,dark,style)
-     assert abs(float(style['thumb'].split(',')[-2])-18)<.2,(switch_id,dark,style)
+     assert abs(float(style['thumb'].split(',')[-2] )-22)<.2,(switch_id,dark,style)
      assert contrast('rgb(255, 255, 255)',style['track'])>=4.5
   page.wait_for_function('document.querySelector("#qVerses [data-ayah] .ayah-number")!==null')
   verse=page.locator('#qVerses [data-ayah]').first
