@@ -56,8 +56,7 @@ try:
       assert instruction.evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
       page.click('[data-tab=settings]')
       assert page.get_by_text('غيّر وقت الصلاة بزرّي',exact=False).first.evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
-      page.select_option('#audioVoice','nufais')
-      page.locator('#audioVoice').dispatch_event('change')
+      page.locator('#audioVoice').evaluate("""e=>{e.value='nufais';e.dispatchEvent(new Event('change',{bubbles:true}))}""")
       page.click('#voicePickerOpen')
       selected=page.locator('#voicePickerList [data-voice-option=nufais]')
       assert selected.get_attribute('aria-pressed')=='true'
