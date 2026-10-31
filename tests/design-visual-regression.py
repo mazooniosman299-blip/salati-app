@@ -63,7 +63,7 @@ try:
    assert toggles.count()==9
    for toggle in toggles.all():
     original=toggle.evaluate("(e)=>e instanceof HTMLInputElement?e.checked:e.getAttribute('aria-checked')==='true'")
-    for on,expected in [(False,'#15181D'),(True,'#20252B')]:
+    for on,expected in [(False,'#15181D'),(True,'#15181D')]:
      toggle.evaluate("""(e,v)=>{if(e instanceof HTMLInputElement)e.checked=v;else {e.setAttribute('aria-checked',String(v));e.classList.toggle('is-on',v);}}""",on)
      color=bg(toggle)
      assert color==rgb(expected),(width,toggle.get_attribute('id'),toggle.get_attribute('data-audio-prayer'),on,color,expected)
@@ -89,7 +89,7 @@ try:
    for key in ['qRepeat','qAutoNext']:
     checkbox=page.locator('#'+key)
     checkbox.evaluate('(e)=>e.checked=true')
-    assert bg(checkbox)==rgb('#20252B'),(width,key,bg(checkbox))
+    assert bg(checkbox)==rgb('#15181D'),(width,key,bg(checkbox))
     checkbox.evaluate('(e)=>e.checked=false')
    page.locator('.quran-reading-page').first.screenshot(path=str(out/f'quran-page-{width}.png'))
    player.screenshot(path=str(out/f'quran-player-{width}.png'))
@@ -97,7 +97,7 @@ try:
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#15181D'),rgb('#20252B')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#15181D'),rgb('#15181D')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
    # Assert materials rather than a token's mere presence in the CSS file.
    plain=dialog.locator('.choice-option[aria-selected="false"]').first
@@ -105,7 +105,7 @@ try:
    assert bg(plain)==rgb('#15181D'),(width,'unselected surah material',bg(plain))
    assert 'linear-gradient' in plain.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'unselected material must retain subtle depth')
    if selected.count():
-    assert bg(selected)==rgb('#20252B'),(width,'selected surah material',bg(selected))
+    assert bg(selected)==rgb('#15181D'),(width,'selected surah material',bg(selected))
     assert 'linear-gradient' in selected.evaluate('(e)=>getComputedStyle(e).backgroundImage'),(width,'selected material must retain depth')
    assert bg(dialog)==rgb('#0B0E13'),(width,'modal material',bg(dialog))
    assert bg(dialog.locator('input[type=search]'))==rgb('#15181D'),(width,'search material')
