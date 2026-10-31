@@ -25,6 +25,20 @@ try:
   page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual'}))")
   page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
   assert page.locator('body').evaluate('(e)=>getComputedStyle(e).backgroundColor')==rgb('#0B0E13')
+  # Golden underline follows the SAME animated selection overlay, not a static tab border.
+  indicator=page.locator('header>.site-nav .nav-selection')
+  indicator.wait_for(state='visible')
+  golden=indicator.evaluate("""(e)=>{const c=getComputedStyle(e,'::after');return{content:c.content,background:c.backgroundColor,height:c.height,position:c.position,z:getComputedStyle(e).zIndex}}""")
+  assert golden['content']=='""' and golden['background']==rgb('#C6A66B') and golden['position']=='absolute' and golden['z']=='3',('Gold indicator missing',golden)
+  page.click('[data-tab=mushaf]')
+  page.wait_for_timeout(450)
+  start=indicator.bounding_box()['x']
+  page.click('[data-tab=qibla]')
+  page.wait_for_timeout(65)
+  midway=indicator.bounding_box()['x']
+  page.wait_for_timeout(430)
+  end=indicator.bounding_box()['x']
+  assert start!=end and min(start,end)<midway<max(start,end),('Gold underline must animate between tabs',start,midway,end)
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
    page.click('[data-tab=settings]')
