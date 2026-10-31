@@ -128,7 +128,12 @@ html[dir="rtl"] body.dark #dhikr #adhkarSearch::placeholder{
 /* 6. Make active navigation unmistakable without gloss or blue.
    Keep the existing dark tile background and 1px frame. */
 body.dark header>.site-nav .nav-selection{
-  display:none!important;
+  display:block!important;
+  opacity:0!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  pointer-events:none!important;
 }
 body.dark header>.site-nav .nav-icon-button{
   position:relative!important;
