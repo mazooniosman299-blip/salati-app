@@ -38,6 +38,10 @@
   --action-off:#0B2347;
   --nav-selection-fill:rgba(255,255,255,.03);
   --selected:rgba(255,255,255,.06);
+  --accent:#FFFFFF;
+  --gold:#FFFFFF;
+  --brand-gold:#FFFFFF;
+  --prayer-highlight:#3A424C;
 }
 
 html,body,body.dark{
@@ -55,7 +59,7 @@ body.dark :is(.card,.tasbih-card,.qibla-card){
   border-radius:24px;
 }
 
-/* ===== Site navigation — exact pill style from reference ===== */
+/* ===== Site navigation ===== */
 body.dark header>.site-nav{
   background:transparent!important;
   background-image:none!important;
@@ -145,7 +149,25 @@ body.dark :is(.choice-trigger,.compact-select-options button)[aria-selected="tru
   background:#15181D!important;border-color:#4A5560!important;
 }
 
-/* ===== Dialogs / sheets — deep charcoal matching reference ===== */
+/* All settings / primary buttons charcoal — kill blue on تجربة عبارة الفجر etc */
+body.dark #settings button:not(:disabled),
+body.dark #settings .primary,
+body.dark button.primary:not(#qPlay):not(#qStop),
+body.dark #settings [type=button]:not(:disabled),
+body.dark #settings [type=submit]:not(:disabled){
+  background:#15181D!important;
+  background-image:linear-gradient(160deg,rgba(255,255,255,.06),transparent 70%)!important;
+  border:1px solid #3A424C!important;
+  color:#FFFFFF!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05)!important;
+}
+body.dark #settings button:not(:disabled):hover,
+body.dark #settings .primary:hover{
+  background:#1C2026!important;
+  border-color:#4A5560!important;
+}
+
+/* ===== Dialogs / sheets ===== */
 body.dark dialog.choice-sheet,
 body.dark dialog.voice-sheet,
 body.dark dialog.uniform-menu{
@@ -170,7 +192,6 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .sheet-handle{
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .choice-heading h2,
 body.dark dialog.voice-sheet .voice-sheet-header h2{color:#FFFFFF!important;}
 
-/* Search field — same deep charcoal */
 body.dark dialog.choice-sheet .choice-search-wrap input,
 body.dark dialog.voice-sheet .choice-search-wrap input,
 body.dark dialog.uniform-menu input.menu-search{
@@ -182,7 +203,6 @@ body.dark dialog.uniform-menu input.menu-search{
   border-radius:16px!important;
 }
 
-/* List rows — deep charcoal like nav/player reference */
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option),
 body.dark dialog.uniform-menu .menu-option,
 body.dark .floating-menu button{
@@ -202,7 +222,6 @@ body.dark .floating-menu button:hover{
   background-color:#101318!important;
 }
 
-/* Selected row — slightly lifted charcoal, white check */
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
   :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]),
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
@@ -215,7 +234,6 @@ body.dark .floating-menu button[aria-selected="true"]{
   border-color:#4A5560!important;
 }
 
-/* Badges / icons on the left of each row */
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol){
   background-color:#0B0E13!important;
   background-image:none!important;
@@ -224,7 +242,6 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-s
   color:#FFFFFF!important;
 }
 
-/* Close button */
 body.dark dialog.choice-sheet .choice-close,
 body.dark dialog.voice-sheet #voicePickerClose{
   background-color:#0B0E13!important;
@@ -240,22 +257,29 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-mark,.voice-ch
   color:#FFFFFF!important;
 }
 
-/* ===== Prayer overview ===== */
+/* ===== Prayer overview — active without bleach ===== */
 body.dark .prayer-overview{
   background-color:#040509!important;
-  background-image:linear-gradient(155deg,#101318,#040509 90%)!important;
+  background-image:none!important;
   border-color:#2A2F36!important;
 }
 body.dark .prayer-overview #prayers{
   background-color:#040509!important;
-  background-image:linear-gradient(180deg,#0D1015,#040509)!important;
-  border-color:#2A2F36!important;
+  background-image:none!important;
+  border:1px solid #2A2F36!important;
+  border-radius:20px!important;
+}
+body.dark .prayer-overview #prayers .prayer{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
 }
 body.dark .prayer-overview #prayers .prayer.active{
-  background-color:#0B0E13!important;
-  background-image:linear-gradient(145deg,#1C2026,#0E1116)!important;
-  border:2px solid #4A5560!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04)!important;
+  background-color:#15181D!important;
+  background-image:none!important;
+  border:1px solid #3A424C!important;
+  border-radius:16px!important;
+  box-shadow:none!important;
 }
 body.dark .prayer-overview #prayers .prayer.active :is(span,strong){
   color:#FFFFFF!important;opacity:1!important;
@@ -408,29 +432,67 @@ body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen)
   color:#FFFFFF!important;
 }
 
-/* ===== Toggles — charcoal ===== */
+/* ===== Toggles — FORCE charcoal, kill all blue ===== */
+body.dark input[type=checkbox],
+body.dark input[type=checkbox]:checked,
+body.dark input.compact-switch,
+body.dark input.compact-switch:checked,
+body.dark #settings input[type=checkbox],
+body.dark #settings input[type=checkbox]:checked,
+body.dark #settings .prayer-switches input[type=checkbox],
+body.dark #settings .prayer-switches input[type=checkbox]:checked,
+body.dark #settings .announcement-settings input.compact-switch,
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark #mushaf .quran-play-options input[type=checkbox],
+body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
+body.dark input[data-audio-prayer],
+body.dark input[data-audio-prayer]:checked,
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle),
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"],
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="false"]{
+  accent-color:#4A5560!important;
+  background:#2A2F36!important;
+  background-color:#2A2F36!important;
+  background-image:none!important;
+  border-color:#4A5560!important;
+  color:#FFFFFF!important;
+}
+
+/* Off state darker */
 body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
 body.dark #settings .announcement-settings input.compact-switch:not(:checked),
 body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
+body.dark input[data-audio-prayer]:not(:checked),
 body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="false"]{
   background:#0B0E13!important;
+  background-color:#0B0E13!important;
   background-image:none!important;
   border-color:#3A424C!important;
 }
+
+/* On state — charcoal gray, NOT blue */
 body.dark #settings .prayer-switches input[type=checkbox]:checked,
 body.dark #settings .announcement-settings input.compact-switch:checked,
 body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
 body.dark input[data-audio-prayer]:checked,
-body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"]{
-  background:#2A2F36!important;
-  background-image:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03))!important;
-  border-color:#4A5560!important;
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"],
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle).is-on{
+  background:#3A424C!important;
+  background-color:#3A424C!important;
+  background-image:none!important;
+  border-color:#5A6570!important;
 }
+
 body.dark #mushaf .quran-play-options input[type=checkbox]::before,
 body.dark #settings .prayer-switches input[type=checkbox]::after,
 body.dark #settings .announcement-settings input.compact-switch::before,
 body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) .toggle-thumb{
   background:#FFFFFF!important;
+}
+
+/* Kill any remaining blue on toggle tracks via appearance */
+body.dark input[type=checkbox]:checked{
+  accent-color:#4A5560!important;
 }
 
 /* Blue ONLY for Quran play / stop */
