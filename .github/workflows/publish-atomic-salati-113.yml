@@ -26,10 +26,11 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Build exact website source
+      - name: Build exact website and prepare native WebView payload
         run: |
           npm ci
           npm run build
+          python3 scripts/prepare-android.py
       - name: Retrieve immutable unsigned Android build
         env:
           GH_TOKEN: ${{ github.token }}
