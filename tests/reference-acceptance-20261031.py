@@ -28,6 +28,7 @@ try:
   assert not errors and diagnostics['nav_selection']==1,('Bootstrap failed',diagnostics)
   assert page.locator('html').get_attribute('dir')=='rtl'
   assert page.locator('link[href="design-restoration-v1.0.112.css"]').count()==1
+  page.click('[data-tab=mushaf]')
   page.wait_for_function("document.querySelector('#qSurah').options.length>=114")
   for width in (390,1440):
    page.set_viewport_size({'width':width,'height':1000})
