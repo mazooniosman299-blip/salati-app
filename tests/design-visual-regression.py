@@ -83,7 +83,7 @@ try:
    player=page.locator('#mushaf .reference-player')
    assert bg(player)==rgb('#040509'),(width,'player',bg(player))
    player_gradient=player.evaluate('(e)=>getComputedStyle(e).backgroundImage')
-   assert 'rgb(23, 26, 31)' in player_gradient and 'rgb(4, 5, 9)' in player_gradient,(width,'player should use near-black neutral gradient',player_gradient)
+   assert 'rgb(18, 21, 26)' in player_gradient and 'rgb(4, 5, 9)' in player_gradient,(width,'player should use near-black neutral gradient',player_gradient)
    assert page.locator('#qVerses').inner_text().strip(),'Quran text must not disappear'
    assert page.locator('#qTransport').is_visible(),'Audio player play/pause control must remain visible'
    for key in ['qRepeat','qAutoNext']:
