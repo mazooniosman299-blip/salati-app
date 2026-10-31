@@ -121,6 +121,16 @@ jobs:
         run: |
           python3 tests/dark-matte.py
           python3 tests/audio-control-colors.py
+      - name: Verify all five visual repairs in Chromium
+        if: success() || failure()
+        run: python3 tests/design-visual-regression.py
+      - name: Upload restoration screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-restoration-latest-screenshots
+          path: reports/design-restoration-2026-10-31/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
