@@ -33,7 +33,7 @@ for (const id of ['.note','.eyebrow','.quran-track','.qibla-card .cardinal','.ta
 }
 assert(appendix.includes('body.dark input::placeholder'), 'Placeholder must not look disabled');
 assert(appendix.includes('opacity:1!important'), 'Disabled controls must not fade');
-assert(appendix.includes('background:#15181D'), 'Selected switches stay dark charcoal');
+assert(appendix.includes('background:#153D7A!important'), 'Selected switches use approved blue');
 assert(appendix.includes('body.dark #mushaf .reference-player #qTransport::before'));
 assert(appendix.includes('body.dark #mushaf .reference-player #qStop:not(:disabled)'));
 assert(!appendix.includes('background:#32383F'), 'No pale gray backgrounds introduced in new fixes');
