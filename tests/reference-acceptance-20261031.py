@@ -53,7 +53,7 @@ try:
        trackRuleHeight:rule?.style.height,
        visibleSliderHeight:e.getBoundingClientRect().height};
    }""")
-   assert seek['cssTrack']=='#4B5767' and seek['mediaTrack']=='#4B5767' and seek['trackRuleColor']=='#4b5767' and seek['trackRuleHeight']=='4px',(width,'reference progress mismatch',seek)
+   assert seek['cssTrack']=='#4B5767' and seek['mediaTrack']=='#4B5767' and seek['trackRuleColor'] in ('#4b5767','rgb(75, 87, 103)') and seek['trackRuleHeight']=='4px',(width,'reference progress mismatch',seek)
    page.locator('#qSeek').screenshot(path=str(out/f'quran-progress-{width}.png'))
 
    assert page.locator('#qTransport').is_visible()
