@@ -26,12 +26,20 @@ for(const url of urls){
   const rel=new URL(url).pathname.slice(1);
   assert(fs.existsSync(path.join(root,rel||'index.html')),'Sitemap page is missing: '+rel);
 }
-const apkRel='downloads/salati-1.0.110.apk';
-assert(home.includes('href="'+apkRel+'"'),'Website must link to the newly signed Android release');
-const apkPath=path.join(root,apkRel);
-assert(fs.statSync(apkPath).size===26024631,'Signed release APK size must match');
-const signedApkHash=require('node:crypto').createHash('sha256').update(fs.readFileSync(apkPath)).digest('hex');
-assert(signedApkHash==='6008417361eefb81f9cc5aa3cfa9ca04a99147d86e777244fdfea8d1a1d6d42b','Signed APK is missing, stale, or altered');
+const apkUrl='https://github.com/mazooniosman299-blip/salati-app/releases/download/v1.0.112/salati-1.0.112.apk';
+assert(home.includes('href="'+apkUrl+'"'),'Website must link to verified signed Android release v1.0.112');
+const manifestPath=path.join(__dirname,'..','apk-release-parts','v1.0.112','manifest.json');
+const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
+assert(manifest.version==='1.0.112'&&manifest.versionCode===113&&manifest.applicationId==='com.salati.prayer');
+const crypto=require('node:crypto'),signedHash=crypto.createHash('sha256');
+let totalBytes=0;
+for(let i=0;i<manifest.partCount;i++){
+  const p=path.join(__dirname,'..','apk-release-parts','v1.0.112','part'+String(i).padStart(2,'0')+'.bin');
+  const buffer=fs.readFileSync(p);
+  signedHash.update(buffer);totalBytes+=buffer.length;
+}
+assert(totalBytes===manifest.size,'Signed APK transfer has a missing or extra byte');
+assert(signedHash.digest('hex')===manifest.sha256,'Signed APK transfer hash does not match certified release');
 const out=read('ar/prayer-times/muscat.html');
 assert(out.includes(origin+'/'),'Generated public city pages must point to Cloudflare hostname');
 console.log('PASS: Cloudflare domain',origin,'sitemap routes',urls.length,'PWA assets and offline code, caching, canonical and privacy.');
