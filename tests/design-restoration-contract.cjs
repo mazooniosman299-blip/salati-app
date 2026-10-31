@@ -4,8 +4,8 @@ const html=fs.readFileSync('dist/index.html','utf8');
 const sw=fs.readFileSync('dist/sw.js','utf8');
 assert(html.includes('href="design-restoration-v1.0.110.css"'),'Original design owner must be loaded');
 assert(html.indexOf('design-restoration-v1.0.110.css')>html.indexOf('reference-layout-v1.0.109.css'),'The reference stylesheet must load last');
-assert(sw.includes('salati-shell-v152'),'Invalidate stale color assets');
-for(const literal of ['--salati-page:#0B0E13','--salati-deep:#040509','--salati-card:#15181D','--salati-border:#32383F','--salati-select:#20252B'])
+assert(sw.includes('salati-shell-v153'),'Invalidate stale color assets');
+for(const literal of ['--salati-page:#0B0E13','--salati-deep:#040509','--salati-card:#15181D','--salati-border:#32383F','--salati-select:#15181D'])
  assert(css.includes(literal),'Missing approved original palette '+literal);
 for(const target of ['dialog.choice-sheet','.choice-option[aria-selected="true"]','#qibla .qibla-card','.prayer-overview #prayers .prayer.active','.quran-reading-page','#mushaf .reference-player'])
  assert(css.includes(target),'Missing material surface '+target);
