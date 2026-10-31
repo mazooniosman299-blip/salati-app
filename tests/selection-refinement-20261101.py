@@ -87,19 +87,25 @@ try:
       verse.evaluate("e=>e.classList.remove('is-reciting')")
       page.locator('#qSheet').screenshot(path=str(evidence/f'quran-{width}.png'))
 
-      # Preserve the selected voice and waveform; remove both check visuals.
+      # Selected row retains original waveform and exactly one left-hand tick.
       page.click('[data-tab=settings]')
       page.locator('#audioVoice').evaluate("""e=>{e.value='nufais';e.dispatchEvent(new Event('change',{bubbles:true}))}""")
       page.click('#voicePickerOpen')
-      marks=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>({
-        picked:e.getAttribute('aria-pressed'),
-        checks:e.querySelectorAll('.voice-check').length,
-        tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
-        waveform:getComputedStyle(e.querySelector('.voice-symbol svg')).display
-      }))""")
-      assert sum(x['picked']=='true' for x in marks)==1,(width,'selected voice',marks)
-      assert all(x['checks']==0 and x['tick'] in ('none','normal') for x in marks),(width,'no checks',marks)
-      assert all(x['waveform']!='none' for x in marks),(width,'keep wave',marks)
+      marks=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>{
+ const a=e.getBoundingClientRect(),c=e.querySelector('.voice-check'),cr=c.getBoundingClientRect();
+ const w=e.querySelector('.voice-symbol svg'),wr=w.getBoundingClientRect();
+ return {value:e.dataset.voiceOption,active:e.getAttribute('aria-pressed')==='true',
+   checkCount:e.querySelectorAll('.voice-check').length,
+   checkDisplay:getComputedStyle(c).display,
+   generated:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
+   waveform:getComputedStyle(w).display,
+   left:cr.left-a.left,checkWidth:cr.width,checkMidY:cr.top+cr.height/2-a.top-a.height/2,
+   waveRight:a.right-wr.right};
+})""")
+      assert sum(x['active'] for x in marks)==1 and sum(x['checkDisplay']=='flex' for x in marks)==1,(width,'one selected tick',marks)
+      selected=next(x for x in marks if x['active'])
+      assert selected['value']=='nufais' and selected['checkDisplay']=='flex' and 8<=selected['left']<=27,(width,'selected tick left',marks)
+      assert all(x['checkCount']==1 and x['generated'] in ('none','normal') and x['waveform']!='none' for x in marks),(width,'no double checks and keep waveform',marks)
       page.locator('#voicePickerList').screenshot(path=str(evidence/f'voices-{width}.png'))
       page.click('#voicePickerClose')
       assert page.locator('#settings .audio-card>.eyebrow').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
@@ -121,7 +127,7 @@ try:
       assert not errors,(width,'browser errors',errors)
       checks.append({'width':width,'six_tabs_blue_only':True,'prayer_tiles_square':True,'notes_white':True,
         'small_surah_ornament':True,'recitation_no_box':True,'follow_checkbox_blue':True,
-        'zero_voice_ticks':True,'location_icon_centered':True,'runtime_errors':0})
+        'one_left_voice_tick':True,'location_icon_centered':True,'runtime_errors':0})
       page.close()
     browser.close()
   (evidence/'results.json').write_text(json.dumps({'passed':True,'checks':checks},ensure_ascii=False,indent=2)+'\n')
