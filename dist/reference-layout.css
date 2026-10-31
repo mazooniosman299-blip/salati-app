@@ -589,3 +589,32 @@ body.dark #mushaf .quran-play-options input[type=checkbox]:checked::before,
 body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true] .toggle-thumb {
   background:#FFFFFF!important;
 }
+
+/* Quran reading polish: give the Mushaf a distinct charcoal surface and warm hierarchy. */
+body.dark #mushaf .mushaf-sheet,
+body.dark #mushaf .quran-reading-page {
+  background:#15181D!important;
+  color:#FFFFFF!important;
+  border-color:#32383F!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 24px rgba(0,0,0,.18);
+}
+body.dark #mushaf .mushaf-sheet .quran-surah-title,
+body.dark #mushaf .quran-reading-page .quran-surah-title {
+  background:#1C2026!important;
+  color:#E3B85C!important;
+  border-color:rgba(214,168,79,.55)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 3px 12px rgba(0,0,0,.18)!important;
+}
+body.dark #mushaf .mushaf-page-head,
+body.dark #mushaf .reading-page-heading,
+body.dark #mushaf .mushaf-page-number,
+body.dark #mushaf .reading-page-number {
+  color:#E3B85C!important;
+  border-color:rgba(214,168,79,.35)!important;
+}
+body.dark #mushaf .mushaf-verses,
+body.dark #mushaf .quran-text {
+  color:#FFFFFF!important;
+  text-shadow:0 0 1px rgba(255,255,255,.16);
+}
+body.dark #mushaf .mushaf-credit a { color:#E3B85C!important; }
