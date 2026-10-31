@@ -68,7 +68,7 @@ try:
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
    reader=page.locator('.quran-reading-page').first
-   assert bg(reader)==rgb('#15181D'),(width,'reader',bg(reader))
+   assert bg(reader)==rgb('#192027'),(width,'reader',bg(reader))
    player=page.locator('#mushaf .reference-player')
    assert bg(player)==rgb('#040509'),(width,'player',bg(player))
    player_gradient=player.evaluate('(e)=>getComputedStyle(e).backgroundImage')
@@ -86,8 +86,18 @@ try:
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#15181D'),rgb('#20252B')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#1C232A'),rgb('#2E3740')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
+   # Assert materials rather than a token's mere presence in the CSS file.
+   plain=dialog.locator('.choice-option[aria-selected="false"]').first
+   selected=dialog.locator('.choice-option[aria-selected="true"]').first
+   assert bg(plain)==rgb('#1C232A'),(width,'unselected surah material',bg(plain))
+   assert 'rgb(35, 43, 51)' in plain.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+   if selected.count():
+    assert bg(selected)==rgb('#2E3740'),(width,'selected surah material',bg(selected))
+    assert 'rgb(54, 65, 76)' in selected.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+   assert bg(dialog)==rgb('#10161C'),(width,'modal material',bg(dialog))
+   assert bg(dialog.locator('input[type=search]'))==rgb('#20272E'),(width,'search material')
    dialog.screenshot(path=str(out/f'surah-picker-{width}.png'))
    page.keyboard.press('Escape')
    assert not dialog.is_visible()
@@ -96,8 +106,21 @@ try:
    assert compass.is_visible()
    image=compass.evaluate("(e)=>getComputedStyle(e).backgroundImage")
    assert 'radial-gradient' in image,(width,'qibla surface',image)
-   assert bg(page.locator('#qibla .qibla-card'))==rgb('#0B0E13')
+   assert bg(page.locator('#qibla .qibla-card'))==rgb('#161C22')
+   assert 'rgb(28, 34, 41)' in page.locator('#qibla .qibla-card').evaluate('(e)=>getComputedStyle(e).backgroundImage')
    page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
+   page.click('[data-tab=times]')
+   assert bg(page.locator('#prayers'))==rgb('#0D1217'),(width,'prayer strip surface')
+   chosen=page.locator('#prayers .prayer.active')
+   if chosen.count():assert bg(chosen)==rgb('#27313B'),(width,'active prayer material')
+   page.click('#locationPickerOpen')
+   loc=page.locator('#locationMenu')
+   loc.wait_for(state='visible')
+   assert bg(loc)==rgb('#10161C'),(width,'location sheet material')
+   assert bg(loc.locator('.choice-option[aria-selected="false"]').first)==rgb('#1C232A'),(width,'location option material')
+   loc.screenshot(path=str(out/f'location-picker-{width}.png'))
+   page.keyboard.press('Escape')
+   assert not loc.is_visible()
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
