@@ -405,3 +405,92 @@ body.dark #mushaf #qFollowTransport:active:not(:disabled){
 
 /* Idle audio-stop must never retain a blue disabled fill. */
 body.dark #audioStop:disabled{background:var(--control-disabled);border-color:var(--control-edge);color:var(--control-disabled-ink)}
+
+
+/* Full interface contrast audit, 2026-10-31.
+   The screenshot's #0B0E13 page and #040509 cards remain unchanged.
+   White is used for readable labels/icons; BLUE IS RESERVED FOR QURAN PLAY/STOP. */
+:root,body,body.dark{
+ --muted:#FFFFFF;
+ --instrument-secondary:#FFFFFF;
+ --control-disabled-ink:#FFFFFF;
+ --caption-ink:#FFFFFF;
+ --glass-frame:#15181D;
+ --media-edge:rgba(255,255,255,.25);
+ --media-track:rgba(255,255,255,.55);
+ --progress-track:rgba(255,255,255,.55);
+ --progress-fill:#FFFFFF;
+ --reciting-fill:rgba(255,255,255,.14);
+ --reading-surface:#040509;
+ --input-fill:#040509;
+ --switch-off:#040509;
+ --action-fill:#153D7A;
+}
+body.dark :is(
+ .note,.eyebrow,.time-context,.calculation-context,.time-source a,
+ .mushaf-heading p,.mushaf-pagination span,.mushaf-credit a,
+ .recitation-times,.quran-track,#qAudioStatus,.quran-current-verse,
+ .prayer span,.prayer-overview .location-date p,.hero small,
+ .qibla-reading p,.compass-mode,.qibla-help summary,.qibla-card .cardinal,
+ .qibla-card .north,.tasbih-total,.tasbih-guide summary,
+ .choice-heading small,.voice-sheet-header small,.choice-option-detail,
+ .voice-choice-note,.city-directory-grid span,.city-page p,
+ .city-page caption,.city-page th,.city-page td,
+ .location-sheet .note,#worldCityStatus,#audioPreference,
+ .volume-control output,.floating-menu .choice-option-detail,
+ footer small
+){color:#FFFFFF;opacity:1}
+body.dark :is(.mushaf-emblem,.mushaf-book,.nav-symbol,.prayer-icon,.next-prayer-icon,
+ .volume-slider svg,#voicePickerOpen svg,.location-icon){opacity:1}
+body.dark input::placeholder,
+body.dark textarea::placeholder,
+body.dark .choice-sheet input::placeholder,
+body.dark .voice-sheet input::placeholder{color:#FFFFFF;opacity:1}
+body.dark :is(button,input,select,.choice-trigger,.choice-option,.adhkar-reset):disabled,
+body.dark #city:disabled,
+body.dark #settings .announcement-settings input.compact-switch:disabled{
+ opacity:1!important;color:#FFFFFF;-webkit-text-fill-color:#FFFFFF;
+}
+/* Activated states are deep charcoal, not washed gray or blue. */
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true],
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark .prayer-switches input[type=checkbox]:checked,
+body.dark .quran-play-options input[type=checkbox]:checked,
+body.dark #audioEnable.audio-toggle.is-on{
+ background:#15181D;border-color:rgba(255,255,255,.86);box-shadow:none;
+}
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=false],
+body.dark #audioEnable.audio-toggle:not(.is-on),
+body.dark #settings .announcement-settings input.compact-switch:not(:checked),
+body.dark .prayer-switches input[type=checkbox]:not(:checked),
+body.dark .quran-play-options input[type=checkbox]:not(:checked){
+ background:#040509;border-color:rgba(255,255,255,.4);box-shadow:none;
+}
+/* One neutral visual family for the hero, cards, nav, dialogs and inputs. */
+body.dark .prayer-overview .location #locate,
+body.dark #settings .location #locate{
+ background:#040509;border:1px solid rgba(255,255,255,.28);
+ box-shadow:none;color:#FFFFFF;
+}
+body.dark :is(.choice-trigger,.choice-option,.voice-option,select,input:not([type=checkbox]):not([type=range]),textarea){
+ color:#FFFFFF;border-color:rgba(255,255,255,.26);
+}
+body.dark .mushaf-sheet .quran-surah-title,
+body.dark #mushaf #qSurahPickerOpen{
+ color:#FFFFFF;background:#15181D;border-color:rgba(255,255,255,.27);
+}
+body.dark #qibla .qibla-card :is(.cardinal,.north,#bearing,#headingValue,#compassStatus){
+ color:#FFFFFF;opacity:1;
+}
+/* Do not allow CSS hover/focus/disabled states to fade the only blue controls. */
+body.dark #mushaf .reference-player :is(#qTransport,#qStop){
+ opacity:1;color:#FFFFFF;filter:none;
+}
+body.dark #mushaf .reference-player #qTransport::before{
+ background:#153D7A;border-color:#2D5D9B;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#1A4D91}
+body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{background:#102E5B}
+body.dark #mushaf .reference-player #qTransport:disabled::before{background:#0B2347}
+body.dark #mushaf .reference-player #qStop:not(:disabled){background:#153D7A;border-color:#2D5D9B;color:#FFFFFF}
+body.dark #mushaf .reference-player #qStop:hover:not(:disabled){background:#1A4D91}
