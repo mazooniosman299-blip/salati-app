@@ -23,6 +23,34 @@ function canonicalOrigin(){
 }
 const origin=canonicalOrigin();
 require('./build-web.cjs');
+
+// Serve the previously signed, SHA-256 verified APK from OUR OWN domain.
+// This is the immutable 1.0.112 release; never re-sign or relabel it.
+// The 15 public source parts are already in the repository, so the build
+// needs no private key, external GitHub redirect, or network access.
+const crypto=require('node:crypto');
+const releaseParts=path.join(root,'apk-release-parts','v1.0.112');
+const signedRelease=JSON.parse(fs.readFileSync(path.join(releaseParts,'manifest.json'),'utf8'));
+if(signedRelease.filename!=='salati-1.0.112.apk'||signedRelease.applicationId!=='com.salati.prayer')
+  throw Error('Unexpected signed release manifest; refusing unsafe download');
+const signedPath=path.join(dist,'downloads',signedRelease.filename);
+const tempPath=signedPath+'.pending';
+let signedSize=0;
+const releaseHash=crypto.createHash('sha256');
+try{
+  const fd=fs.openSync(tempPath,'w');
+  try{
+    for(let i=0;i<signedRelease.partCount;i++){
+      const part=fs.readFileSync(path.join(releaseParts,'part'+String(i).padStart(2,'0')+'.bin'));
+      fs.writeSync(fd,part);signedSize+=part.length;releaseHash.update(part);
+    }
+  }finally{fs.closeSync(fd);}
+  if(signedSize!==signedRelease.size||releaseHash.digest('hex')!==signedRelease.sha256)
+    throw Error('Signed APK checksum or size does not match immutable release manifest');
+  if(signedSize>maxAssetBytes)throw Error('APK exceeds Cloudflare Pages single-asset cap');
+  fs.renameSync(tempPath,signedPath);
+}catch(e){fs.rmSync(tempPath,{force:true});throw e;}
+console.log('Locally hosted verified signed APK:',signedRelease.filename,signedSize,'bytes');
 let edits=0,files=0;const extensions=new Set(['.html','.xml','.txt','.json']);
 function visit(dir){
   for(const entry of fs.readdirSync(dir,{withFileTypes:true})){
@@ -48,7 +76,12 @@ fs.writeFileSync(path.join(dist,'_headers'),[
 '/sw.js','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/*.html','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/sitemap.xml','  Cache-Control: no-cache, max-age=0, must-revalidate','',
-'/robots.txt','  Cache-Control: no-cache, max-age=0, must-revalidate',''
+'/robots.txt','  Cache-Control: no-cache, max-age=0, must-revalidate','',
+'/downloads/salati-1.0.112.apk',
+'  Content-Type: application/vnd.android.package-archive',
+'  Content-Disposition: attachment; filename="salati-1.0.112.apk"',
+'  X-Content-Type-Options: nosniff',
+'  Cache-Control: public, max-age=3600',''
 ].join('\n'));
 if(fs.statSync(path.join(dist,'index.html')).size===0)throw Error('Empty homepage');
 console.log('Cloudflare Pages ready:',origin,'files:',files,'SEO URLs rewritten:',edits);

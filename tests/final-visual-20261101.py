@@ -88,7 +88,7 @@ try:
             assert instrument and information and information['y']>=instrument['y']+instrument['height'],(width,'qibla stacking',instrument,information)
             assert abs((instrument['x']+instrument['width']/2)-(information['x']+information['width']/2))<3,(width,'qibla centering')
             colors=page.locator('#qiblaDial .kaaba-icon path').evaluate_all("""es=>es.map(e=>getComputedStyle(e).fill)""")
-            assert colors and all(c=='rgb(5, 5, 5)' for c in colors),(width,'black Kaaba',colors)
+            assert colors and colors[:3]==['rgb(5, 5, 5)','rgb(7, 7, 7)','rgb(16, 16, 16)'] and 'rgb(182, 149, 78)' in colors,(width,'black Kaaba with genuine gold band',colors)
             page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
             for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
                 page.click(f'[data-tab={tab}]')

@@ -60,9 +60,9 @@ try:
       page.click('#voicePickerOpen')
       selected=page.locator('#voicePickerList [data-voice-option=nufais]')
       assert selected.get_attribute('aria-pressed')=='true'
-      assert selected.locator('.voice-symbol').evaluate("e=>getComputedStyle(e).display")=='none'
-      assert selected.locator('.voice-check').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
-      assert page.locator('#voicePickerList [data-voice-option=qatami] .voice-check').evaluate("e=>getComputedStyle(e).visibility")=='hidden'
+      assert selected.locator('.voice-symbol').evaluate("e=>getComputedStyle(e).display")=='grid'
+      assert selected.locator('.voice-check').evaluate("e=>getComputedStyle(e).display")=='none'
+      assert page.locator('#voicePickerList [data-voice-option=qatami] .voice-check').evaluate("e=>getComputedStyle(e).display")=='none'
       page.screenshot(path=str(out/f'voice-{width}.png'))
       page.click('#voicePickerClose')
       page.click('[data-tab=dhikr]')
