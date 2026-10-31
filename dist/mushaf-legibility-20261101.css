@@ -130,3 +130,12 @@ body.dark main>footer>span{color:#FFFFFF!important;opacity:1!important;}
   body.dark #mushaf #qVerses .reading-page-number{font-size:17px!important;}
   body.dark main>footer{padding-bottom:calc(var(--mobile-nav-height,65px) + 16px)!important;}
 }
+/* A tick denotes the ONE selected muezzin only. */
+body.dark #voicePickerList .voice-option[aria-pressed="false"] .voice-check{
+  visibility:hidden!important;opacity:0!important;
+}
+@media(max-width:600px){
+  body.dark main>footer{
+    padding-bottom:24px!important;row-gap:8px!important;
+  }
+}
