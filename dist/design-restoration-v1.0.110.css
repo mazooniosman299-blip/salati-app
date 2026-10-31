@@ -225,7 +225,7 @@ body.dark #mushaf .reference-player #qSeek{--progress-fill:#FFFFFF;--progress-tr
 body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen):not(:disabled){
   background:#15181D!important;border-color:#46515C!important;color:#FFFFFF!important;
 }
-/* Off toggles are matte; keep the tested blue ON track for active notification switches. */
+/* OFF and ON switch surfaces are both neutral matte charcoal; selected remains distinct by outline and thumb. */
 body.dark #settings .prayer-switches input[type=checkbox]:not(:checked),
 body.dark #settings .announcement-settings input.compact-switch:not(:checked),
 body.dark #mushaf .quran-play-options input[type=checkbox]:not(:checked),
@@ -237,7 +237,7 @@ body.dark #settings .announcement-settings input.compact-switch:checked,
 body.dark #mushaf .quran-play-options input[type=checkbox]:checked,
 body.dark input[data-audio-prayer]:checked,
 body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked="true"]{
-  background:#2563EB!important;background-image:none!important;border-color:#3B82F6!important;
+  background:#20252B!important;background-image:none!important;border-color:#596571!important;
 }
 body.dark #mushaf .quran-play-options input[type=checkbox]::before,
 body.dark #settings .prayer-switches input[type=checkbox]::after,
