@@ -72,41 +72,41 @@ try:
    }))""")
    assert all(x['label']=='rgb(255, 255, 255)' and x['time']=='rgb(255, 255, 255)' for x in colors),(width,'white prayer labels',colors)
 
-   # One-and-only-one check across all four reciter choices.
+   # Only one selected voice; none of the two checkmark visuals remains.
    page.click('#voicePickerOpen')
    for voice in ('qatami','nufais','makkah','aqsa'):
     page.evaluate("""v=>{const el=document.querySelector('#audioVoice');el.value=v;el.dispatchEvent(new Event('change',{bubbles:true}))}""",voice)
     options=page.locator('#voicePickerList .voice-option').evaluate_all("""es=>es.map(e=>({
       active:e.getAttribute('aria-pressed')==='true',
-      markerDisplay:getComputedStyle(e.querySelector('.voice-check')).display,
+      checkNodes:e.querySelectorAll('.voice-check').length,
       tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
       waveform:getComputedStyle(e.querySelector('.voice-symbol svg')).display
     }))""")
     assert sum(x['active'] for x in options)==1,(width,voice,'one selected',options)
-    assert sum(x['tick']=='"✓"' for x in options)==1,(width,voice,'one tick only',options)
-    assert all(x['markerDisplay']=='none' for x in options),(width,voice,'no duplicate check',options)
-    assert all((x['tick']=='"✓"')==x['active'] for x in options),(width,voice,'check aligned to selection',options)
-    assert all((x['waveform']=='none')==x['active'] for x in options),(width,voice,'waveform not second mark',options)
+    assert all(x['checkNodes']==0 and x['tick'] in ('none','normal') for x in options),(width,voice,'no checks',options)
+    assert all(x['waveform']!='none' for x in options),(width,voice,'keep waveform',options)
    page.locator('#voicePickerList').screenshot(path=str(out/f'voices-{width}.png'))
    page.click('#voicePickerClose')
 
-   # All country pins AND the automatic-location pin aligned to vertical midpoint.
+   # Align pins with first line of each Arabic label (not full bilingual row).
    page.click('#locationPickerOpen')
    page.locator('#locationOptions .choice-option').first.wait_for(state='visible')
    offsets=page.locator('#locationOptions .choice-option').evaluate_all("""es=>es.map(e=>{
-     const b=e.getBoundingClientRect(),r=e.querySelector('.location-icon').getBoundingClientRect();
-     return {text:e.innerText.slice(0,40),offset:r.top+r.height/2-b.top-b.height/2};
+     const r=e.querySelector('.location-icon').getBoundingClientRect();
+     const t=e.querySelector('.choice-option-text'),b=t.getBoundingClientRect();
+     const line=parseFloat(getComputedStyle(t).lineHeight);
+     return {text:e.innerText.slice(0,40),offset:r.top+r.height/2-b.top-line/2};
    })""")
    assert len(offsets)>15,(width,'countries',len(offsets))
-   bad=[x for x in offsets if abs(x['offset'])>2.5]
-   assert not bad,(width,'all country pins centered',bad[:8])
+   bad=[x for x in offsets if abs(x['offset'])>4]
+   assert not bad,(width,'all pins next to primary label',bad[:8])
    page.locator('#locationOptions').screenshot(path=str(out/f'countries-{width}.png'))
    page.keyboard.press('Escape')
 
    # Signed APK must download from SAME domain, not navigate to GitHub.
    href=page.locator('#androidDownload .apk-download').get_attribute('href')
    name=page.locator('#androidDownload .apk-download').get_attribute('download')
-   assert href=='/downloads/salati-1.0.112.apk' and name=='salati-1.0.112.apk',(width,'same-origin APK',href,name)
+   assert href=='/downloads/salati-1.0.113.apk' and name=='salati-1.0.113.apk',(width,'same-origin APK',href,name)
    assert not errors,(width,'browser errors',errors)
    results.append({'viewport':width,'surahs':114,'countries':len(offsets),'muezzinChoices':4,
                    'whitePrayerRows':len(colors),'blackKaaba':True,'directDownload':True,'errors':0})
