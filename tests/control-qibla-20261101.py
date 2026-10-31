@@ -83,7 +83,7 @@ try:
                 fg:getComputedStyle(e).color,sample:getComputedStyle(e.querySelector('[data-ayah]')).color})""")
             assert colors=={'bg':'rgb(246, 240, 228)','fg':'rgb(39, 35, 30)',
                             'sample':'rgb(39, 35, 30)'},(viewport,'reading',colors)
-            assert page.locator('#qVerses').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(21, 26, 34)',(viewport,'outer Quran container must remain charcoal')
+            assert page.locator('#qVerses').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(246, 240, 228)',(viewport,'outer Quran container must match parchment')
             page.locator('#qSheet').screenshot(path=str(out/f'quran-{viewport}.png'))
             # Active navigation is graphite (no green), visible on desktop and mobile.
             active=page.locator('header>.site-nav .nav-icon-button.active')
@@ -100,7 +100,7 @@ try:
                 assert page.locator(key).count()==1,(viewport,key)
             dash=page.locator('#qibla .qibla-dashboard')
             columns=dash.evaluate('e=>getComputedStyle(e).gridTemplateColumns.split(" ").length')
-            assert columns==(1 if viewport<=680 else 2),(viewport,'columns',columns)
+            assert columns==1,(viewport,'columns',columns)
             dial=page.locator('#qiblaDial').evaluate("""e=>{const b=e.getBoundingClientRect(),s=getComputedStyle(e);
                 return {width:b.width,height:b.height,background:s.backgroundImage,border:s.borderTopWidth}}""")
             assert abs(dial['width']-dial['height'])<1 and dial['border']=='2px',(viewport,'circular dial',dial)
