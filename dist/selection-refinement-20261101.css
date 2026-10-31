@@ -148,3 +148,9 @@ body.dark header>.site-nav button.nav-icon-button.active:focus-visible{
   outline-color:#2563EB!important;
   border-color:transparent!important;
 }
+
+/* Accessible keyboard cue on nonselected tabs while the chosen blue
+   tab never gains a separate white outline. */
+body.dark header>.site-nav .nav-icon-button:not(.active):focus-visible{
+  box-shadow:inset 0 0 0 2px #74A7FF!important;
+}
