@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict'),fs=require('node:fs');
+const root='android/app/src/main/java/com/salati/prayer/';
+const main=fs.readFileSync(root+'MainActivity.java','utf8');
+const schedule=fs.readFileSync(root+'PrayerSchedule.java','utf8');
+const policy=fs.readFileSync(root+'AlarmDeliveryPolicy.java','utf8');
+const receiver=fs.readFileSync(root+'PrayerReceiver.java','utf8');
+assert.match(main,/if\(!PrayerSchedule\.pendingDueOnResume\(this,resumeAt\)\)PrayerSchedule\.scheduleNext\(this,resumeAt\)/,'onResume must preserve overdue pending alarm');
+assert.match(schedule,/static boolean pendingDueOnResume\(Context c,long now\)/,'schedule helper absent');
+assert.match(schedule,/valid\(c,at,prayer\),exactAlarmsAllowed\(c\),at,now/,'reuse original event+permission validation');
+assert.match(schedule,/\(prayer\+at\)\.equals\(delivered\)/,'do not preserve a delivered alarm');
+assert.match(policy,/!alreadyDelivered && now >= scheduled && mayPlay/,"Reject future or delivered alarms");
+assert.match(receiver,/PrayerSchedule\.scheduleNext\(c,Math\.max\(time,now\)\)/,'real alarm delivery must continue to schedule following event');
+console.log('PASS: resume guard, validation, deduplication and next-alarm delivery code paths linked.');
