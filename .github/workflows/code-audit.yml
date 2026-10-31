@@ -211,6 +211,16 @@ jobs:
           name: salati-mushaf-ornament-contrast-evidence
           path: reports/mushaf-acceptance/
           if-no-files-found: ignore
+      - name: Verify requested selection, labels, muezzin and Quran polish in Chromium
+        if: success() || failure()
+        run: python3 tests/selection-refinement-20261101.py
+      - name: Preserve selection refinement screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-selection-refinement-evidence
+          path: reports/selection-refinement-20261101/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py

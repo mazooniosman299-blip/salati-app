@@ -34,8 +34,7 @@ with sync_playwright() as p:
  page.wait_for_selector('.nav-selection',state='visible')
  marker=page.locator('.nav-selection');start=marker.bounding_box()['x']
  page.click('[data-tab=settings]');page.wait_for_timeout(50)
- middle=marker.bounding_box()['x'];target=page.locator('[data-tab=settings]').bounding_box()['x']
- assert min(start,target)<middle<max(start,target),(start,middle,target,'Motion should interpolate the glass selection')
+ assert page.locator('[data-tab=settings]').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(29, 78, 216)'
  page.wait_for_timeout(300)
 
  for dark in [True]:
@@ -81,9 +80,9 @@ with sync_playwright() as p:
    assert active['color']=='rgb(255, 255, 255)',(dark,tab,active)
    marker=page.locator('.nav-selection')
    assert marker.count()==1
-   assert marker.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgba(255, 255, 255, 0.035)','reference selection must be neutral glass, never gold'
+   assert marker.evaluate("""e=>{const s=getComputedStyle(e);return s.backgroundColor==='rgba(0, 0, 0, 0)' && s.opacity==='0'}"""),'selection overlay must be transparent; selected tab itself is blue'
    marker_box=marker.bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
-   assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(dark,tab,marker_box,active_box)
+   assert active['bg']=='rgb(29, 78, 216)' and marker.evaluate("e=>getComputedStyle(e).opacity")=='0',(dark,tab,active)
    inactive=page.locator('header>.site-nav button:not(.active)').first
    assert inactive.evaluate('(e)=>getComputedStyle(e).color')==ink
    assert page.locator('#countdown').evaluate('(e)=>getComputedStyle(e).color')==ink
@@ -126,8 +125,7 @@ with sync_playwright() as p:
   page.click('#lang');page.wait_for_timeout(100)
   assert page.locator('html').get_attribute('dir')==expected_direction
   assert page.locator('header>.site-nav .active').get_attribute('data-tab')==active_tab
-  marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('header>.site-nav .active').bounding_box()
-  assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(expected_direction,marker_box,active_box,'Language switch must realign the same active tab')
+  assert page.locator('header>.site-nav .active').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(29, 78, 216)',expected_direction
   if expected_direction=='ltr':assert 'Fajr' in page.locator('#previewFajrPhrase').inner_text()
  page.click('[data-tab=tasbih]');page.click('#reset')
  for _ in range(34):page.click('#counter')
@@ -154,9 +152,8 @@ with sync_playwright() as p:
  cdp.send('Emulation.setEmulatedMedia',{'features':[]})
  page.emulate_media(reduced_motion='reduce');page.click('[data-tab=tasbih]')
  assert page.locator('#counter').evaluate('(e)=>getComputedStyle(e).transitionDuration')=='0s'
- marker_box=page.locator('.nav-selection').bounding_box();active_box=page.locator('[data-tab=tasbih]').bounding_box()
- assert abs(marker_box['width']-(active_box['width']-8))<1.5 and abs(marker_box['height']-(active_box['height']-8))<1.5 and abs(marker_box['x']-(active_box['x']+4))<1.5 and abs(marker_box['y']-(active_box['y']+4))<1.5,(marker_box,active_box,'Reduced motion snaps the selection')
- result={'result':'PASS','widths':[320,390,600,760,1024,1440],'tabs':6,'themes':1,'checks':['no horizontal overflow','24px icons','custom menu selection keyboard Escape focus','tasbih count/reset ring','single Quran switch thumb and high-contrast checked track','Motion sliding glass navigation','same-tab RTL/LTR language realignment','control labels with >=4.5:1 contrast','disabled and focused controls','black/white timer and unselected labels','reduced motion and transparency','crisp Quran text and compact controls'],'pageErrors':errors,'palette':palette_evidence}
+ assert page.locator('[data-tab=tasbih]').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(29, 78, 216)'
+ result={'result':'PASS','widths':[320,390,600,760,1024,1440],'tabs':6,'themes':1,'checks':['no horizontal overflow','24px icons','custom menu selection keyboard Escape focus','tasbih count/reset ring','single Quran switch thumb and high-contrast checked track','Blue selection without visible glass overlay','same-tab RTL/LTR language realignment','control labels with >=4.5:1 contrast','disabled and focused controls','black/white timer and unselected labels','reduced motion and transparency','crisp Quran text and compact controls'],'pageErrors':errors,'palette':palette_evidence}
  assert not errors,errors
  (root/'reports/ui-modern/verification.json').write_text(json.dumps(result,indent=2)+'\n')
  print(json.dumps(result,indent=2))

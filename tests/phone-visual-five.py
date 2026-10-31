@@ -28,7 +28,7 @@ try:
    nav=page.locator('header>.site-nav .nav-icon-button')
    assert nav.count()==6
    navstyles=nav.evaluate_all("""els=>els.map(e=>{let s=getComputedStyle(e);let r=e.getBoundingClientRect();return{bg:s.backgroundColor,gradient:s.backgroundImage,border:s.borderTopWidth,borderColor:s.borderTopColor,icon:e.querySelector('svg')?.getBoundingClientRect().width,width:r.width,height:r.height}})""")
-   assert all(n['bg'] in ('rgb(11, 14, 19)','rgb(26, 29, 35)') and n['border']=='1px' and n['icon']>0 and n['width']>36 for n in navstyles) and sum(n['bg']=='rgb(26, 29, 35)' for n in navstyles)==1,(width,'navigation icon tiles',navstyles)
+   assert all(n['bg'] in ('rgb(11, 14, 19)','rgb(29, 78, 216)') and n['icon']>0 and n['width']>36 for n in navstyles) and sum(n['bg']=='rgb(29, 78, 216)' and n['border']=='0px' for n in navstyles)==1,(width,'navigation icon tiles',navstyles)
    if width==390:
     assert all(n['height']>=54 for n in navstyles)
     assert nav.evaluate_all("""els=>els.every(e=>e.getBoundingClientRect().top===els[0].getBoundingClientRect().top)""")
@@ -50,7 +50,7 @@ try:
    chips=page.locator('#times #prayers .prayer')
    assert chips.count()==6,(width,chips.count())
    styles=chips.evaluate_all("""es=>es.map(e=>{let s=getComputedStyle(e);return{bg:s.backgroundColor,border:s.borderTopWidth,active:e.classList.contains('active')}})""")
-   assert all(x['border']=='1px' and x['bg'] in ('rgb(18, 23, 31)','rgb(38, 45, 55)') for x in styles),(width,styles)
+   assert all(x['border']=='1px' and x['bg'] in ('rgba(5, 8, 13, 0.62)','rgba(30, 37, 49, 0.9)') for x in styles),(width,styles)
    page.locator('#times .prayer-overview').screenshot(path=str(out/f'prayers-{width}.png'))
    # A single nav-safe gap, not the old two stacked bottom paddings.
    for tab in ('times','mushaf','qibla','dhikr','tasbih','settings'):
