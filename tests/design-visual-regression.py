@@ -28,6 +28,14 @@ try:
   for width in [390,1366]:
    page.set_viewport_size({'width':width,'height':940})
    # Neutral translucent glass indicator must slide; no gold on any active icon.
+   if width<=760:
+    mainbox=page.locator('main').bounding_box()
+    navbox=page.locator('header>.site-nav').bounding_box()
+    assert mainbox['y']+mainbox['height']<=navbox['y']-2,(width,'mobile nav must not cover any scrollport controls',mainbox,navbox)
+    assert page.locator('main').evaluate('(e)=>getComputedStyle(e).overflowY')=='auto','main is mobile scrollport'
+    page.locator('main').evaluate('(e)=>e.scrollTop=e.scrollHeight')
+    assert page.locator('main').evaluate('(e)=>e.scrollTop>0'),'all content must remain scrollable above nav'
+    page.locator('main').evaluate('(e)=>e.scrollTop=0')
    page.click('[data-tab=times]')
    page.wait_for_timeout(320)
    marker=page.locator('header>.site-nav .nav-selection')
