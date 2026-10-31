@@ -66,6 +66,16 @@ body.dark dialog.voice-sheet{
   box-shadow:0 24px 70px rgba(0,0,0,.55)!important;
   color:#FFFFFF!important;
 }
+/* Original broad modal proportions instead of narrow desktop panels. */
+@media (min-width:760px){
+  body.dark dialog.choice-sheet,body.dark dialog.voice-sheet{
+    width:min(700px,calc(100% - 36px));max-width:700px;
+  }
+  body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){min-height:76px;}
+  body.dark dialog.choice-sheet .choice-search-wrap input,
+  body.dark dialog.voice-sheet .choice-search-wrap input{min-height:58px;height:58px;}
+}
+body.dark #tasbih #counter:focus-visible{border-color:#FFFFFF!important;}
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) .sheet-handle{
   background:#555F69!important;opacity:1;
 }
