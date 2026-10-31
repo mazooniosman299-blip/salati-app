@@ -492,3 +492,13 @@ body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true] {
   transition:none!important;transform:none!important;
  }
 }
+
+/* Prevent the 6-tab compact navigation from shrinking its white SVG icons at 320px. */
+body.dark header>.site-nav .nav-icon-button>.nav-symbol {
+ display:block;
+ width:24px!important;height:24px!important;
+ min-width:24px;min-height:24px;max-width:24px;max-height:24px;
+ flex:0 0 24px;
+ place-self:center;
+ transform:none!important;
+}
