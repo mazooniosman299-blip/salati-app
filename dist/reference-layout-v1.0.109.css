@@ -105,16 +105,16 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 #mushaf #qStop{grid-row:3;grid-column:3;min-height:36px;height:36px;min-width:44px;padding:4px 8px;font-size:11px}
 
 /* Keep the large city label; white dates use a smaller, naturally wrapping hierarchy. */
-.prayer-overview{--place-font:28px;--date-font:18px;background:var(--surface-solid)}
+.prayer-overview{--place-font:28px;--date-font:var(--place-font);background:var(--surface-solid)}
 .prayer-overview #cityLabel{font-family:SalatiCairo,Tahoma,Arial,sans-serif;font-size:var(--place-font);font-weight:800;line-height:1.5;color:#FFFFFF;opacity:1;overflow-wrap:anywhere;white-space:normal}
-.prayer-overview .location-date #gregorianDate,.prayer-overview .location-date #dateLabel{font-family:SalatiCairo,Tahoma,Arial,sans-serif;font-size:var(--date-font);font-weight:700;line-height:1.65;color:#FFFFFF;opacity:1;overflow-wrap:normal;word-break:normal;white-space:normal;text-wrap:pretty;hyphens:none}
+.prayer-overview .location-date #gregorianDate,.prayer-overview .location-date #dateLabel{font-family:SalatiCairo,Tahoma,Arial,sans-serif;font-size:var(--date-font);font-weight:800;line-height:1.5;color:#FFFFFF;opacity:1;overflow-wrap:normal;word-break:normal;white-space:normal;text-wrap:pretty;hyphens:none}
 .prayer-overview .location-date p+p{margin-top:3px}
 .prayer-overview .location-date{width:100%;min-width:0;text-align:left;align-self:flex-start}.prayer-overview .location-date p{margin:0}
 .prayer-overview .hero-info .next-prayer-icon{display:none!important}
 .prayer-overview .hero-timer{gap:0}.prayer-overview .hero #countdown{color:#FFFFFF}
 .prayer-overview .location #locate{background:var(--control-fill);color:#FFFFFF;border-color:var(--line);position:static;inset:auto;transform:none;margin:0;align-self:flex-start;flex:0 1 auto;max-width:100%;min-width:0;width:max-content;box-sizing:border-box;white-space:normal;text-align:center;line-height:1.4}
 #mushaf #qStop:disabled{display:inline-flex;opacity:1}
-@media(max-width:760px){.prayer-overview{--place-font:21px;--date-font:14px}}
+@media(max-width:760px){.prayer-overview{--place-font:21px;--date-font:var(--place-font)}}
 @media(max-width:360px){.prayer-overview{--place-font:19px}}
 
 /* Display the original photo without opacity masks or drop shadows. */
