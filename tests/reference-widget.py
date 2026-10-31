@@ -21,6 +21,19 @@ try:
     page.evaluate('(dark)=>document.body.classList.toggle("dark",dark)',dark)
     page.click('[data-tab=times]');page.wait_for_timeout(300)
     for target in ['#cityLabel','#gregorianDate','#dateLabel','#nextName','#countdown','#prayers']:assert card.locator(target).count()==1,target
+    location=page.locator('.prayer-overview .location').bounding_box()
+    cluster=page.locator('.prayer-overview .location-identity').bounding_box()
+    city=page.locator('.prayer-overview .location-city').bounding_box()
+    button=page.locator('#locate').bounding_box()
+    dates=page.locator('.prayer-overview .location-date').bounding_box()
+    assert all(x is not None for x in [location,cluster,city,button,dates]),(width,'missing location parts')
+    assert location['x']<=button['x'] and button['x']+button['width']<=location['x']+location['width'],(width,'location button must remain inside location column',location,button)
+    assert cluster['x']<=button['x'] and button['x']+button['width']<=cluster['x']+cluster['width'],(width,'location button must remain in identity block',cluster,button)
+    assert abs(button['x']-city['x'])<=2,(width,'button and city should share same aligned left edge',city,button)
+    assert button['y']>=city['y']+city['height']-1,(width,'button must follow city',city,button)
+    assert button['y']+button['height']<=dates['y']+1,(width,'button must stay above dates',button,dates)
+    if width<=760:
+     assert location['x']+location['width']<=page.locator('.prayer-overview .hero-info').bounding_box()['x']+2,(width,'location and next prayer overlap')
     cells=page.locator('#prayers .prayer').all();assert len(cells)==6
     tops=[round(c.bounding_box()['y'])for c in cells];assert max(tops)-min(tops)<=1,(width,'six times must remain on one aligned strip',tops)
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),width

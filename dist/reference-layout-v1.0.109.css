@@ -16,8 +16,8 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 .prayer-overview .hero-picture img{width:100%;height:auto;object-fit:contain;object-position:center top;position:static;filter:none;opacity:1;mask-image:none}
 .prayer-overview .hero-picture img[hidden]{display:none}
 .prayer-overview .hero-picture::after{display:none}
-.prayer-overview .location{grid-area:place;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;margin:0;padding:4px 12px;min-height:0;z-index:1;direction:ltr;text-align:left}
-.prayer-overview .location-identity{gap:7px;align-items:flex-start;width:100%}
+.prayer-overview .location{grid-area:place;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:10px;margin:0;padding:4px 12px;min-height:0;min-width:0;width:100%;box-sizing:border-box;z-index:1;direction:ltr;text-align:left}
+.prayer-overview .location-identity{display:flex;flex-direction:column;gap:7px;align-items:flex-start;justify-content:flex-start;width:100%;min-width:0;max-width:100%}
 .prayer-overview #cityLabel{font-size:28px;line-height:1.5;font-weight:800}
 .prayer-overview .location-date{text-align:left;direction:rtl;min-width:0;flex:none}
 .prayer-overview .location-date #gregorianDate,.prayer-overview .location-date #dateLabel{font-size:15px;line-height:1.8;font-weight:700;margin:0;color:var(--ink);overflow-wrap:anywhere}
@@ -61,7 +61,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
  .prayer-overview .location{padding:0 6px;gap:10px}
  .prayer-overview #cityLabel{font-size:21px}
  .prayer-overview .location-date #gregorianDate,.prayer-overview .location-date #dateLabel{font-size:11px;line-height:1.8}
- .prayer-overview .location #locate{font-size:10px;min-height:36px;padding:3px 6px;gap:3px}
+ .prayer-overview .location #locate{font-size:10px;min-height:36px;padding:3px 6px;gap:3px;max-width:100%;overflow-wrap:anywhere}
  .prayer-overview .hero-info{padding:0 5px;gap:10px}
  .prayer-overview .hero-prayer>span,.prayer-overview .hero-timer small{font-size:12px}
  .prayer-overview #nextName{font-size:31px}
@@ -78,7 +78,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 @media (max-width:360px){.prayer-overview .hero #countdown{font-size:24px}.prayer-overview #cityLabel{font-size:19px}.prayer-overview .prayer strong{font-size:16px}.prayer-overview .prayer span{font-size:10px}}
 @media (prefers-reduced-transparency:reduce){header>.site-nav .nav-icon-button,.card,.prayer-overview,#mushaf .mushaf-toolbar,#mushaf .recitation-player{background:var(--surface-solid)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
 
-.prayer-overview .location-city{display:flex;direction:ltr;align-items:center;gap:10px}.prayer-overview .city-pin{width:24px;height:28px;object-fit:contain;flex:none}body.dark .prayer-overview .city-pin{filter:invert(1)}
+.prayer-overview .location-city{display:flex;direction:ltr;align-items:center;gap:10px;min-width:0;max-width:100%}.prayer-overview .location-city #cityLabel{min-width:0;max-width:100%;overflow-wrap:anywhere}.prayer-overview .city-pin{width:24px;height:28px;object-fit:contain;flex:none}body.dark .prayer-overview .city-pin{filter:invert(1)}
 
 .prayer-overview .hero .hero-prayer>span,.prayer-overview .hero .hero-timer small,.prayer-overview .location-date #gregorianDate,.prayer-overview .location-date #dateLabel,#mushaf .recitation-caption .quran-track{color:var(--caption-ink)}
 .prayer-overview .prayer[data-prayer=sunrise] span{color:var(--caption-ink)}
@@ -112,7 +112,7 @@ input:not([type=checkbox]):not([type=range]),.choice-trigger,select{border-radiu
 .prayer-overview .location-date{width:100%;min-width:0;text-align:left;align-self:flex-start}.prayer-overview .location-date p{margin:0}
 .prayer-overview .hero-info .next-prayer-icon{display:none!important}
 .prayer-overview .hero-timer{gap:0}.prayer-overview .hero #countdown{color:#FFFFFF}
-.prayer-overview .location #locate{background:var(--control-fill);color:#FFFFFF;border-color:var(--line)}
+.prayer-overview .location #locate{background:var(--control-fill);color:#FFFFFF;border-color:var(--line);position:static;inset:auto;transform:none;margin:0;align-self:flex-start;flex:0 1 auto;max-width:100%;min-width:0;width:max-content;box-sizing:border-box;white-space:normal;text-align:center;line-height:1.4}
 #mushaf #qStop:disabled{display:inline-flex;opacity:1}
 @media(max-width:760px){.prayer-overview{--place-font:21px;--date-font:14px}}
 @media(max-width:360px){.prayer-overview{--place-font:19px}}
