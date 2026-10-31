@@ -274,7 +274,7 @@ body.dark :is(#qPlay,#qStop):disabled{background:var(--action-off);border-color:
 #mushaf .reference-player #qTransport:active::before{background:var(--action-pressed)}
 
 #mushaf .reference-player #qTransport:disabled::before{background:var(--action-off)}
-#qFollowToggle{accent-color:#6D7379}
+#qFollowToggle{accent-color:#FFFFFF}
 
 body.dark #tasbih .tasbih-panel .counter:focus-visible{outline:0;border-color:rgba(255,255,255,.65)}
 
@@ -359,7 +359,7 @@ body.dark #audioEnable.audio-toggle:not(.is-on),
 body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=false]{
  background:#040509;border-color:var(--control-edge);box-shadow:none;
 }
-body.dark #qFollowToggle{accent-color:#6D7379}
+body.dark #qFollowToggle{accent-color:#FFFFFF}
 /* Only Quran play/pause and stop are blue, with clear white icons. */
 body.dark #mushaf .reference-player #qTransport{
  color:#FFFFFF;opacity:1;filter:none;
