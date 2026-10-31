@@ -21,6 +21,14 @@ jobs:
         run: npm test
       - name: Compile the web app
         run: npm run build
+      - name: Run remaining web/SEO/Quran DOM tests
+        run: |
+          node tests/quran-dom.cjs
+          npm run test:seo
+      - name: Verify committed JavaScript matches rebuilt release
+        run: git diff --exit-code -- dist/app-v1.0.109.js dist/app.js
+      - name: Audit production npm dependencies
+        run: npm audit --omit=dev --audit-level=moderate
       - name: Android-independent Java unit policies
         run: bash scripts/test-audio-focus.sh
       - name: Native Quran background policy tests
