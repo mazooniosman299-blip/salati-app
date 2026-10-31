@@ -39,7 +39,7 @@ try:
    page.locator('#qSheet').screenshot(path=str(out/f'mushaf-{width}.png'))
    page.click('[data-tab=qibla]')
    qibla=page.locator('#qibla .qibla-card').evaluate("""e=>{let s=getComputedStyle(e);return{bg:s.backgroundColor,border:s.borderTopWidth,color:s.color}}""")
-   assert qibla['bg']=='rgb(17, 22, 30)' and qibla['border']=='1px',(width,qibla)
+   assert qibla['bg']=='rgb(16, 19, 24)' and qibla['border']=='1px',(width,qibla)
    dial=page.locator('#qiblaDial').evaluate("""e=>{let s=getComputedStyle(e);return{bg:s.backgroundImage,border:s.borderTopWidth,color:s.borderTopColor}}""")
    assert dial['bg'].startswith('radial-gradient') and dial['border']=='2px',(width,dial)
    page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
