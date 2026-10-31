@@ -49,7 +49,7 @@ try:
    stop=page.locator('#qStop')
    assert not stop.is_visible(),'Idle stop control must be hidden'
    stop.evaluate('(e)=>e.disabled=false')
-   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(24, 36, 51)'
+   assert stop.evaluate('(e)=>getComputedStyle(e).backgroundColor')=='rgb(21, 24, 29)'
    stop.evaluate('(e)=>e.disabled=true')
    for key in ['qRepeat','qAutoNext']:
     el=page.locator('#'+key)

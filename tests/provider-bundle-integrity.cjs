@@ -12,7 +12,7 @@ assert(source.includes('!validMonth(record,p.year,p.month)'));
 assert(/(?:45\*864e5|3888e6)/.test(app),'Compiled bundle must retain 45-day cache expiry');
 assert(/fetchedAt>[a-zA-Z_$0-9]+\|\|[a-zA-Z_$0-9]+-[a-zA-Z_$0-9]+\.fetchedAt>/.test(app),'Compiled bundle must reject future and expired timestamps');
 assert(/![a-zA-Z_$0-9]+\([a-zA-Z_$0-9]+,[a-zA-Z_$0-9]+\.year,[a-zA-Z_$0-9]+\.month\)\)return null;/.test(app),'Compiled bundle must validate complete months');
-assert(worker.includes('salati-shell-v151'),'PWA caches need a new shell revision');
+assert(worker.includes('salati-shell-v152'),'PWA caches need a new shell revision');
 assert(html.includes('src="app-v1.0.109.js'),'HTML must link the checked release artifact');
 new vm.Script(app,{filename:'dist/app-v1.0.109.js'});
 console.log('PASS: deployed JS syntax, original source/build parity and cache refresh.');
