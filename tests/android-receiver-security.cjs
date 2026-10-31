@@ -10,4 +10,11 @@ assert(manifest.includes('android.intent.action.TIMEZONE_CHANGED'),'Preserve tim
 assert(manifest.includes('android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED'),'Preserve alarm permission changes');
 assert(manifest.includes('android:usesCleartextTraffic="false"'),'Disable cleartext');
 assert(manifest.includes('android:allowBackup="false"'),'Disable backup of stored location/preferences');
-console.log('PASS: receiver security and system rescheduling actions.');
+const activity=fs.readFileSync('android/app/src/main/java/com/salati/prayer/MainActivity.java','utf8');
+assert(activity.includes('static boolean trustedResourceOrigin(Uri uri)'), 'WebView asset host must be validated as an exact HTTPS origin');
+assert(activity.includes('"https".equals(uri.getScheme())')&&activity.includes('"appassets.androidplatform.net".equals(uri.getHost())'), 'Prevent origin-prefix spoofing in native bridge resource loading');
+assert(activity.includes('static boolean trustedGeoOrigin(String origin)'), 'Native location permission must verify exact trusted origin');
+assert(activity.includes('if(!trustedGeoOrigin(origin))'), 'Geolocation must not use prefix-based origin checks');
+assert(!activity.includes('origin.startsWith(ORIGIN)'), 'A deceptive subdomain must never be trusted for geolocation');
+assert(activity.includes('s.setSafeBrowsingEnabled(true)'), 'Android WebView safe browsing must stay active');
+console.log('PASS: receiver, exact WebView origin and geolocation permissions security.');
