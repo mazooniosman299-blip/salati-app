@@ -128,6 +128,18 @@ try:
    loc.screenshot(path=str(out/f'location-picker-{width}.png'))
    page.keyboard.press('Escape')
    assert not loc.is_visible()
+   page.click('[data-tab=dhikr]')
+   page.click('#adhkarCategoryPickerOpen')
+   adhkar_modal=page.locator('#adhkarCategoryMenuDialog')
+   adhkar_modal.wait_for(state='visible')
+   assert bg(adhkar_modal)==rgb('#10161C'),(width,'adhkar category background')
+   page.mouse.move(0,0)
+   page.wait_for_timeout(360)
+   adhkar_row=adhkar_modal.locator('.choice-option[aria-selected="false"]:not(:disabled)').first
+   assert bg(adhkar_row)==rgb('#1C232A'),(width,'adhkar category row',bg(adhkar_row))
+   adhkar_modal.screenshot(path=str(out/f'adhkar-picker-{width}.png'))
+   page.keyboard.press('Escape')
+   assert not adhkar_modal.is_visible()
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
