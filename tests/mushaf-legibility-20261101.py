@@ -61,7 +61,9 @@ try:
       selected=page.locator('#voicePickerList [data-voice-option=nufais]')
       assert selected.get_attribute('aria-pressed')=='true'
       assert selected.locator('.voice-symbol').evaluate("e=>getComputedStyle(e).display")=='grid'
-      assert page.locator('#voicePickerList .voice-check').count()==0
+      assert page.locator('#voicePickerList .voice-check').count()==4
+      assert selected.locator('.voice-check').evaluate("e=>getComputedStyle(e).display")=='flex'
+      assert page.locator('#voicePickerList .voice-check').evaluate_all("es=>es.filter(e=>getComputedStyle(e).display!=='none').length")==1
       assert selected.locator('.voice-symbol svg').evaluate("e=>getComputedStyle(e).display")!='none'
       page.screenshot(path=str(out/f'voice-{width}.png'))
       page.click('#voicePickerClose')
