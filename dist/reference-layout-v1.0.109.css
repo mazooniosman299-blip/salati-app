@@ -519,3 +519,13 @@ body.dark input[data-audio-prayer]:checked,
 body.dark input[data-audio-prayer]:disabled:checked{
  background-color:#15181D!important;background-image:none!important;
 }
+
+
+/* No intermediate gray frames on toggle state changes. Exact screenshot colors
+   apply immediately even when the setting is disabled. */
+body.dark #settings .prayer-switches input[type=checkbox],
+body.dark #settings .announcement-settings input.compact-switch,
+body.dark #mushaf .quran-play-options input[type=checkbox],
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle){
+ transition:none!important;animation:none!important;
+}
