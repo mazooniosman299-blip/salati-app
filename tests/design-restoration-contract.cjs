@@ -10,8 +10,13 @@ for(const selector of ['.prayer-switches input[type=checkbox]:checked','#fajrAnn
  assert(css.includes(selector),'Missing restoration target: '+selector);
 }
 assert(css.includes('#2368C4'),'Activated switch must be blue');
-assert(css.includes('#1A232D'),'Quran reading page must separate from near-black body');
-assert(css.includes('#171F28'),'Qibla panel must be legible');
-assert(css.includes('#202933'),'Surah selection rows must be distinct');
-assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS declarations');
+assert(css.includes('background:#141C25'),'Quran page must have clear ink-on-glass contrast');
+assert(css.includes('background:#101720'),'Qibla panel must use the reference glass charcoal');
+assert(css.includes('background:#131B25'),'Surah selection rows must be distinct, not pale gray');
+assert(css.includes('background:#0B1017'),'Reference player must be dark, not gray');
+assert(css.includes('linear-gradient(180deg,#151B23 0%,#0C1118 74%,#080C12 100%)'),'Navigation must match user screenshot gradient');
+assert(css.includes('cubic-bezier(.22,.61,.36,1)'),'Gentle motion must match user screenshot');
+assert(css.includes('prefers-reduced-motion:reduce'),'Honor reduced-motion preferences');
+assert(css.includes('transition:background-color 280ms'),'Switches and glass must not snap harshly');
+assert.equal((css.match(/\\{/g)||[]).length,(css.match(/\}/g)||[]).length,'Balanced CSS declarations');
 console.log('PASS: five requested visual repairs, correct CSS ordering, and PWA cache update.');
