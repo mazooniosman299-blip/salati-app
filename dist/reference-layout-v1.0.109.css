@@ -302,3 +302,76 @@ body.dark #mushaf .reference-player #qStop:disabled{display:none}
 body.dark #mushaf .mushaf-sheet .quran-surah-title{min-height:52px;padding:10px 18px;margin:12px 0 16px;border:1px solid #32383F;border-radius:16px;background:#15181D;box-shadow:inset 0 1px 0 rgba(255,255,255,.035);font-size:20px;line-height:1.6}
 body.dark #mushaf #qSurahPickerOpen{border:1px solid #32383F;border-radius:16px;background:#15181D;min-height:58px;padding:10px 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
 @media(max-width:760px){#mushaf .reference-player{padding:12px 10px;gap:8px}footer>div{column-gap:14px;row-gap:14px}body.dark #mushaf .mushaf-sheet .quran-surah-title{font-size:18px}}
+
+
+/* Salati 2026-10-31: reference brightness, neutral charcoal, blue playback only. */
+:root,body,body.dark{
+ --bg:#0D0E10;--card:#111214;--surface-solid:#111214;
+ --glass-fill:rgba(17,18,20,.94);--glass-frame:#292B2D;
+ --glass-edge:rgba(255,255,255,.17);--glass-sheen:rgba(255,255,255,.025);
+ --page-glow:#0D0E10;--ink:#FFFFFF;--muted:#D6D7D9;
+ --line:rgba(255,255,255,.21);--divider:rgba(255,255,255,.15);
+ --nav-selection-fill:rgba(255,255,255,.075);--selected:rgba(255,255,255,.09);
+ --control-fill:#111214;--control-hover:#232528;
+ --control-pressed:#181A1C;--control-disabled:#111214;
+ --control-edge:rgba(255,255,255,.31);--switch-off:#17191B;
+ --media-fill:#111214;--media-top:rgba(255,255,255,.028);
+ --media-edge:#373A3D;--media-track:#777B80;
+ --reading-surface:#111214;--input-fill:#111214;
+ --instrument-surface:#111214;--progress-track:#777B80;
+ --action-fill:#153D7A;--action-hover:#1A4D91;--action-pressed:#102E5B;
+ --action-edge:#2D5D9B;--action-off:#0B2347;
+}
+body,body.dark{background:var(--bg);color:var(--ink);color-scheme:dark}
+body.dark :is(.card,dialog,.floating-menu,.prayer-overview),
+body.dark :is(header>.site-nav .nav-icon-button,#mushaf .reference-player){
+ background:linear-gradient(160deg,rgba(255,255,255,.025),transparent 68%),var(--card);
+ border-color:var(--glass-edge);box-shadow:inset 0 1px 0 rgba(255,255,255,.045);
+}
+body.dark header>.site-nav{background:transparent}
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active{color:#FFFFFF;border-color:var(--glass-edge)}
+body.dark header>.site-nav .nav-symbol{color:#FFFFFF;opacity:1;filter:none}
+body.dark #mushaf .mushaf-emblem{opacity:1;filter:none;width:52px;height:52px;object-fit:contain}
+body.dark #mushaf .reference-player{--media-edge:rgba(255,255,255,.21);--media-track:#777B80}
+body.dark #mushaf .reference-player .recitation-caption,
+body.dark #mushaf .reference-player .quran-track{color:var(--ink);opacity:1}
+/* Preview actions and switches are neutral; positions remain distinct. */
+body.dark :is(#previewFajrPhrase,#previewAdhan,#previewDua,#audioStop,#audioResume,#qFollowTransport):not(:disabled),
+body.dark :is(#tasbih .tasbih-reset,#settings .adjust-reset){
+ background:var(--control-fill);border-color:var(--control-edge);color:#FFFFFF;box-shadow:none;
+}
+body.dark :is(#previewFajrPhrase,#previewAdhan,#previewDua,#audioStop,#audioResume,#qFollowTransport):hover:not(:disabled){
+ background:var(--control-hover);border-color:var(--control-edge);
+}
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle),
+body.dark #settings .announcement-settings input.compact-switch,
+body.dark .prayer-switches input[type=checkbox],
+body.dark .quran-play-options input[type=checkbox]{
+ background:#17191B;border:1px solid var(--control-edge);box-shadow:none;
+}
+body.dark :is(#audioEnable,#duaToggle,#silentAdhanToggle)[aria-checked=true],
+body.dark #settings .announcement-settings input.compact-switch:checked,
+body.dark .prayer-switches input[type=checkbox]:checked,
+body.dark .quran-play-options input[type=checkbox]:checked{
+ background:#393D41;border-color:rgba(255,255,255,.58);box-shadow:none;
+}
+body.dark #audioEnable.audio-toggle:not(.is-on),
+body.dark :is(#duaToggle,#silentAdhanToggle)[aria-checked=false]{
+ background:#17191B;border-color:var(--control-edge);
+}
+/* Play/pause and the live stop control are the only blue accents. */
+body.dark #mushaf .reference-player #qTransport{color:#FFFFFF;opacity:1;filter:none}
+body.dark #mushaf .reference-player #qTransport::before{
+ background:#153D7A;border:1px solid #3265A5;box-shadow:none;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#1A4D91}
+body.dark #mushaf .reference-player #qTransport:active:not(:disabled)::before{background:#102E5B}
+body.dark #mushaf .reference-player #qTransport:disabled::before{background:#0B2347}
+body.dark #mushaf .reference-player #qStop:not(:disabled){
+ background:#153D7A;border:1px solid #3265A5;color:#FFFFFF;border-radius:50%;
+}
+body.dark #mushaf .reference-player #qStop:disabled{display:none;background:var(--control-disabled);border-color:var(--glass-edge)}
+body.dark #mushaf :is(.quran-surah-title,#qSurahPickerOpen){
+ background:#1B1D20;border-color:var(--glass-edge);color:#FFFFFF;
+}
