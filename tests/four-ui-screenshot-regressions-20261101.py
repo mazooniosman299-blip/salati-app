@@ -1,4 +1,4 @@
-"""Four screenshot issues: black Mushaf glyph, Qibla contrast, every location pin, no voice checks.
+"""Four screenshot issues: black Mushaf glyph, Qibla contrast, every location pin, one left-hand selected voice check.
 Real Chromium only. This test never deploys or signs anything.
 """
 from functools import partial
@@ -65,12 +65,12 @@ try:
                 opacity:getComputedStyle(e).opacity,
                 filter:getComputedStyle(e).filter
             })""")
-            assert style["bg"]=="rgb(36, 43, 51)" and style["border"]=="rgb(102, 115, 129)",(width,style)
+            assert style["bg"]=="rgb(17, 22, 27)" and style["border"]=="rgb(76, 88, 99)",(width,style)
             assert style["width"]=="1px" and style["opacity"]=="1" and style["filter"]=="none",(width,style)
             heading=page.locator("#headingValue").evaluate(
                 "e=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,color:getComputedStyle(e).color})"
             )
-            assert heading=={"bg":"rgb(17, 22, 29)","border":"rgb(104, 117, 131)","color":"rgb(255, 255, 255)"},(width,heading)
+            assert heading=={"bg":"rgb(10, 14, 18)","border":"rgb(101, 113, 125)","color":"rgb(255, 255, 255)"},(width,heading)
             bearing.screenshot(path=str(evidence/f"qibla-{width}.png"))
 
             # Every country and automatic option uses the SAME SVG, centered
@@ -92,24 +92,32 @@ try:
             page.locator("#locationOptions").screenshot(path=str(evidence/f"locations-{width}.png"))
             page.keyboard.press("Escape")
 
-            # Four original voice positions. The selected state is retained
-            # but neither a CSS-generated tick nor a check SVG is present.
+            # Exactly one real SVG tick on PHYSICAL left of the chosen voice,
+            # and a waveform on the right of all four rows.
             page.click("#voicePickerOpen")
             for voice in ("qatami","nufais","makkah","aqsa"):
                 page.evaluate("""value=>{
                    const select=document.querySelector('#audioVoice');
                    select.value=value;select.dispatchEvent(new Event('change',{bubbles:true}));
                 }""",voice)
-                rows=page.locator("#voicePickerList .voice-option").evaluate_all("""es=>es.map(e=>({
-                    value:e.dataset.voiceOption,
-                    chosen:e.getAttribute('aria-pressed')==='true',
-                    checkNodes:e.querySelectorAll('.voice-check').length,
-                    tick:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
-                    wave:getComputedStyle(e.querySelector('.voice-symbol svg')).display
-                }))""")
+                rows=page.locator("#voicePickerList .voice-option").evaluate_all("""es=>es.map(e=>{
+ const a=e.getBoundingClientRect(),c=e.querySelector('.voice-check'),cr=c.getBoundingClientRect();
+ const w=e.querySelector('.voice-symbol svg'),wr=w.getBoundingClientRect();
+ return {value:e.dataset.voiceOption,active:e.getAttribute('aria-pressed')==='true',
+   checkCount:e.querySelectorAll('.voice-check').length,
+   checkDisplay:getComputedStyle(c).display,
+   generated:getComputedStyle(e.querySelector('.voice-symbol'),'::after').content,
+   waveform:getComputedStyle(w).display,
+   left:cr.left-a.left,checkWidth:cr.width,checkMidY:cr.top+cr.height/2-a.top-a.height/2,
+   waveRight:a.right-wr.right};
+})""")
                 assert [x["value"] for x in rows]==["qatami","nufais","makkah","aqsa"],(width,rows)
-                assert sum(x["chosen"] for x in rows)==1 and next(x for x in rows if x["chosen"])["value"]==voice,(width,voice,rows)
-                assert all(x["checkNodes"]==0 and x["tick"] in ("none","normal") and x["wave"]!="none" for x in rows),(width,voice,"stray check",rows)
+                assert sum(x["active"] for x in rows)==1 and next(x for x in rows if x["active"])["value"]==voice,(width,voice,rows)
+                assert all(x["checkCount"]==1 and x["generated"] in ("none","normal") and x["waveform"]!="none" for x in rows),(width,voice,"no duplication; keep wave",rows)
+                assert sum(x["checkDisplay"]=="flex" for x in rows)==1,(width,voice,"exactly one check",rows)
+                chosen=next(x for x in rows if x["active"])
+                assert chosen["checkDisplay"]=="flex" and 8<=chosen["left"]<=27 and chosen["checkWidth"]>=24 and abs(chosen["checkMidY"])<=3,(width,voice,"check far left",chosen)
+                assert all(x["waveRight"]<55 for x in rows),(width,voice,"wave icon remains on right",rows)
             page.locator("#voicePickerList").screenshot(path=str(evidence/f"voices-{width}.png"))
             page.click("#voicePickerClose")
             assert not errors,(width,"JS errors",errors)
