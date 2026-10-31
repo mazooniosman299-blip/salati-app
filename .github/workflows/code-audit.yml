@@ -191,6 +191,16 @@ jobs:
           name: salati-control-qibla-review
           path: reports/control-qibla-20261101/
           if-no-files-found: ignore
+      - name: Verify seamless Quran, ornate heading, strong nav, blue APK and centered Qibla
+        if: success() || failure()
+        run: python3 tests/final-visual-20261101.py
+      - name: Save final visual screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-final-visual-acceptance
+          path: reports/final-five/
+          if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
         run: python3 tests/modern-instruments.py
