@@ -258,3 +258,11 @@ body.dark #settings #locate {
   border:1px solid #728193!important;
   box-shadow:none!important;
 }
+
+
+/* Remove the last legacy green action ink. This affects text/icons only;
+   the exclusively blue enabled tracks and Quran transport backgrounds remain. */
+body.dark button:not(:disabled) {
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+}
