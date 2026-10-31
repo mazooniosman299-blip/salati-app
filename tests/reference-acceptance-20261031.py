@@ -36,8 +36,8 @@ try:
    nav=page.locator('header>.site-nav .nav-icon-button')
    assert nav.count()==6
    tiles=nav.evaluate_all("""els=>els.map(e=>{let s=getComputedStyle(e);return {bg:s.backgroundColor,gradient:s.backgroundImage,border:s.borderTopColor,text:s.color,opacity:s.opacity}})""")
-   assert all(t['text']=='rgb(255, 255, 255)' and t['opacity']=='1' and t['bg']=='rgb(11, 14, 19)' and 'linear-gradient' in t['gradient'] for t in tiles),(width,tiles)
-   assert all('0.19' in t['border'] for t in tiles),(width,tiles)
+   assert all(t['text']=='rgb(255, 255, 255)' and t['opacity']=='1' and 'linear-gradient' in t['gradient'] for t in tiles),(width,tiles)
+   assert sum(t['bg']=='rgb(26, 29, 35)' and '0.42' in t['border'] for t in tiles)==1 and all(t['bg'] in ('rgb(11, 14, 19)','rgb(26, 29, 35)') for t in tiles),(width,tiles)
    page.click('[data-tab=mushaf]')
    assert page.locator('#mushaf .reference-player').is_visible()
    player=page.locator('#mushaf .reference-player')

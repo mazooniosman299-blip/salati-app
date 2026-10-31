@@ -87,7 +87,7 @@ jobs:
       - name: Upload unsigned build and SDK signature tools (private staging only)
         uses: actions/upload-artifact@v4
         with:
-          name: salati-1.0.110-unsigned-for-original-key
+          name: salati-1.0.112-unsigned-for-original-key
           path: |
             android/app/build/outputs/apk/release/app-release-unsigned.apk
             /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
@@ -170,6 +170,36 @@ jobs:
         with:
           name: salati-restoration-latest-screenshots
           path: reports/design-restoration-2026-10-31/
+          if-no-files-found: ignore
+      - name: Verify all six new UI repairs in real Chromium
+        if: success() || failure()
+        run: python3 tests/six-ui-fixes-20261031.py
+      - name: Archive six-fix screenshot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-six-visual-repair-evidence
+          path: reports/six-visual-fixes/
+          if-no-files-found: ignore
+      - name: Test all toggle shapes and redesigned Qibla in Chromium
+        if: success() || failure()
+        run: python3 tests/control-qibla-20261101.py
+      - name: Upload controls and new Qibla screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-control-qibla-review
+          path: reports/control-qibla-20261101/
+          if-no-files-found: ignore
+      - name: Verify seamless Quran, ornate heading, strong nav, blue APK and centered Qibla
+        if: success() || failure()
+        run: python3 tests/final-visual-20261101.py
+      - name: Save final visual screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-final-visual-acceptance
+          path: reports/final-five/
           if-no-files-found: ignore
       - name: Test every core tab and interaction
         if: success() || failure()
