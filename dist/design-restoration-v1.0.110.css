@@ -51,8 +51,9 @@ body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) {
 
 /* Lift the reading surface off the page without turning the entire site gray. */
 body.dark #mushaf .mushaf-toolbar {
-  background:#171D25;
-  border:1px solid #485665;
+  background:#10151D;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,0) 68%);
+  border:1px solid rgba(255,255,255,.13);
   box-shadow:none;
   color:#FFFFFF;
 }
@@ -64,16 +65,16 @@ body.dark #mushaf .mushaf-sheet :is(.quran-text,.mushaf-page-head,.mushaf-page-n
 }
 body.dark #mushaf .mushaf-sheet,
 body.dark #mushaf #qSheet {
-  background:#121820;
+  background:#10161F;
   color:#FFFFFF;
-  border-color:#4A5664;
+  border-color:rgba(255,255,255,.17);
   box-shadow:none;
 }
 body.dark #mushaf .quran-reading-page {
-  background:#1A232D;
+  background:#141C25;
   color:#FFFFFF;
-  border:1px solid #667484;
-  outline:1px solid rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.21);
+  outline:1px solid rgba(255,255,255,.10);
   outline-offset:-6px;
   box-shadow:none;
 }
@@ -86,16 +87,17 @@ body.dark #mushaf #qVerses {
 }
 body.dark #mushaf .quran-reading-page .quran-surah-title,
 body.dark #mushaf .mushaf-sheet .quran-surah-title {
-  background:#27323D;
+  background:#171F2A;
   color:#FFFFFF;
-  border:1px solid #627183;
+  border:1px solid rgba(255,255,255,.20);
   box-shadow:none;
 }
 body.dark #mushaf .reference-player,
 body.dark #mushaf .recitation-player.reference-player {
-  background:#212B36;
-  border:1px solid #718092;
-  box-shadow:none;
+  background:#0B1017;
+  background-image:linear-gradient(180deg,rgba(255,255,255,.055),transparent 77%);
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 10px 24px rgba(0,0,0,.24);
 }
 body.dark #mushaf .recitation-caption :is(strong,.quran-track),
 body.dark #mushaf .recitation-times,
@@ -115,22 +117,22 @@ body.dark #mushaf .reference-player #qStop:not(:disabled) {
 body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before,
 body.dark #mushaf .reference-player #qStop:hover:not(:disabled) { background:#2F79DA; }
 body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen) {
-  background:#212A34;
-  border-color:#647486;
+  background:#111923;
+  border-color:rgba(255,255,255,.22);
   color:#FFFFFF;
 }
 
 /* The compass should be readable even before permission/location is granted. */
 body.dark #qibla .qibla-card {
-  background:#171F28;
-  border:1px solid #536375;
+  background:#101720;
+  border:1px solid rgba(255,255,255,.20);
   box-shadow:none;
   color:#FFFFFF;
 }
 body.dark #qibla .qibla-card .compass {
-  background:radial-gradient(circle at 45% 35%,#283645 0%,#1B2530 70%,#151B24 100%);
-  border:2px solid #8698AC;
-  box-shadow:inset 0 0 0 9px #171F28;
+  background:radial-gradient(circle at 45% 35%,#1E2936 0%,#111A25 67%,#0B1119 100%);
+  border:2px solid #7C8EA3;
+  box-shadow:inset 0 0 0 9px #0D131B;
 }
 body.dark #qibla .qibla-card .compass::before {
   background:repeating-conic-gradient(from 0deg,rgba(250,252,255,.95) 0deg 1deg,transparent 1deg 5deg);
@@ -142,9 +144,9 @@ body.dark #qibla .qibla-card :is(.north,.cardinal) {
   font-weight:800;
 }
 body.dark #qibla .qibla-card .phone-target {
-  background:#263443;
+  background:#131C27;
   color:#FFFFFF;
-  border:1px solid #9BB0C7;
+  border:1px solid #8193A8;
 }
 body.dark #qibla .qibla-card .qibla-ray {
   background:linear-gradient(#FFFFFF,rgba(255,255,255,.45));
@@ -162,20 +164,20 @@ body.dark #qibla .qibla-card :is(#bearing,#headingValue,#compassStatus,.qibla-re
 }
 body.dark #qibla #compassStatus,
 body.dark #qibla .qibla-reading #headingValue {
-  background:#222D39;
-  border:1px solid #637286;
+  background:#141E2B;
+  border:1px solid rgba(255,255,255,.22);
 }
 body.dark #qibla .compass-actions button {
-  background:#263443;
-  border-color:#91A7BD;
+  background:#131C27;
+  border-color:#8193A8;
   color:#FFFFFF;
 }
 
 /* Calm, legible picker: substantial row surfaces, balanced badges and search. */
 body.dark dialog.choice-sheet,
 body.dark dialog.voice-sheet {
-  background:#141A22;
-  border:1px solid #637286;
+  background:#0E141D;
+  border:1px solid rgba(255,255,255,.20);
   box-shadow:0 18px 44px rgba(0,0,0,.38);
   color:#FFFFFF;
 }
@@ -184,14 +186,14 @@ body.dark dialog.voice-sheet .voice-sheet-header h2 { color:#FFFFFF; }
 body.dark dialog.choice-sheet .choice-search-wrap input,
 body.dark dialog.voice-sheet .choice-search-wrap input,
 body.dark dialog.uniform-menu input.menu-search {
-  background-color:#202A35;
-  border-color:#6A7A8C;
+  background-color:#151E2A;
+  border-color:rgba(255,255,255,.28);
   color:#FFFFFF;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option) {
-  background:#202933;
+  background:#131B25;
   background-image:none;
-  border:1px solid #526170;
+  border:1px solid rgba(255,255,255,.17);
   border-radius:16px;
   min-height:64px;
   box-shadow:none;
@@ -199,24 +201,24 @@ body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
  :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]) {
-  background:#2B3947;
+  background:#1D2A38;
   background-image:none;
-  border-color:#A0B5CB;
+  border-color:#7D96B2;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol) {
-  background:#323E4B;
-  border:1px solid #59697C;
+  background:#202C39;
+  border:1px solid rgba(255,255,255,.17);
   border-radius:11px;
   color:#FFFFFF;
 }
 body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled) {
-  background:#2B3744;
-  border-color:#B1C3D5;
+  background:#1C2835;
+  border-color:rgba(255,255,255,.32);
 }
 body.dark dialog.choice-sheet .choice-close,
 body.dark dialog.voice-sheet #voicePickerClose {
-  background:#26313D;
-  border-color:#728397;
+  background:#17212D;
+  border-color:rgba(255,255,255,.25);
   color:#FFFFFF;
 }
 
@@ -231,8 +233,8 @@ body.dark dialog.voice-sheet #voicePickerClose {
 body.dark dialog.choice-sheet .choice-option[aria-selected="true"]:hover,
 body.dark dialog.choice-sheet .choice-option[aria-checked="true"]:hover,
 body.dark dialog.voice-sheet .voice-option[aria-pressed="true"]:hover {
-  background:#2B3947;
-  border-color:#A0B5CB;
+  background:#1D2A38;
+  border-color:#7D96B2;
 }
 @media (max-width:600px) {
   body.dark #mushaf .mushaf-toolbar { padding:15px 13px; }
@@ -284,4 +286,113 @@ body.dark #tasbih .tasbih-panel #counter:not(:disabled) {
   border-color:rgba(255,255,255,.46)!important;
   color:#FFFFFF!important;
   box-shadow:none!important;
+}
+
+
+/* 2026-10-31 — sampled palette from the user's exact three-pill + Quran-player screenshot.
+   Base page #0B0E13; gradient glass ranges from near-black #090D13 to #141A22.
+   Preserve navigation, Quran data and focus functionality; style only. */
+:root,body.dark{
+  --salati-ref-edge:rgba(255,255,255,.13);
+  --salati-ref-ease:cubic-bezier(.22,.61,.36,1);
+}
+body.dark header>.site-nav{
+  background:#0B0E13;
+  background-image:linear-gradient(180deg,#111720,#080C12);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:26px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.24);
+}
+body.dark header>.site-nav .nav-icon-button,
+body.dark header>.site-nav .nav-icon-button.active{
+  background-color:#0D1219;
+  background-image:linear-gradient(180deg,#151B23 0%,#0C1118 74%,#080C12 100%);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:22px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 7px 18px rgba(0,0,0,.20);
+  color:#FFFFFF;
+  transition:background-color 280ms var(--salati-ref-ease),border-color 280ms var(--salati-ref-ease),
+             box-shadow 280ms var(--salati-ref-ease),transform 180ms var(--salati-ref-ease);
+}
+body.dark header>.site-nav .nav-icon-button:hover:not(:disabled) {
+  border-color:rgba(255,255,255,.25);
+  background-color:#111821;
+  transform:translateY(-1px);
+}
+body.dark header>.site-nav .nav-icon-button:active{transform:translateY(0)}
+body.dark header>.site-nav .nav-selection {
+  background:rgba(255,255,255,.035);
+  border:0;
+  box-shadow:none;
+  transition:transform 280ms var(--salati-ref-ease),width 280ms var(--salati-ref-ease),height 280ms var(--salati-ref-ease);
+}
+body.dark #mushaf .mushaf-toolbar,
+body.dark #mushaf .reference-player,
+body.dark #qibla .qibla-card,
+body.dark dialog.choice-sheet,
+body.dark dialog.voice-sheet,
+body.dark #mushaf .quran-reading-page {
+  border-radius:24px;
+  transition:background-color 280ms var(--salati-ref-ease),border-color 280ms var(--salati-ref-ease),
+             box-shadow 280ms var(--salati-ref-ease),transform 180ms var(--salati-ref-ease);
+}
+body.dark #mushaf .reference-player .recitation-caption strong {font-weight:800;color:#FFFFFF}
+body.dark #mushaf .reference-player .recitation-caption .quran-track {
+  color:rgba(255,255,255,.78);font-weight:600;
+}
+body.dark #mushaf .reference-player #qSeek {
+  --progress-track:#526072;
+  --progress-fill:#FFFFFF;
+  accent-color:#FFFFFF;
+}
+body.dark #mushaf .reference-player #qTransport{
+  background-color:#0C1118;
+  border:1px solid rgba(255,255,255,.20);
+  border-radius:50%;
+  box-shadow:none;
+  transition:background-color 280ms var(--salati-ref-ease),border-color 280ms var(--salati-ref-ease),
+             transform 180ms var(--salati-ref-ease);
+}
+body.dark #mushaf .reference-player #qTransport::before{
+  background:#0D131B;
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:none;
+}
+body.dark #mushaf .reference-player #qTransport:hover:not(:disabled)::before{background:#152236;border-color:#567498}
+body.dark #mushaf .reference-player #qTransport:active{transform:scale(.97)}
+/* Explicitly keep pause/stop blue while active; idle PLAY matches the submitted charcoal circle. */
+body.dark #mushaf .reference-player #qTransport[aria-label*="Pause"]::before,
+body.dark #mushaf .reference-player #qTransport[aria-label*="إيقاف"]::before,
+body.dark #mushaf .reference-player #qTransport[aria-label*="pause"]::before {
+  background:#2368C4;
+  border-color:#80B4F5;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option){
+  transition:background-color 280ms var(--salati-ref-ease),border-color 280ms var(--salati-ref-ease),
+             transform 180ms var(--salati-ref-ease);
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):active{transform:scale(.997)}
+/* Old CSS globally disabled transitions; restore switch feedback without motion blur. */
+body.dark #settings .prayer-switches input[type=checkbox],
+body.dark #settings .announcement-settings input.compact-switch,
+body.dark #mushaf .quran-play-options input[type=checkbox],
+body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) {
+  transition:background-color 280ms var(--salati-ref-ease),border-color 280ms var(--salati-ref-ease)!important;
+}
+@media (prefers-reduced-motion:reduce){
+  body.dark header>.site-nav .nav-icon-button,
+  body.dark header>.site-nav .nav-selection,
+  body.dark #mushaf .reference-player,
+  body.dark #mushaf .mushaf-toolbar,
+  body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option),
+  body.dark #settings .prayer-switches input[type=checkbox],
+  body.dark #settings .announcement-settings input.compact-switch,
+  body.dark #mushaf .quran-play-options input[type=checkbox],
+  body.dark #settings :is(#audioEnable,#duaToggle,#silentAdhanToggle) {
+    transition:none!important;transform:none!important;
+  }
+}
+@media (max-width:760px){
+ body.dark header>.site-nav{border-radius:20px;}
+ body.dark header>.site-nav .nav-icon-button,body.dark header>.site-nav .nav-icon-button.active{border-radius:15px;}
 }
