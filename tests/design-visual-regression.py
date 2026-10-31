@@ -66,7 +66,7 @@ try:
    page.wait_for_function('document.getElementById("qSurah").options.length>=114')
    page.wait_for_selector('.quran-reading-page',state='visible',timeout=12000)
    reader=page.locator('.quran-reading-page').first
-   assert bg(reader)==rgb('#141B23'),(width,'reader',bg(reader))
+   assert bg(reader)==rgb('#15181D'),(width,'reader',bg(reader))
    player=page.locator('#mushaf .reference-player')
    assert bg(player)==rgb('#0B1017'),(width,'player',bg(player))
    assert page.locator('#qVerses').inner_text().strip(),'Quran text must not disappear'
@@ -82,7 +82,7 @@ try:
    dialog=page.locator('#choicePicker')
    dialog.wait_for(state='visible')
    row=dialog.locator('.choice-option').first
-   assert bg(row) in [rgb('#17212B'),rgb('#232D39')],(width,'surah row',bg(row))
+   assert bg(row) in [rgb('#15181D'),rgb('#20252B')],(width,'surah row',bg(row))
    assert page.locator('#choiceList .choice-option').count()>=114,'All 114 surahs must remain selectable'
    dialog.screenshot(path=str(out/f'surah-picker-{width}.png'))
    page.keyboard.press('Escape')
@@ -92,7 +92,7 @@ try:
    assert compass.is_visible()
    image=compass.evaluate("(e)=>getComputedStyle(e).backgroundImage")
    assert 'radial-gradient' in image,(width,'qibla surface',image)
-   assert bg(page.locator('#qibla .qibla-card'))==rgb('#101720')
+   assert bg(page.locator('#qibla .qibla-card'))==rgb('#0B0E13')
    page.locator('#qibla .qibla-card').screenshot(path=str(out/f'qibla-{width}.png'))
    for tab in ['times','mushaf','dhikr','qibla','tasbih','settings']:
     page.click(f'[data-tab={tab}]')

@@ -502,3 +502,105 @@ body.dark header>.site-nav .nav-icon-button>.nav-symbol {
  place-self:center;
  transform:none!important;
 }
+
+/* User's approved 2026-10-31 charcoal screenshot: authoritative surface lock.
+   Fix regression from earlier blue/gray restoration rules. Do not change layout,
+   player geometry, tap behavior, saved settings, or active-switch semantics. */
+:root, body.dark {
+  --salati-approved-page:#0B0E13;
+  --salati-approved-deep:#040509;
+  --salati-approved-card:#15181D;
+  --salati-approved-edge:#32383F;
+}
+/* Qibla: dark matte reference instead of desaturated navy. */
+body.dark #qibla .qibla-card {
+  background:#0B0E13!important;
+  border-color:#32383F!important;
+  box-shadow:none!important;
+}
+body.dark #qibla .qibla-card .compass {
+  background:radial-gradient(circle at 45% 35%,#15181D 0%,#0B0E13 72%,#040509 100%)!important;
+  border-color:#6D7782!important;
+  box-shadow:inset 0 0 0 9px #0B0E13!important;
+}
+body.dark #qibla .qibla-card .compass::after { border-color:#66717C!important; }
+body.dark #qibla .qibla-card .phone-target {
+  background:#15181D!important;
+  border-color:#65717E!important;
+}
+body.dark #qibla .qibla-card .dial-center {
+  border-color:#0B0E13!important;
+  box-shadow:0 0 0 1px #73808C!important;
+}
+body.dark #qibla :is(#compassStatus,.qibla-reading #headingValue) {
+  background:#15181D!important;
+  border-color:#32383F!important;
+  color:#FFFFFF!important;
+}
+body.dark #qibla .compass-actions button {
+  background:#15181D!important;
+  border-color:#525D69!important;
+  color:#FFFFFF!important;
+}
+/* Quran: keep the user's near-black player and restore calm charcoal controls. */
+body.dark #mushaf .mushaf-toolbar {
+  background:#0B0E13!important;
+  background-image:none!important;
+  border-color:#32383F!important;
+}
+body.dark #mushaf :is(.mushaf-sheet,.quran-reading-page) {
+  background:#15181D!important;
+  background-image:none!important;
+  border-color:#32383F!important;
+}
+body.dark #mushaf .quran-reading-page .quran-surah-title {
+  background:#0B0E13!important;
+  border-color:#32383F!important;
+}
+body.dark #mushaf :is(.mushaf-tools button,.font-tools button,#qSurahPickerOpen):not(:disabled) {
+  background:#15181D!important;
+  border-color:#32383F!important;
+  color:#FFFFFF!important;
+}
+/* Every selection sheet: no blue-gray fill; retain structure and selection state. */
+body.dark dialog.choice-sheet,
+body.dark dialog.voice-sheet {
+  background:#0B0E13!important;
+  border-color:#32383F!important;
+}
+body.dark dialog.choice-sheet .choice-search-wrap input,
+body.dark dialog.voice-sheet .choice-search-wrap input,
+body.dark dialog.uniform-menu input.menu-search {
+  background-color:#15181D!important;
+  border-color:#525B66!important;
+  color:#FFFFFF!important;
+  opacity:1!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option) {
+  background:#15181D!important;
+  background-image:none!important;
+  border-color:#424B55!important;
+  color:#FFFFFF!important;
+  opacity:1!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet)
+  :is(.choice-option[aria-selected="true"],.choice-option[aria-checked="true"],.voice-option[aria-pressed="true"]),
+body.dark dialog.choice-sheet .choice-option:is([aria-selected="true"],[aria-checked="true"]):hover,
+body.dark dialog.voice-sheet .voice-option[aria-pressed="true"]:hover {
+  background:#20252B!important;
+  background-image:none!important;
+  border-color:#85909C!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-option,.voice-option):hover:not(:disabled) {
+  border-color:#85909C!important;
+}
+body.dark :is(dialog.choice-sheet,dialog.voice-sheet) :is(.choice-badge,.voice-symbol) {
+  background:#15181D!important;
+  border-color:#4D5660!important;
+  color:#FFFFFF!important;
+}
+body.dark dialog.choice-sheet .choice-close,
+body.dark dialog.voice-sheet #voicePickerClose {
+  background:#15181D!important;
+  border-color:#59636E!important;
+}
