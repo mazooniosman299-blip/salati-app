@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 132" preserveAspectRatio="none" aria-hidden="true">
+<defs>
+ <pattern id="lace" width="56" height="60" patternUnits="userSpaceOnUse">
+  <rect width="56" height="60" fill="#E6D8C2"/>
+  <g fill="none" stroke="#B59A72" stroke-width="2">
+   <path d="M0 30 Q14 7 28 30 T56 30M0 30 Q14 53 28 30 T56 30"/>
+   <path d="M0 0 Q28 18 56 0M0 60 Q28 42 56 60" stroke-width="1.5"/>
+   <path d="M28 7 Q41 30 28 53 Q15 30 28 7Z" fill="#D5C09E" opacity=".7"/>
+  </g>
+  <circle cx="28" cy="30" r="4" fill="#A78D62"/>
+  <circle cx="0" cy="30" r="3" fill="#F8F2E8"/>
+ </pattern>
+ <g id="arabesque" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 66C52 26 63 17 112 66C63 115 52 106 12 66Z" fill="#EEE1CF" stroke="#A78A5B" stroke-width="3"/>
+  <path d="M21 66Q69 3 103 66Q69 129 21 66Z" stroke="#C0A47A" stroke-width="2"/>
+  <path d="M28 66Q62 30 92 66Q62 102 28 66Z" fill="#C4AD84" stroke="#9A7D53" stroke-width="2"/>
+  <path d="M20 65C33 50 43 50 55 66C43 82 33 82 20 65Z M64 66C75 49 85 49 102 66C85 83 75 83 64 66Z" fill="#EDE0CA" stroke="#9D855D" stroke-width="1.8"/>
+  <path d="M115 66C129 31 150 38 153 66C150 94 129 101 115 66Z" fill="#BEA178" stroke="#9B7B4F" stroke-width="2"/>
+  <path d="M126 66Q140 48 145 66Q140 84 126 66Z" fill="#F6ECDF" stroke="#AE9167"/>
+ </g>
+</defs>
+<rect x="2" y="3" width="996" height="126" rx="10" fill="url(#lace)" stroke="#A98E65" stroke-width="3"/>
+<rect x="10" y="10" width="980" height="112" rx="7" fill="none" stroke="#FCF8EF" stroke-width="3"/>
+<rect x="18" y="18" width="964" height="96" rx="6" fill="none" stroke="#B59668" stroke-width="1.5"/>
+<use href="#arabesque"/>
+<use href="#arabesque" transform="translate(1000,0) scale(-1,1)"/>
+<path d="M278 66L315 21Q331 10 354 10H646Q669 10 685 21L722 66L685 111Q669 122 646 122H354Q331 122 315 111Z" fill="#F8F2E9" stroke="#A78C64" stroke-width="3"/>
+<path d="M289 66L319 30Q337 18 354 18H646Q663 18 681 30L711 66L681 102Q663 114 646 114H354Q337 114 319 102Z" fill="none" stroke="#D0B58A" stroke-width="2"/>
+<path d="M300 66L325 40M300 66L325 92M700 66L675 40M700 66L675 92" stroke="#B29569" stroke-width="2" fill="none"/>
+<circle cx="310" cy="66" r="5" fill="#B69A70"/>
+<circle cx="690" cy="66" r="5" fill="#B69A70"/>
+</svg>

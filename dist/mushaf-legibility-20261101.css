@@ -1,0 +1,141 @@
+/* Salati Mushaf and legibility refinements — 2026-11-01
+   No changes to prayer calculations, audio playback or the Quran verse data. */
+body.dark #mushaf #qVerses .quran-surah-title{
+  background:#F8F2E9 url("images/quran-surah-ornament.svg") center / 100% 100% no-repeat!important;
+  border:0!important;outline:0!important;box-shadow:none!important;
+  border-radius:0!important;color:#3C2E1D!important;
+  display:grid!important;place-items:center!important;
+  min-height:clamp(80px,10vw,108px)!important;
+  padding:14px clamp(15px,30%,200px)!important;
+  width:100%!important;margin:6px 0 20px!important;
+  font-family:SalatiCairo,sans-serif!important;
+  font-size:clamp(18px,2.4vw,24px)!important;
+  line-height:1.5!important;white-space:normal!important;
+  position:relative!important;
+}
+body.dark #mushaf #qVerses .quran-surah-title::before,
+body.dark #mushaf #qVerses .quran-surah-title::after{
+  content:none!important;display:none!important;
+}
+body.dark #mushaf #qVerses .quran-text .ayah-number{
+  display:inline-grid!important;place-items:center!important;
+  vertical-align:middle!important;
+  position:relative!important;
+  box-sizing:border-box!important;
+  width:2.65em!important;height:2.65em!important;
+  min-width:2.65em!important;min-height:2.65em!important;
+  padding:0!important;margin:0 .10em!important;
+  font-family:SalatiCairo,Arial,sans-serif!important;
+  font-weight:700!important;font-size:.63em!important;line-height:1!important;
+  color:#634924!important;-webkit-text-fill-color:#634924!important;
+  background:#F5E9D6 url("images/quran-ayah-rosette.svg") center / contain no-repeat!important;
+  border:0!important;border-radius:50%!important;
+  box-shadow:none!important;text-shadow:none!important;
+  white-space:nowrap!important;
+  unicode-bidi:isolate!important;
+}
+body.dark #mushaf #qVerses .quran-text [data-ayah] .ayah-number{
+  background-color:#F5E9D6!important;color:#634924!important;
+}
+/* A compact, readable printed-style folio number, not an empty black strip. */
+body.dark #mushaf #qVerses .quran-reading-page{
+  min-height:0!important;padding-bottom:clamp(12px,2vw,24px)!important;
+}
+body.dark #mushaf #qVerses .reading-page-number{
+  box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:max-content!important;min-width:84px!important;max-width:100%!important;
+  min-height:38px!important;
+  background:#F0E4CF!important;
+  color:#543C20!important;-webkit-text-fill-color:#543C20!important;
+  font-size:18px!important;font-weight:800!important;
+  line-height:1.3!important;
+  margin:10px auto 0!important;padding:6px 16px!important;
+  border:1px solid #B79C71!important;border-radius:21px!important;
+  box-shadow:inset 0 0 0 3px #F9F2E5!important;
+  letter-spacing:0!important;opacity:1!important;
+  text-align:center!important;
+}
+body.dark #mushaf #qVerses .reading-page-number::before,
+body.dark #mushaf #qVerses .reading-page-number::after{
+  content:"❖"!important;display:inline-block!important;
+  font-size:12px!important;color:#9B7B4D!important;
+  margin-inline:8px!important;
+}
+body.dark #mushaf #qVerses .quran-reading-page+.quran-reading-page{
+  border-top:1px solid #D6C6AD!important;
+}
+/* The currently highlighted prayer must not retain a green edge. */
+body.dark #times .prayer-overview #prayers .prayer.active{
+  background:#262D37!important;background-image:none!important;
+  border:1px solid #B9C6D6!important;
+  border-radius:14px!important;
+  box-shadow:inset 0 -3px 0 #CCD5E0!important;
+}
+body.dark #times .prayer-overview #prayers .prayer.active :is(span,strong){
+  color:#FFFFFF!important;opacity:1!important;
+}
+/* Requested exact guidance texts and all adhkar words: fully white. */
+body.dark #times :is(.note,#calendarUpdateStatus,#worldCityStatus,#adjustmentNote),
+body.dark #settings :is(.note,#announcementStatus,#voiceNote),
+body.dark #mushaf .mushaf-heading .eyebrow,
+body.dark #dhikr .adhkar-library .note,
+body.dark #dhikr #adhkarCount{
+  color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;
+  opacity:1!important;
+}
+body.dark #dhikr .adhkar-library .adhkar-card,
+body.dark #dhikr .adhkar-library .adhkar-card :is(h3,p,span,small,summary,a,button,strong),
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-text,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-note,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-repeat,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-source,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-source a,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-actions button,
+body.dark #dhikr .adhkar-library .adhkar-card .adhkar-counter:disabled{
+  color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;
+  opacity:1!important;
+}
+body.dark #dhikr :is(.adhkar-toolbar,.adhkar-library) :is(.note,small,a){
+  color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;opacity:1!important;
+}
+/* A chosen muezzin is represented by one single tick, not the tick plus a waveform. */
+body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-symbol{
+  display:none!important;
+}
+body.dark #voicePickerList .voice-option[aria-pressed="true"] .voice-check{
+  color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;
+}
+/* Bring the privacy/help control into the same centered, space-efficient footer group. */
+body.dark main>footer{
+  display:flex!important;justify-content:center!important;
+  align-items:center!important;flex-wrap:wrap!important;
+  column-gap:clamp(12px,2vw,26px)!important;row-gap:10px!important;
+  padding:16px 12px!important;margin-top:16px!important;
+}
+body.dark main>footer>div{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  gap:10px!important;flex-wrap:wrap!important;
+}
+body.dark main>footer button{
+  min-height:40px!important;padding:8px 13px!important;
+  color:#FFFFFF!important;-webkit-text-fill-color:#FFFFFF!important;
+}
+body.dark main>footer>small,
+body.dark main>footer>span{color:#FFFFFF!important;opacity:1!important;}
+@media(max-width:600px){
+  body.dark #mushaf #qVerses .quran-surah-title{
+    min-height:74px!important;padding:12px 23%!important;margin-bottom:14px!important;
+  }
+  body.dark #mushaf #qVerses .reading-page-number{font-size:17px!important;}
+  body.dark main>footer{padding-bottom:calc(var(--mobile-nav-height,65px) + 16px)!important;}
+}
+/* A tick denotes the ONE selected muezzin only. */
+body.dark #voicePickerList .voice-option[aria-pressed="false"] .voice-check{
+  visibility:hidden!important;opacity:0!important;
+}
+@media(max-width:600px){
+  body.dark main>footer{
+    padding-bottom:24px!important;row-gap:8px!important;
+  }
+}

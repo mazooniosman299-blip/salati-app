@@ -46,11 +46,12 @@ try:
             heading=page.locator('#qVerses .quran-surah-title').first
             ornament=heading.evaluate("""e=>({
               bg:getComputedStyle(e).backgroundColor,
+              background:getComputedStyle(e).backgroundImage,
               border:getComputedStyle(e).borderTopWidth,
-              start:getComputedStyle(e,'::before').content,
-              end:getComputedStyle(e,'::after').content
+              start:getComputedStyle(e,'::before').display,
+              end:getComputedStyle(e,'::after').display
             })""")
-            assert ornament=={'bg':'rgb(233, 221, 201)','border':'2px','start':'""','end':'""'},(width,ornament)
+            assert ornament['border']=='0px' and 'quran-surah-ornament.svg' in ornament['background'] and ornament['start']=='none' and ornament['end']=='none',(width,ornament)
             leaf.screenshot(path=str(out/f'quran-{width}.png'))
             # 3. Active icon has a clear neutral white marker, unlike other icons.
             active=page.locator('header>.site-nav .nav-icon-button.active')
