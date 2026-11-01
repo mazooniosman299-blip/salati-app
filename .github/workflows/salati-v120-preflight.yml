@@ -1,7 +1,7 @@
 name: Salati 1.0.120 mobile geometry and privacy release preflight (NO DEPLOY)
 on:
   push:
-    branches: [release/salati-eight-mobile-v120-20261101]
+    branches: [release/salati-mobile-privacy-v120-20261101]
 permissions:
   contents: read
 jobs:
