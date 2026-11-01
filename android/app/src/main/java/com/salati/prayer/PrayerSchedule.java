@@ -68,10 +68,19 @@ public final class PrayerSchedule {
   // inexact fallback on Activity resume instead.
   if("exact".equals(prefs.getString("nextAlarmMode",""))&&!exactAlarmsAllowed(c))return false;
   return AlarmDeliveryPolicy.preserveOnActivityResume(
-      valid(c,at,prayer),at,now,
+      valid(c,at,prayer),\n      "inexact".equals(prefs.getString("nextAlarmMode","")),at,now,
       (prayer+at).equals(delivered));
  }
  static boolean valid(Context c,long time,String prayer){JSONObject data=config(c);if(!data.optBoolean("enabled"))return false;JSONArray events=data.optJSONArray("events");if(events==null)return false;for(int i=0;i<events.length();i++){JSONObject e=events.optJSONObject(i);if(e!=null&&e.optLong("time")==time&&e.optString("prayer").equals(prayer))return true;}return false;}
+ /** Refuse stale wakeups if a newer prayer time has already passed. */
+ static boolean laterEventAlreadyDue(Context c,long time,long now){
+  JSONArray events=config(c).optJSONArray("events");if(events==null)return false;
+  for(int i=0;i<events.length();i++){
+   JSONObject e=events.optJSONObject(i);
+   if(e!=null&&e.optLong("time")>time&&e.optLong("time")<=now)return true;
+  }
+  return false;
+ }
  static void recordDelivery(Context c,String code,Throwable error){c.getSharedPreferences(PREF,0).edit().putString("deliveryStatus",code).putLong("deliveryAt",System.currentTimeMillis()).putString("deliveryError",error==null?"":android.util.Log.getStackTraceString(error)).apply();if(error!=null)android.util.Log.w("SalatiAlarm",code,error);}
  static String status(Context c){JSONObject d=new JSONObject();try{d.put("ready",ready(c));d.put("notificationsAllowed",notificationsAllowed(c));d.put("exactAlarmsAllowed",exactAlarmsAllowed(c));d.put("enabled",config(c).optBoolean("enabled"));android.content.SharedPreferences speech=c.getSharedPreferences(ArabicSpeech.PREF,0);d.put("announcementStatus",speech.getString("status","idle"));android.content.SharedPreferences saved=c.getSharedPreferences(PREF,0);d.put("nextAlarmTime",saved.getLong("nextAlarmTime",0));d.put("nextAlarmPrayer",saved.getString("nextAlarmPrayer",""));d.put("nextAlarmMode",saved.getString("nextAlarmMode","none"));d.put("inexactFallback",!exactAlarmsAllowed(c)&&saved.getLong("nextAlarmTime",0)>0);d.put("deliveryStatus",saved.getString("deliveryStatus",""));if(Build.VERSION.SDK_INT>=28)d.put("backgroundRestricted",c.getSystemService(ActivityManager.class).isBackgroundRestricted());}catch(Exception ignored){}return d.toString();}
 }
