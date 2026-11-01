@@ -28,8 +28,8 @@ try:
             assert page.locator('body').evaluate("e=>e.classList.contains('dark')")
             page.click('header [data-tab=settings]')
             # Every native switch is a symmetrical capsule with one correctly centered thumb.
-            native=page.locator('#settings input[data-audio-prayer],#fajrAnnouncementToggle')
-            assert native.count()==6,(viewport,'native count')
+            native=page.locator('#settings input[data-audio-prayer]')
+            assert native.count()==5,(viewport,'prayer toggles only; retired Fajr announcement is removed')
             for i in range(native.count()):
                 switch=native.nth(i)
                 measurements=switch.evaluate("""e=>{const r=e.getBoundingClientRect(),t=getComputedStyle(e,'::after');
