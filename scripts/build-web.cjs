@@ -9,17 +9,17 @@ const currentHtml=fs.readFileSync(path.join(root,'dist/index.html'),'utf8');
 const canonicalLinked=currentHtml.includes('href="salati-ui.css"');
 if(canonicalLinked){
  if(!fs.existsSync(path.join(root,'dist/salati-ui.css')))throw Error('Canonical salati-ui.css is missing');
- const linked=[...currentHtml.matchAll(/<link\\s+rel="stylesheet"\\s+href="([^"]+\\.css)"\\s*>/g)].map(m=>m[1]);
+ const linked=[...currentHtml.matchAll(/href="([^"]+[.]css)"/g)].map(m=>m[1]);
  if(linked.join('|')!=='salati-ui.css|/city-pages.css')throw Error('STOP: new CSS overlay was linked; edit salati-ui.css instead');
  console.log('Canonical Salati UI stylesheet enabled; no legacy versioned CSS generated.');
 }else{
  // Legacy bootstrap only. Removed from production after canonical migration.
- const version=target[1].match(/app-v([\\d.]+)\\.js/)[1];
+ const version=target[1].slice(5,-3);
  let legacyHtml=currentHtml;
  for(const name of ['style','light-theme','salati-design','reference-layout']){
   const filename=name+'-v'+version+'.css';
   fs.copyFileSync(path.join(root,'dist',name+'.css'),path.join(root,'dist',filename));
-  const pattern=new RegExp('href="'+name+'(?:-v[\\\\d.]+)?\\\\.css"','g');
+  const pattern=new RegExp('href="'+name+'(?:-v[0-9.]+)?[.]css"','g');
   legacyHtml=legacyHtml.replace(pattern,'href="'+filename+'"');
  }
  fs.writeFileSync(path.join(root,'dist/index.html'),legacyHtml);
