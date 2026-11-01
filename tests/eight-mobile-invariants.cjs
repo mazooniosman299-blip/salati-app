@@ -27,5 +27,6 @@ assert(layout.includes('widget_location" android:gravity="left" android:textAlig
  'Native location text anchored at physical left');
 assert(css.includes('#cancelPrayerAdjustments')&&css.includes('#FFFFFF')&&css.includes('rgba(11,13,17,.94)'),
  'Cancel must be white over a matte dark button');
-assert(css.includes('input[type="checkbox"]'),'Switches must remain unaffected');
+assert(!css.includes('body.dark :is([role="switch"],input[type="checkbox"])'),'No override must touch on/off toggles');
+assert(!css.includes('.adjust-actions,.fields,.mushaf-tools,.audio-buttons'),'Audio play/stop buttons must not get ordinary-button styling');
 console.log('PASS: eight repairs have actual source, cache, widget and accessibility invariants');
