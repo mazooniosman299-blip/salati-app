@@ -30,6 +30,9 @@ jobs:
           npm test
           bash scripts/test-audio-focus.sh
           bash scripts/test-quran-background.sh
+          bash scripts/test-quran-offline.sh
+          bash scripts/test-ads.sh
+          node --check scripts/build-cloudflare-pages.cjs
           python3 tests/legacy-reminder-migration.py
       - name: Install Chromium for actual UI/upgrade verification
         run: |
