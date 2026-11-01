@@ -20,11 +20,13 @@ assert.equal(attr(stripDrawable,'stroke','width'),'0.7dp');
 assert.equal(attr(stripDrawable,'corners','radius'),'28dp');
 assert.equal(attr(widgetBg,'stroke','color'),'#16FFFFFF','Overall widget must NOT show a strong second outer outline');
 assert(layout.includes('android:layout_height="56dp" android:orientation="horizontal" android:background="@drawable/widget_glass_strip"'),'Keep all six prayers on original one row with compact 56dp reference geometry');
+assert(layout.includes('android:paddingLeft="4dp" android:paddingTop="6dp" android:paddingRight="4dp"'),'Use nearly full width inside launcher cell');
 assert(layout.includes('android:paddingBottom="0dp"'),'No empty area below strip in preview XML');
 assert(layout.includes('android:layout_marginBottom="56dp"'),'Original mosque image must end just above compact strip, without new blank region');
 assert(layout.includes('android:scaleType="centerCrop"'),'Original mosque photo must fill widget image instead of leaving letterbox gaps');
 assert(layout.includes('android:gravity="top" android:baselineAligned="false"'),'Next-prayer/date group must start at top instead of floating midway');
 assert(controller.includes('views.setViewPadding(R.id.widget_card,inset,inset,inset,0)'),'Native widget dynamic padding must not reintroduce bottom gap');
+assert(controller.includes('int inset=Math.round((compact?2:4)'),'Native RemoteViews must not reintroduce 10dp side gutters');
 assert(controller.includes('height-inset-56-8'),'Actual date layout must reserve exact same 56dp strip, not stale 77dp');
 const keys=['fajr','sunrise','dhuhr','asr','maghrib','isha'];
 for(const key of keys){
@@ -37,7 +39,7 @@ for(const key of keys){
  assert(time.includes('android:minHeight="22dp"')&&time.includes('android:minWidth="38dp"'),'Only time receives compact 38x22dp, allowing full five-character Dhuhr time');
  assert(time.includes('android:paddingLeft="2dp"')&&time.includes('android:paddingRight="2dp"'),'Clock is padded inside its own pill');
  assert(!label.includes('android:background='),'Name must remain OUTSIDE selection capsule');
- assert(time.includes('android:textSize="12sp"'),'Text must fit FULL 11:55 inside six narrow widget columns');
+ assert(time.includes('android:textSize="13sp"'),'Larger 13sp time must stay intact in six narrow widget columns');
  assert(time.includes('android:ellipsize="none"'),'Never abbreviate the midday time as 11:...');
  const start=layout.indexOf('android:id="@+id/widget_'+key+'"');
  const end=layout.indexOf('/>',start);
