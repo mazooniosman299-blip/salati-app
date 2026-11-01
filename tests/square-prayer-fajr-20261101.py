@@ -28,8 +28,8 @@ try:
     active:el.classList.contains('active'),border:getComputedStyle(el).borderColor
    }))""")
    assert len(tiles)==6,(width,tiles)
-   assert sum(c['radius']=='8px' for c in tiles if c['active'])==1,(width,'Selected badge matches square black glass',tiles)
-   assert all(c['radius']=='8px' for c in tiles if not c['active']),(width,'Unselected cells are square, not rounded pills',tiles)
+   assert sum(c['radius']=='24px' for c in tiles if c['active'])==1,(width,'Selected capsule matches rounded reference',tiles)
+   assert all(c['radius']=='24px' for c in tiles if not c['active']),(width,'Unselected cells match rounded capsules',tiles)
    assert any(c['bg']!='rgba(0, 0, 0, 0)' for c in tiles),(width,'Must preserve original fill',tiles)
    if width in (390,768):page.locator('#prayers').screenshot(path=str(out/f'prayers-{width}.png'))
    page.click('[data-tab=settings]')
@@ -39,6 +39,6 @@ try:
    assert not errors,(width,errors)
    page.close()
   browser.close()
- print('PASS: five widths, 6 individual square prayer tiles, unchanged dark fills and ordinary Fajr adhan, removed old Fajr controls')
+ print('PASS: five widths, 6 individual rounded reference prayer capsules, unchanged dark fills and ordinary Fajr adhan, removed old Fajr controls')
 finally:
  server.shutdown()
