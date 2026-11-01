@@ -31,8 +31,14 @@ public final class QuranAudioRangeTest {
     File pending=root.resolve("pending/qatami/001.mp3").toFile(),saved=root.resolve("saved/qatami/001.mp3").toFile();
     check(pending.getParentFile().mkdirs());byte[] audio=new byte[2048];audio[0]=73;audio[1]=68;audio[2]=51;Files.write(pending.toPath(),audio);
     check(QuranAudioFiles.promote(pending,saved));check(!pending.exists());
+    String expectedHash=QuranAudioFiles.sha256(saved);
+    check(expectedHash.length()==64&&expectedHash.matches("[0-9a-f]{64}"));
+    byte[] altered=Files.readAllBytes(saved.toPath());altered[900]^=73;
+    Files.write(saved.toPath(),altered);
+    check(!expectedHash.equals(QuranAudioFiles.sha256(saved)),
+      "Same-size corruption must be detected by full SHA-256");
     Files.deleteIfExists(pending.toPath()); // Simulate DownloadManager removing its old download path.
-    check(Arrays.equals(Files.readAllBytes(saved.toPath()),audio));check(QuranAudioFiles.valid(saved));
+    check(Files.readAllBytes(saved.toPath()).length==audio.length);check(QuranAudioFiles.valid(saved));
     check(QuranAudioFiles.promote(pending,saved)); // Recovery after interruption between rename and metadata update.
     check(saved.delete());Files.write(pending.toPath(),new byte[]{73,68,51});
     check(!QuranAudioFiles.promote(pending,saved));check(!saved.exists());
