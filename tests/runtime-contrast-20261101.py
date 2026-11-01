@@ -17,7 +17,7 @@ contrast_js=r"""selector=>{
  const el=document.querySelector(selector);
  if(!el)return {selector,error:'selector missing'};
  const val=getComputedStyle(el);
- const px=v=>{let c=v.match(/[\\d.]+/g);if(!c)return null;let z=c.map(Number);return z.length>=3?[z[0],z[1],z[2],z.length>3?z[3]:1]:null};
+ const px=v=>{let c=v.match(/[0-9.]+/g);if(!c)return null;let z=c.map(Number);return z.length>=3?[z[0],z[1],z[2],z.length>3?z[3]:1]:null};
  const blend=(top,bottom)=>top.slice(0,3).map((x,i)=>x*top[3]+bottom[i]*(1-top[3]));
  let bg=[11,14,19],layers=[],node=el;
  while(node&&node.nodeType===1){
