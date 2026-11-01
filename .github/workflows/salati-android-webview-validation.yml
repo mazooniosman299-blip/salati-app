@@ -1,0 +1,90 @@
+name: Salati — Android system WebView + CSS integrity final preview gate
+on:
+  push:
+    branches:
+      - preview/salati-css-deconflict-20261102
+    paths:
+      - .github/workflows/salati-android-webview-validation.yml
+      - tests/android-webview-pixel-qa-20261102.py
+      - tests/css-component-owner-audit.py
+      - tests/canonical-css-maintainability.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-real-webview-qa-20261102
+  cancel-in-progress: true
+jobs:
+  android-system-webview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Revalidate worldwide times, all original JS tests and CSS conflict budgets
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          python3 -m pip install --quiet tinycss2 pillow
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-component-owner-audit.py
+      - name: Compile actual Android WebView preview APK
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          cd ..
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "com.salati.prayer.preview"
+          sha256sum "$APK" > reports-apk-sha256.txt
+      - name: Boot Android 15 emulator, install, navigate in real system WebView
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            mkdir -p reports/android-webview-20261102
+            adb shell wm size 432x960
+            adb shell wm density 160
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell pm grant com.salati.prayer.preview android.permission.POST_NOTIFICATIONS || true
+            adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_FINE_LOCATION || true
+            adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_COARSE_LOCATION || true
+            adb shell am start -n com.salati.prayer.preview/com.salati.prayer.MainActivity
+            sleep 14
+            adb exec-out screencap -p > reports/android-webview-20261102/times.png
+            adb shell input tap 325 880
+            sleep 6
+            adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
+            adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
+            python3 tests/android-webview-pixel-qa-20261102.py
+            if grep -E 'FATAL EXCEPTION.*com.salati.prayer.preview|Process: com.salati.prayer.preview.*FATAL EXCEPTION' reports/android-webview-20261102/logcat.txt; then exit 1; fi
+      - name: Capture native device screenshot and APK evidence, including failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-android-system-webview-css-tested
+          path: |
+            reports/android-webview-20261102/
+            reports-apk-sha256.txt
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
