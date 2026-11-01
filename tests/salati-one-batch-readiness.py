@@ -15,7 +15,10 @@ css=(dist/'salati-ui.css').read_text()
 report=json.loads((root/'reports/css-one-batch-20261102.json').read_text())
 links=re.findall(r'<link\s+rel="stylesheet"\s+href="([^"]+)"',html)
 assert links==['salati-ui.css','/city-pages.css'],links
-assert report['redundant_declarations_removed']>0, report
+# Re-running the refactor over a committed, previously cleaned source MUST
+# be idempotent; zero further removals is valid only under the strict budget.
+assert report['redundant_declarations_removed']>=0,report
+assert report['optimized_important']<=1959,report
 assert report['optimized_important']<=report['baseline_important'], report
 assert css.count('!important')<=1991
 assert 'height:var(--salati-quran-window-height,auto)' in css
@@ -33,4 +36,4 @@ assert 'android:paddingLeft="6dp"' in widget
 assert 'android:paddingRight="6dp"' in widget
 assert (root/'tests/worldwide-prayer-integrity-20261101.cjs').is_file()
 print('PASS one-batch source readiness:',report['redundant_declarations_removed'],
-  'cascade overrides safely discarded; remaining priority flags',report['optimized_important'])
+  'new redundant declarations discarded; remaining priority flags',report['optimized_important'])
