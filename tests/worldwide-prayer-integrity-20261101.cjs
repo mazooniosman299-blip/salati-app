@@ -17,7 +17,7 @@ function check(state,now,label){
  let last=-Infinity;
  for(const p of tomorrow.slice(0,6)){
   if(!Number.isFinite(+p.time)){unknown++;continue;}
-  assert(+p.time>last,label+' chronological');
+  assert(+p.time>last,label+' chronological: '+tomorrow.slice(0,6).map(x=>x.key+'='+String(x.time)).join(', '));
   last=+p.time;
  }
  const parts=calendarParts(now,zone);
