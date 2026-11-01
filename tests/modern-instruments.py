@@ -30,7 +30,7 @@ with sync_playwright() as p:
  page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:24.7136,lon:46.6753,zone:'Asia/Riyadh',name:'الرياض',locationSet:true,locationMode:'manual',method:'Auto'}));")
  errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(f'http://127.0.0.1:{server.server_port}',wait_until='domcontentloaded')
- page.wait_for_selector('#fajrAnnouncementToggle',state='attached')
+ assert page.locator('#fajrAnnouncementToggle,#previewFajrPhrase').count()==0, 'Retired Fajr controls must be absent'
  page.wait_for_selector('.nav-selection',state='visible')
  marker=page.locator('.nav-selection');start=marker.bounding_box()['x']
  page.click('[data-tab=settings]');page.wait_for_timeout(50)
