@@ -1,0 +1,87 @@
+name: Salati — remove duplicate canonical CSS declarations with visual parity
+on:
+  push:
+    branches:
+      - preview/salati-css-deconflict-20261102
+    paths:
+      - .github/workflows/salati-css-deconflict-preview.yml
+      - scripts/optimize-css-cascade.py
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: salati-css-deconflict-final
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test existing Quran, prayer, controls and settings sources
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+      - name: Prune duplicate exact-selector declarations from REAL authored CSS
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright pillow
+          python3 scripts/optimize-css-cascade.py
+      - name: Visual and computed-style parity with baseline on all six tabs
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/preview-css-root-review-20261101.py
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-component-owner-audit.py
+      - name: Validate clean Android package from audited canonical CSS
+        run: |
+          rm -f dist/salati-ui-baseline.css
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          cd ..
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"' >/dev/null
+          if unzip -l "$APK" | grep -E 'assets/www/(salati-ui-baseline|design-restoration|preview-four-ui-changes|active-reference-nav|reference-layout-v|light-theme-v)'; then
+            echo 'Old stylesheet in app' >&2; exit 1
+          fi
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F 'com.salati.prayer.preview'
+          sha256sum "$APK"
+      - name: Persist inspected canonical source on preview branch only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/salati-ui.css
+          if ! git diff --cached --quiet; then
+            git commit -m "refactor(css): remove redundant selector values after 36-state parity"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+      - name: Publish QA reports and preview APK as workflow artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-deconflicted-css-and-apk
+          path: |
+            reports/css-cascade-deconflict.json
+            reports/css-source-maintainability.json
+            reports/css-debt-20261101/
+            reports/css-root-review-20261101/
+            android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 7
+          if-no-files-found: warn
