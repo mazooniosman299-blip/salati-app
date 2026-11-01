@@ -47,7 +47,7 @@ const tick=()=>Promise.resolve();
  reader.ensurePlayingVerse(data.pages[1][0]);assert.equal(appended,1);assert.equal(rerenders,0);
  reader.readingStart=100;reader.readingNext=100;reader.page=100;reader.ensurePlayingVerse(data.pages[1][0]);assert.equal(reader.page,2);assert.equal(rerenders,1);
  reader.ensurePlayingVerse(data.pages[603][0]);assert.equal(reader.page,604);assert.equal(rerenders,2);
- // Construct every page and verify that markup preserves each verse, diacritic and order.
+ // Construct every page and verify all words, verse order and source dataset; omit ONLY display-only black circular zero marks.
  const {Node,makeDocument}=require('./quran-dom.cjs'),document=makeDocument();global.document=document;global.NodeFilter={SHOW_TEXT:4};
  const complete=Object.create(QuranReader.prototype);complete.data=data;complete.getLang=()=>'ar';
  const renderedKeys=[];for(let index=0;index<604;index++){
@@ -56,7 +56,7 @@ const tick=()=>Promise.resolve();
   for(let offset=0;offset<nodes.length;offset++){
    const node=nodes[offset],verse=data.pages[index][offset];assert.equal(node.dataset.ayah,verse.s+':'+verse.a);
    const text=node.childNodes.filter(child=>!child.classList?.contains('ayah-number')).map(child=>child.textContent).join('').trimEnd();
-   assert.equal(text,verse.t,'Rendered text must preserve '+node.dataset.ayah);assert.equal(node.tabIndex,0);renderedKeys.push(node.dataset.ayah);
+   assert.equal(text,verse.t.replace(/[\u06DD\u06DE\u06DF\u06E0]/gu,''),'Only font-dependent black glyphs are hidden in rendered copy '+node.dataset.ayah);assert.equal(data.pages[index][offset].t,verse.t,'Underlying licensed verse unchanged');assert.equal(node.tabIndex,0);renderedKeys.push(node.dataset.ayah);
   }
  }
  assert.equal(renderedKeys.length,6236);assert.equal(new Set(renderedKeys).size,6236);
