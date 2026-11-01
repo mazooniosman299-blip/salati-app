@@ -82,9 +82,9 @@ function collectScriptHashes(dir){
   if(item.isDirectory()){collectScriptHashes(full);continue;}
   if(!item.name.endsWith('.html'))continue;
   const html=fs.readFileSync(full,'utf8');
-  for(const match of html.matchAll(/<script\\b([^>]*)>([\\s\\S]*?)<\\/script>/gi)){
+  for(const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)){
    const attrs=match[1],content=match[2];
-   if(/\\bsrc\\s*=/.test(attrs)||/\\btype\\s*=\\s*["']application\\/ld\\+json["']/i.test(attrs)||!content.trim())continue;
+   if(/\bsrc\s*=/.test(attrs)||/\btype\s*=\s*["']application\/ld\+json["']/i.test(attrs)||!content.trim())continue;
    inlineHashes.add("'sha256-"+crypto.createHash('sha256').update(content).digest('base64')+"'");
   }
  }
