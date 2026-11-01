@@ -448,3 +448,16 @@ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-times {
 body.dark #mushaf:not([hidden]) #qSheet {
   padding-bottom:20px!important;
 }
+
+/* Keep Stop in its own 40px cell even when inactive. Previously legacy CSS
+   used display:none for :disabled and the second row jumped unexpectedly. */
+body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop,
+body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop:disabled {
+  display:grid!important;
+  place-items:center!important;
+  box-sizing:border-box!important;
+  opacity:1!important;
+}
+body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop:disabled {
+  opacity:.5!important;
+}
