@@ -4,7 +4,8 @@ const read=p=>fs.readFileSync(p,'utf8');
 const html=read('dist/index.html'),css=read('dist/eight-mobile-root-fixes-20261101.css');
 const quran=read('quran-controller.js'),clean=read('dist/quran-mushaf-markers-20261101.js');
 const app=read('app-source.js');
-assert(html.includes('href="eight-mobile-root-fixes-20261101.css"'),'New rules loaded AFTER old CSS');
+const migrated=html.includes('href="salati-ui.css"');
+assert(migrated?read('dist/salati-ui.css').includes('overflow-y:auto!important'):html.includes('href="eight-mobile-root-fixes-20261101.css"'),'Mobile containment must be in active stylesheet');
 for(const ch of ['06DD','06DE','06DF','06E0']){
  assert(quran.includes('\\u'+ch),'Source Quran renderer must sanitize '+ch);
  assert(clean.includes('\\u'+ch),'Cached Quran DOM repair must sanitize '+ch);
@@ -20,7 +21,7 @@ assert(css.includes('overflow-y:auto!important')&&css.includes('margin-bottom:ca
  'Main content must have independent viewport above nav instead of beneath nav');
 assert(!css.includes('body.dark .hero{'),'Do not restyle homepage hero');
 const contract=read('dist/mobile-layout-contract-20261101.css');
-assert(html.includes('href="mobile-layout-contract-20261101.css"')&&html.indexOf('href="mobile-layout-contract-20261101.css"')>html.indexOf('href="eight-mobile-root-fixes-20261101.css"'));
+assert(migrated?read('dist/salati-ui.css').includes('border-radius:24px'):html.includes('href="mobile-layout-contract-20261101.css"')&&html.indexOf('href="mobile-layout-contract-20261101.css"')>html.indexOf('href="eight-mobile-root-fixes-20261101.css"'));
 assert(contract.includes('border-radius:24px')&&contract.includes('#2D3D56'),'Blue-slate rounded reference prayer selection must be final CSS');
 const widget=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 assert(widget.includes('android:radius="100dp"')&&widget.includes('#FF3D3D3D'),'Native HOME-SCREEN widget time-only capsule matches approved reference');
