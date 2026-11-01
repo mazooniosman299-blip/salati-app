@@ -12,7 +12,7 @@ on:
       - scripts/build-web.cjs
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: salati-css-semantic-audit
   cancel-in-progress: true
@@ -59,6 +59,25 @@ jobs:
           assert (Path('dist')/'salati-ui.css').exists()
           print('PASS: measured CSS pruning and visual parity',s)
           PY
+      - name: Rebuild and run all original contract tests against the canonical UI source
+        run: |
+          # Historical style-source tests still inspect their archived source;
+          # restore them in the ephemeral runner, but never re-link them.
+          git ls-files -- 'dist/*.css' | xargs -r git restore --
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Persist tested canonical CSS, homepage and offline manifest to PREVIEW branch only
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add dist/salati-ui.css dist/index.html dist/sw.js
+          if ! git diff --cached --quiet; then
+            git commit -m "refactor(css): promote 1 audited canonical stylesheet for Salati preview"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
       - name: Preserve audit and actual app screenshots
         if: always()
         uses: actions/upload-artifact@v4
