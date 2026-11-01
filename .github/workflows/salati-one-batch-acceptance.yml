@@ -94,7 +94,12 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: pixel_6
-          emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none
+          # Pixel 6's default userdata partition (~7.4 GB) exceeds the
+          # free space on ubuntu-latest after SDK + APK build (~5.9 GB).
+          # A 2 GB writable userdata partition is sufficient for our QA APK.
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
           disable-animations: true
           script: bash scripts/android-webview-smoke.sh
       - name: Commit verified source changes to PREVIEW branch only
