@@ -1,0 +1,47 @@
+name: Build installable photo-reference graphite widget preview APK (NO PRODUCTION DEPLOY)
+on:
+  push:
+    branches:
+      - preview/widget-reference-graphite-20261101
+permissions:
+  contents: read
+jobs:
+  widget-preview-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Verify widget and build preview assets
+        run: |
+          npm ci
+          npm run build
+          npm test
+          python3 scripts/prepare-android.py
+      - name: Compile isolated Android widget preview
+        working-directory: android
+        run: bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify distinct package so existing Salati is never replaced
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          unzip -l "$APK" | grep -F 'assets/www/index.html'
+          mkdir -p reports/preview-apk
+          cp "$APK" reports/preview-apk/salati-widget-reference-preview.apk
+          sha256sum reports/preview-apk/salati-widget-preview-only.apk > reports/preview-apk/sha256.txt
+          echo 'THIS IS A SEPARATE PREVIEW APP. NOT SIGNED BY PRODUCTION KEY.' > reports/preview-apk/README.txt
+      - name: Offer side-by-side test APK with no public deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-widget-reference-graphite-standalone-apk
+          path: reports/preview-apk/
+          retention-days: 3
