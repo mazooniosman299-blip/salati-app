@@ -23,7 +23,7 @@ assert 'id="mushafPlayerSlot"' in html and html.index('id="qSheet"')<html.index(
 assert 'nav-icon-button.active' in css
 assert 'grid-template-columns:repeat(6,minmax(0,1fr))' in css
 assert 'active-reference-nav-20261101.css' not in html
-assert not any(root.glob('dist/style-v1.0.10?.css'))
+assert not re.search(r'<link[^>]+href=["\'][^"\']*style-v1\.0\.',html), 'Historical CSS must not be loaded by runtime'
 assert "'./salati-ui.css'" in (dist/'sw.js').read_text()
 info=(root/'android/app/src/main/res/xml/prayer_widget_info.xml').read_text()
 widget=(root/'android/app/src/main/res/layout/prayer_widget.xml').read_text()
