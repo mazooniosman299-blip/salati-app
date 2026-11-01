@@ -1,0 +1,99 @@
+name: Salati — three user-screenshot fixes (TEST AND PREVIEW ONLY)
+on:
+  push:
+    branches:
+      - preview/three-ui-polish-20261101
+    paths:
+      - .github/workflows/salati-three-polish-preview.yml
+permissions:
+  contents: write
+concurrency:
+  group: salati-four-fixed-real-ui-preview
+  cancel-in-progress: true
+jobs:
+  build-test-and-publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exactly the existing Salati app, run original regression suite plus native widget assertions
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/widget-active-outline.cjs
+      - name: Test requested four changes as REAL mobile DOM, not re-rendered mockup
+        run: |
+          python3 -m pip install --quiet playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/preview-four-ui-changes-browser.py
+          python3 tests/preview-three-polish-qa.py
+      - name: Build independent original-UI Android APK with same app code
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify separate preview package and four regression fixes in real WebView
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          unzip -p "$APK" assets/www/index.html | grep -F 'preview-four-ui-changes-20261101.css'
+          unzip -p "$APK" assets/www/index.html | grep -F 'id="mushafPlayerSlot"' >/dev/null
+          unzip -l "$APK" | grep -F 'assets/www/preview-sample-location-20261101.js'
+          unzip -p "$APK" assets/www/preview-four-ui-changes-20261101.css | grep -F 'position:fixed!important'
+          unzip -p "$APK" res/layout/prayer_widget.xml >/dev/null 2>&1 || true
+          unzip -p "$APK" assets/www/preview-four-ui-changes-20261101.css | grep -F 'grid-template-columns:repeat(6,minmax(0,1fr))'
+          unzip -p "$APK" assets/www/app-v1.0.109.js | grep -qv 'تُحسب المواقيت على جهازك دون إرسال موقعك'
+          mkdir -p /tmp/real-salati-four-ui-preview
+          cp "$APK" /tmp/real-salati-four-ui-preview/salati-three-polish-real-app-preview.apk
+          sha256sum /tmp/real-salati-four-ui-preview/salati-three-polish-real-app-preview.apk
+      - name: Preserve phone screenshots for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-three-polish-screenshots
+          path: |
+            reports/four-regression-fixes/
+            reports/three-polish-20261101/
+          if-no-files-found: warn
+          retention-days: 5
+      - name: Publish stable direct-download GitHub prerelease (NEVER production)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="preview-salati-three-polish-20261101"
+          FILE="/tmp/real-salati-four-ui-preview/salati-three-polish-real-app-preview.apk"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "صلاتي — معاينة إصلاح الخط والمشغّل وعرض الويجدت" \
+              --prerelease \
+              --notes "For review only: larger lower SIX prayer tiles, unclipped Quran-only media transport with real seek and timers, native widget requests five launcher columns. Original mosque and existing dark style retained. Different package com.salati.prayer.preview; official Salati app, signed APK and Cloudflare website are unchanged. Preview is debug-signed and NOT an update to the main app."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,isPrerelease,url > /tmp/release-verify.json
+          python3 - <<'PY'
+          import json,os
+          p='/tmp/real-salati-four-ui-preview/salati-three-polish-real-app-preview.apk'
+          j=json.load(open('/tmp/release-verify.json'))
+          assert j['isPrerelease'] is True
+          assert any(a['name']==os.path.basename(p) and a['size']==os.stat(p).st_size for a in j['assets'])
+          print('PASS: full-original-app tested preview APK is available as a verified GitHub Release asset')
+          PY
