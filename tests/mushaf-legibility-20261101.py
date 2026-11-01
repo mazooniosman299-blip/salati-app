@@ -32,12 +32,18 @@ try:
         before:getComputedStyle(e,'::before').display})""")
       assert 'quran-surah-ornament.svg' in head['background'] and head['border']=='0px' and head['before']=='none',(width,'surah ornament',head)
       mark=page.locator('#qVerses .ayah-number').first
+      # Quran pages use content-visibility:auto to avoid rendering 604 pages.
+      # Scroll into a real reading viewport before checking rendered text.
+      mark.scroll_into_view_if_needed()
+      mark.wait_for(state='visible')
       number=mark.inner_text().strip()
       style=mark.evaluate("""e=>({background:getComputedStyle(e).backgroundImage,
         color:getComputedStyle(e).color,border:getComputedStyle(e).borderTopWidth})""")
       assert number and all(c in '٠١٢٣٤٥٦٧٨٩' for c in number),(width,'ayah number',number)
       assert 'quran-ayah-rosette.svg' in style['background'] and style['border']=='0px',(width,'rosette',style)
       page_number=page.locator('#qVerses .reading-page-number').first
+      page_number.scroll_into_view_if_needed()
+      page_number.wait_for(state='visible')
       no=page_number.inner_text().strip()
       page_style=page_number.evaluate("""e=>({color:getComputedStyle(e).color,
         font:getComputedStyle(e).fontSize,border:getComputedStyle(e).borderTopWidth,
