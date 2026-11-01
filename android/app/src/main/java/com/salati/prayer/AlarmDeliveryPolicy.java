@@ -11,6 +11,6 @@ public final class AlarmDeliveryPolicy {
  /** Never cancel a due PendingIntent during Activity resume. */
  public static boolean preserveOnActivityResume(boolean valid,
       long scheduled,long now,boolean alreadyDelivered){
-  return !alreadyDelivered && now>=scheduled && mayPlay(valid,scheduled,now);
+  return !alreadyDelivered && now >= scheduled && mayPlay(valid,scheduled,now);
  }
 }
