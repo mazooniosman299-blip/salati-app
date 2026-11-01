@@ -67,10 +67,10 @@ try:
             })""")
             assert style["bg"]=="rgb(17, 22, 27)" and style["border"]=="rgb(76, 88, 99)",(width,style)
             assert style["width"]=="1px" and style["opacity"]=="1" and style["filter"]=="none",(width,style)
-            heading=page.locator("#headingValue").evaluate(
-                "e=>({bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor,color:getComputedStyle(e).color})"
-            )
-            assert heading=={"bg":"rgb(10, 14, 18)","border":"rgb(101, 113, 125)","color":"rgb(255, 255, 255)"},(width,heading)
+            assert page.locator("#headingValue").count()==0,(width,"remove obsolete phone heading")
+            button=page.locator("#qibla .qibla-reading #compassEnable")
+            assert button.count()==1 and button.is_visible(),(width,"Qibla button replaces heading")
+            assert button.evaluate("e=>getComputedStyle(e).color")=="rgb(255, 255, 255)"
             bearing.screenshot(path=str(evidence/f"qibla-{width}.png"))
 
             # Every country and automatic option uses the SAME SVG, centered
