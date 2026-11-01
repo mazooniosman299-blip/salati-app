@@ -23,11 +23,13 @@ try:
    page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
    assert page.locator('link[href="mobile-layout-contract-20261101.css"]').count()==1
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6")
-   cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
+   cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,height:e.getBoundingClientRect().height,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
    assert all(c['radius']=='24px' for c in cells),(width,'reference capsule radius',cells)
    assert next(c for c in cells if c['active'])['bg']=='rgb(53, 74, 103)',(width,'blue-slate reference selected',cells)
    assert all(c['x']>=0 and c['right']<=width+1 for c in cells),(width,'prayer cells must fit')
+   if width<=760:
+    assert all((c['right']-c['x'])/c['height']>=1.55 for c in cells),(width,'prayer cells must be horizontal capsules resembling the supplied 11:55 image',cells)
    for tab in ['settings','times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
