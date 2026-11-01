@@ -20,7 +20,7 @@ public final class PrayerWidget extends AppWidgetProvider{
   android.util.DisplayMetrics metrics=c.getResources().getDisplayMetrics();
   int height=options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT,170),width=options.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH,280);
   int inset=height<220?6:10;
-  int available=Math.max(1,Math.round((height-2*inset-54-8)*metrics.density));
+  int available=Math.max(1,Math.round((height-2*inset-77-8)*metrics.density));
   int textWidth=Math.max(1,(int)Math.floor((width-2*inset)*1.1f/2.7f*metrics.density));
   android.text.TextPaint paint=new android.text.TextPaint(android.graphics.Paint.ANTI_ALIAS_FLAG);
   paint.setTypeface(android.graphics.Typeface.create("sans-serif-medium",android.graphics.Typeface.BOLD));
