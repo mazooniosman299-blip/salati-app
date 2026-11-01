@@ -66,7 +66,7 @@ try:
      p.locator(f'header>.site-nav button[data-tab="{tab}"]').click()
      p.wait_for_function("(tab)=>document.querySelector('header>.site-nav button.active')?.dataset.tab===tab",arg=tab)
      if tab=='mushaf':
-      p.wait_for_function("document.querySelector('[data-ayah=\\"1:7\\"]')!==null",timeout=20000)
+      p.wait_for_function("document.getElementById('qVerses')?.textContent?.trim()?.length>35",timeout=20000)
       p.wait_for_function("!!document.getElementById('qVerses').style.getPropertyValue('--salati-quran-window-height')",timeout=15000)
      snapshots.append(snap(p,tab))
     l,r=snapshots
