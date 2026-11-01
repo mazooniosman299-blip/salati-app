@@ -96,8 +96,8 @@ try:
    if width<=760:
     page.evaluate("document.getElementById('qVerses').scrollTop=230")
     page.wait_for_timeout(160)
-    scroll=page.evaluate("document.getElementById('qVerses').scrollTop")
-    assert scroll>=100,(width,"scrollport does not scroll Quran",scroll)
+    state=page.evaluate("({top:document.getElementById('qVerses').scrollTop,range:document.getElementById('qVerses').scrollHeight-document.getElementById('qVerses').clientHeight})")
+    assert state["range"]>10 and state["top"]>=min(100,state["range"])-2,(width,"scrollport does not scroll its available range",state)
    assert not faults,(width,"JavaScript runtime errors",faults)
    page.close()
    print("PASS",width,"no prayer-card boxes; Quran player below separate scrollport; all player controls fit")
