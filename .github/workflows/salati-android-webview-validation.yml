@@ -60,7 +60,7 @@ jobs:
           emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none
           disable-animations: true
           script: |
-            set -euo pipefail
+            set -eu
             mkdir -p reports/android-webview-20261102
             adb shell wm size 432x960
             adb shell wm density 160
