@@ -39,14 +39,18 @@ jobs:
           sudo ln -sf "$BROWSER" /usr/bin/chromium
       - name: Test actual 390x844 nav clearance + stored user upgrade
         run: python3 tests/upgrade-mobile-alarms-regression-20261101.py
-      - name: Retest other UI and Quran selections for regressions
-        run: |
-          python3 tests/four-ui-screenshot-regressions-20261101.py
-          python3 tests/modern-instruments.py
-          python3 tests/control-qibla-20261101.py
-          python3 tests/offline-navigation.py
-          python3 tests/square-prayer-fajr-20261101.py
-          python3 tests/eight-mobile-user-regressions-20261101.py
+      - name: Check original Quran ornament, Qibla, 251 location icons and voice picker
+        run: python3 tests/four-ui-screenshot-regressions-20261101.py
+      - name: Check modern six-tab UI and ordinary button contrast
+        run: python3 tests/modern-instruments.py
+      - name: Check native switch controls and Qibla action relocation
+        run: python3 tests/control-qibla-20261101.py
+      - name: Check all offline navigation and back behavior
+        run: python3 tests/offline-navigation.py
+      - name: Check exact prayer badge on five handset widths
+        run: python3 tests/square-prayer-fajr-20261101.py
+      - name: Accept all eight screenshots, Quran reopen and safe mobile scrollport
+        run: python3 tests/eight-mobile-user-regressions-20261101.py
       - name: Archive visual and migration proof
         if: always()
         uses: actions/upload-artifact@v4
