@@ -71,15 +71,34 @@ try:
    assert rect['display']=='flex',(width,'timeline contents causes clipped controls',rect)
    assert slot['l']>=0 and slot['r']<=width+1,(width,'player outside phone',rect)
    assert slot['b']<=rect['nav']+2,(width,'player overlaps app nav',rect)
-   for id in ('qStop','qTransport','qSeek','qElapsed','qDuration'):
+   # Before playback the legacy STOP button is disabled/hidden. It must not
+   # occupy a blank column; once enabled, all THREE controls fit separately.
+   assert rect['qStop']['w']==0,(width,'disabled stop unexpectedly takes space',rect)
+   for id in ('qTransport','qSeek','qElapsed','qDuration'):
     r=rect[id]
     assert r['w']>0 and r['h']>0,(width,id,'invisible',rect)
     assert r['l']>=slot['l']-1 and r['r']<=slot['r']+1,(width,id,'clipped sideways',rect)
     assert r['t']>=slot['t']-1 and r['b']<=slot['b']+1,(width,id,'clipped vertically',rect)
    assert rect['qSeek']['w']>=50,(width,'seek track was crushed',rect)
-   assert rect['qStop']['r']+2<=rect['qTransport']['l'],(width,'buttons overlap',rect)
    assert rect['qTransport']['r']+2<=rect['qSeek']['l'],(width,'buttons cover seek track',rect)
-   page.screenshot(path=str(out/f'player-{width}.png'))
+   assert rect['qElapsed']['r']+5<=rect['qDuration']['l'],(width,'elapsed and duration overlap',rect)
+   page.screenshot(path=str(out/f'player-idle-{width}.png'))
+   page.locator('#qStop').evaluate('e=>e.disabled=false')
+   active=page.evaluate("""()=>{
+     const ids=['mushafPlayerSlot','qStop','qTransport','qSeek','qElapsed','qDuration'];
+     const all={};
+     for(const id of ids){const r=document.getElementById(id).getBoundingClientRect();all[id]={l:r.left,t:r.top,r:r.right,b:r.bottom,w:r.width,h:r.height}}
+     return all;
+   }""")
+   assert active['qStop']['w']>=30,(width,'active stop invisible',active)
+   assert active['qStop']['r']+2<=active['qTransport']['l'],(width,'stop and play overlap',active)
+   assert active['qTransport']['r']+2<=active['qSeek']['l'],(width,'play and seek overlap',active)
+   for id in ('qStop','qTransport','qSeek','qElapsed','qDuration'):
+    r=active[id]
+    assert r['l']>=slot['l']-1 and r['r']<=slot['r']+1,(width,id,'active clipped sideways',active)
+    assert r['t']>=slot['t']-1 and r['b']<=slot['b']+1,(width,id,'active clipped vertically',active)
+   assert active['qElapsed']['r']+5<=active['qDuration']['l'],(width,'active timers overlap',active)
+   page.screenshot(path=str(out/f'player-active-{width}.png'))
    assert not errors,(width,'javascript errors',errors)
    page.close()
    print('PASS',width,'legible lower prayer row, player buttons/timeline fully visible, 5-column native widget manifest')
