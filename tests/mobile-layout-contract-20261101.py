@@ -32,10 +32,11 @@ try:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
     if width<=760:
-     settingsBox=page.locator('#settings #preferences>.fields').evaluate("e=>({display:getComputedStyle(e).display,cols:getComputedStyle(e).gridTemplateColumns,latY:document.querySelector('#lat').getBoundingClientRect().y,lonY:document.querySelector('#lon').getBoundingClientRect().y})")
-     assert settingsBox['display']=='grid',(width,'settings fields must be grid; grid-template-columns on flex is inert',settingsBox)
-     if width<=430:assert settingsBox['lonY']>settingsBox['latY']+30,(width,'stack numeric controls on compact handset',settingsBox)
-     else:assert abs(settingsBox['latY']-settingsBox['lonY'])<=3,(width,'two columns on wide handset',settingsBox)
+     if tab=='settings':
+      settingsBox=page.locator('#settings #preferences>.fields').evaluate("e=>({display:getComputedStyle(e).display,cols:getComputedStyle(e).gridTemplateColumns,latY:document.querySelector('#lat').getBoundingClientRect().y,lonY:document.querySelector('#lon').getBoundingClientRect().y})")
+      assert settingsBox['display']=='grid',(width,'settings fields must be grid; grid-template-columns on flex is inert',settingsBox)
+      if width<=430:assert settingsBox['lonY']>settingsBox['latY']+30,(width,'stack numeric controls on compact handset',settingsBox)
+      else:assert abs(settingsBox['latY']-settingsBox['lonY'])<=3,(width,'two columns on wide handset',settingsBox)
      geo=page.evaluate("""() => {
       const rect=s=>{let r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom,top:r.top}};
       return {main:rect('main'),nav:rect('header>.site-nav'),card:rect('#settings .card'),audio:rect('#settings .audio-card'),form:rect('#settings #preferences'),fields:rect('#settings .fields'),lat:rect('#lat'),lon:rect('#lon'),zone:rect('#zone'),locationOpen:rect('#locationPickerOpen'),window:[innerWidth,innerHeight]};
