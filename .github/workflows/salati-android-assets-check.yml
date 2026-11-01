@@ -1,0 +1,58 @@
+name: Salati — verify native public-page paths and APK asset packaging
+on:
+  push:
+    branches: [preview/salati-css-deconflict-20261102]
+    paths:
+      - scripts/prepare-android.py
+      - tests/android-asset-path-contract-20261102.py
+      - .github/workflows/salati-android-assets-check.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-android-native-assets-preview
+  cancel-in-progress: true
+jobs:
+  verify-native-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Re-test source and package Android-origin paths
+        run: |
+          npm ci
+          npm run build
+          npm test
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build and inspect Android preview package
+        run: |
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          cd ..
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"'
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="/assets/www/city-pages.css"'
+          unzip -p "$APK" assets/www/ar/prayer-times/muscat.html | grep -F 'href="/assets/www/style.css"'
+          unzip -p "$APK" assets/www/ar/prayer-times/muscat.html | grep -F 'href="/assets/www/ar/prayer-times/index.html"'
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "com.salati.prayer.preview"
+          sha256sum "$APK"
+      - name: Save only validated independent preview APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-native-asset-fixed-preview-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14
