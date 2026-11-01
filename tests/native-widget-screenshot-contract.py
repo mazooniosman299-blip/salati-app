@@ -9,6 +9,9 @@ first=Image.open(folder/'maghrib.png').convert('RGB')
 second=Image.open(folder/'asr.png').convert('RGB')
 assert first.size==second.size and first.width>=1000,(first.size,second.size)
 root=ET.parse(folder/'maghrib.xml').getroot()
+secondRoot=ET.parse(folder/'asr.xml').getroot()
+secondTexts={n.attrib.get('text') for n in secondRoot.iter('node')}
+assert set(['الفجر','الشروق','الظهر','العصر','المغرب','العشاء','5:33','3:08']).issubset(secondTexts), 'Second screenshot captured splash screen, not the native widget'
 nodes=[n.attrib for n in root.iter('node')]
 def bounds(raw):
  x1,y1,x2,y2=map(int,re.findall(r'\d+',raw));return (x1,y1,x2,y2)
@@ -39,6 +42,11 @@ def mean(img,box):
 x1,y1,x2,y2=selected
 area=(x1+4,y1+4,x1+max(7,int((x2-x1)*.17)),y2-4)
 gray=mean(first,area);dark=mean(second,area)
-assert sum(gray)/3 > sum(dark)/3+12,('The gray capsule must follow the current prayer',gray,dark,area)
+assert sum(gray)/3 > sum(dark)/3+12,('Maghrib gray capsule must disappear after next prayer switches',gray,dark,area)
+asr=hit('3:08')[-1]
+a1,b1,a2,b2=asr
+asrArea=(a1+4,b1+4,a1+max(7,int((a2-a1)*.17)),b2-4)
+asrGray=mean(second,asrArea);asrDark=mean(first,asrArea)
+assert sum(asrGray)/3 > sum(asrDark)/3+12,('Asr gray capsule must appear in the second actual widget render',asrGray,asrDark,asrArea)
 assert ImageChops.difference(first,second).getbbox(),'Active prayer switch must visibly change Android widget'
 print('PASS: Android RemoteViews screenshot: six RTL times in one row; labels remain outside; gray capsule follows active prayer.')
