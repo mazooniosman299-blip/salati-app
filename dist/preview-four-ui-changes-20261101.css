@@ -741,3 +741,30 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
 
 /* Browsers/tablets do not receive the mobile reading viewport; the native
    604-page reader keeps its former responsive desktop behavior. */
+
+/* On wider screens, retain original fluid Quran typography while still keeping
+   the transport after a bounded reader, never pinned over Quran text. */
+@media(min-width:761px){
+ body.dark #mushaf #qSheet #qVerses{
+  max-height:min(78vh,850px)!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  overscroll-behavior-y:contain!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot{
+  position:static!important;
+  inset:auto!important;
+  margin:14px auto!important;
+  width:calc(100% - 28px)!important;
+  max-width:calc(100% - 28px)!important;
+  box-sizing:border-box!important;
+  z-index:1!important;
+  overflow:hidden!important;
+ }
+ body.dark #mushaf #qSheet .recitation-timeline{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:4px!important;
+  min-width:0!important;
+ }
+}
