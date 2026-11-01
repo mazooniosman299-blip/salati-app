@@ -1,0 +1,15 @@
+{
+  "version": "1.0.120",
+  "versionCode": 121,
+  "applicationId": "com.salati.prayer",
+  "filename": "salati-1.0.120.apk",
+  "size": 25521139,
+  "sha256": "d3a4dd6bfc9e975c9600ea6b9febe47dbacda74da86db0bc62a1f0921097e847",
+  "unsignedSha256": "4bcc06cd9aa69851282a8881c3acfb037398370921eaa630acb6a5f44c24c878",
+  "certificateSha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+  "signatureBlockBytes": 8192,
+  "signatureBlockSha256": "1a460b5e19434bd4a845cf48ad7567a845cfccc3454a1f5b9ada8c01576fd15f",
+  "ciRunId": 41301649400,
+  "artifactName": "salati-1.0.120-unsigned-for-original-key",
+  "publishAttempt": 1
+}
