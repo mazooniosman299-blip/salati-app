@@ -1,0 +1,63 @@
+name: Verify compact bottom-flush original mosque Android widget (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/widget-compact-flush-bottom-20261101
+permissions:
+  contents: read
+concurrency:
+  group: widget-gray-capsule-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  source-and-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Test all old functionality and new widget shape
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/widget-active-outline.cjs
+      - name: Compile Android debug and unsigned release
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Verify unchanged web payload
+        run: |
+          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/release/app-release-unsigned.apk
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+          test -s android/app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Capture real native RemoteViews on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -netdelay none -netspeed full
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-boot-timeout: 600
+          script: |
+            python3 -m pip install pillow
+            bash scripts/capture-widget-emulator.sh
+      - name: Preserve emulator screenshots and APK for visual approval
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-native-widget-test-only-not-for-installing-over-production
+          path: |
+            reports/native-widget-preview/
+            android/app/build/outputs/apk/debug/app-debug.apk
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+          if-no-files-found: warn
+          retention-days: 3
