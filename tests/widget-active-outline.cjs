@@ -6,10 +6,10 @@ const layout=fs.readFileSync(root+'res/layout/prayer_widget.xml','utf8');
 const controller=fs.readFileSync(root+'java/com/salati/prayer/PrayerWidget.java','utf8');
 const manifest=fs.readFileSync(root+'AndroidManifest.xml','utf8');
 const get=(tag,attribute)=>outline.match(new RegExp('<'+tag+'\\b[^>]*android:'+attribute+'="([^"]+)"'))?.[1];
-assert.equal(get('stroke','width'),'1.5dp','Active border matches user-provided silver reference');
-assert.equal(get('stroke','color'),'#FF83878B','Active border matches user-provided silver reference');
-assert.equal(get('solid','color'),'#B8000000','Active fill matches user-provided charcoal reference');
-assert.equal(get('corners','radius'),'8dp','Active badge must match the exact rounded user reference');
+assert.equal(get('stroke','width'),'1.5dp','Active border matches user-provided blue-slate rounded capsule reference');
+assert.equal(get('stroke','color'),'#FF8EA7C3','Active border matches user-provided blue-slate rounded capsule reference');
+assert.equal(get('solid','color'),'#FF354A67','Active fill matches user-provided charcoal reference');
+assert.equal(get('corners','radius'),'24dp','Active badge must match the exact rounded user reference');
 assert(!/<gradient\b/i.test(outline),'Remove washed-out gray gradient');
 assert.equal(get('inset','insetLeft'),'2dp','Keep separation from adjacent prayers');
 assert.equal(get('inset','insetRight'),'2dp','Keep separation from adjacent prayers');
@@ -32,7 +32,7 @@ assert(controller.includes('!"sunrise".equals(key)'),
 assert(manifest.includes('android:usesCleartextTraffic="false"'),'Security policy must remain intact');
 // Alpha blend #E6FFFFFF on #15181D, then WCAG contrast (no screenshot simulation).
 const alpha=1,bg=[0x06,0x07,0x08];
-const mixed=bg.map((c,i)=>(1-alpha)*c+alpha*[0x83,0x87,0x8B][i]);
+const mixed=bg.map((c,i)=>(1-alpha)*c+alpha*[0x8E,0xA7,0xC3][i]);
 const luminance=parts=>parts.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
 const contrast=(luminance(mixed)+.05)/(luminance(bg)+.05);
 assert(contrast>=1.8,'Reference silver-outline contrast below 1.8:1: '+contrast);
