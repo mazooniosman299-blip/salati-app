@@ -68,7 +68,8 @@ public final class PrayerSchedule {
   // inexact fallback on Activity resume instead.
   if("exact".equals(prefs.getString("nextAlarmMode",""))&&!exactAlarmsAllowed(c))return false;
   return AlarmDeliveryPolicy.preserveOnActivityResume(
-      valid(c,at,prayer),\n      "inexact".equals(prefs.getString("nextAlarmMode","")),at,now,
+      valid(c,at,prayer),
+      "inexact".equals(prefs.getString("nextAlarmMode","")),at,now,
       (prayer+at).equals(delivered));
  }
  static boolean valid(Context c,long time,String prayer){JSONObject data=config(c);if(!data.optBoolean("enabled"))return false;JSONArray events=data.optJSONArray("events");if(events==null)return false;for(int i=0;i<events.length();i++){JSONObject e=events.optJSONObject(i);if(e!=null&&e.optLong("time")==time&&e.optString("prayer").equals(prayer))return true;}return false;}
