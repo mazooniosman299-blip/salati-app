@@ -1,1 +1,6 @@
-<shape xmlns:android="http://schemas.android.com/apk/res/android"><gradient android:angle="270" android:startColor="#E6040509" android:endColor="#F0040509"/><corners android:radius="20dp"/><stroke android:width="1dp" android:color="#55FFFFFF"/></shape>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One charcoal, rounded six-prayer bar; no contrasting white outline. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#F016181B"/>
+    <corners android:radius="22dp"/>
+</shape>
