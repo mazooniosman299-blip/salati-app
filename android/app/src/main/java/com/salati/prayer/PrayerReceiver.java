@@ -6,7 +6,7 @@ public final class PrayerReceiver extends BroadcastReceiver {
   long time=i.getLongExtra("time",0),now=System.currentTimeMillis();String prayer=i.getStringExtra("prayer");
   boolean valid=PrayerSchedule.valid(c,time,prayer);
   PrayerSchedule.scheduleNext(c,Math.max(time,now));
-  if(!AlarmDeliveryPolicy.mayPlay(valid,PrayerSchedule.exactAlarmsAllowed(c),time,now)){
+  if(!AlarmDeliveryPolicy.mayPlay(valid,time,now)){
    PrayerSchedule.recordDelivery(c,valid?"delivery_outside_window":"obsolete_alarm",null);PrayerWidget.updateAll(c);return;
   }
   String key=prayer+time;SharedPreferences saved=c.getSharedPreferences(PrayerSchedule.PREF,0);
