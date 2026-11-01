@@ -69,7 +69,7 @@ jobs:
           python3 tests/mobile-layout-contract-20261101.py
           python3 tests/local-prayer-privacy-browser-20261101.py
           python3 tests/eight-mobile-user-regressions-20261101.py
-          python3 tests/auto-location-20261101.py
+          python3 tests/offline-navigation.py
       - name: Upload mobile layout evidence
         if: always()
         uses: actions/upload-artifact@v4
