@@ -5,6 +5,9 @@ on:
       - preview/three-ui-polish-20261101
     paths:
       - .github/workflows/salati-three-polish-preview.yml
+      - dist/preview-four-ui-changes-20261101.css
+      - tests/preview-three-polish-qa.py
+      - android/app/src/main/res/xml/prayer_widget_info.xml
 permissions:
   contents: write
 concurrency:
