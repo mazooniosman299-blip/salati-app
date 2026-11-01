@@ -35,8 +35,7 @@ public final class QuranAudioRangeTest {
     check(expectedHash.length()==64&&expectedHash.matches("[0-9a-f]{64}"));
     byte[] altered=Files.readAllBytes(saved.toPath());altered[900]^=73;
     Files.write(saved.toPath(),altered);
-    check(!expectedHash.equals(QuranAudioFiles.sha256(saved)),
-      "Same-size corruption must be detected by full SHA-256");
+    check(!expectedHash.equals(QuranAudioFiles.sha256(saved))); // Same-size corruption detected
     Files.deleteIfExists(pending.toPath()); // Simulate DownloadManager removing its old download path.
     check(Files.readAllBytes(saved.toPath()).length==audio.length);check(QuranAudioFiles.valid(saved));
     check(QuranAudioFiles.promote(pending,saved)); // Recovery after interruption between rename and metadata update.
