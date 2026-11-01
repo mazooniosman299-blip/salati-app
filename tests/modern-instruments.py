@@ -105,28 +105,27 @@ with sync_playwright() as p:
     palette_evidence.append({'dark':dark,'controlFill':fill,'whiteTextContrast':round(contrast('rgb(255, 255, 255)',fill),2),'focus':focus,'disabled':disabled})
    page.mouse.move(0,0);page.wait_for_timeout(220)
    page.screenshot(path=str(root/f'reports/ui-modern/{tab}-{"dark" if dark else "light"}.png'))
-  for selector in ['.announcement-settings','.prayer-switches','.minute-adjustments']:
+  for selector in ['.prayer-switches','.minute-adjustments']:
    style=page.locator(selector).evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,blur:getComputedStyle(e).backdropFilter,shadow:getComputedStyle(e).boxShadow})')
    assert style=={'bg':'rgba(0, 0, 0, 0)','blur':'none','shadow':'none'},(dark,selector,'nested panel',style)
-  page.locator('.announcement-settings').scroll_into_view_if_needed();page.wait_for_timeout(100)
+  page.locator('.prayer-switches').scroll_into_view_if_needed();page.wait_for_timeout(100)
   page.screenshot(path=str(root/f'reports/ui-modern/reminder-settings-{"dark" if dark else "light"}.png'))
   for selector in ['#audioEnable','#duaToggle','#silentAdhanToggle']:
    box=page.locator(selector).bounding_box()
    assert box is None or box['height']==38,(dark,selector,'stretched switch',box)
-  for selector in ['#previewFajrPhrase','#previewAdhan','#previewDua','#audioStop']:
+  for selector in ['#previewAdhan','#previewDua','#audioStop']:
    style=page.locator(selector).evaluate('(e)=>({bg:getComputedStyle(e).backgroundColor,color:getComputedStyle(e).color,border:getComputedStyle(e).borderColor})')
    assert contrast(style['color'],style['bg'])>=4.5,(dark,selector,style)
   assert page.locator('#approachToggle,#approachMinutes,#previewApproach').count()==0
-  toggle=page.locator('#fajrAnnouncementToggle');toggle.check();toggle.uncheck()
+  assert page.locator('#fajrAnnouncementToggle,#previewFajrPhrase,.announcement-settings').count()==0
   assert page.evaluate('JSON.parse(localStorage.salati).audio.fajrAnnouncement')is False
-  toggle.check();assert page.evaluate('JSON.parse(localStorage.salati).audio.fajrAnnouncement')is True
  active_tab=page.locator('header>.site-nav .active').get_attribute('data-tab')
  for expected_direction in ['ltr','rtl']:
   page.click('#lang');page.wait_for_timeout(100)
   assert page.locator('html').get_attribute('dir')==expected_direction
   assert page.locator('header>.site-nav .active').get_attribute('data-tab')==active_tab
   assert page.locator('header>.site-nav .active').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(29, 78, 216)',expected_direction
-  if expected_direction=='ltr':assert 'Fajr' in page.locator('#previewFajrPhrase').inner_text()
+  if expected_direction=='ltr':assert 'adhan' in page.locator('#previewAdhan').inner_text().lower()
  page.click('[data-tab=tasbih]');page.click('#reset')
  for _ in range(34):page.click('#counter')
  assert page.locator('#tasbihCount').inner_text()=='34'
