@@ -19,7 +19,7 @@ ast=tinycss2.parse_stylesheet(css,skip_whitespace=True,skip_comments=True)
 errors=[x.message for x in ast if x.type=='error']
 assert not errors,errors
 priority=len(re.findall(r'!\s*important\b',css,re.I))
-assert 0<=priority<=1991,('CSS priority debt regressed after audited removal of 42 redundant flags',priority)
+assert 0<=priority<=1959,('CSS priority debt exceeded 1959 audited source flags',priority)
 assert len(css.encode())<=222900,('CSS unreviewed expansion',len(css.encode()))
 for key in ['#mushafPlayerSlot','--salati-quran-window-height','nav-icon-button.active','#prayers','.recitation-timeline','background:#242424']:
  assert key in css,('Approved component missing',key)
