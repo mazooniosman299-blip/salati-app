@@ -4,6 +4,15 @@ const manifest=fs.readFileSync('android/app/src/main/AndroidManifest.xml','utf8'
 const receive=(name)=>manifest.match(new RegExp('<receiver\\s+android:name="\\.'+name+'"[^>]*>'))?.[0]||'';
 assert(receive('RestoreReceiver').includes('android:exported="false"'),'System-only receiver must not be public');
 assert(receive('PrayerReceiver').includes('android:exported="false"'),'Adhan receiver must remain private');
+const downloadReceiver=receive('QuranDownloadReceiver');
+assert(downloadReceiver.includes('android:exported="true"'),'DownloadProvider is a privileged external component and must reach the registered receiver');
+assert(downloadReceiver.includes('android:permission="android.permission.SEND_DOWNLOAD_COMPLETED_INTENTS"'),'Only platform-signature DownloadProvider may send download complete intents');
+const receiverSource=fs.readFileSync('android/app/src/main/java/com/salati/prayer/QuranDownloadReceiver.java','utf8');
+assert(receiverSource.includes('DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())'),'Reject arbitrary broadcasts');
+assert(receiverSource.includes('DownloadManager.EXTRA_DOWNLOAD_ID'),'Use DownloadManager ID, not untrusted file path');
+const downloadsSource=fs.readFileSync('android/app/src/main/java/com/salati/prayer/QuranDownloads.java','utf8');
+assert(downloadsSource.includes('longValue()!=id')&&downloadsSource.includes('DownloadManager.STATUS_SUCCESSFUL'),'Completion must match an owned download ID and successful system status');
+
 assert(manifest.includes('android.intent.action.BOOT_COMPLETED'),'Preserve restore on reboot');
 assert(manifest.includes('android.intent.action.TIME_SET'),'Preserve clock adjustment');
 assert(manifest.includes('android.intent.action.TIMEZONE_CHANGED'),'Preserve timezone change');
