@@ -6,6 +6,7 @@ on:
     paths:
       - .github/workflows/salati-android-webview-validation.yml
       - tests/android-webview-pixel-qa-20261102.py
+      - tests/android-emulator-screen-preflight.py
       - tests/css-component-owner-audit.py
       - tests/canonical-css-maintainability.py
   workflow_dispatch:
@@ -75,9 +76,26 @@ jobs:
             adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_FINE_LOCATION || true
             adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_COARSE_LOCATION || true
             adb shell am start -n com.salati.prayer.preview/com.salati.prayer.MainActivity
-            sleep 14
+            sleep 10
+            # Slow emulator boot can provoke a Pixel Launcher ANR modal over
+            # the already running Salati screen. Close the SYSTEM modal, not
+            # the app, before taking the screenshots used for acceptance.
+            for attempt in 1 2 3 4; do
+              adb exec-out screencap -p > /tmp/salati-boot-check.png
+              if python3 tests/android-emulator-screen-preflight.py dialog /tmp/salati-boot-check.png; then
+                adb shell input tap 146 485
+                sleep 3
+                adb shell am start -n com.salati.prayer.preview/com.salati.prayer.MainActivity
+                sleep 2
+              else
+                break
+              fi
+            done
             adb exec-out screencap -p > reports/android-webview-20261102/times.png
-            adb shell input tap 325 911
+            # Derive the Quran-tab tap from the actual active blue tab pixels,
+            # not an assumed hardcoded Android status/navigation bar size.
+            set -- $(python3 tests/android-emulator-screen-preflight.py quran-tap reports/android-webview-20261102/times.png)
+            adb shell input tap "$1" "$2"
             sleep 6
             adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
             adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
