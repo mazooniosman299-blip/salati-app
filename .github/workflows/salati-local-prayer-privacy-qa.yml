@@ -1,0 +1,63 @@
+name: Salati local-only prayer location privacy QA (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/privacy-local-prayer-times-20261101
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exact app and run all unit, privacy and cache checks
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/provider-bundle-integrity.cjs
+          node tests/local-prayer-privacy.cjs
+      - name: Install Chromium for user-facing privacy verification
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Check no outbound location and preserve approved eight fixes
+        run: |
+          python3 tests/local-prayer-privacy-browser-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/auto-location-20261101.py
+  native-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build Android payload from privacy-safe JavaScript
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Verify new privacy-safe binary payload
+        run: |
+          test -s android/app/build/outputs/apk/release/app-release-unsigned.apk
+          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/release/app-release-unsigned.apk
+          unzip -p android/app/build/outputs/apk/release/app-release-unsigned.apk assets/www/app-v1.0.109.js | grep -qv 'api.aladhan.com'
