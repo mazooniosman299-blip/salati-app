@@ -32,7 +32,7 @@ assert(controller.includes('!"sunrise".equals(key)'),
 assert(manifest.includes('android:usesCleartextTraffic="false"'),'Security policy must remain intact');
 // Alpha blend #E6FFFFFF on #15181D, then WCAG contrast (no screenshot simulation).
 const alpha=1,bg=[0x33,0x35,0x39];
-const mixed=bg.map(c=>(1-alpha)*c+alpha*[0x76,0x7A,0x7F][bg.indexOf(c)]);
+const mixed=bg.map((c,i)=>(1-alpha)*c+alpha*[0x76,0x7A,0x7F][i]);
 const luminance=parts=>parts.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
 const contrast=(luminance(mixed)+.05)/(luminance(bg)+.05);
 assert(contrast>=1.8,'Reference silver-outline contrast below 1.8:1: '+contrast);
