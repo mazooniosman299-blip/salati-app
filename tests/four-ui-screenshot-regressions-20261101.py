@@ -88,7 +88,15 @@ try:
                   size:[r.width,r.height],relative:getComputedStyle(icon).position}
             })""")
             assert len(locations)==251,(width,"all location rows",len(locations))
-            assert all("error" not in x and abs(x["offset"])<=4 and x["size"]==[18,18] and x["relative"]=="static" for x in locations),(width,"bad pins",[x for x in locations if "error" in x or abs(x.get("offset",99))>4][:10])
+            # Browsers report fractional SVG rectangle dimensions. Report every
+            # offending property instead of showing an empty "bad" collection.
+            bad=[x for x in locations if "error" in x or
+                 abs(x.get("offset",99))>4 or
+                 any(abs(v-18)>0.35 for v in x.get("size",[0,0])) or
+                 x.get("relative")!="static"]
+            assert not bad,(width,"bad pins",bad[:25],
+                {"count":len(locations),"firstSizes":[x.get("size") for x in locations[:5]]})
+
             page.locator("#locationOptions").screenshot(path=str(evidence/f"locations-{width}.png"))
             page.keyboard.press("Escape")
 
