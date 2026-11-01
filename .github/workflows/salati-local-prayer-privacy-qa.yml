@@ -6,6 +6,32 @@ on:
 permissions:
   contents: read
 jobs:
+  mobile-visual-diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build current app for pixel geometry evidence
+        run: |
+          npm ci
+          npm run build
+      - name: Install Chromium
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y chromium
+          python3 -m pip install --break-system-packages playwright pillow
+      - name: Capture five real phone screen geometries
+        run: python3 tests/mobile-layout-diagnostic-20261101.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: salati-settings-nav-prayer-layout-evidence
+          path: reports/mobile-layout-diagnostic/
+          if-no-files-found: ignore
   integration:
     runs-on: ubuntu-latest
     timeout-minutes: 35
