@@ -1,5 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-  <application>
-    <activity android:name=".WidgetPreviewActivity" android:exported="true" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+  <application android:label="صلاتي — معاينة التعديلات" tools:replace="android:label">
+    <!-- The ORIGINAL MainActivity stays the launcher: users preview real app functionality. -->
   </application>
 </manifest>
