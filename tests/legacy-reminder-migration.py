@@ -63,7 +63,10 @@ public final class LegacyReminderMigrationTest {
   boolean allowed=true;final Map<Integer,AlarmClockInfo> alarms=new HashMap<>();final Map<Integer,PendingIntent> operations=new HashMap<>();
   static final class AlarmClockInfo {final long at;final PendingIntent open;AlarmClockInfo(long at,PendingIntent open){this.at=at;this.open=open;}}
   void cancel(PendingIntent pending){alarms.remove(pending.request);operations.remove(pending.request);}
+  static final int RTC_WAKEUP=0;
+  int inexactCalls;
   void setAlarmClock(AlarmClockInfo info,PendingIntent pending){alarms.put(pending.request,info);operations.put(pending.request,pending);}
+  void setAndAllowWhileIdle(int type,long at,PendingIntent pending){check(type==RTC_WAKEUP,"must wake from RTC time");inexactCalls++;alarms.put(pending.request,new AlarmClockInfo(at,null));operations.put(pending.request,pending);}
  }
  static final class NotificationManager {int canceled;String deleted;void cancel(int id){canceled=id;}void deleteNotificationChannel(String name){deleted=name;}}
  static final class PrayerReceiver {}static final class ApproachReceiver {}static final class MainActivity {}
@@ -93,7 +96,12 @@ public final class LegacyReminderMigrationTest {
   check(!c.config.optBoolean("fajrAnnouncement")&&c.config.data.get("volume").equals(.35),"Preserve Fajr opt-out and volume");
   check(c.notifications.canceled==76&&"salati_approach".equals(c.notifications.deleted),"Remove only obsolete notification/channel");
   PrayerSchedule.scheduleNext(c,now);check(c.alarm.operations.size()==1,"Idempotent migration never creates a new approach alarm");
-  c.alarm.allowed=false;PrayerSchedule.scheduleNext(c,now);same(at(c,5101),0,"Revoked exact permission removes pending adhan");
+  c.alarm.allowed=false;PrayerSchedule.scheduleNext(c,now);
+  same(at(c,5101),first,"Revoked exact permission must schedule an inexact fallback");
+  check(c.alarm.inexactCalls==1,"Fallback was not used");
+  check("inexact".equals(c.prefs.values.get("nextAlarmMode")),"Fallback status must be visible");
+  c.alarm.allowed=true;PrayerSchedule.scheduleNext(c,now);
+  check("exact".equals(c.prefs.values.get("nextAlarmMode")),"Restored permission returns to accurate alarms");
   c.alarm.allowed=true;c.config.put("enabled",false);PrayerSchedule.scheduleNext(c,now);same(at(c,5101),0,"Disabled user setting stays disabled");
   System.out.println("PASS: production upgrade cancels old5103 alarm and metadata, preserves real adhan/settings, never recreates approach reminders.");
  }
