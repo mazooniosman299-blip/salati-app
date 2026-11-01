@@ -36,7 +36,7 @@ function fixture(){
  f.settings.volume=0;assert.equal((await f.controller.speak('الصلاة خير من النوم')).status,'muted');
  const absent=new PrayerAnnouncements({getSettings:()=>f.settings,speech:null,Utterance:null});assert.equal((await absent.init()).status,'unavailable');
  // Actual audio controller preserves selected recording and rejects stale async speech completions.
- const settings={...AUDIO_DEFAULTS,enabled:true,dua:false};let hookCalls=0,complete,cancelled=0;const started=[];
+ const settings={...AUDIO_DEFAULTS,enabled:true,dua:false,fajrAnnouncement:true};let hookCalls=0,complete,cancelled=0;const started=[];
  const audio=new PrayerAudio({getSettings:()=>settings,onState(){},Context:class{},storage:null,beforeAdhan:()=>{hookCalls++;return new Promise(resolve=>complete=resolve)},cancelSpeech:()=>cancelled++});
  audio.armed=true;audio.ctx={state:'running',currentTime:0,createBufferSource:()=>({connect(){},disconnect(){},start(){started.push('adhan')},stop(){}})};audio.gain={gain:{value:1,cancelScheduledValues(){},setValueAtTime(){},linearRampToValueAtTime(){}}};audio.load=async()=>({});
  const playing=audio.play('adhan','fajr');await flush();assert.equal(hookCalls,1);assert.equal(started.length,0);complete();await playing;assert.deepEqual(started,['adhan']);
