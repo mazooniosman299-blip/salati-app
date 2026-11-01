@@ -50,7 +50,7 @@ try:
    chips=page.locator('#times #prayers .prayer')
    assert chips.count()==6,(width,chips.count())
    styles=chips.evaluate_all("""es=>es.map(e=>{let s=getComputedStyle(e);return{bg:s.backgroundColor,border:s.borderTopWidth,active:e.classList.contains('active')}})""")
-   assert all(x['border']=='1px' and x['bg'] in ('rgba(5, 8, 13, 0.62)','rgba(30, 37, 49, 0.9)') for x in styles),(width,styles)
+   assert all(x['border']=='1px' and x['bg'] in ('rgba(0, 0, 0, 0.34)','rgba(0, 0, 0, 0.72)') for x in styles),(width,styles)
    page.locator('#times .prayer-overview').screenshot(path=str(out/f'prayers-{width}.png'))
    # A single nav-safe gap, not the old two stacked bottom paddings.
    for tab in ('times','mushaf','qibla','dhikr','tasbih','settings'):
