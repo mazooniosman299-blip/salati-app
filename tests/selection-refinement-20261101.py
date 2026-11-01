@@ -55,7 +55,7 @@ try:
           bg:getComputedStyle(e).backgroundColor,
           active:e.classList.contains('active')
         })""")
-        assert data['radius']=='12px',(width,i,data)
+        assert data['radius']=='3px',(width,i,data)
         assert data['bg'].startswith('rgba('),(width,i,data)
       assert page.locator('#times .card.verse p').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       assert page.locator('#times .hero-prayer>span').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
