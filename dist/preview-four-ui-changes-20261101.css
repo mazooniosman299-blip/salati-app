@@ -1,0 +1,137 @@
+/* 
+ * Salati REAL-APP preview only — preserve existing charcoal, blue buttons,
+ * mosque asset, typefaces, navigation, state and all native behavior.
+ * The source is production v1.0.121; no production CSS is overwritten.
+ */
+
+/* User request 2: the SIX blue prayer-time tiles in the MAIN APP must be
+   one row even on a phone. Do not affect the separate Android home widget. */
+@media (max-width:760px) {
+  body.dark #times .prayer-overview #prayers {
+    display:grid!important;
+    grid-template-columns:repeat(6,minmax(0,1fr))!important;
+    grid-template-rows:1fr!important;
+    gap:3px!important;
+    box-sizing:border-box!important;
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    padding:4px 0!important;
+    margin-inline:0!important;
+    overflow:visible!important;
+    direction:rtl!important;
+  }
+  body.dark #times .prayer-overview #prayers .prayer,
+  body.dark #times .prayer-overview #prayers .prayer:not(.active),
+  body.dark #times .prayer-overview #prayers .prayer.active {
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    align-items:center!important;
+    min-width:0!important;
+    max-width:100%!important;
+    min-height:60px!important;
+    height:64px!important;
+    margin:0!important;
+    padding:5px 0!important;
+    border-radius:13px!important;
+    box-sizing:border-box!important;
+    gap:5px!important;
+  }
+  body.dark #times .prayer-overview #prayers .prayer>span{
+    display:block!important;
+    width:100%!important;
+    overflow:visible!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    font-size:clamp(8px,2.4vw,11px)!important;
+    font-weight:700!important;
+    line-height:1.2!important;
+    letter-spacing:-0.25px!important;
+  }
+  body.dark #times .prayer-overview #prayers .prayer>strong{
+    display:block!important;
+    width:100%!important;
+    margin:0!important;
+    font-size:clamp(10px,2.9vw,14px)!important;
+    font-weight:800!important;
+    white-space:nowrap!important;
+    text-align:center!important;
+    line-height:1.2!important;
+  }
+  body.dark #times .prayer-overview {
+    box-sizing:border-box!important;
+    min-width:0!important;
+    width:100%!important;
+  }
+}
+@media (max-width:350px) {
+  body.dark #times .prayer-overview #prayers {gap:1px!important}
+  body.dark #times .prayer-overview #prayers .prayer>span{font-size:8px!important}
+  body.dark #times .prayer-overview #prayers .prayer>strong{font-size:10px!important}
+}
+
+/* User request 3: use the EXISTING audio player and transport controls,
+   now INSIDE the real Quran article, following verses rather than above the
+   reading area. A bottom-sticky compact player is reachable during reading.
+   No duplicate ids, no detached floating app-level player. */
+body.dark #mushaf #qSheet #mushafPlayerSlot{
+  display:block!important;
+  position:sticky!important;
+  bottom:8px!important;
+  z-index:15!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:12px auto 6px!important;
+  background:rgba(14,16,23,.96)!important;
+  border:1px solid rgba(120,125,140,.52)!important;
+  border-radius:15px!important;
+  box-shadow:0 6px 20px rgba(0,0,0,.35)!important;
+}
+body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player{
+  box-sizing:border-box!important;
+  max-width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:8px!important;
+  border:0!important;
+  background:transparent!important;
+  border-radius:13px!important;
+}
+body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-caption{
+  min-width:0!important;
+}
+@media(max-width:760px){
+  body.dark #mushaf #qSheet #mushafPlayerSlot {
+    bottom:8px!important;
+    margin-inline:auto!important;
+  }
+  body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player {
+    gap:7px!important;
+  }
+  body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player button {
+    min-width:32px!important;
+    width:34px!important;
+    height:34px!important;
+  }
+}
+
+/* User request 4: actual native-setting buttons, identical matte translucent
+   border style to existing settings "Apply" button. Never recolor to green. */
+body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget) {
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  padding:13px 14px!important;
+  border:1.5px solid rgba(130,133,146,.76)!important;
+  border-radius:14px!important;
+  background:rgba(17,19,26,.65)!important;
+  color:#FFFFFF!important;
+  -webkit-text-fill-color:#FFFFFF!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)!important;
+  font-weight:700!important;
+}
