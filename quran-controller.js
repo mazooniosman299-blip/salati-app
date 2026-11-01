@@ -40,14 +40,19 @@ export class QuranReader{
   const record=()=>{if(this.readingPositionScheduled)return;this.readingPositionScheduled=true;requestAnimationFrame(()=>{this.readingPositionScheduled=false;this.captureReadingPosition()})};
   window.addEventListener('scroll',record,{passive:true});
   document.querySelector('main')?.addEventListener('scroll',record,{passive:true});
+  // The reading area now scrolls independently of the application shell.
+  $('qVerses').addEventListener('scroll',record,{passive:true});
   document.addEventListener('visibilitychange',()=>{
    if(document.visibilityState==='visible'&&!$('mushaf').hidden)this.enterAtSurahStart();
   });
  }
  captureReadingPosition(){
   if(!this.data||$('mushaf').hidden||document.querySelector('dialog[open]'))return;
-  const anchor=Math.min(window.innerHeight*.3,160);
-  const visible=element=>{const bounds=element.getBoundingClientRect();return bounds.bottom>anchor&&bounds.top<window.innerHeight;};
+  const region=$('qVerses').getBoundingClientRect();
+  // Ignore text clipped outside the verse scrollport when tracking bookmarks.
+  const anchor=Math.max(region.top+12,Math.min(window.innerHeight*.3,160));
+  const ceiling=Math.min(region.bottom,window.innerHeight);
+  const visible=element=>{const bounds=element.getBoundingClientRect();return bounds.bottom>anchor&&bounds.top<ceiling;};
   const page=[...$('qVerses').children].find(element=>element.dataset.readingPage&&visible(element));
   const verse=page&&[...page.querySelectorAll('[data-ayah]')].find(visible);if(!verse)return;
   const [s,a]=verse.dataset.ayah.split(':').map(Number);this.updateReadingPosition({s,a});
@@ -101,6 +106,7 @@ export class QuranReader{
   this.page=surah.page;
   this.readingStart=0;this.readingNext=0;
   this.save();this.refresh();
+  $('qVerses').scrollTop=0;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
    if($('mushaf').hidden)return;
    const sheet=$('qSheet');
