@@ -10,7 +10,7 @@ public final class PrayerReceiver extends BroadcastReceiver {
   boolean valid=PrayerSchedule.valid(c,time,prayer)&&!PrayerSchedule.laterEventAlreadyDue(c,time,now);
   PrayerSchedule.scheduleNext(c,Math.max(time,now));
   if(!AlarmDeliveryPolicy.mayPlay(valid,inexact,time,now)){
-   PrayerSchedule.recordDelivery(c,valid?"delivery_outside_window":"obsolete_alarm",null);PrayerWidget.updateAll(c);return;
+   PrayerSchedule.recordDelivery(c,valid?"late_alarm_skipped":"obsolete_alarm",null);PrayerWidget.updateAll(c);return;
   }
   String key=prayer+time;
   if(key.equals(saved.getString("last","")))return;
