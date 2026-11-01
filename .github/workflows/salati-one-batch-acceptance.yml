@@ -6,6 +6,8 @@ on:
       - .github/workflows/salati-one-batch-acceptance.yml
       - scripts/salati-one-batch-css-refactor.py
       - tests/salati-one-batch-readiness.py
+      - scripts/prepare-android.py
+      - tests/android-webview-pixel-qa-20261102.py
   workflow_dispatch:
 permissions:
   contents: write
@@ -63,6 +65,8 @@ jobs:
           APK=android/app/build/outputs/apk/debug/app-debug.apk
           test -s "$APK"
           unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"' >/dev/null
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'data:image/svg+xml;base64,' >/dev/null
+          test "$(unzip -p "$APK" assets/www/salati-ui.css | grep -o 'data:image/svg+xml;base64,' | wc -l)" -eq 2
           if unzip -l "$APK" | grep -E 'assets/www/(salati-ui-baseline|design-restoration|preview-four-ui-changes|active-reference-nav|reference-layout-v|light-theme-v)'; then
             echo 'Old CSS leaked into APK' >&2; exit 1
           fi
@@ -98,10 +102,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk salati-one-batch-qa-preview.apk
-          TAG=preview-salati-one-batch-20261102
+          cp android/app/build/outputs/apk/debug/app-debug.apk salati-one-batch-native-verified-preview.apk
+          TAG=preview-salati-one-batch-native-ornament-20261102
           if gh release view "$TAG" >/dev/null 2>&1; then echo "QA release exists; refusing overwrite"; exit 1; fi
-          gh release create "$TAG" salati-one-batch-qa-preview.apk \
+          gh release create "$TAG" salati-one-batch-native-verified-preview.apk \
             --target "$GITHUB_REF_NAME" --prerelease \
             --title "صلاتي — فحص مجمّع (معاينة فقط)" \
             --notes "QA build for Android with cascade refactor, Quran, active blue nav, native linked pages, widget and worldwide prayer calculation checks. Full Chromium and Android emulator tests passed. DEBUG independent package; NOT an original-signed production update. HONOR physical device unverified."
