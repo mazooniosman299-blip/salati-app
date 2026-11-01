@@ -21,7 +21,7 @@ body.dark #times .prayer-overview #prayers .prayer.active :is(span,strong){
 /* Material-looking plain buttons: actual legible Cancel text, same matte
    black translucent border on ordinary action controls only.
    DO NOT restyle switch inputs, on/off knobs, nav or audio transport. */
-body.dark #settings :is(.adjust-actions,.fields,.mushaf-tools,.audio-buttons) button:not([role="switch"]),
+body.dark #settings :is(.adjust-actions,.fields,.mushaf-tools) button:not([role="switch"]),
 body.dark #settings :is(#cancelPrayerAdjustments,#applyPrayerAdjustments,#restoreAutomaticTimes,#savePreferences,#voicePickerOpen),
 body.dark #times #locate,
 body.dark #mushaf :is(.mushaf-tools,.font-tools) button,
@@ -46,10 +46,7 @@ body.dark #settings #cancelPrayerAdjustments{
   font-size:19px!important;
   opacity:1!important;
 }
-/* On/off switches keep their existing backgrounds and shapes. */
-body.dark :is([role="switch"],input[type="checkbox"]){
-  box-shadow:revert-layer;
-}
+/* The existing on/off toggles and audio play/stop controls are untouched. */
 
 /* Qibla: the one Find Qibla button replaces the former phone-heading badge
    INSIDE the lower bearing card; no second button below that panel. */
