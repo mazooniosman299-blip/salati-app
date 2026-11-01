@@ -16,7 +16,7 @@ stats=[]
 try:
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
-  for width,height in [(320,700),(360,740),(390,844),(412,915),(430,932),(768,1024)]:
+  for width,height in [(320,700),(360,740),(390,844),(412,915),(430,932),(480,900),(768,1024)]:
    page=browser.new_page(viewport={'width':width,'height':height},service_workers='block')
    page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual'}))")
    errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
@@ -32,10 +32,10 @@ try:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
     if width<=760:
-     settingsBox=page.locator('#settings #preferences>.fields').evaluate("e=>({display:getComputedStyle(e).display,cols:getComputedStyle(e).gridTemplateColumns})")
+     settingsBox=page.locator('#settings #preferences>.fields').evaluate("e=>({display:getComputedStyle(e).display,cols:getComputedStyle(e).gridTemplateColumns,latY:document.querySelector('#lat').getBoundingClientRect().y,lonY:document.querySelector('#lon').getBoundingClientRect().y})")
      assert settingsBox['display']=='grid',(width,'settings fields must be grid; grid-template-columns on flex is inert',settingsBox)
-     if width<=430:assert len(settingsBox['cols'].split())==1,(width,'one-column on compact handset',settingsBox)
-     else:assert len(settingsBox['cols'].split())==2,(width,'two-column on wide handset',settingsBox)
+     if width<=430:assert settingsBox['lonY']>settingsBox['latY']+30,(width,'stack numeric controls on compact handset',settingsBox)
+     else:assert abs(settingsBox['latY']-settingsBox['lonY'])<=3,(width,'two columns on wide handset',settingsBox)
      geo=page.evaluate("""() => {
       const rect=s=>{let r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom,top:r.top}};
       return {main:rect('main'),nav:rect('header>.site-nav'),card:rect('#settings .card'),audio:rect('#settings .audio-card'),form:rect('#settings #preferences'),fields:rect('#settings .fields'),lat:rect('#lat'),lon:rect('#lon'),zone:rect('#zone'),locationOpen:rect('#locationPickerOpen'),window:[innerWidth,innerHeight]};
