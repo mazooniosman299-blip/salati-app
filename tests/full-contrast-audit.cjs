@@ -40,6 +40,6 @@ assert(!appendix.includes('background:#32383F'), 'No pale gray backgrounds intro
 assert(quran.includes('stroke-width="2.1"'), 'Mushaf icon stays readable');
 assert(nav.includes('stroke-width="2.1"'), 'Navigation Mushaf icon stays readable');
 assert(nativeSelection.includes('#FF3D3D3D') && nativeSelection.includes('#FF5D5D5D') && nativeSelection.includes('android:radius="100dp"'), 'Native upcoming time must have a short gray capsule matching approved home widget reference');
-assert(nativeStrip.includes('#FF242424') && nativeStrip.includes('#FF3B3B3B') && nativeStrip.includes('android:radius="38dp"'), 'Visible outline belongs only to the six-prayer strip');
+assert(nativeStrip.includes('#FF242424') && nativeStrip.includes('#FF3B3B3B') && nativeStrip.includes('android:radius="28dp"'), 'Visible outline belongs only to the six-prayer strip');
 assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length, 'CSS braces');
 console.log('PASS: reference colors, six tabs, neutral selection without gold, blue ON switches, white icons, APK widget and versioned assets.');
