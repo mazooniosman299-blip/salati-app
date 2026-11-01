@@ -55,7 +55,7 @@ final class QuranDownloads {
    String duration=reader.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
    return mime!=null&&mime.startsWith("audio/")&&duration!=null&&Long.parseLong(duration)>500;
   }catch(RuntimeException error){return false;}
-  finally{try{reader.release();}catch(RuntimeException ignored){}}
+  finally{try{reader.release();}catch(IOException | RuntimeException ignored){}}
  }
  private static boolean ready(Context context,String reciter,int surah,SharedPreferences preferences,Map<Long,long[]> rows){
   String key=key(reciter,surah);long id=preferences.getLong(key,0);long[] row=rows.get(id);
