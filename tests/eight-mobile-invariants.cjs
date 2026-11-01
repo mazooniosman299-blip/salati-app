@@ -23,7 +23,7 @@ const contract=read('dist/mobile-layout-contract-20261101.css');
 assert(html.includes('href="mobile-layout-contract-20261101.css"')&&html.indexOf('href="mobile-layout-contract-20261101.css"')>html.indexOf('href="eight-mobile-root-fixes-20261101.css"'));
 assert(contract.includes('border-radius:24px')&&contract.includes('#2D3D56'),'Blue-slate rounded reference prayer selection must be final CSS');
 const widget=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
-assert(widget.includes('android:radius="100dp"')&&widget.includes('#595A5C'),'Native HOME-SCREEN widget time-only capsule matches approved reference');
+assert(widget.includes('android:radius="100dp"')&&widget.includes('#FF3D3D3D'),'Native HOME-SCREEN widget time-only capsule matches approved reference');
 const layout=read('android/app/src/main/res/layout/prayer_widget.xml');
 assert(layout.includes('widget_location" android:gravity="left" android:textAlignment="viewStart"'),
  'Native location text anchored at physical left');
