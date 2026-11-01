@@ -67,7 +67,8 @@ try:
       order:v.compareDocumentPosition(p),outside:q.contains(p),navTop:n.top,parchmentColor:getComputedStyle(q).backgroundColor,bodyColor:getComputedStyle(document.body).backgroundColor,scriptErrors:[]};
    }"""
    before=page.evaluate(js)
-   assert before["order"] & 4,(width,"player must follow reading area in DOM",before)\n   assert before["outside"] is False,(width,"player must be OUTSIDE parchment, not its child",before)
+   assert before["order"] & 4,(width,"player must follow reading area in DOM",before)
+   assert before["outside"] is False,(width,"player must be OUTSIDE parchment, not its child",before)
    assert before["pos"] not in ("fixed","sticky","absolute"),(width,"player may not float over Quran",before)
    assert before["sheet"]["bottom"]<=before["player"]["top"]+1,(width,"player still covers parchment",before)
    if width<=760:
