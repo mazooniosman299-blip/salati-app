@@ -5,7 +5,7 @@ const audioModule=new Module(__filename,module);audioModule._compile(buildSync({
 const {PrayerAudio,AUDIO_DEFAULTS}=audioModule.exports;
 const flush=async()=>{for(let i=0;i<8;i++)await Promise.resolve()};
 function fixture(){
- let now=0,next=0;const timers=new Map(),players=[],states=[],settings={...AUDIO_DEFAULTS,enabled:true};
+ let now=0,next=0;const timers=new Map(),players=[],states=[],settings={...AUDIO_DEFAULTS,enabled:true,fajrAnnouncement:true};
  class Utterance {constructor(text){this.text=text}}
  const speech={
   getVoices(){return [{lang:'ar-OM'}]},
