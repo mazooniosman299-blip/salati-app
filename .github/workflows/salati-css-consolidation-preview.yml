@@ -76,7 +76,7 @@ jobs:
           unzip -p "$APK" assets/www/index.html | grep -F 'id="mushafPlayerSlot"' >/dev/null
           unzip -l "$APK" | grep -F 'assets/www/preview-sample-location-20261101.js'
           unzip -p "$APK" assets/www/salati-ui.css | grep -F 'SALATI USER REVIEW 2026-11-01'
-          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'overflow-y:visible!important'
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'height:var(--salati-quran-window-height,auto)!important'
           unzip -p "$APK" assets/www/index.html | grep -F 'Quran audio dock: directly below parchment' >/dev/null
           unzip -p "$APK" assets/www/salati-ui.css | grep -F 'body.dark header>.site-nav button.nav-icon-button.active' >/dev/null
           if unzip -l "$APK" | grep -E 'assets/www/(design-restoration|style-v1|light-theme-v1|salati-design-v1|reference-layout-v1|preview-four-ui-changes)'; then echo 'Legacy CSS leaked into APK' >&2; exit 1; fi
