@@ -10,6 +10,11 @@ on:
       - scripts/consolidate-salati-css.py
       - dist/index.html
       - scripts/build-web.cjs
+      - tests/provider-bundle-integrity.cjs
+      - tests/design-restoration-contract.cjs
+      - tests/full-contrast-audit.cjs
+      - tests/eight-mobile-invariants.cjs
+      - tests/retired-fajr-square-performance.cjs
   workflow_dispatch:
 permissions:
   contents: write
