@@ -14,7 +14,7 @@ assert(settings.includes('fajrAnnouncement:false'),'Legacy settings must not rei
 assert(native.includes('fajrAnnouncement:false'),'Android must not schedule the removed extra phrase');
 const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 assert(xml.includes('android:radius="24dp"'),'Native active prayer must use approved rounded capsule');
-assert(xml.includes('#B8000000')&&xml.includes('#FF83878B'),'Native widget must match black translucent prayer cell');
+assert(xml.includes('#FF354A67')&&xml.includes('#FF8EA7C3'),'Native widget must match new rounded reference prayer cell');
 const finalStyle=read('dist/mobile-layout-contract-20261101.css');
 assert(finalStyle.includes('border-radius:24px!important')&&finalStyle.includes('#2D3D56'),'Final owner must use approved blue-slate capsule rather than older square badges');
 assert(html.indexOf('mobile-layout-contract-20261101.css')>html.indexOf('eight-mobile-root-fixes-20261101.css'),'Final layout contract must load after legacy CSS');
@@ -27,4 +27,4 @@ assert(nativeAudio.includes('ready(context,reciter,surah,preferences,rows,true)'
 const policy=read('android/app/src/main/java/com/salati/prayer/AlarmDeliveryPolicy.java');
 assert(policy.includes('INEXACT_GRACE_MS=30*60*1000L'),'Fallback grace capped at 30 minutes');
 assert(policy.includes('EXACT_GRACE_MS=5*60*1000L'),'Exact event still has strict grace');
-console.log('PASS: square individual highlights, original colors, no Fajr settings/previews, fast Quran caching and bounded alarm fallback.');
+console.log('PASS: rounded reference prayer highlights, preserved other colors, no Fajr settings/previews, fast Quran caching and bounded alarm fallback.');
