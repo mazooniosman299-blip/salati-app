@@ -14,10 +14,12 @@ assert(settings.includes('fajrAnnouncement:false'),'Legacy settings must not rei
 assert(native.includes('fajrAnnouncement:false'),'Android must not schedule the removed extra phrase');
 const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 assert(xml.includes('android:radius="18dp"'),'Only active external prayer needs rectangular corners');
-assert(xml.includes('#FF15181D')&&xml.includes('#E6FFFFFF'),'Original active prayer colors unchanged');
+assert(xml.includes('#FF333539')&&xml.includes('#FF767A7F'),'Latest screenshot-supplied active badge colors are exact');
 const css=read('dist/selection-refinement-20261101.css');
 const active=css.match(/body\.dark #times \.prayer-overview #prayers \.prayer\.active\{([^}]+)\}/)?.[1];
-assert(active?.includes('border-radius:3px!important'),'Only individual in-app prayer tile is square');
+assert(active?.includes('border-radius:3px!important'),'Legacy style remains underneath');
+const finalStyle=read('dist/eight-mobile-root-fixes-20261101.css');
+assert(finalStyle.includes('border-radius:18px!important'),'Latest user screenshot changes ONLY active tile, not the hero');
 const guide=read('quran-download-controls.js');
 assert(!guide.includes('setInterval(refresh,2000)'),'No excessive 2s Quran scans');
 assert(guide.includes('this.activeTransfers?15000:60000'),'Poll 15s only while active, 60s idle');
