@@ -39,7 +39,7 @@ assert(appendix.includes('body.dark #mushaf .reference-player #qStop:not(:disabl
 assert(!appendix.includes('background:#32383F'), 'No pale gray backgrounds introduced in new fixes');
 assert(quran.includes('stroke-width="2.1"'), 'Mushaf icon stays readable');
 assert(nav.includes('stroke-width="2.1"'), 'Navigation Mushaf icon stays readable');
-assert(nativeSelection.includes('#B8000000') && nativeSelection.includes('#FF83878B') && nativeSelection.includes('android:width="1.5dp"'), 'Native active prayer must match the current black translucent square selection design');
+assert(nativeSelection.includes('#FF354A67') && nativeSelection.includes('#FF8EA7C3') && nativeSelection.includes('android:width="1.5dp"'), 'Native active prayer must match the current user-provided rounded blue-slate capsule design');
 assert(nativeStrip.includes('#E6040509') && nativeStrip.includes('#F0040509'));
 assert.equal((css.match(/\{/g)||[]).length,(css.match(/\}/g)||[]).length, 'CSS braces');
 console.log('PASS: reference colors, six tabs, neutral selection without gold, blue ON switches, white icons, APK widget and versioned assets.');
