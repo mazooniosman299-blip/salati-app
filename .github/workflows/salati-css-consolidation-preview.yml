@@ -1,0 +1,121 @@
+name: Salati — consolidate CSS and fix Quran/nav root layout (PREVIEW)
+on:
+  push:
+    branches:
+      - preview/salati-css-consolidation-20261101
+    paths:
+      - .github/workflows/salati-css-consolidation-preview.yml
+      - dist/preview-four-ui-changes-20261101.css
+      - tests/preview-reader-below-ui-20261101.py
+      - android/app/src/main/res/xml/prayer_widget_info.xml
+      - android/app/src/main/res/layout/prayer_widget.xml
+      - android/app/src/main/java/com/salati/prayer/PrayerWidget.java
+      - dist/index.html
+      - quran-controller.js
+      - tests/preview-player-dark-dock-worldwide-20261101.py
+      - tests/worldwide-prayer-integrity-20261101.cjs
+      - dist/active-reference-nav-20261101.css
+      - tests/preview-reference-active-nav-20261101.py
+      - scripts/consolidate-salati-css.py
+      - tests/preview-css-root-review-20261101.py
+      - prayer-engine.js
+      - native-adapter.js
+permissions:
+  contents: write
+concurrency:
+  group: salati-css-root-preview
+  cancel-in-progress: true
+jobs:
+  build-test-and-publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exactly the existing Salati app, run original regression suite plus native widget assertions
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/widget-active-outline.cjs
+          node tests/worldwide-prayer-integrity-20261101.cjs
+      - name: Merge all active CSS at build into a canonical stylesheet, validate and prune old release assets
+        run: |
+          python3 -m pip install --quiet tinycss2
+          python3 scripts/consolidate-salati-css.py
+      - name: Verify actual mobile UI has no clipped Quran and the reference nav is compact
+        run: |
+          python3 -m pip install --quiet playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Build independent original-UI Android APK with same app code
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify independently installable Android preview includes real updated source
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          unzip -p "$APK" assets/www/index.html | grep -F 'salati-ui.css'
+          unzip -p "$APK" assets/www/index.html | grep -F 'id="mushafPlayerSlot"' >/dev/null
+          unzip -l "$APK" | grep -F 'assets/www/preview-sample-location-20261101.js'
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'SALATI USER REVIEW 2026-11-01'
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'overflow-y:visible!important'
+          unzip -p "$APK" assets/www/index.html | grep -F 'Quran audio dock: directly below parchment' >/dev/null
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'body.dark header>.site-nav button.nav-icon-button.active' >/dev/null
+          if unzip -l "$APK" | grep -E 'assets/www/(design-restoration|style-v1|light-theme-v1|salati-design-v1|reference-layout-v1|preview-four-ui-changes)'; then echo 'Legacy CSS leaked into APK' >&2; exit 1; fi
+          unzip -p "$APK" res/layout/prayer_widget.xml >/dev/null 2>&1 || true
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'grid-template-columns:repeat(6,minmax(0,1fr))'
+          unzip -p "$APK" assets/www/app-v1.0.109.js | grep -qv 'تُحسب المواقيت على جهازك دون إرسال موقعك'
+          mkdir -p /tmp/real-salati-four-ui-preview
+          cp "$APK" /tmp/real-salati-four-ui-preview/salati-css-root-clean-preview.apk
+          sha256sum /tmp/real-salati-four-ui-preview/salati-css-root-clean-preview.apk
+      - name: Preserve phone screenshots for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-css-root-review-screenshots
+          path: |
+            reports/css-root-review-20261101/
+          if-no-files-found: warn
+          retention-days: 5
+      - name: Publish stable direct-download GitHub prerelease (NEVER production)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="preview-salati-css-root-clean-20261101"
+          FILE="/tmp/real-salati-four-ui-preview/salati-css-root-clean-preview.apk"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "صلاتي — تنظيف CSS وإصلاح المصحف وشريط التنقل من المصدر" \
+              --prerelease \
+              --notes "Preview only: consolidate all active UI CSS into one cached runtime stylesheet, delete obsolete version/patch CSS from packaged assets while leaving legacy GitHub source available for rollback; remove Quran reading height cap so Fatiha and pages are not clipped, shrink nav to match supplied reference. Worldwide prayer calculations unchanged; tests must pass on real DOM. No production publication. Original mosque and existing dark style retained. Different package com.salati.prayer.preview; official Salati app, signed APK and Cloudflare website are unchanged. Preview is debug-signed and NOT an update to the main app."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,isPrerelease,url > /tmp/release-verify.json
+          python3 - <<'PY'
+          import json,os
+          p='/tmp/real-salati-four-ui-preview/salati-css-root-clean-preview.apk'
+          j=json.load(open('/tmp/release-verify.json'))
+          assert j['isPrerelease'] is True
+          assert any(a['name']==os.path.basename(p) and a['size']==os.stat(p).st_size for a in j['assets'])
+          print('PASS: full-original-app tested preview APK is available as a verified GitHub Release asset')
+          PY
