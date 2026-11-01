@@ -47,6 +47,8 @@ try:
    nav_top=page.locator('header>.site-nav').evaluate("e=>e.getBoundingClientRect().top")
    assert bounds['bottom']<=nav_top+2 and bounds['bottom']>nav_top-95,(width,'audio controls above navbar',bounds,nav_top)
    assert bounds['top']>=0 and bounds['left']>=0 and bounds['right']<=width+1,(width,'player must be readable on mobile',bounds)
+   panel=page.locator('#mushafPlayerSlot .recitation-player').evaluate("e=>({display:getComputedStyle(e).display,height:e.getBoundingClientRect().height})")
+   assert panel['display']=='grid' and 40<=panel['height']<=91,(width,'Compact real Quran player must not wrap below navigation',panel)
    page.screenshot(path=str(out/f'quran-player-{width}.png'))
    page.locator('main').evaluate('e=>e.scrollTop=Math.max(e.scrollTop,500)')
    after=page.locator('#mushafPlayerSlot').evaluate("e=>e.getBoundingClientRect().bottom")
