@@ -220,3 +220,55 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   background:rgba(15,17,24,.66)!important;
   box-shadow:none!important;
 }
+
+/* Real screenshot review: native Quran transport was present but its caption
+ * wrapped below the buttons. Lay out the SAME controls in a compact two-row
+ * grid and keep all playback state and a11y IDs. */
+@media(max-width:760px){
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player{
+  display:grid!important;
+  grid-template-columns:34px 34px minmax(0,1fr)!important;
+  grid-template-rows:18px 36px!important;
+  align-items:center!important;
+  justify-items:stretch!important;
+  column-gap:8px!important;
+  row-gap:3px!important;
+  min-height:0!important;
+  max-height:none!important;
+  padding:6px 9px!important;
+  overflow:hidden!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-caption{
+  grid-column:1/-1!important;grid-row:1!important;
+  display:flex!important;align-items:center!important;gap:6px!important;
+  flex-direction:row!important;width:100%!important;
+  min-height:0!important;max-height:18px!important;
+  overflow:hidden!important;white-space:nowrap!important;
+  direction:rtl!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-caption strong{
+  flex:none!important;max-width:90px!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+  font-size:11px!important;white-space:nowrap!important;line-height:1.2!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTrack{
+  flex:1 1 0!important;min-width:0!important;
+  overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important;margin:0!important;
+  font-size:11px!important;line-height:1.25!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop{
+  grid-column:1!important;grid-row:2!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTransport{
+  grid-column:2!important;grid-row:2!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-timeline{
+  grid-column:3!important;grid-row:2!important;
+  min-width:0!important;width:100%!important;
+  margin:0!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qAudioStatus{
+  display:none!important; /* status remains live for assistive technology via aria-live */
+ }
+}
