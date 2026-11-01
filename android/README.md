@@ -1,6 +1,6 @@
 # صلاتي — Android
 
-Installable app `com.salati.prayer`, version 1.0.79, Android 8.0+ (API 26), target/compile API 36.
+Installable app `com.salati.prayer`, version 1.0.116 (versionCode 117), Android 8.0+ (API 26), target/compile API 36.
 
 The current Salati interface is bundled locally in a restricted Android WebView, served from an HTTPS asset origin. No hosted Site login is needed inside the APK. Quran text, fonts, images and all adhan/dua recordings work offline. Quran surahs can be downloaded for offline listening; recordings that have not been saved stream on request.
 
@@ -117,3 +117,21 @@ Version 1.0.92 (versionCode 93) implements only the Tasbih and navigation compon
 Version 1.0.93 (versionCode 94) reduces the Tasbih tap pad to 128×128px, radius28px and label24px, removes the wide glow rings and tightens adjacent spacing. Counter logic, saved count, icon set and all other surfaces remain unchanged. Same fixed signing identity. Automated checks are distinct from unavailable browser/device visual QA.
 
 Version 1.0.94 (versionCode 95) fixes the three approved audit findings. Automatic startup/resume/compass refresh retains a valid manual prayer location, calculation choice and offsets; explicit Locate/Automatic still opts into fresh GPS. Saved preferences are normalized before use: supported language/method/school, bounded numeric counter/offsets, valid boolean/audio voice/prayer settings and safe location naming/mode. Valid choices remain unchanged. Remote calendar parsing rejects absent/null/non-numeric/non-finite/out-of-range or mismatched coordinates, leaving local calculations available. Regression tests cover the actual resume callback, malformed/valid restored fields, every UI calculation method, malformed metadata and local fallback. Interface and fixed signing identity retained. Browser/physical device QA remains unavailable.
+
+## الحالة الحالية — 1 نوفمبر 2026
+
+- **الإصدار المنشور:** Android / Web **1.0.116** (versionCode **117**).
+- **ملف APK الأصلي:** https://github.com/mazooniosman299-blip/salati-app/releases/download/v1.0.116/salati-1.0.116.apk
+- **SHA-256 للإصدار المنشور:** `58d14923b15ec3a6933af573cc720081780af7578808fd2d9d7f68f087edc6a5`.
+- **شهادة التوقيع:** `559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e`.
+- **الموقع:** https://salati-app-ctc.pages.dev/
+- **هذا الفرع تطويري وغير منشور:** يحتوي معالجة مشكلات جديدة؛ لا تدمجه في الإنتاج أو تغيّر رابط APK قبل بناء حزمة جديدة بالمفتاح الأصلي والتأكد من بصمة الويب ونجاح اختبارات Android والترقية.
+
+### حدود التحقق التي لا يجوز الادعاء بإتمامها
+- لا يوجد إثبات لتثبيت تحديث 1.0.116 فوق 1.0.115 على جهاز حقيقي مع حفظ بياناته.
+- لا يوجد إثبات لوصول أذان الخلفية بعد وضع توفير البطارية/قفل الشاشة/إعادة تشغيل الهاتف على أجهزة فعلية. Android قد يؤخر المنبهات الاحتياطية، والإيقاف الإجباري يقيّدها.
+- لا يجوز وصف التسجيل البشري القديم لعبارة الفجر بأنه مرخّص؛ ملفه سُحب من النسخة المرشحة ويُستخدم نطق الجهاز بدلاً منه.
+- AdMob + UMP مضمّنان، لكن توفر إعلان حقيقي أو امتثال إعدادات حساب الناشر يحتاج تحققاً على الجهاز والحساب.
+- الحماية الرسمية لفرع `production` يجب تطبيقها بصلاحية `Administration` على GitHub؛ أدوات المحتوى وحدها لا تفرضها.
+- يلزم ربط Firebase Project مناسب قبل تمكين Crashlytics أو إرسال تقارير أعطال خارج الجهاز.
+
