@@ -4,6 +4,7 @@ import android.app.DownloadManager;
 import android.content.*;
 import android.database.Cursor;
 import android.net.Uri;
+import android.media.MediaMetadataRetriever;
 import android.os.Environment;
 import android.webkit.WebResourceResponse;
 import org.json.*;
@@ -43,13 +44,66 @@ final class QuranDownloads {
   }
   return rows;
  }
+ /** Decoder-level validation: a fake ID3 header or a truncated response
+  * is not a playable Quran recording. No network or media playback occurs. */
+ private static boolean decodesAsAudio(File file){
+  if(!QuranAudioFiles.valid(file))return false;
+  MediaMetadataRetriever reader=new MediaMetadataRetriever();
+  try{
+   reader.setDataSource(file.getAbsolutePath());
+   String mime=reader.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
+   String duration=reader.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+   return mime!=null&&mime.startsWith("audio/")&&duration!=null&&Long.parseLong(duration)>500;
+  }catch(RuntimeException error){return false;}
+  finally{try{reader.release();}catch(RuntimeException ignored){}}
+ }
  private static boolean ready(Context context,String reciter,int surah,SharedPreferences preferences,Map<Long,long[]> rows){
   String key=key(reciter,surah);long id=preferences.getLong(key,0);long[] row=rows.get(id);
   File saved=file(context,reciter,surah);
+  String pinnedHash=preferences.getString(key+"-sha256","");
+  // Existing saved recordings are checked against a digest across ALL bytes,
+  // not against their extension, size, or only the opening MP3 header.
   boolean complete=QuranAudioFiles.valid(saved);
-  if(!complete&&row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL)complete=QuranAudioFiles.promote(pendingFile(context,reciter,surah),saved);
+  if(complete&&!pinnedHash.isEmpty()){
+   try{complete=pinnedHash.equals(QuranAudioFiles.sha256(saved));}
+   catch(IOException error){complete=false;}
+  }
+  if(!complete&&saved.exists()){
+   if(!saved.delete())return false;
+   preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+   pinnedHash="";
+  }
+  if(!complete&&row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL){
+   File pending=pendingFile(context,reciter,surah);
+   // DownloadManager can report a successful transfer whose saved bytes are
+   // unexpectedly short. Never promote in that case.
+   boolean matchedSize=row[2]<=0||pending.length()==row[2];
+   complete=matchedSize&&QuranAudioFiles.promote(pending,saved);
+  }
   if(!complete)return false;
-  if(!preferences.getBoolean(key+"-done",false))preferences.edit().putBoolean(key+"-done",true).commit();
+  if(row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL&&row[2]>0&&saved.length()!=row[2]){
+   if(saved.exists())saved.delete();
+   preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+   return false;
+  }
+  try{
+   String actual=QuranAudioFiles.sha256(saved);
+   if(!pinnedHash.isEmpty()&&!pinnedHash.equals(actual)){
+    if(saved.exists())saved.delete();
+    preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+    return false;
+   }
+   // Existing files from older versions get a decoder check on first upgrade.
+   // The digest then becomes their permanent content-integrity reference.
+   if(pinnedHash.isEmpty()&&!decodesAsAudio(saved)){
+    if(saved.exists())saved.delete();
+    preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+    return false;
+   }
+   if(pinnedHash.isEmpty()||!preferences.getBoolean(key+"-done",false)){
+    if(!preferences.edit().putString(key+"-sha256",actual).putBoolean(key+"-done",true).commit())return false;
+   }
+  }catch(IOException error){return false;}
   if(row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL)manager(context).remove(id);
   return true;
  }
@@ -96,7 +150,7 @@ final class QuranDownloads {
      .setMimeType("audio/mpeg").setAllowedOverMetered(true).setAllowedOverRoaming(false)
      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
      .setDestinationInExternalFilesDir(context,Environment.DIRECTORY_MUSIC,"quran-pending/"+reciter+"/"+filename(surah));
-    long id=manager.enqueue(request);preferences.edit().putLong(key,id).putBoolean(key+"-done",false).apply();
+    long id=manager.enqueue(request);preferences.edit().putLong(key,id).putBoolean(key+"-done",false).remove(key+"-sha256").apply();
    }
    return "{\"ok\":true}";
   }catch(Exception error){return "{\"error\":\"storage\"}";}
@@ -110,7 +164,7 @@ final class QuranDownloads {
    for(int surah=selected==0?1:selected;surah<=(selected==0?114:selected);surah++){
     if(keepSaved&&ready(context,reciter,surah,preferences,rows))continue;
     String key=key(reciter,surah);long id=preferences.getLong(key,0);if(id>0)remove.add(id);
-    edit.remove(key).remove(key+"-done");
+    edit.remove(key).remove(key+"-done").remove(key+"-sha256");
    }
    if(!remove.isEmpty()){long[] values=new long[remove.size()];for(int i=0;i<values.length;i++)values[i]=remove.get(i);manager.remove(values);}
    edit.apply();
