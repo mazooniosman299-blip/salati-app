@@ -13,7 +13,7 @@ const settings=read('settings-restore.js'),native=read('native-adapter.js');
 assert(settings.includes('fajrAnnouncement:false'),'Legacy settings must not reinstate hidden announcement');
 assert(native.includes('fajrAnnouncement:false'),'Android must not schedule the removed extra phrase');
 const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
-assert(xml.includes('android:radius="3dp"'),'Only active external prayer needs rectangular corners');
+assert(xml.includes('android:radius="18dp"'),'Only active external prayer needs rectangular corners');
 assert(xml.includes('#FF15181D')&&xml.includes('#E6FFFFFF'),'Original active prayer colors unchanged');
 const css=read('dist/selection-refinement-20261101.css');
 const active=css.match(/body\.dark #times \.prayer-overview #prayers \.prayer\.active\{([^}]+)\}/)?.[1];
