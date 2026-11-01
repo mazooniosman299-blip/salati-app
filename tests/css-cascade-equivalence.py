@@ -35,7 +35,7 @@ def snap(page,tab):
    const active=document.querySelector('section.tab:not([hidden])');
    const nav=document.querySelector('header>.site-nav');
    const elements=[document.documentElement,document.body,...document.querySelectorAll('header *')];
-   if(active)elements.push(...[active,...active.querySelectorAll('*')].slice(0,350));
+   if(active)elements.push(...[active,...active.querySelectorAll('*')].filter(n=>!n.closest('#qVerses')||n.id==='qVerses').slice(0,350));
    const clean=n=>{const cs=getComputedStyle(n);return Object.fromEntries(props.map(k=>[k,cs[k]]))};
    const selected=elements.map((n,i)=>({key:i,tag:n.tagName,id:n.id||'',css:clean(n)}));
    const boxes=['header>.site-nav','header>.site-nav button.active','#qSheet',
