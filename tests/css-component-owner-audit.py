@@ -34,8 +34,11 @@ stats={**metrics,'important':important,'duplicate_selector_property_groups':len(
  'conflicting_selector_property_groups':len(conflicts),'duplicate_declarations':sum(len(v)-1 for v in duplicates.values()),
  'css_bytes':len(css.encode())}
 assert html.count('href="salati-ui.css"')==1
-assert important<=2012,('Old priority overrides reintroduced',stats)
-assert stats['css_bytes']<=225900,('Old CSS overlays reintroduced',stats)
+assert stats['conflicting_selector_property_groups']<=103, ('CSS conflicting selector-property groups regressed',stats)
+assert stats['duplicate_selector_property_groups']<=107, ('CSS duplicate selector-property groups regressed',stats)
+assert stats['duplicate_declarations']<=134, ('CSS repeated declarations regressed',stats)
+assert important<=1991,('Old priority overrides reintroduced',stats)
+assert stats['css_bytes']<=222900,('Old CSS overlays reintroduced',stats)
 report=root/'reports/css-source-maintainability.json'
 report.parent.mkdir(exist_ok=True)
 report.write_text(json.dumps(stats,indent=2))
