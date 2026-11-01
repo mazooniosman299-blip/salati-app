@@ -8,7 +8,7 @@ assert(!Object.hasOwn(restored.audio,'approachEnabled'));assert(!Object.hasOwn(r
 const manifest=fs.readFileSync('android/app/src/main/AndroidManifest.xml','utf8');assert(!manifest.includes('.ApproachService'));assert(manifest.includes('.FajrPreviewService'));assert(!fs.existsSync('android/app/src/main/java/com/salati/prayer/ApproachService.java'));const receiver=fs.readFileSync('android/app/src/main/java/com/salati/prayer/ApproachReceiver.java','utf8');assert(receiver.includes('cancelLegacyApproach'));assert(!receiver.includes('startForegroundService'));const mainJava=fs.readdirSync('android/app/src/main/java/com/salati/prayer').map(name=>fs.readFileSync('android/app/src/main/java/com/salati/prayer/'+name,'utf8')).join('\n');assert(!mainJava.includes('ApproachService.class'));
 const {PrayerAnnouncements}=load('prayer-announcements.js');const flush=async()=>{for(let i=0;i<8;i++)await Promise.resolve()};
 (async()=>{
- let settings={...AUDIO_DEFAULTS,enabled:true,prayers:{...AUDIO_DEFAULTS.prayers}};
+ let settings={...AUDIO_DEFAULTS,enabled:true,fajrAnnouncement:true,prayers:{...AUDIO_DEFAULTS.prayers}};
  let said=[],cancelled=0;
  class Utterance{constructor(text){this.text=text}}
  const speech={getVoices(){return [{lang:'ar-OM'}]},speak(u){said.push(u)},cancel(){cancelled++}};
@@ -27,6 +27,6 @@ const {PrayerAnnouncements}=load('prayer-announcements.js');const flush=async()=
  said[0].onend();await first;
  assert.equal(said.length,1,'Fajr phrase must never repeat automatically');
  settings.fajrAnnouncement=false;assert.equal((await a.beforeAdhan('fajr')).status,'skipped');settings.fajrAnnouncement=true;settings.prayers.fajr=false;assert.equal((await a.beforeAdhan('fajr')).status,'skipped');settings.prayers.fajr=true;settings.enabled=false;assert.equal((await a.beforeAdhan('fajr')).status,'skipped');settings.enabled=true;settings.volume=0;assert.equal((await a.speak('الصلاة خير من النوم')).status,'muted');
- const html=fs.readFileSync('dist/index.html','utf8');for(const id of ['approachToggle','approachMinutes','previewApproach'])assert(!html.includes('id="'+id+'"'));assert(html.includes('id="fajrAnnouncementToggle"')&&html.includes('id="previewFajrPhrase"'));
+ const html=fs.readFileSync('dist/index.html','utf8');for(const id of ['approachToggle','approachMinutes','previewApproach'])assert(!html.includes('id="'+id+'"'));assert(!html.includes('id="fajrAnnouncementToggle"')&&!html.includes('id="previewFajrPhrase"'));
  console.log('PASS: removed unlicensed audio source, Fajr uses on-device Arabic TTS once; opt-out/volume respected.');
 })().catch(e=>{console.error(e);process.exitCode=1});
