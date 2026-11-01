@@ -1,0 +1,99 @@
+name: Salati 8 mobile root corrections and Quran/navigation QA (NO DEPLOY)
+on:
+  push:
+    branches: [fix/eight-mobile-quran-widget-qibla-20261101]
+  pull_request:
+    branches: [production]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Rebuild app and execute all unit/policy tests
+        run: |
+          npm ci
+          npm run build
+          npm test
+          bash scripts/test-audio-focus.sh
+          bash scripts/test-quran-background.sh
+          python3 tests/legacy-reminder-migration.py
+      - name: Install Chromium for actual UI/upgrade verification
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Test actual 390x844 nav clearance + stored user upgrade
+        run: python3 tests/upgrade-mobile-alarms-regression-20261101.py
+      - name: Retest other UI and Quran selections for regressions
+        run: |
+          python3 tests/four-ui-screenshot-regressions-20261101.py
+          python3 tests/modern-instruments.py
+          python3 tests/control-qibla-20261101.py
+          python3 tests/offline-navigation.py
+          python3 tests/square-prayer-fajr-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+      - name: Archive visual and migration proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mobile-scheduler-migration-evidence
+          path: |
+            reports/upgrade-mobile-20261101/
+            reports/square-prayer-20261101/
+            reports/eight-mobile-20261101/
+            reports/four-screenshot-regressions/
+            reports/ui-modern/
+            reports/control-qibla-20261101/
+          if-no-files-found: ignore
+  native-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Rebuild WebView resources and native Android
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify Android output
+        run: test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Compile unsigned Android to verify all changed Java/XML resources
+        working-directory: android
+        run: |
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+          test -s app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Preserve unsigned APK and verification tools (no private keys)
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-eight-mobile-unsigned-QA
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            /usr/local/lib/android/sdk/build-tools/36.0.0/lib/apksigner.jar
+            /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
+          retention-days: 3
+          if-no-files-found: error
