@@ -15,11 +15,15 @@ assert.equal(attr(selected,'stroke','color'),'#FF5D5D5D','Small subtle silver ou
 assert.equal(attr(selected,'stroke','width'),'1dp');
 assert.equal(attr(selected,'corners','radius'),'100dp','Pill must be fully rounded at 27dp height');
 assert.equal(attr(stripDrawable,'solid','color'),'#FF242424','Strip is one matte charcoal panel');
-assert.equal(attr(stripDrawable,'stroke','color'),'#FF3B3B3B','Only strip has clearly visible silver border');
+assert.equal(attr(stripDrawable,'stroke','color'),'#FF3B3B3B','No bright border; only subtle graphite hairline');
 assert.equal(attr(stripDrawable,'stroke','width'),'0.7dp');
-assert.equal(attr(stripDrawable,'corners','radius'),'38dp');
+assert.equal(attr(stripDrawable,'corners','radius'),'28dp');
 assert.equal(attr(widgetBg,'stroke','color'),'#16FFFFFF','Overall widget must NOT show a strong second outer outline');
-assert(layout.includes('android:layout_height="77dp" android:orientation="horizontal" android:background="@drawable/widget_glass_strip"'),'Keep original single 54dp horizontal row');
+assert(layout.includes('android:layout_height="56dp" android:orientation="horizontal" android:background="@drawable/widget_glass_strip"'),'Keep all six prayers on original one row with compact 56dp reference geometry');
+assert(layout.includes('android:paddingBottom="0dp"'),'No empty area below strip in preview XML');
+assert(layout.includes('android:layout_marginBottom="63dp"'),'Original mosque image must end just above compact strip, without new blank region');
+assert(controller.includes('views.setViewPadding(R.id.widget_card,inset,inset,inset,0)'),'Native widget dynamic padding must not reintroduce bottom gap');
+assert(controller.includes('height-inset-56-8'),'Actual date layout must reserve exact same 56dp strip, not stale 77dp');
 const keys=['fajr','sunrise','dhuhr','asr','maghrib','isha'];
 for(const key of keys){
  const cell=layout.match(new RegExp('<LinearLayout android:id="@\\+id/widget_cell_'+key+'"[^>]*>'))?.[0];
@@ -42,4 +46,4 @@ assert(controller.includes('!"sunrise".equals(key)'),'Sunrise must never become 
 assert(controller.includes('WidgetAppearancePolicy.nextRefresh('),'Widget must refresh at upcoming prayer boundary');
 assert(controller.includes('alarm.setExactAndAllowWhileIdle('),'Automatic prayer transition must be scheduled when allowed');
 assert(manifest.includes('android:usesCleartextTraffic="false"'),'Android network security unchanged');
-console.log('PASS: exactly six in six in one row at reference 77dp height, one short gray TIME-only pill, subtle graphite strip-only hairline and automatic prayer-to-prayer transition.');
+console.log('PASS: exactly six in six in one row at reference 56dp height, one short gray TIME-only pill, subtle graphite strip-only hairline and automatic prayer-to-prayer transition.');
