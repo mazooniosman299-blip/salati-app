@@ -32,6 +32,9 @@ public final class QuranAudioRangeTest {
     check(pending.getParentFile().mkdirs());byte[] audio=new byte[2048];audio[0]=73;audio[1]=68;audio[2]=51;Files.write(pending.toPath(),audio);
     check(QuranAudioFiles.promote(pending,saved));check(!pending.exists());
     String expectedHash=QuranAudioFiles.sha256(saved);
+    check(expectedHash.equals(QuranAudioFiles.cachedSha256(saved)));
+    check(expectedHash.equals(QuranAudioFiles.cachedSha256(saved)));
+
     check(expectedHash.length()==64&&expectedHash.matches("[0-9a-f]{64}"));
     byte[] altered=Files.readAllBytes(saved.toPath());altered[900]^=73;
     Files.write(saved.toPath(),altered);
