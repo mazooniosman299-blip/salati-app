@@ -1,8 +1,8 @@
-name: Verify charcoal time-only Android widget (NO DEPLOY)
+name: Verify user-reference graphite Android widget (NO DEPLOY)
 on:
   push:
     branches:
-      - fix/widget-charcoal-time-pill-20261101
+      - fix/widget-reference-graphite-20261101
 permissions:
   contents: read
 concurrency:
@@ -47,28 +47,8 @@ jobs:
           disable-animations: true
           emulator-boot-timeout: 600
           script: |
-            set -eux
-            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
-            adb shell wm size 1080x2340
-            adb shell wm density 440
-            mkdir -p reports/native-widget-preview
-            adb shell am start -n com.salati.prayer/.WidgetPreviewActivity --ei active 4
-            sleep 5
-            adb exec-out screencap -p > reports/native-widget-preview/maghrib-active.png
-            adb shell am force-stop com.salati.prayer
-            adb shell am start -n com.salati.prayer/.WidgetPreviewActivity --ei active 2
-            sleep 3
-            adb exec-out screencap -p > reports/native-widget-preview/dhuhr-active.png
-            python3 - <<'PY'
-            from PIL import Image
-            for name in ('maghrib-active','dhuhr-active'):
-              image=Image.open('reports/native-widget-preview/'+name+'.png').convert('RGB')
-              assert image.width==1080 and image.height==2340
-              # Keep the actual Android renderer crop in evidence in addition
-              # to the full screen. This is NOT a Photoshop or web CSS mockup.
-              image.crop((0,110,1080,870)).save('reports/native-widget-preview/'+name+'-crop.png')
-            print('PASS: Android 15 native widget rendered with Maghrib and Dhuhr selection states')
-            PY
+            python3 -m pip install pillow
+            bash scripts/capture-widget-emulator.sh
       - name: Preserve emulator screenshots and APK for visual approval
         if: always()
         uses: actions/upload-artifact@v4
