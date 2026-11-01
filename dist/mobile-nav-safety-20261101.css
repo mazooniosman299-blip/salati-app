@@ -1,0 +1,15 @@
+/* Fixed bottom navigation is an overlay; give every tab a real scrollable
+   safe region, including compact Android WebView and short mobile screens.
+   Use viewport-relative safe-area values; do not move the nav or the Quran
+   controls away from their approved design. */
+@media (max-width:760px){
+  :root{--salati-nav-clearance:calc(var(--mobile-nav-height,65px) + 22px);}
+  html{scroll-padding-bottom:var(--salati-nav-clearance)!important;}
+  body.dark main{padding-bottom:calc(var(--salati-nav-clearance) + 44px)!important;}
+  body.dark main>.tab{padding-bottom:var(--salati-nav-clearance)!important;}
+  body.dark #qibla #compassEnable,
+  body.dark #mushaf :is(#qRepeat,#qAutoNext),
+  body.dark #mushaf .quran-play-options label{
+    scroll-margin-bottom:var(--salati-nav-clearance)!important;
+  }
+}
