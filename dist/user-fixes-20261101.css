@@ -12,6 +12,7 @@ body.dark .location-sheet .choice-option{
 body.dark .location-sheet .choice-option .choice-badge.location-mark{
   position:static!important;top:auto!important;bottom:auto!important;
   left:auto!important;right:auto!important;
+  inset-inline-start:auto!important;inset-inline-end:auto!important;
   transform:none!important;align-self:flex-start!important;
   display:grid!important;place-items:center!important;
   flex:0 0 20px!important;width:20px!important;height:20px!important;
@@ -54,7 +55,6 @@ body.dark #voicePickerList .voice-option .voice-symbol::after{
 body.dark #voicePickerList .voice-option .voice-check{
   position:absolute!important;
   left:16px!important;right:auto!important;
-  inset-inline-start:auto!important;inset-inline-end:auto!important;
   top:50%!important;bottom:auto!important;
   transform:translateY(-50%)!important;
   width:28px!important;height:28px!important;flex:none!important;
