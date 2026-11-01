@@ -16,7 +16,7 @@ const id=JSON.stringify([30,31,'Africa/Cairo','Egyptian','Shafi'])+':2026-10';co
  for(const row of [[0,1,2,3,4,5],[...valid].reverse(),valid.map(t=>t+864000000),valid.map(()=>valid[0])]){
   global.localStorage={getItem:()=>JSON.stringify({[id]:{fetchedAt:Date.now(),days:{'2026-10-28':row}}}),setItem(){}};
   const p=load('prayer-provider.js');assert.equal(p.providerTimes(state,{year:2026,month:10,day:28}),null,'Reject corrupt finite cached rows');let fetched=0;
-  await p.refreshProvider(state,{year:2026,month:10,day:28},async()=>{fetched++;throw Error('offline')});assert.equal(fetched,2,'Invalid fresh cache must not prevent refetch');
+  await p.refreshProvider(state,{year:2026,month:10,day:28},async()=>{fetched++;throw Error('offline')});assert.equal(fetched,0,'Legacy cache failures must never transmit precise coordinates');
  }
 }finally{delete global.localStorage;}
-console.log('PASS: volume retention/native schedule, malformed cross-window settings, corrupt finite cache rejection and recovery fetch.');})().catch(e=>{console.error(e);process.exitCode=1});
+console.log('PASS: volume retention/native schedule, malformed cross-window settings, corrupt finite cache rejection with no external location fetch.');})().catch(e=>{console.error(e);process.exitCode=1});
