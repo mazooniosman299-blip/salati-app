@@ -1,4 +1,4 @@
-import {providerTimes,refreshProvider} from './prayer-provider.js';
+// All prayer-time computations use the bundled Adhan library locally.
 import tzLookup from 'tz-lookup';
 import {getTimezone} from 'countries-and-timezones';
 import {PrayerTimes,Coordinates,CalculationMethod,Madhab,HighLatitudeRule} from 'adhan';
@@ -26,10 +26,12 @@ function muscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Sha
 // Requested display correction for Muscat on 2026-10-21; not an official-table edit.
 function requestedMuscatDay(day){return day.getFullYear()===2026&&day.getMonth()===9&&day.getDate()===21}
 function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=45}
-function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return times}return providerTimes(state,{year:day.getFullYear(),month:day.getMonth()+1,day:day.getDate()})||new PrayerTimes(new Coordinates(state.lat,state.lon),day,prayerParameters(state,day))}
+function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return times}return new PrayerTimes(new Coordinates(state.lat,state.lon),day,prayerParameters(state,day))}
 export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
 export function calculateSchedule(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone);const day=new Date(d.year,d.month-1,d.day,12),today=dayTimes(state,day);day.setDate(day.getDate()+1);const tomorrow=dayTimes(state,day);return [...PRAYER_KEYS.map(key=>({key,time:today[key]})),{key:'fajr',time:tomorrow.fajr,tomorrow:true}]}
 
 export function calculateDaySchedule(state,parts){state=resolveCalculationState(state);const day=new Date(parts.year,parts.month-1,parts.day,12),times=dayTimes(state,day);return PRAYER_KEYS.map(key=>({key,time:times[key]}))}
 
-export function refreshTimetables(state,now=new Date(),fetcher,options){const resolved=resolveCalculationState(state);return refreshProvider(resolved,calendarParts(now,resolved.zone),fetcher,options)}
+// No external prayer-calendar update. Legacy callers keep their Promise result,
+// and even an injected fetcher cannot transmit exact coordinates.
+export function refreshTimetables(_state,_now=new Date(),_fetcher,_options){return Promise.resolve({changed:false,failed:false})}
