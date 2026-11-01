@@ -11,6 +11,7 @@ on:
       - android/app/src/main/res/layout/prayer_widget.xml
       - android/app/src/main/java/com/salati/prayer/PrayerWidget.java
       - dist/index.html
+      - dist/privacy.html
       - quran-controller.js
       - tests/preview-player-dark-dock-worldwide-20261101.py
       - tests/worldwide-prayer-integrity-20261101.cjs
