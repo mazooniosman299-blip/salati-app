@@ -1,0 +1,78 @@
+name: Salati mobile geometry, prayer capsule and nav QA (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/mobile-settings-prayer-pills-bottom-nav-20261101
+permissions:
+  contents: read
+concurrency:
+  group: salati-mobile-geometry-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  web-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build app with immutable privacy and CSS guards
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - name: Install Chromium and real mobile layout test libraries
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Verify exact phone screenshots, settings coordinates and bottom nav
+        run: |
+          python3 tests/mobile-layout-contract-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/square-prayer-fajr-20261101.py
+          python3 tests/selection-refinement-20261101.py
+          python3 tests/local-prayer-privacy-browser-20261101.py
+          python3 tests/user-visual-audit-20261101.py
+      - name: Preserve browser evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mobile-layout-geometry-evidence
+          path: |
+            reports/mobile-layout-contract/
+            reports/eight-mobile-20261101/
+            reports/square-prayer-20261101/
+            reports/selection-refinement-20261101/
+          if-no-files-found: ignore
+  native-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Verify and embed exact same CSS and local prayer code in Android
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Reject stale app or widget resources
+        run: |
+          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/release/app-release-unsigned.apk
+          grep -q 'android:radius="24dp"' android/app/src/main/res/drawable/widget_prayer_active.xml
+          test -s android/app/build/outputs/apk/release/app-release-unsigned.apk
