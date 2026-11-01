@@ -1,11 +1,11 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 const html=fs.readFileSync('dist/index.html','utf8'),source=fs.readFileSync('app-source.js','utf8');
 const keys=[...html.matchAll(/data-tab="([^"]+)"/g)].map(m=>m[1]);assert.deepEqual(keys,['times','mushaf','qibla','dhikr','tasbih','settings']);
-const marker="document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=",handler=source.indexOf(marker),prefix=source.lastIndexOf('const tabPositions=',handler),start=prefix>=0?prefix:handler,end=source.indexOf(";$('counter').onclick",handler);assert(start>=0&&end>start);
+const marker="document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=",handler=source.indexOf(marker),prefix=source.lastIndexOf('const tabPositions=',handler),helper=source.lastIndexOf('function revealTabControls',handler),start=helper>=0?helper:prefix>=0?prefix:handler,end=source.indexOf(";$('counter').onclick",handler);assert(start>=0&&end>start);
 for(const direction of ['rtl','ltr']){
  let focusedPanel=null,blurred=0,opened=0;const field={blur(){blurred++;focusedPanel=null;}},panels=keys.map(id=>({id,hidden:id!=='times',contains:e=>e===field&&focusedPanel===id})),buttons=keys.map(tab=>({dataset:{tab},attributes:{},active:tab==='times',classList:{},setAttribute(k,v){this.attributes[k]=v;}}));
  for(const b of buttons){b.classList.toggle=(k,v)=>{b.active=v;};b.classList.contains=()=>b.active;}
- const status={textContent:'stale'},window={scrollY:0,scrollTo({top,behavior}){assert.equal(behavior,'instant');this.scrollY=top;}};
+ const status={textContent:'stale'},window={innerWidth:1024,scrollY:0,scrollTo({top,behavior}){assert.equal(behavior,'instant');this.scrollY=top;}};
  const context={window,document:{activeElement:field,documentElement:{dir:direction},querySelectorAll:q=>q==='.tab'?panels:buttons},$:id=>id==='status'?status:panels.find(p=>p.id===id),mushaf:{open(){opened++;}}};
  vm.runInNewContext(source.slice(start,end),context);
  for(const b of buttons.slice(1)){b.onclick();assert.deepEqual(panels.filter(p=>!p.hidden).map(p=>p.id),[b.dataset.tab]);assert.equal(buttons.filter(p=>p.active).length,1);assert.equal(b.attributes['aria-pressed'],'true');assert.equal(status.textContent,'');}
