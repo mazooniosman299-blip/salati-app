@@ -78,3 +78,23 @@ for html in target.rglob('*.html'):
         target_file=target/url.partition('?')[0].partition('#')[0].lstrip('/')
         assert not target_file.is_file(), ('Existing Android asset still has broken absolute URL',html,url)
 print('Fixed Android local asset URLs on',changed_pages,'HTML pages; corrected',changed_urls,'resource/navigation references.')
+
+
+# SALATI NATIVE SVG EMBED: Some vendor Android System WebViews render Quran
+# decoration SVGs loaded from CSS as plain fallback circles despite the
+# assets being present. Inline the two original licensed SVGs as data URLs
+# *only in the packaged native copy*. This preserves exact artwork with no
+# Android resource interceptor / appassets URL dependency. Website unchanged.
+import base64
+style_path=target/'salati-ui.css'
+native_css=style_path.read_text(encoding='utf-8')
+for ornament in ('quran-surah-ornament.svg','quran-ayah-rosette.svg'):
+    svg_path=target/'images'/ornament
+    assert svg_path.is_file(),('Missing original Quran ornament',ornament)
+    old='url("images/'+ornament+'")'
+    assert native_css.count(old)==1,('Expected one authored ornament CSS declaration',ornament,native_css.count(old))
+    encoded=base64.b64encode(svg_path.read_bytes()).decode('ascii')
+    native_css=native_css.replace(old,'url("data:image/svg+xml;base64,'+encoded+'")')
+assert native_css.count('data:image/svg+xml;base64,')==2
+style_path.write_text(native_css,encoding='utf-8')
+print('Native Quran medallion and surah ornament embedded from ORIGINAL SVG assets into APK-only CSS')
