@@ -451,3 +451,32 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     transform:none!important;
   }
 }
+
+/* Respect native playback state: the STOP button is intentionally hidden
+ * before playback; never reserve a blank first column for that state.
+ * Once playback begins, restore the independent three-column control row. */
+@media(max-width:760px){
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
+   grid-template-columns:36px minmax(0,1fr)!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-caption{
+   grid-area:1/1/2/-1!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
+   grid-area:2/1/3/2!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
+   grid-area:2/2/3/3!important;
+ }
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qDuration,
+ body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qElapsed{
+   position:static!important;
+   clip-path:none!important;
+   -webkit-clip-path:none!important;
+   visibility:visible!important;
+   overflow:visible!important;
+   opacity:1!important;
+   text-indent:0!important;
+   transform:none!important;
+ }
+}
