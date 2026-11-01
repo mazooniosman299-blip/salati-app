@@ -20,6 +20,7 @@ jobs:
           gh run download 41313432600 --repo "$GITHUB_REPOSITORY" --name salati-widget-reference-graphite-standalone-apk --dir /tmp/salati-preview
           test -s /tmp/salati-preview/salati-widget-reference-preview.apk
           cd /tmp/salati-preview
+          sed -i 's@reports/preview-apk/@@' sha256.txt
           sha256sum -c sha256.txt
           test "$(stat -c %s salati-widget-reference-preview.apk)" = "27479505"
       - name: Publish one preview APK under stable, direct GitHub URL
