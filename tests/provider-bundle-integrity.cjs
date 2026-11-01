@@ -12,7 +12,7 @@ assert(source.includes('!validMonth(record,p.year,p.month)'));
 assert(!app.includes('api.aladhan.com'),'Production JS must not access AlAdhan');
 assert(!app.includes('latitudeAdjustmentMethod'),'Production JS must not build coordinate-bearing provider queries');
 assert(!source.includes('fetcher(')&&!source.includes('https://api.aladhan.com/v1/calendar/'),'Legacy provider must not send coordinates');
-assert(worker.includes('salati-shell-v175'),'PWA caches need a new shell revision');
+assert(worker.includes('salati-shell-v176'),'PWA caches need a new shell revision');
 assert(html.includes('src="app-v1.0.109.js'),'HTML must link the checked release artifact');
 new vm.Script(app,{filename:'dist/app-v1.0.109.js'});
 console.log('PASS: deployed JS syntax, original local calculation with no external coordinate transfer.');
