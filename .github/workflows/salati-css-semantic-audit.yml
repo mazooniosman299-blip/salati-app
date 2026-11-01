@@ -1,0 +1,72 @@
+name: Salati — semantic CSS cleanup and visual parity (PREVIEW ONLY)
+on:
+  push:
+    branches:
+      - preview/salati-css-root-refactor-20261101
+    paths:
+      - .github/workflows/salati-css-semantic-audit.yml
+      - scripts/optimize-css-cascade.py
+      - tests/css-cascade-equivalence.py
+      - scripts/consolidate-salati-css.py
+      - dist/index.html
+      - scripts/build-web.cjs
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-css-semantic-audit
+  cancel-in-progress: true
+jobs:
+  static-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build original project and execute full regression tests before changing CSS
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+      - name: Audit CSS and remove shadowed declarations conservatively
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright pillow
+          python3 scripts/consolidate-salati-css.py
+          python3 scripts/optimize-css-cascade.py
+      - name: Run equivalence comparison in real browser across six tabs
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Enforce reduced shadowed CSS plus output validity
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          s=json.loads(Path('reports/css-cascade-audit.json').read_text())
+          assert s['declarations_removed'] > 0, s
+          assert s['optimized_bytes'] < s['baseline_bytes'], s
+          assert s['optimized_important'] < s['baseline_important'], s
+          assert (Path('dist')/'salati-ui.css').exists()
+          print('PASS: measured CSS pruning and visual parity',s)
+          PY
+      - name: Preserve audit and actual app screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-css-semantic-audit
+          path: |
+            reports/css-cascade-audit.json
+            reports/css-debt-20261101/
+            reports/css-root-review-20261101/
+          if-no-files-found: warn
+          retention-days: 7
