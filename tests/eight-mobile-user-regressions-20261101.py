@@ -53,7 +53,9 @@ try:
 
    page.click('[data-tab=mushaf]')
    page.wait_for_function("document.querySelector('#qSurah').options.length===114")
-   page.locator('#qSurah').select_option('67')
+   # Native select is intentionally hidden behind the accessible custom surah
+   # picker. Trigger the same change event that picker sends to the select.
+   page.locator('#qSurah').evaluate("e=>{e.value='67';e.dispatchEvent(new Event('change',{bubbles:true}))}")
    page.wait_for_function("""() => !!document.querySelector('#qVerses [data-ayah="67:1"]')""")
    await_initial=page.locator('#qVerses [data-ayah="67:1"]').count()
    assert await_initial>=1,(width,'surah 67 first verse missing')
