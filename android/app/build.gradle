@@ -6,7 +6,7 @@ android {
  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
  sourceSets { main { if (!rootProject.salatiAds.enabled) java.srcDirs += 'src/noAds/java' } }
  androidResources { noCompress += ['mp3','ogg'] }
- buildTypes { release { minifyEnabled false } }
+ buildTypes { release { minifyEnabled false }; debug { applicationIdSuffix '.preview'; versionNameSuffix '-four-ui-preview' } }
 }
 
 dependencies { if (rootProject.salatiAds.enabled) implementation project(':ads') }
