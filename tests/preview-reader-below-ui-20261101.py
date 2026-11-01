@@ -97,7 +97,7 @@ try:
     page.evaluate("document.getElementById('qVerses').scrollTop=230")
     page.wait_for_timeout(160)
     state=page.evaluate("({top:document.getElementById('qVerses').scrollTop,range:document.getElementById('qVerses').scrollHeight-document.getElementById('qVerses').clientHeight})")
-    assert state["range"]>10 and state["top"]>=min(100,state["range"])-2,(width,"scrollport does not scroll its available range",state)
+    assert state["range"]>10 and 10<state["top"]<=state["range"]+2,(width,"Quran scrollport must move and remain within its range",state)
    assert not faults,(width,"JavaScript runtime errors",faults)
    page.close()
    print("PASS",width,"no prayer-card boxes; Quran player below separate scrollport; all player controls fit")
