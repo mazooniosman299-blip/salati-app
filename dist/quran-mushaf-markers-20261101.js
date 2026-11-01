@@ -23,7 +23,7 @@
       if(normalized!==original)mark.textContent=normalized;
       mark.dataset.mushafOrnament='1';
     });
-    // U+06DD (end-of-ayah) and U+06DE (rub el hizb) are decorative,
+    // U+06DD/U+06DE verse ornaments and U+06DF/U+06E0 font-specific zero marks are decorative,
     // font-dependent circular symbols. In this UI the ayah number has its
     // own reliable medallion; the extra glyph can appear as a solid BLACK
     // dot with a broken/dotted ring on some Android Quran fonts.
@@ -34,9 +34,9 @@
     while(walker.nextNode()){
       const node=walker.currentNode;
       if(node.parentElement?.closest('.ayah-number,.reading-page-number'))continue;
-      if(/[\u06DD\u06DE]/u.test(node.nodeValue||''))toClean.push(node);
+      if(/[\u06DD\u06DE\u06DF\u06E0]/u.test(node.nodeValue||''))toClean.push(node);
     }
-    for(const node of toClean)node.nodeValue=node.nodeValue.replace(/[\u06DD\u06DE]/gu,'');
+    for(const node of toClean)node.nodeValue=node.nodeValue.replace(/[\u06DD\u06DE\u06DF\u06E0]/gu,'');
   };
   new MutationObserver(refresh).observe(root,{subtree:true,childList:true});
   refresh();
