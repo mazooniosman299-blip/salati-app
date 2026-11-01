@@ -8,7 +8,44 @@ public final class PrayerSchedule {
  static boolean ready(Context c){return exactAlarmsAllowed(c);}
  static PendingIntent pending(Context c,long time,String prayer){Intent i=new Intent(c,PrayerReceiver.class).setAction("com.salati.prayer.ALARM").putExtra("time",time).putExtra("prayer",prayer);return PendingIntent.getBroadcast(c,REQUEST,i,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);}
  public static synchronized void sync(Context c,String value)throws Exception {if(value.length()>1000000)throw new IllegalArgumentException("Too large");JSONObject data=new JSONObject(value);data.remove("approachEnabled");data.remove("approachMinutes");JSONArray a=data.optJSONArray("events");if(a!=null&&a.length()>2100)throw new IllegalArgumentException("Too many events");if(a==null||data.optJSONArray("days")==null||data.optJSONArray("days").length()>405)throw new IllegalArgumentException("Invalid schedule");for(int n=0;n<a.length();n++){JSONObject e=a.getJSONObject(n);if(!e.optString("prayer").matches("fajr|dhuhr|asr|maghrib|isha")||e.optLong("time")<=0)throw new IllegalArgumentException("Invalid event");}if(!c.getSharedPreferences(PREF,0).edit().putString("config",data.toString()).commit())throw new java.io.IOException("Could not persist prayer schedule");scheduleNext(c,System.currentTimeMillis());if(!data.optBoolean("enabled")||!data.optBoolean("fajrAnnouncement",true))c.stopService(new Intent(c,FajrPreviewService.class));if(!data.optBoolean("enabled"))c.stopService(new Intent(c,AdhanService.class));}
- public static synchronized void scheduleNext(Context c,long after){cancelLegacyApproach(c);AlarmManager alarm=c.getSystemService(AlarmManager.class);alarm.cancel(pending(c,0,""));JSONObject data=config(c);c.getSharedPreferences(PREF,0).edit().remove("nextAlarmTime").remove("nextAlarmPrayer").apply();if(!data.optBoolean("enabled")||!exactAlarmsAllowed(c))return;JSONArray events=data.optJSONArray("events");if(events==null)return;JSONObject next=null;for(int i=0;i<events.length();i++){JSONObject e=events.optJSONObject(i);if(e!=null&&e.optLong("time")>after&&(next==null||e.optLong("time")<next.optLong("time")))next=e;}if(next==null)return;try{long at=next.optLong("time");String prayer=next.optString("prayer");PendingIntent show=PendingIntent.getActivity(c,5102,new Intent(c,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);alarm.setAlarmClock(new AlarmManager.AlarmClockInfo(at,show),pending(c,at,prayer));c.getSharedPreferences(PREF,0).edit().putLong("nextAlarmTime",at).putString("nextAlarmPrayer",prayer).apply();}catch(RuntimeException error){recordDelivery(c,"schedule_failed",error);}}
+ public static synchronized void scheduleNext(Context c,long after){
+  cancelLegacyApproach(c);
+  AlarmManager alarm=c.getSystemService(AlarmManager.class);
+  if(alarm==null){recordDelivery(c,"no_alarm_manager",null);return;}
+  alarm.cancel(pending(c,0,""));
+  JSONObject data=config(c);
+  c.getSharedPreferences(PREF,0).edit().remove("nextAlarmTime").remove("nextAlarmPrayer").remove("nextAlarmMode").apply();
+  if(!data.optBoolean("enabled"))return;
+  JSONArray events=data.optJSONArray("events");if(events==null)return;
+  JSONObject next=null;
+  for(int i=0;i<events.length();i++){
+   JSONObject e=events.optJSONObject(i);
+   if(e!=null&&e.optLong("time")>after&&(next==null||e.optLong("time")<next.optLong("time")))next=e;
+  }
+  if(next==null)return;
+  long at=next.optLong("time");String prayer=next.optString("prayer");
+  PendingIntent alarmIntent=pending(c,at,prayer);
+  String mode="inexact";
+  try{
+   if(exactAlarmsAllowed(c)){
+    try{
+     PendingIntent show=PendingIntent.getActivity(c,5102,new Intent(c,MainActivity.class),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+     alarm.setAlarmClock(new AlarmManager.AlarmClockInfo(at,show),alarmIntent);
+     mode="exact";
+    }catch(SecurityException revokedDuringScheduling){
+     // A permission can change between canScheduleExactAlarms and setAlarmClock.
+     alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,at,alarmIntent);
+    }
+   }else{
+    // This needs no exact-alarm permission and can run in Doze, but Android may
+    // deliver it late; NEVER present it as a guaranteed precise alarm.
+    alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,at,alarmIntent);
+   }
+   c.getSharedPreferences(PREF,0).edit()
+    .putLong("nextAlarmTime",at).putString("nextAlarmPrayer",prayer).putString("nextAlarmMode",mode).apply();
+  }catch(RuntimeException error){recordDelivery(c,"schedule_failed",error);}
+ }
+
  static synchronized void cancelLegacyApproach(Context c){
   AlarmManager alarm=c.getSystemService(AlarmManager.class);
   PendingIntent old=PendingIntent.getBroadcast(c,5103,new Intent(c,ApproachReceiver.class).setAction("com.salati.prayer.APPROACH"),PendingIntent.FLAG_NO_CREATE|PendingIntent.FLAG_IMMUTABLE);
@@ -27,10 +64,10 @@ public final class PrayerSchedule {
   String prayer=prefs.getString("nextAlarmPrayer","");
   String delivered=prefs.getString("last","");
   return AlarmDeliveryPolicy.preserveOnActivityResume(
-      valid(c,at,prayer),exactAlarmsAllowed(c),at,now,
+      valid(c,at,prayer),at,now,
       (prayer+at).equals(delivered));
  }
  static boolean valid(Context c,long time,String prayer){JSONObject data=config(c);if(!data.optBoolean("enabled"))return false;JSONArray events=data.optJSONArray("events");if(events==null)return false;for(int i=0;i<events.length();i++){JSONObject e=events.optJSONObject(i);if(e!=null&&e.optLong("time")==time&&e.optString("prayer").equals(prayer))return true;}return false;}
  static void recordDelivery(Context c,String code,Throwable error){c.getSharedPreferences(PREF,0).edit().putString("deliveryStatus",code).putLong("deliveryAt",System.currentTimeMillis()).putString("deliveryError",error==null?"":android.util.Log.getStackTraceString(error)).apply();if(error!=null)android.util.Log.w("SalatiAlarm",code,error);}
- static String status(Context c){JSONObject d=new JSONObject();try{d.put("ready",ready(c));d.put("notificationsAllowed",notificationsAllowed(c));d.put("exactAlarmsAllowed",exactAlarmsAllowed(c));d.put("enabled",config(c).optBoolean("enabled"));android.content.SharedPreferences speech=c.getSharedPreferences(ArabicSpeech.PREF,0);d.put("announcementStatus",speech.getString("status","idle"));android.content.SharedPreferences saved=c.getSharedPreferences(PREF,0);d.put("nextAlarmTime",saved.getLong("nextAlarmTime",0));d.put("nextAlarmPrayer",saved.getString("nextAlarmPrayer",""));d.put("deliveryStatus",saved.getString("deliveryStatus",""));if(Build.VERSION.SDK_INT>=28)d.put("backgroundRestricted",c.getSystemService(ActivityManager.class).isBackgroundRestricted());}catch(Exception ignored){}return d.toString();}
+ static String status(Context c){JSONObject d=new JSONObject();try{d.put("ready",ready(c));d.put("notificationsAllowed",notificationsAllowed(c));d.put("exactAlarmsAllowed",exactAlarmsAllowed(c));d.put("enabled",config(c).optBoolean("enabled"));android.content.SharedPreferences speech=c.getSharedPreferences(ArabicSpeech.PREF,0);d.put("announcementStatus",speech.getString("status","idle"));android.content.SharedPreferences saved=c.getSharedPreferences(PREF,0);d.put("nextAlarmTime",saved.getLong("nextAlarmTime",0));d.put("nextAlarmPrayer",saved.getString("nextAlarmPrayer",""));d.put("nextAlarmMode",saved.getString("nextAlarmMode","none"));d.put("inexactFallback",!exactAlarmsAllowed(c)&&saved.getLong("nextAlarmTime",0)>0);d.put("deliveryStatus",saved.getString("deliveryStatus",""));if(Build.VERSION.SDK_INT>=28)d.put("backgroundRestricted",c.getSystemService(ActivityManager.class).isBackgroundRestricted());}catch(Exception ignored){}return d.toString();}
 }
