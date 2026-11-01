@@ -1,0 +1,99 @@
+/* Verified eight-point mobile repair. Change individual highlights and
+   regular action button borders; leave the approved mosque image, large
+   hero/widget frame, brand colors and toggle switches untouched. */
+
+/* Reference selection: gray charcoal translucent inset with a soft silver
+   outline and rounded rectangle, matching the user's 12:34 reference.
+   Unselected individual tiles retain the prior shape and colors. */
+body.dark #times .prayer-overview #prayers .prayer:not(.active){
+  border-radius:12px!important;
+}
+body.dark #times .prayer-overview #prayers .prayer.active{
+  border-radius:18px!important;
+  background:#333539!important;
+  border:1px solid #767A7F!important;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.10)!important;
+}
+body.dark #times .prayer-overview #prayers .prayer.active :is(span,strong){
+  color:#FFFFFF!important;opacity:1!important;
+}
+
+/* Material-looking plain buttons: actual legible Cancel text, same matte
+   black translucent border on ordinary action controls only.
+   DO NOT restyle switch inputs, on/off knobs, nav or audio transport. */
+body.dark #settings :is(.adjust-actions,.fields,.mushaf-tools,.audio-buttons) button:not([role="switch"]),
+body.dark #settings :is(#cancelPrayerAdjustments,#applyPrayerAdjustments,#restoreAutomaticTimes,#savePreferences,#voicePickerOpen),
+body.dark #times #locate,
+body.dark #mushaf :is(.mushaf-tools,.font-tools) button,
+body.dark #qibla #compassEnable,
+body.dark #dhikr :is(.adhkar-shortcuts,.adhkar-toolbar) button,
+body.dark :is(.voice-sheet,.location-sheet) button:not([role="switch"]):not(.voice-option):not(.choice-option){
+  background:rgba(12,14,18,.87)!important;
+  background-image:none!important;
+  border:1px solid #666B73!important;
+  color:#FFFFFF!important;
+  font-weight:800!important;
+  text-shadow:none!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)!important;
+  opacity:1!important;
+}
+body.dark #settings #cancelPrayerAdjustments{
+  background:rgba(11,13,17,.94)!important;
+  color:#FFFFFF!important;
+  border:1.5px solid #92969C!important;
+  border-radius:16px!important;
+  min-height:50px!important;
+  font-size:19px!important;
+  opacity:1!important;
+}
+/* On/off switches keep their existing backgrounds and shapes. */
+body.dark :is([role="switch"],input[type="checkbox"]){
+  box-shadow:revert-layer;
+}
+
+/* Qibla: the one Find Qibla button replaces the former phone-heading badge
+   INSIDE the lower bearing card; no second button below that panel. */
+body.dark #qibla .qibla-reading .compass-actions{
+  display:flex!important;justify-content:center!important;
+  margin:12px auto 0!important;
+  width:auto!important;max-width:100%!important;
+}
+body.dark #qibla .qibla-reading #compassEnable{
+  min-height:48px!important;
+  background:rgba(9,12,16,.92)!important;
+  border:1px solid #747C85!important;
+  border-radius:14px!important;
+  color:#FFF!important;font-size:17px!important;
+  line-height:1.3!important;
+  padding:9px 22px!important;
+}
+
+/* Mobile: reserve a real non-overlapping scrolling viewport ABOVE the fixed
+   navigation. The Quran verses cannot sit beneath the bar, even mid-scroll.
+   This does not change the navbar geometry or approved colors. */
+@media(max-width:760px){
+  html{height:100%!important;overflow:hidden!important;}
+  body.dark{
+    min-height:0!important;height:100dvh!important;
+    overflow:hidden!important;display:flex!important;
+    flex-direction:column!important;
+  }
+  body.dark>header{flex:0 0 auto!important;}
+  body.dark main{
+    flex:1 1 0!important;min-height:0!important;
+    overflow-y:auto!important;overflow-x:hidden!important;
+    overscroll-behavior-y:contain!important;
+    margin-bottom:calc(var(--mobile-nav-height,74px) + env(safe-area-inset-bottom,0px) + 14px)!important;
+    padding-bottom:32px!important;
+    scroll-padding-bottom:28px!important;
+    -webkit-overflow-scrolling:touch;
+  }
+  body.dark main>.tab{padding-bottom:36px!important;}
+  body.dark #mushaf .quran-reading-page:last-child{
+    margin-bottom:32px!important;
+  }
+  body.dark header>.site-nav{
+    position:fixed!important;bottom:env(safe-area-inset-bottom,0px)!important;
+    z-index:800!important;
+  }
+}
