@@ -97,13 +97,13 @@ assert not any(n.type=='error' for n in valid)
 assert optimized.count('{')==optimized.count('}'), 'Unbalanced output'
 old_important=len(re.findall(r'!\s*important\b',source,re.I))
 new_important=len(re.findall(r'!\s*important\b',optimized,re.I))
-assert old_important-new_important==priority
+assert new_important<=old_important, (old_important,new_important,priority)  # serialization also removes comments
 assert len(optimized)<len(source)
 file.with_name('salati-ui-baseline.css').write_text(source,encoding='utf8')
 file.write_text(optimized,encoding='utf8')
 out={'baseline_bytes':len(source.encode()),'optimized_bytes':len(optimized.encode()),
  'baseline_important':old_important,'optimized_important':new_important,
- 'declarations_removed':shadowed,'priority_declarations_removed':priority,
+ 'declarations_removed':shadowed,'priority_declarations_removed':priority,'total_important_mentions_removed':old_important-new_important,
  'replaced_with_different_value':conflicts,'removed_with_same_value':exact,
  'exact_selector_property_groups':len(groups),
  'css_sha256':hashlib.sha256(optimized.encode()).hexdigest()}
