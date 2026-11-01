@@ -1,16 +1,30 @@
-const assert=require('node:assert/strict'),Module=require('node:module');const b=require('esbuild').buildSync({entryPoints:['prayer-engine.js','prayer-provider.js'],bundle:true,platform:'node',format:'cjs',outdir:'out',write:false});const m=new Module('provider',module);m._compile(b.outputFiles.find(f=>f.path.endsWith('prayer-provider.js')).text,'provider.cjs');const {parseCalendar,refreshProvider,providerTimes,timetableRevision}=m.exports;
-const make=(s,y,mo,id)=>({code:200,data:Array.from({length:new Date(Date.UTC(y,mo,0)).getUTCDate()},(_,i)=>({date:{gregorian:{date:`${String(i+1).padStart(2,'0')}-${String(mo).padStart(2,'0')}-${y}`}},meta:{timezone:s.zone,latitude:s.lat,longitude:s.lon,method:{id},school:s.madhab==='Hanafi'?'HANAFI':'STANDARD'},timings:Object.fromEntries(['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'].map((k,j)=>[k,`${y}-${String(mo).padStart(2,'0')}-${String(i+1).padStart(2,'0')}T${['05:00','06:00','12:00','15:00','18:00','19:00'][j]}+04:00`]))}))});
+const assert=require('node:assert/strict'),Module=require('node:module');
+const compiled=require('esbuild').buildSync({entryPoints:['prayer-provider.js'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text;
+const m=new Module('offline-provider',module);m._compile(compiled,'offline-provider.cjs');
+const {parseCalendar,refreshProvider,providerTimes,timetableRevision}=m.exports;
+const state={lat:23.588,lon:58.3829,zone:'Asia/Muscat',method:'MuslimWorldLeague',madhab:'Shafi'};
+const keys=['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
+function calendar(s,y,month,id=3){
+ const days=new Date(Date.UTC(y,month,0)).getUTCDate();
+ return {code:200,data:Array.from({length:days},(_,i)=>{
+  const day=String(i+1).padStart(2,'0'),mo=String(month).padStart(2,'0');
+  return {date:{gregorian:{date:`${day}-${mo}-${y}`}},
+   meta:{timezone:s.zone,latitude:s.lat,longitude:s.lon,method:{id},school:'STANDARD'},
+   timings:Object.fromEntries(keys.map((k,j)=>[k,`${y}-${mo}-${day}T${['05:00','06:00','12:00','15:00','18:00','19:00'][j]}+04:00`]))}
+ }))}
+}
 (async()=>{
- // Malformed but valid JSON in a restored calendar cache must not crash prayer screens.
- const storedBefore=global.localStorage,cacheState={lat:8,lon:9,zone:'Asia/Dubai',method:'MuslimWorldLeague',madhab:'Shafi'},cacheKey=JSON.stringify([8,9,'Asia/Dubai','MuslimWorldLeague','Shafi'])+':2026-10';
- try{for(const cached of [null,[],false,'invalid',{[cacheKey]:null},{[cacheKey]:{fetchedAt:Date.now(),days:null},unrelated:null}]){
-  global.localStorage={getItem:()=>JSON.stringify(cached),setItem(){}};const fresh=new Module('restored-provider',module);fresh._compile(b.outputFiles.find(f=>f.path.endsWith('prayer-provider.js')).text,'restored-provider.cjs');
-  assert.equal(fresh.exports.providerTimes(cacheState,{year:2026,month:10,day:22}),null);
-  const result=await fresh.exports.refreshProvider(cacheState,{year:2026,month:10,day:22},async url=>{const parts=new URL(url).pathname.split('/');return {ok:true,json:async()=>make(cacheState,+parts.at(-2),+parts.at(-1),3)}});
-  assert.equal(result.failed,false,'A corrupt entry must not prevent caching a valid calendar');assert(fresh.exports.providerTimes(cacheState,{year:2026,month:10,day:22}));
+ const parsed=parseCalendar(calendar(state,2026,11),state,2026,11);
+ assert.equal(Object.keys(parsed.days).length,30,'Legacy offline calendars still parse safely');
+ assert.equal(providerTimes(state,{year:2026,month:11,day:21}),null,'No external calendar is loaded');
+ const invalid=calendar(state,2026,11);invalid.data[0].meta.latitude=0;
+ assert.throws(()=>parseCalendar(invalid,state,2026,11),/wrong-calendar/);
+ let networkCalls=0;
+ const fetcher=async()=>{networkCalls++;throw Error('Privacy regression: network request');};
+ for(const opts of [{},{retryFailed:true}]){
+  assert.deepEqual(await refreshProvider(state,{year:2026,month:11,day:21},fetcher,opts),{changed:false,failed:false});
  }
- const validStored={[cacheKey]:parseCalendar(make(cacheState,2026,10,3),cacheState,2026,10)};global.localStorage={getItem:()=>JSON.stringify(validStored),setItem(){}};
- const restored=new Module('valid-restored-provider',module);restored._compile(b.outputFiles.find(f=>f.path.endsWith('prayer-provider.js')).text,'valid-restored-provider.cjs');
- assert.equal(+restored.exports.providerTimes(cacheState,{year:2026,month:10,day:22}).fajr,Date.parse('2026-10-22T05:00:00+04:00'),'Valid stored calendars must remain available offline');
- }finally{if(storedBefore===undefined)delete global.localStorage;else global.localStorage=storedBefore;}
- let calls=0;for(const s of [{lat:30.0444,lon:31.2357,zone:'Africa/Cairo',method:'Egyptian',madhab:'Shafi',id:5},{lat:21.4225,lon:39.8262,zone:'Asia/Riyadh',method:'UmmAlQura',madhab:'Shafi',id:4},{lat:24.86,lon:67.01,zone:'Asia/Karachi',method:'Karachi',madhab:'Hanafi',id:1}]){const fetcher=async url=>{calls++;const u=new URL(url),parts=u.pathname.split('/');assert.equal(+u.searchParams.get('method'),s.id);assert.equal(u.searchParams.get('school'),s.madhab==='Hanafi'?'1':'0');assert.equal(u.searchParams.get('iso8601'),'true');return {ok:true,json:async()=>make(s,+parts.at(-2),+parts.at(-1),s.id)}};assert.equal((await refreshProvider(s,{year:2026,month:12},fetcher)).changed,true);const t=providerTimes(s,{year:2026,month:12,day:21});assert.equal(+t.fajr,Date.parse('2026-12-21T05:00:00+04:00'));assert.equal(+providerTimes({...s,adjustments:{fajr:2}},{year:2026,month:12,day:21}).fajr,+t.fajr+120000);assert.equal(providerTimes({...s,lon:s.lon+1},{year:2026,month:12,day:21}),null);assert.equal((await refreshProvider(s,{year:2026,month:12},fetcher)).changed,false);const data=make(s,2026,12,s.id);data.data[0].meta.timezone='wrong';assert.throws(()=>parseCalendar(data,s,2026,12));const bad=make(s,2026,12,s.id);bad.data[0].timings.Fajr='05:00';assert.throws(()=>parseCalendar(bad,s,2026,12));}assert.equal(calls,6);assert.equal(timetableRevision(),6);const s={lat:1,lon:2,zone:'UTC',method:'MuslimWorldLeague',madhab:'Shafi'};assert.equal((await refreshProvider(s,{year:2026,month:1},async()=>{throw Error('offline')})).failed,true);assert.equal(providerTimes(s,{year:2026,month:1,day:1}),null);const retryState={lat:8,lon:9,zone:'Asia/Dubai',method:'MuslimWorldLeague',madhab:'Shafi'};let retryCalls=0;const failFetch=async()=>{retryCalls++;throw Error('offline')};await refreshProvider(retryState,{year:2026,month:10,day:22},failFetch);assert.equal(retryCalls,2);await refreshProvider(retryState,{year:2026,month:10,day:22},failFetch);assert.equal(retryCalls,2);const recovered=await refreshProvider(retryState,{year:2026,month:10,day:22},async url=>{retryCalls++;const parts=new URL(url).pathname.split('/');return {ok:true,json:async()=>make(retryState,+parts.at(-2),+parts.at(-1),3)}},{retryFailed:true});assert.equal(recovered.changed,true);assert.equal(retryCalls,4);assert(providerTimes(retryState,{year:2026,month:10,day:22}));console.log('Provider: regional methods/schools, 2-month refresh, year rollover, cache/location isolation, minute offsets, invalid responses, malformed stored cache recovery and offline fallback pass.');})().catch(e=>{console.error(e);process.exitCode=1});
+ assert.equal(networkCalls,0,'Even explicit refresh cannot send coordinates');
+ assert.equal(timetableRevision(),0);
+ console.log('PASS: historical calendar validation retained; remote provider disabled without network access.');
+})().catch(e=>{console.error(e);process.exitCode=1});
