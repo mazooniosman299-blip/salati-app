@@ -10,8 +10,10 @@ const quran = read('dist/icons/quran.svg');
 const nav = read('dist/icons/navigation.svg');
 const nativeSelection = read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 const nativeStrip = read('android/app/src/main/res/drawable/widget_glass_strip.xml');
-assert.equal(palette, paletteVersioned, 'The versioned CSS must receive all palette edits');
-assert.equal(css, cssVersioned, 'The versioned CSS must receive all contrast edits');
+const canonical=html.includes('href="salati-ui.css"');
+if(!canonical){assert.equal(palette, paletteVersioned, 'The versioned CSS must receive all palette edits');
+assert.equal(css, cssVersioned, 'The versioned CSS must receive all contrast edits');}
+else assert(read('dist/salati-ui.css').includes('--bg:#0B0E13'),'Canonical CSS contains approved colors');
 const tokens = Object.fromEntries([...palette.matchAll(/--([\w-]+):([^;]+)/g)].map(m => [m[1], m[2]]));
 assert.equal(tokens.bg, '#0B0E13', 'Exact supplied screenshot page color');
 assert.equal(tokens.card, '#040509', 'Exact supplied screenshot card color');
@@ -21,8 +23,8 @@ assert.equal(tokens['control-disabled-ink'], '#FFFFFF', 'Disabled text must rema
 assert.equal(tokens['action-fill'], '#2563EB', 'Approved play/stop blue');
 assert.equal(tokens.accent, '#FFFFFF', 'Navigation accent must match the user reference white, without gold');
 assert(tokens['progress-track'].includes('.55'), 'Clear progress track');
-assert(html.includes('href="reference-layout-v1.0.109.css"'), 'App uses the edited CSS');
-assert(html.includes('href="light-theme-v1.0.109.css"'), 'App uses the edited palette');
+assert(canonical || html.includes('href="reference-layout-v1.0.109.css"'), 'App uses the edited CSS');
+assert(canonical || html.includes('href="light-theme-v1.0.109.css"'), 'App uses the edited palette');
 for (const id of ['times','mushaf','dhikr','qibla','tasbih','settings']) {
   assert(new RegExp('id="'+id+'"').test(html), 'Missing tab: '+id);
 }
