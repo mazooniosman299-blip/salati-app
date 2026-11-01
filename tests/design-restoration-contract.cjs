@@ -7,9 +7,11 @@ assert(html.startsWith('<!doctype html>') && html.includes('</body></html>'),'Re
 for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTransport','qStop','qSeek']){
  assert(html.includes('id="'+id+'"'),'Missing functional DOM node '+id);
 }
-assert(html.includes('href="design-restoration-v1.0.113.css"'),'Reference layer is loaded');
-assert(html.indexOf('design-restoration-v1.0.113.css')>html.indexOf('reference-layout-v1.0.109.css'),'Final CSS must win in cascade');
-assert(sw.includes("salati-shell-v177")&&sw.includes('design-restoration-v1.0.113.css'),'Service worker caches current design');
+const migrated=html.includes('href="salati-ui.css"');
+if(migrated){const canonical=fs.readFileSync('dist/salati-ui.css','utf8');assert(canonical.includes('--bg:#0B0E13')&&canonical.includes('.reference-player'),'Canonical UI must preserve approved design and media player');assert(!html.includes('href="design-restoration-v1.0.113.css"'),'Legacy layer may not be reloaded');}
+else assert(html.includes('href="design-restoration-v1.0.113.css"'),'Reference layer is loaded');
+if(!migrated)assert(html.indexOf('design-restoration-v1.0.113.css')>html.indexOf('reference-layout-v1.0.109.css'),'Final CSS must win in cascade');
+assert(migrated?sw.includes("'./salati-ui.css'"):(sw.includes('salati-shell-v177')&&sw.includes('design-restoration-v1.0.113.css')),'Service worker caches current design');
 for(const literal of ['--bg:#0B0E13','--card:#040509','--action-fill:#2563EB','background:#2563EB!important','background-image:linear-gradient(180deg,#12151A,#040509)']){
  assert(css.includes(literal),'Approved palette or player missing: '+literal);
 }
