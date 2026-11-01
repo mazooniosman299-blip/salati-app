@@ -1,5 +1,5 @@
 export const RECORDINGS={qatami:{ar:'ناصر القطامي',en:'Nasser Al-Qatami',url:'audio/qatami-original-v4.ogg'},nufais:{ar:'أحمد النفيس',en:'Ahmad Al-Nufais',url:'audio/nufais-clean-v3.mp3'},makkah:{ar:'أذان مكة',en:'Makkah',url:'audio/makkah-clean-v3.mp3'},aqsa:{ar:'أذان الأقصى',en:'Al-Aqsa',url:'audio/aqsa-clean-v3.mp3'}};
-export const AUDIO_DEFAULTS={enabled:false,voice:'nufais',volume:1,dua:true,silentMode:true,fajrAnnouncement:true,prayers:{fajr:true,dhuhr:true,asr:true,maghrib:true,isha:true}};
+export const AUDIO_DEFAULTS={enabled:false,voice:'nufais',volume:1,dua:true,silentMode:true,fajrAnnouncement:false,prayers:{fajr:true,dhuhr:true,asr:true,maghrib:true,isha:true}};
 export const WASILAH='اللَّهُمَّ رَبَّ هَذِهِ الدَّعْوَةِ التَّامَّةِ، وَالصَّلَاةِ الْقَائِمَةِ، آتِ مُحَمَّدًا الْوَسِيلَةَ وَالْفَضِيلَةَ، وَابْعَثْهُ مَقَامًا مَحْمُودًا الَّذِي وَعَدْتَهُ.';
 export function duePrayer(schedule,previous,now,settings){if(!settings.enabled||previous===null||now<previous)return null;return schedule.find(p=>p.key!=='sunrise'&&settings.prayers[p.key]&&Number.isFinite(+p.time)&&+p.time>previous&&+p.time<=now&&now-(+p.time)<30000)||null}
 export class PrayerAudio{
