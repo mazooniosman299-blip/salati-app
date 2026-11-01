@@ -1,21 +1,10 @@
 {
-  "version": "1.0.103",
-  "recordings": [
-    {
-      "file": "fajr-user-approved-1.0.103.mp3",
-      "source": "User supplied salati_fajr_salah_khayrun_min_alnawm.mp3",
-      "sha256": "9204596c44b45f494b372838ddbd1ff35caf0a17cc4735a069c9f479a6b84db9",
-      "duration": 19.748571,
-      "synthetic": false,
-      "processing": "None. User file copied byte-for-byte.",
-      "recording_type": "user-supplied human recording",
-      "rights_status": "No documented redistribution license available",
-      "redistribution_license_verified": false
-    }
-  ],
-  "user_authorized_use_after_rights_disclosure": true,
-  "user_instruction": "User directed use of attached file after being informed that no documented redistribution permission was available.",
-  "approach_recordings_removed": true,
-  "fajr_playback_occurrences": 1,
-  "subjective_audio_listening_performed": false
+  "source_version": "1.0.103",
+  "recording_type": "user-supplied human recording",
+  "original_sha256": "9204596c44b45f494b372838ddbd1ff35caf0a17cc4735a069c9f479a6b84db9",
+  "redistribution_license_verified": false,
+  "distributed_recordings": 0,
+  "replacement": "Device Arabic speech synthesis, no redistribution of the source recording",
+  "original_in_new_release": false,
+  "note": "Historical releases were previously distributed; this record is not a rights grant."
 }
