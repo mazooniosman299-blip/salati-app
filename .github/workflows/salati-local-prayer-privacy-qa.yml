@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - fix/privacy-local-prayer-times-20261101
+concurrency:
+  group: salati-mobile-privacy-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -25,12 +28,16 @@ jobs:
           sudo apt-get install -y chromium
           python3 -m pip install --break-system-packages playwright pillow
       - name: Capture five real phone screen geometries
-        run: python3 tests/mobile-layout-diagnostic-20261101.py
+        run: |
+          python3 tests/mobile-layout-diagnostic-20261101.py
+          python3 tests/mobile-layout-contract-20261101.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: salati-settings-nav-prayer-layout-evidence
-          path: reports/mobile-layout-diagnostic/
+          path: |
+            reports/mobile-layout-diagnostic/
+            reports/mobile-layout-contract/
           if-no-files-found: ignore
   integration:
     runs-on: ubuntu-latest
@@ -59,7 +66,7 @@ jobs:
           sudo ln -sf "$BROWSER" /usr/bin/chromium
       - name: Check no outbound location and preserve approved eight fixes
         run: |
-          python3 tests/mobile-layout-diagnostic-20261101.py
+          python3 tests/mobile-layout-contract-20261101.py
           python3 tests/local-prayer-privacy-browser-20261101.py
           python3 tests/eight-mobile-user-regressions-20261101.py
           python3 tests/auto-location-20261101.py
