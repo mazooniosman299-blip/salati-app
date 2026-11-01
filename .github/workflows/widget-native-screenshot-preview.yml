@@ -1,0 +1,88 @@
+name: Salati native widget screenshot acceptance - preview only
+on:
+  push:
+    branches: [fix/native-widget-reference-pill-20261101]
+permissions:
+  contents: read
+concurrency:
+  group: salati-native-widget-screenshot
+  cancel-in-progress: true
+jobs:
+  unit-and-native-compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: 'npm'}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - name: Verify all source invariants, exact web payload and native widget
+        run: |
+          npm ci
+          npm run build
+          npm test
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Verify release is still unsigned and its web assets match
+        run: |
+          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Archive native preview APK (not for publication)
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-native-widget-debug-preview
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 3
+  android-device-screenshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: 'npm'}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - name: Build exact Android widget preview from app resources
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Enable emulator acceleration
+        run: |
+          sudo chown "$USER" /dev/kvm
+      - name: Install Android emulator and screenshot actual RemoteViews
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: |
+            set -e
+            mkdir -p reports/native-widget
+            adb shell wm size 1080x2400
+            adb shell wm density 420
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell am start -n com.salati.prayer/.WidgetPreviewActivity --es prayer maghrib
+            sleep 5
+            adb exec-out screencap -p > reports/native-widget/maghrib.png
+            adb shell uiautomator dump /sdcard/widget.xml
+            adb pull /sdcard/widget.xml reports/native-widget/maghrib.xml
+            adb shell am force-stop com.salati.prayer
+            adb shell am start -n com.salati.prayer/.WidgetPreviewActivity --es prayer asr
+            sleep 3
+            adb exec-out screencap -p > reports/native-widget/asr.png
+            python3 tests/native-widget-screenshot-contract.py
+      - name: Archive phone emulator screenshots for manual comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-native-widget-android35-pixel6-1080x2400
+          path: reports/native-widget/
+          if-no-files-found: warn
