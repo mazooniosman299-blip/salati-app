@@ -11,7 +11,7 @@ function calendar(s,y,month,id=3){
   return {date:{gregorian:{date:`${day}-${mo}-${y}`}},
    meta:{timezone:s.zone,latitude:s.lat,longitude:s.lon,method:{id},school:'STANDARD'},
    timings:Object.fromEntries(keys.map((k,j)=>[k,`${y}-${mo}-${day}T${['05:00','06:00','12:00','15:00','18:00','19:00'][j]}+04:00`]))}
- }))}
+ })}
 }
 (async()=>{
  const parsed=parseCalendar(calendar(state,2026,11),state,2026,11);
