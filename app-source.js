@@ -48,7 +48,23 @@ function refreshAutomaticLocation(){
 }
 let locationRequest;
 function useLocation(){if(locationRequest&&locationIntent.current(pendingLocationGeneration))return locationRequest;const generation=locationIntent.request();pendingLocationGeneration=generation;locationBusy=true;$('locate').disabled=true;status('جارٍ تحديد موقعك…','Detecting your location…');$('locationFeedback').textContent='';render();locationRequest=(async()=>{try{const p=await freshPosition(navigator.geolocation);if(!locationIntent.current(generation))return false;const profile=regionalProfile(p.coords.latitude,p.coords.longitude);let city=nearestCity(p.coords,cities,profile.zone);const lookupName=WORLD_COUNTRIES.some(c=>c.code===profile.country);if(!locationIntent.current(generation))return false;const keep=samePrayerLocation(state,p.coords)||samePrayerCity(state,p.coords,cities,profile.zone);worldCountry=WORLD_COUNTRIES.some(c=>c.code===profile.country)?profile.country:'';Object.assign(state,{locationMode:'auto',lat:p.coords.latitude,lon:p.coords.longitude,...profile,zone:state.zoneMode==='manual'?state.zone:profile.zone,method:state.method,madhab:state.method==='Auto'?profile.madhab:state.madhab,adjustments:keep?state.adjustments:{fajr:0,sunrise:0,dhuhr:0,asr:0,maghrib:0,isha:0},name:city?city[0]:tr('موقعي الحالي','My current location'),locationSet:true,locationAccuracy:p.coords.accuracy,locationTimestamp:p.timestamp});save();render();status('تم تحديد موقعك وتحديث المواقيت.','Location found and prayer times updated.');if(lookupName)worldDirectory.load(profile.country).then(rows=>{if(!locationIntent.current(generation)||state.locationMode!=='auto')return;const nearby=nearestCity(p.coords,rows.map(r=>[cityLabel(r),r[1],r[2],profile.zone]),profile.zone);if(nearby){state.name=nearby[0];save();render();}}).catch(()=>{});return true;}catch{if(locationIntent.current(generation))status('','');return false;}finally{if(pendingLocationGeneration===generation){locationBusy=false;$('locate').disabled=false;locationRequest=null;render();}}})();return locationRequest;};$('locate').onclick=useLocation;
-$('lang').onclick=()=>{state.lang=state.lang==='ar'?'en':'ar';save();render()};const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
+$('lang').onclick=()=>{state.lang=state.lang==='ar'?'en':'ar';save();render()};// Fixed bottom tabs occupy physical screen space. On a short phone, ensure
+// the primary Qibla button and both Quran switches never open BEHIND that bar.
+// Leave the other tabs, restored scroll state and bottom navigation unchanged.
+function revealTabControls(tab){
+ if(window.innerWidth>760)return;
+ const selector=tab==='qibla'?'#qibla #compassEnable':tab==='mushaf'?'#mushaf .quran-play-options label:last-child':null;
+ if(!selector)return;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  const nav=document.querySelector('header>.site-nav'),control=document.querySelector(selector);
+  if(!nav||!control||control.closest('.tab')?.hidden)return;
+  const navBox=nav.getBoundingClientRect(),box=control.getBoundingClientRect();
+  if(box.top<navBox.top-12&&box.bottom<=navBox.top-12)return;
+  const needed=Math.ceil(box.bottom-navBox.top+16);
+  if(needed>0)window.scrollBy({top:needed,behavior:'instant'});
+ }));
+}
+const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
  if(b.classList.contains('active'))return;
  const panels=[...document.querySelectorAll('.tab')],previous=panels.find(t=>!t.hidden);
  if(previous){tabPositions.set(previous.id,window.scrollY);if(previous.contains(document.activeElement))document.activeElement.blur();}
@@ -58,6 +74,7 @@ $('lang').onclick=()=>{state.lang=state.lang==='ar'?'en':'ar';save();render()};c
  // Restore before opening Quran so following the currently playing verse retains priority.
  window.scrollTo({top:tabPositions.get(b.dataset.tab)||0,behavior:'instant'});
  if(b.dataset.tab==='mushaf')mushaf.open();
+ revealTabControls(b.dataset.tab);
 });$('counter').onclick=()=>{state.count=Math.min(100,state.count+1);save();renderCount()};$('reset').onclick=()=>{state.count=0;save();renderCount()};$('privacy').onclick=()=>$('help').showModal();$('closeHelp').onclick=()=>$('help').close();window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});$('install').onclick=async()=>{if(installPrompt){await installPrompt.prompt();installPrompt=null}else status('للتثبيت افتح قائمة المتصفح واختر «إضافة إلى الشاشة الرئيسية».','To install, open your browser menu and choose Add to Home Screen.')};if('serviceWorker'in navigator&&!isNativeAndroid())navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>status('لم يتفعّل العمل دون اتصال؛ يمكنك استخدام التطبيق متصلًا.','Offline mode unavailable; you can continue online.'));
 
 const audioMessages={inactive:['الأذان التلقائي متوقف.','Automatic adhan is off.'],loading:['جارٍ تجهيز الصوت…','Preparing audio…'],ready:['',''],error:['اختيار التفعيل محفوظ، لكن تعذر تجهيز التسجيلات. تحقق من الاتصال واضغط إعادة تجهيز الصوت.','Your preference is saved, but recordings could not load. Check your connection and retry.'],blocked:['الأذان مفعّل ومحفوظ، لكن المتصفح يمنع الصوت حاليًا. اضغط «السماح بالصوت».','Adhan is enabled and saved, but your browser is blocking audio. Tap Allow sound.'],adhan:['يُشغّل الأذان الآن…','Playing adhan…'],fajr:['يُشغّل أذان الفجر الآن…','Playing Fajr adhan…'],dua:['يُشغّل دعاء الوسيلة الآن…','Playing Dua al-Wasilah…'],finished:['انتهى التشغيل. الأذان التلقائي ما زال مفعّلًا.','Playback finished. Automatic adhan remains on.'],stopped:['تم إيقاف المقطع الحالي. الأذان التلقائي ما زال مفعّلًا.','Current playback stopped. Automatic adhan remains on.']};
