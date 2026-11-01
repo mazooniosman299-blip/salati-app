@@ -37,7 +37,7 @@ jobs:
           unzip -l "$APK" | grep -F 'assets/www/index.html'
           mkdir -p reports/preview-apk
           cp "$APK" reports/preview-apk/salati-widget-reference-preview.apk
-          sha256sum reports/preview-apk/salati-widget-preview-only.apk > reports/preview-apk/sha256.txt
+          sha256sum reports/preview-apk/salati-widget-reference-preview.apk > reports/preview-apk/sha256.txt
           echo 'THIS IS A SEPARATE PREVIEW APP. NOT SIGNED BY PRODUCTION KEY.' > reports/preview-apk/README.txt
       - name: Offer side-by-side test APK with no public deployment
         uses: actions/upload-artifact@v4
