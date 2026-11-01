@@ -72,7 +72,46 @@ if(!sitemap.includes('<loc>'+origin+'/</loc>')||sitemap.includes('.chatgpt.site'
 const home=fs.readFileSync(path.join(dist,'index.html'),'utf8');
 if(!home.includes('rel="canonical" href="'+origin+'/"'))throw Error('Homepage canonical missing');
 fs.writeFileSync(path.join(dist,'robots.txt'),'User-agent: *\nAllow: /\n\nSitemap: '+origin+'/sitemap.xml\n');
+// Generate CSP hashes for executable inline scripts across ALL generated pages.
+// No unsafe-inline JS and no third-party script origins; styles still need
+// unsafe-inline because the existing interface uses inline style attributes.
+const inlineHashes=new Set();
+function collectScriptHashes(dir){
+ for(const item of fs.readdirSync(dir,{withFileTypes:true})){
+  const full=path.join(dir,item.name);
+  if(item.isDirectory()){collectScriptHashes(full);continue;}
+  if(!item.name.endsWith('.html'))continue;
+  const html=fs.readFileSync(full,'utf8');
+  for(const match of html.matchAll(/<script\\b([^>]*)>([\\s\\S]*?)<\\/script>/gi)){
+   const attrs=match[1],content=match[2];
+   if(/\\bsrc\\s*=/.test(attrs)||/\\btype\\s*=\\s*["']application\\/ld\\+json["']/i.test(attrs)||!content.trim())continue;
+   inlineHashes.add("'sha256-"+crypto.createHash('sha256').update(content).digest('base64')+"'");
+  }
+ }
+}
+collectScriptHashes(dist);
+const securityPolicy=[
+ "default-src 'self'",
+ "base-uri 'self'",
+ "object-src 'none'",
+ "frame-ancestors 'none'",
+ "form-action 'self'",
+ "script-src 'self' "+[...inlineHashes].join(' '),
+ "style-src 'self' 'unsafe-inline'",
+ "font-src 'self' data:",
+ "img-src 'self' data: blob: https:",
+ "connect-src 'self' https:",
+ "media-src 'self' blob: https:",
+ "worker-src 'self' blob:",
+ "manifest-src 'self'",
+ "upgrade-insecure-requests"
+].join('; ');
 fs.writeFileSync(path.join(dist,'_headers'),[
+'/*',
+'  Content-Security-Policy: '+securityPolicy,
+'  X-Content-Type-Options: nosniff',
+'  Referrer-Policy: strict-origin-when-cross-origin',
+'',
 '/sw.js','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/*.html','  Cache-Control: no-cache, max-age=0, must-revalidate','',
 '/sitemap.xml','  Cache-Control: no-cache, max-age=0, must-revalidate','',
