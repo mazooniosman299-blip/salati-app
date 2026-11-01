@@ -57,51 +57,59 @@ final class QuranDownloads {
   }catch(RuntimeException error){return false;}
   finally{try{reader.release();}catch(IOException | RuntimeException ignored){}}
  }
+ // In the 2-second legacy UI poll this used to stream every MP3 twice.
+ // A pinned digest + persisted file metadata is a constant-time status check.
+ // Only a new/modified file or an actual playback needs full-byte verification.
  private static boolean ready(Context context,String reciter,int surah,SharedPreferences preferences,Map<Long,long[]> rows){
+  return ready(context,reciter,surah,preferences,rows,false);
+ }
+ private static boolean ready(Context context,String reciter,int surah,SharedPreferences preferences,
+        Map<Long,long[]> rows,boolean playback){
   String key=key(reciter,surah);long id=preferences.getLong(key,0);long[] row=rows.get(id);
   File saved=file(context,reciter,surah);
   String pinnedHash=preferences.getString(key+"-sha256","");
-  // Existing saved recordings are checked against a digest across ALL bytes,
-  // not against their extension, size, or only the opening MP3 header.
   boolean complete=QuranAudioFiles.valid(saved);
-  if(complete&&!pinnedHash.isEmpty()){
-   try{complete=pinnedHash.equals(QuranAudioFiles.sha256(saved));}
-   catch(IOException error){complete=false;}
+  long length=saved.length(),modified=saved.lastModified();
+  boolean checkpoint=complete&&!pinnedHash.isEmpty()
+     &&preferences.getBoolean(key+"-done",false)
+     &&preferences.getLong(key+"-size",-1)==length
+     &&preferences.getLong(key+"-modified",-1)==modified;
+  if(checkpoint&&!playback){
+   if(row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL)manager(context).remove(id);
+   return true;
   }
   if(!complete&&saved.exists()){
+   QuranAudioFiles.invalidate(saved);
    if(!saved.delete())return false;
-   preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+   preferences.edit().remove(key+"-done").remove(key+"-sha256").remove(key+"-size").remove(key+"-modified").apply();
    pinnedHash="";
   }
   if(!complete&&row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL){
    File pending=pendingFile(context,reciter,surah);
-   // DownloadManager can report a successful transfer whose saved bytes are
-   // unexpectedly short. Never promote in that case.
    boolean matchedSize=row[2]<=0||pending.length()==row[2];
    complete=matchedSize&&QuranAudioFiles.promote(pending,saved);
   }
   if(!complete)return false;
   if(row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL&&row[2]>0&&saved.length()!=row[2]){
-   if(saved.exists())saved.delete();
-   preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+   QuranAudioFiles.invalidate(saved);saved.delete();
+   preferences.edit().remove(key+"-done").remove(key+"-sha256").remove(key+"-size").remove(key+"-modified").apply();
    return false;
   }
   try{
-   String actual=QuranAudioFiles.sha256(saved);
+   String actual=QuranAudioFiles.cachedSha256(saved);
    if(!pinnedHash.isEmpty()&&!pinnedHash.equals(actual)){
-    if(saved.exists())saved.delete();
-    preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+    QuranAudioFiles.invalidate(saved);saved.delete();
+    preferences.edit().remove(key+"-done").remove(key+"-sha256").remove(key+"-size").remove(key+"-modified").apply();
     return false;
    }
-   // Existing files from older versions get a decoder check on first upgrade.
-   // The digest then becomes their permanent content-integrity reference.
    if(pinnedHash.isEmpty()&&!decodesAsAudio(saved)){
-    if(saved.exists())saved.delete();
-    preferences.edit().remove(key+"-done").remove(key+"-sha256").apply();
+    QuranAudioFiles.invalidate(saved);saved.delete();
+    preferences.edit().remove(key+"-done").remove(key+"-sha256").remove(key+"-size").remove(key+"-modified").apply();
     return false;
    }
-   if(pinnedHash.isEmpty()||!preferences.getBoolean(key+"-done",false)){
-    if(!preferences.edit().putString(key+"-sha256",actual).putBoolean(key+"-done",true).commit())return false;
+   if(!checkpoint||!preferences.getBoolean(key+"-done",false)){
+    if(!preferences.edit().putString(key+"-sha256",actual).putLong(key+"-size",saved.length())
+       .putLong(key+"-modified",saved.lastModified()).putBoolean(key+"-done",true).commit())return false;
    }
   }catch(IOException error){return false;}
   if(row!=null&&row[0]==DownloadManager.STATUS_SUCCESSFUL)manager(context).remove(id);
@@ -150,7 +158,7 @@ final class QuranDownloads {
      .setMimeType("audio/mpeg").setAllowedOverMetered(true).setAllowedOverRoaming(false)
      .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
      .setDestinationInExternalFilesDir(context,Environment.DIRECTORY_MUSIC,"quran-pending/"+reciter+"/"+filename(surah));
-    long id=manager.enqueue(request);preferences.edit().putLong(key,id).putBoolean(key+"-done",false).remove(key+"-sha256").apply();
+    long id=manager.enqueue(request);preferences.edit().putLong(key,id).putBoolean(key+"-done",false).remove(key+"-sha256").remove(key+"-size").remove(key+"-modified").apply();
    }
    return "{\"ok\":true}";
   }catch(Exception error){return "{\"error\":\"storage\"}";}
@@ -164,7 +172,7 @@ final class QuranDownloads {
    for(int surah=selected==0?1:selected;surah<=(selected==0?114:selected);surah++){
     if(keepSaved&&ready(context,reciter,surah,preferences,rows))continue;
     String key=key(reciter,surah);long id=preferences.getLong(key,0);if(id>0)remove.add(id);
-    edit.remove(key).remove(key+"-done").remove(key+"-sha256");
+    edit.remove(key).remove(key+"-done").remove(key+"-sha256").remove(key+"-size").remove(key+"-modified");
    }
    if(!remove.isEmpty()){long[] values=new long[remove.size()];for(int i=0;i<values.length;i++)values[i]=remove.get(i);manager.remove(values);}
    edit.apply();
@@ -181,7 +189,7 @@ final class QuranDownloads {
   try{
    SharedPreferences preferences=prefs(context);long id=preferences.getLong(key(reciter,surah),0);
    Map<Long,long[]> rows=preferences.getBoolean(key(reciter,surah)+"-done",false)?Collections.emptyMap():progress(manager(context),id>0?Collections.singletonList(id):Collections.emptyList());
-   return ready(context,reciter,surah,preferences,rows)?ORIGIN+PREFIX+reciter+"/"+filename(surah):"";
+   return ready(context,reciter,surah,preferences,rows,true)?ORIGIN+PREFIX+reciter+"/"+filename(surah):"";
   }catch(Exception error){return "";}
  }
  static WebResourceResponse response(Context context,Uri uri,Map<String,String> requestHeaders){
