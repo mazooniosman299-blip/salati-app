@@ -54,11 +54,11 @@ try:
    page.click('[data-tab=mushaf]')
    page.wait_for_function("document.querySelector('#qSurah').options.length===114")
    page.locator('#qSurah').select_option('67')
-   page.wait_for_function("document.querySelector('#qVerses [data-ayah=\\"67:1\\"]')!==null")
+   page.wait_for_function("""() => !!document.querySelector('#qVerses [data-ayah="67:1"]')""")
    await_initial=page.locator('#qVerses [data-ayah="67:1"]').count()
    assert await_initial>=1,(width,'surah 67 first verse missing')
    text=page.locator('#qVerses').inner_text()
-   assert not any(ch in text for ch in ('\\u06dd','\\u06de','\\u06df','\\u06e0')),(width,'font-dependent black dot survives')
+   assert not any(ch in text for ch in tuple(chr(n) for n in (0x06DD,0x06DE,0x06DF,0x06E0))),(width,'font-dependent black dot survives')
    if width==390:page.locator('#qSheet').screenshot(path=str(out/'quran-390.png'))
    # Simulate a genuine user reading mid-surah then moving to another tab.
    page.evaluate("""() => {
@@ -68,7 +68,7 @@ try:
    }""")
    page.click('[data-tab=times]')
    page.click('[data-tab=mushaf]')
-   page.wait_for_function("document.querySelector('#qVerses [data-ayah=\\"67:1\\"]')!==null")
+   page.wait_for_function("""() => !!document.querySelector('#qVerses [data-ayah="67:1"]')""")
    assert page.locator('#qSurah').input_value()=='67',(width,'selected surah lost')
    assert page.locator('#qVerses [data-ayah="67:1"]').count()>0,(width,'not first verse')
    assert page.locator('#qBookmark').count()==1,(width,'bookmarks must survive')
