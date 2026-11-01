@@ -1,0 +1,94 @@
+name: Salati v120 atomic production release
+on:
+  push:
+    branches: [release/salati-mobile-privacy-v120-20261101]
+    paths: [release-proof/v1.0.120/metadata.json]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  verify-and-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build website and native assets
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+      - name: Retrieve matching unsigned Android build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RUN="$(python3 -c 'import json;print(json.load(open("release-proof/v1.0.120/metadata.json"))["ciRunId"])')"
+          gh run download "$RUN" --repo "$GITHUB_REPOSITORY" --name 'salati-1.0.120-unsigned-for-original-key' --dir /tmp/salati-ci
+          find /tmp/salati-ci -name app-release-unsigned.apk -size +10M
+          find /tmp/salati-ci -name apksigner.jar
+      - name: Rebuild deterministic signed APK from public signature proof
+        run: |
+          set -euo pipefail
+          keytool -genkeypair -keystore /tmp/temporary.jks -storepass temporary123 -keypass temporary123 -alias temp -keyalg RSA -keysize 2048 -validity 2 -dname 'CN=Temporary Signing Normalizer' >/dev/null 2>&1
+          UNSIGNED="$(find /tmp/salati-ci -name app-release-unsigned.apk | head -1)"
+          SIGNER="$(find /tmp/salati-ci -name apksigner.jar | head -1)"
+          java -jar "$SIGNER" sign --v1-signing-enabled false --v4-signing-enabled false --ks /tmp/temporary.jks --ks-key-alias temp --ks-pass pass:temporary123 --key-pass pass:temporary123 --out /tmp/temporary.apk "$UNSIGNED"
+          mkdir -p /tmp/salati-signed
+          python3 scripts/reconstruct-verified-apk.py --unsigned "$UNSIGNED" --dummy /tmp/temporary.apk --proof release-proof/v1.0.120/signature-block.zlib.b64 --manifest release-proof/v1.0.120/metadata.json --output /tmp/salati-signed/salati-1.0.120.apk
+          java -jar "$SIGNER" verify --verbose --print-certs /tmp/salati-signed/salati-1.0.120.apk > /tmp/verified.txt
+          grep -F 'Verified using v2 scheme (APK Signature Scheme v2): true' /tmp/verified.txt
+          grep -F 'Verified using v3 scheme (APK Signature Scheme v3): true' /tmp/verified.txt
+          grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/verified.txt
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging /tmp/salati-signed/salati-1.0.120.apk | grep -F "name='com.salati.prayer' versionCode='121' versionName='1.0.120'"
+          python3 scripts/verify-native-web-assets.py /tmp/salati-signed/salati-1.0.120.apk
+      - name: Prepare signed APK files and exact site fingerprint
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          apk=Path('/tmp/salati-signed/salati-1.0.120.apk').read_bytes()
+          meta=json.loads(Path('release-proof/v1.0.120/metadata.json').read_text())
+          assert hashlib.sha256(apk).hexdigest()==meta['sha256']
+          assert len(apk)==meta['size']
+          web=json.loads(subprocess.check_output(['node','scripts/release-fingerprint.cjs'],text=True))
+          folder=Path('apk-release-parts/v1.0.120');folder.mkdir(parents=True,exist_ok=True)
+          chunks=[apk[i:i+1800000] for i in range(0,len(apk),1800000)]
+          for i,chunk in enumerate(chunks):(folder/f'part{i:02d}.bin').write_bytes(chunk)
+          manifest={'version':'1.0.120','versionCode':121,'applicationId':'com.salati.prayer','filename':'salati-1.0.120.apk','size':len(apk),'sha256':meta['sha256'],'certificateSha256':meta['certificateSha256'],'partCount':len(chunks),'chunkBytes':1800000,'webFingerprint':web['sha256']}
+          (folder/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          Path('apk-release-parts/current.json').write_text(json.dumps({'version':'1.0.120'},indent=2)+'\n')
+          PY
+      - name: Verify exact Cloudflare output and all UI/privacy tests
+        env:
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+          SALATI_WEB_ALREADY_BUILT: '1'
+        run: |
+          npm run build:cloudflare
+          npm test
+          npm run test:cloudflare
+          python3 -m pip install --quiet playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/mobile-layout-contract-20261101.py
+          python3 tests/local-prayer-privacy-browser-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/selection-refinement-20261101.py
+      - name: Promote only verified website and signed APK together
+        run: |
+          git config user.name 'Salati Verified Release'
+          git config user.email 'actions@users.noreply.github.com'
+          git add apk-release-parts/current.json apk-release-parts/v1.0.120
+          git commit -m 'release: synchronized website and original-key APK v1.0.120'
+          git fetch origin production
+          git merge-base --is-ancestor origin/production HEAD
+          git push origin HEAD:production
