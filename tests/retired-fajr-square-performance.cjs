@@ -14,7 +14,7 @@ assert(settings.includes('fajrAnnouncement:false'),'Legacy settings must not rei
 assert(native.includes('fajrAnnouncement:false'),'Android must not schedule the removed extra phrase');
 const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 assert(xml.includes('android:radius="100dp"'),'Native time highlight must be a short fully rounded pill');
-assert(xml.includes('#595A5C')&&xml.includes('#9FA1A4'),'Native time capsule uses approved charcoal-gray reference');
+assert(xml.includes('#FF3D3D3D')&&xml.includes('#FF5D5D5D'),'Native time capsule uses approved charcoal-gray reference');
 const finalStyle=read('dist/mobile-layout-contract-20261101.css');
 assert(finalStyle.includes('border-radius:24px!important')&&finalStyle.includes('#2D3D56'),'Final owner must use approved blue-slate capsule rather than older square badges');
 assert(html.indexOf('mobile-layout-contract-20261101.css')>html.indexOf('eight-mobile-root-fixes-20261101.css'),'Final layout contract must load after legacy CSS');
