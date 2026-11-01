@@ -45,8 +45,8 @@ visit(nodes)
 approved=[]
 for prop,(total,priority) in counts.items():
  if not total or total!=priority:continue
- if re.search(r'(?<![-\\w])'+re.escape(prop)+r'\\s*:',extra,re.I):continue
- if re.search(r'style=["\\'][^"\\']*'+re.escape(prop)+r'\\s*:',html,re.I):continue
+ if re.search(r'(?<![-\w])'+re.escape(prop)+r'\s*:',extra,re.I):continue
+ if re.search(r"""style=["'][^"']*"""+re.escape(prop)+r'\s*:',html,re.I):continue
  approved.append(prop)
 assert approved,('No provable priority-only properties',dict(counts))
 removed=defaultdict(int)
@@ -69,8 +69,8 @@ transform(nodes)
 new=tinycss2.serialize(nodes)
 valid=tinycss2.parse_stylesheet(new,skip_whitespace=True,skip_comments=True)
 assert not any(n.type=='error' for n in valid),'Priority cleanup damaged CSS syntax'
-count_before=len(re.findall(r'!\\s*important\\b',source,re.I))
-count_after=len(re.findall(r'!\\s*important\\b',new,re.I))
+count_before=len(re.findall(r'!\s*important\b',source,re.I))
+count_after=len(re.findall(r'!\s*important\b',new,re.I))
 assert count_before-count_after==sum(removed.values()),(count_before,count_after,dict(removed))
 assert count_after<count_before
 (css.with_name('salati-ui-baseline.css')).write_text(source,encoding='utf8')
