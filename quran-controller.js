@@ -48,10 +48,12 @@ export class QuranReader{
  }
  captureReadingPosition(){
   if(!this.data||$('mushaf').hidden||document.querySelector('dialog[open]'))return;
-  const region=$('qVerses').getBoundingClientRect();
-  // Ignore text clipped outside the verse scrollport when tracking bookmarks.
-  const anchor=Math.max(region.top+12,Math.min(window.innerHeight*.3,160));
-  const ceiling=Math.min(region.bottom,window.innerHeight);
+  const container=$('qVerses');const region=container.getBoundingClientRect();
+  // For a real bounded scroller, ignore verses clipped outside its viewport.
+  // The fallback preserves reading on the legacy unbounded DOM (also tests).
+  const bounded=Number(container.clientHeight)>0&&region.bottom>region.top+20;
+  const anchor=bounded?Math.max(region.top+12,Math.min(window.innerHeight*.3,160)):Math.min(window.innerHeight*.3,160);
+  const ceiling=bounded?Math.min(region.bottom,window.innerHeight):window.innerHeight;
   const visible=element=>{const bounds=element.getBoundingClientRect();return bounds.bottom>anchor&&bounds.top<ceiling;};
   const page=[...$('qVerses').children].find(element=>element.dataset.readingPage&&visible(element));
   const verse=page&&[...page.querySelectorAll('[data-ayah]')].find(visible);if(!verse)return;
