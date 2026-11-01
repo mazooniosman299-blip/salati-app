@@ -16,6 +16,7 @@ assert 'p.startsWith("/assets/www/")' in java
 assert 'trustedResourceOrigin' in java
 assert pkg.is_dir(),'Run scripts/prepare-android.py before contract test'
 assert (pkg/'index.html').is_file()
+assert 'https://salati-app-ctc.pages.dev/downloads/salati-1.0.121.apk' in (pkg/'index.html').read_text(encoding='utf-8')
 # Native app may link external downloads; those are intentionally not package assets.
 local=re.compile(r'\b(?:src|href|poster|action)\s*=\s*["\x27](/[^"\x27]+)["\x27]',re.I)
 counter=Counter()
@@ -33,7 +34,8 @@ for h in pkg.rglob('*.html'):
   else:
    counter['unbundled_root_urls']+=1
  assert not re.search(r'(?<!assets/www)/city-pages\.css',text) if h.name=='index.html' else True
-assert counter['valid_local']>=140,counter
+assert counter['valid_local']>=833,counter
+assert counter['unbundled_root_urls']==0, ('Unresolved Android-native root URL, expected HTTPS redirect for downloads',counter)
 for test in ('index.html','ar/about.html','en/prayer-times/muscat.html','privacy.html'):
  assert (pkg/test).is_file(),test
 print('PASS NATIVE WEBVIEW ASSET PATHS',dict(counter),'all rooted packaged assets use /assets/www/ with existing files')
