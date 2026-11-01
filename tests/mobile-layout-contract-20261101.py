@@ -1,4 +1,4 @@
-"""Prevent UI regressions: mobile settings, six square prayer cells and fixed nav."""
+"""Prevent UI regressions: mobile settings, six rounded prayer capsules and fixed nav."""
 from functools import partial
 from pathlib import Path
 from threading import Thread
@@ -25,24 +25,33 @@ try:
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6")
    cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
-   assert all(c['radius']=='8px' for c in cells),(width,'square glass cells',cells)
-   assert next(c for c in cells if c['active'])['bg']=='rgba(0, 0, 0, 0.72)',(width,'black translucent selected',cells)
+   assert all(c['radius']=='24px' for c in cells),(width,'reference capsule radius',cells)
+   assert next(c for c in cells if c['active'])['bg']=='rgb(53, 74, 103)',(width,'blue-slate reference selected',cells)
    assert all(c['x']>=0 and c['right']<=width+1 for c in cells),(width,'prayer cells must fit')
    for tab in ['settings','times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
     if width<=760:
+     settingsBox=page.locator('#settings #preferences>.fields').evaluate("e=>({display:getComputedStyle(e).display,cols:getComputedStyle(e).gridTemplateColumns})")
+     assert settingsBox['display']=='grid',(width,'settings fields must be grid; grid-template-columns on flex is inert',settingsBox)
+     if width<=430:assert len(settingsBox['cols'].split())==1,(width,'one-column on compact handset',settingsBox)
+     else:assert len(settingsBox['cols'].split())==2,(width,'two-column on wide handset',settingsBox)
      geo=page.evaluate("""() => {
       const rect=s=>{let r=document.querySelector(s).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,right:r.right,bottom:r.bottom,top:r.top}};
-      return {main:rect('main'),nav:rect('header>.site-nav'),card:rect('#settings .card'),audio:rect('#settings .audio-card'),form:rect('#settings #preferences'),fields:rect('#settings .fields'),window:[innerWidth,innerHeight]};
+      return {main:rect('main'),nav:rect('header>.site-nav'),card:rect('#settings .card'),audio:rect('#settings .audio-card'),form:rect('#settings #preferences'),fields:rect('#settings .fields'),lat:rect('#lat'),lon:rect('#lon'),zone:rect('#zone'),locationOpen:rect('#locationPickerOpen'),window:[innerWidth,innerHeight]};
      }""")
+     assert all(geo[k] is not None for k in ['lat','lon','zone','locationOpen']),(width,tab,geo)
      assert geo['main']['x']>=-1 and geo['main']['right']<=width+1,(width,tab,'main must never exceed screen',geo)
      assert geo['nav']['x']>=-1 and geo['nav']['right']<=width+1,(width,tab,'nav width',geo)
      assert abs(geo['nav']['bottom']-height)<=2,(width,tab,'nav fixed to viewport bottom',geo)
      assert geo['main']['bottom']<=geo['nav']['top']-3,(width,tab,'nav does not overlap scrolling content',geo)
-     for k in ['card','audio','form','fields']:
+     for k in ['card','audio','form','fields','lat','lon','zone','locationOpen']:
       assert geo[k]['x']>=-1 and geo[k]['right']<=width+1,(width,tab,k+' must not be clipped',geo)
    if width<=760:
+    # Reproduce native Android style mode without introducing a fake GPS bridge.
+    page.locator('body').evaluate("e=>e.classList.add('native-android')")
+    navBottom=page.locator('header>.site-nav').evaluate("e=>e.getBoundingClientRect().bottom")
+    assert abs(navBottom-height)<=2,(width,'Android WebView nav must sit at viewport bottom',navBottom,height)
     page.click('[data-tab=settings]')
     page.locator('main').evaluate('e=>e.scrollTop=e.scrollHeight')
     page.screenshot(path=str(out/f'settings-end-{width}.png'))
@@ -51,10 +60,10 @@ try:
     page.click('[data-tab=times]')
     page.screenshot(path=str(out/f'prayers-{width}.png'))
    assert not errors,(width,'browser exception',errors)
-   stats.append({'viewport':[width,height],'six_cells_square_black_translucent':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
+   stats.append({'viewport':[width,height],'six_rounded_reference_capsules':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
    page.close()
   browser.close()
 finally:
  server.shutdown()
 (out/'results.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2)+'\n')
-print('PASS: settings/main never clip, selected prayer square black translucent and nav stays at viewport bottom at six responsive sizes')
+print('PASS: settings/main never clip, selected prayer rounded blue-slate reference and nav stays at viewport bottom at six responsive sizes')
