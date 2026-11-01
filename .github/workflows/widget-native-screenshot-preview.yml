@@ -65,6 +65,7 @@ jobs:
           disable-animations: true
           script: |
             set -e
+            python3 -m pip install --quiet Pillow
             mkdir -p reports/native-widget
             adb shell wm size 1080x2400
             adb shell wm density 420
