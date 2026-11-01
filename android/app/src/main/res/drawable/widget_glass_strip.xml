@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 2026-11-01 user photo: neutral #242424 graphite, full rounded container,
+<!-- 2026-11-01 user photo: neutral #242424 graphite, full rounded compact container; 56dp high so 28dp is a full pill,
      no white/silver outline. A charcoal-on-charcoal hairline remains subtle. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
     <solid android:color="#FF242424"/>
-    <corners android:radius="38dp"/>
+    <corners android:radius="28dp"/>
     <stroke android:width="0.7dp" android:color="#FF3B3B3B"/>
 </shape>
