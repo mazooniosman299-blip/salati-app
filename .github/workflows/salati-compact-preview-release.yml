@@ -1,0 +1,71 @@
+name: Build and publish compact Salati widget preview APK (TEST ONLY)
+on:
+  push:
+    branches:
+      - preview/widget-compact-flush-bottom-20261101
+    paths:
+      - .github/workflows/salati-compact-preview-release.yml
+permissions:
+  contents: write
+jobs:
+  build-and-publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Verify original mosque, six prayers, compact bar and bottom padding
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/widget-active-outline.cjs
+          grep -F 'android:layout_height="56dp"' android/app/src/main/res/layout/prayer_widget.xml
+          grep -F 'android:paddingBottom="0dp"' android/app/src/main/res/layout/prayer_widget.xml
+          grep -F 'views.setViewPadding(R.id.widget_card,inset,inset,inset,0)' android/app/src/main/java/com/salati/prayer/PrayerWidget.java
+      - name: Prepare Android and compile side-by-side preview APK
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify distinct application identity and exact local preview APK
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          mkdir -p reports/preview-apk
+          cp "$APK" reports/preview-apk/salati-widget-compact-approved-preview.apk
+          sha256sum reports/preview-apk/salati-widget-compact-approved-preview.apk | tee reports/preview-apk/sha256.txt
+      - name: Publish APK as stable GitHub pre-release asset (not official app)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=preview-widget-compact-20261101
+          FILE=reports/preview-apk/salati-widget-compact-approved-preview.apk
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --clobber
+          else
+            gh release create "$TAG" "$FILE" \
+              --target "$GITHUB_SHA" \
+              --title "Salati compact rounded widget — independent phone preview" \
+              --prerelease \
+              --notes "For user visual review only. Rounded neutral charcoal strip, single row of six prayers, reduced 56dp height, no bottom padding, gray automatic next-prayer time pill. This APK uses com.salati.prayer.preview and does not replace the official Salati app. Original mosque asset preserved. NOT a production release."
+          fi
+          gh release view "$TAG" --json assets,isPrerelease > /tmp/release-check.json
+          python3 - <<'PY'
+          import json,os
+          p='reports/preview-apk/salati-widget-compact-approved-preview.apk'
+          j=json.load(open('/tmp/release-check.json'))
+          assert j['isPrerelease'],j
+          assert any(x['name']==os.path.basename(p) and x['size']==os.path.getsize(p) for x in j['assets']),j
+          print('PASS: matching preview APK available as a direct GitHub download, not an expiring chat artifact')
+          PY
