@@ -6,9 +6,9 @@ package com.salati.prayer;
 public final class AlarmDeliveryPolicy {
  private AlarmDeliveryPolicy() {}
  // Exact alarms must be prompt. An inexact Doze fallback can be delivered
- // later by Android; allow up to 15 minutes, never beyond the next prayer.
+ // later by Android; allow up to 30 minutes, never beyond the next prayer.
  static final long EXACT_GRACE_MS=5*60*1000L;
- static final long INEXACT_GRACE_MS=15*60*1000L;
+ static final long INEXACT_GRACE_MS=30*60*1000L;
  static boolean mayPlay(boolean valid,boolean inexact,long scheduled,long now){
   return valid&&scheduled>0&&now>=scheduled-1000
     &&now-scheduled<=(inexact?INEXACT_GRACE_MS:EXACT_GRACE_MS);
