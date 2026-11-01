@@ -135,3 +135,88 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget) {
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.035)!important;
   font-weight:700!important;
 }
+
+
+/* FIX AFTER REAL HONOR SCREENSHOTS (2026-11-01)
+ * Keep the approved six-in-a-row geometry but use neutral graphite, never
+ * navy-blue. Names/times stay visible including full 11:55. */
+@media (max-width:760px){
+  body.dark #times .prayer-overview #prayers .prayer,
+  body.dark #times .prayer-overview #prayers .prayer:not(.active){
+    background:#26272B!important;
+    background-image:none!important;
+    border:1px solid #414249!important;
+    box-shadow:none!important;
+    color:#FFF!important;
+    border-radius:13px!important;
+  }
+  body.dark #times .prayer-overview #prayers .prayer.active{
+    background:#3D3D3F!important;
+    background-image:none!important;
+    border:1px solid #72757A!important;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)!important;
+    border-radius:13px!important;
+  }
+  body.dark #times .prayer-overview #prayers .prayer > strong{
+    font-size:clamp(10px,2.8vw,13px)!important;
+    letter-spacing:-.2px!important;
+    overflow:visible!important;
+    text-overflow:clip!important;
+    direction:ltr!important;
+  }
+}
+/* The old player sat AFTER the entire continuous 604-page reading region.
+ * Position the actual existing transport fixed at the BOTTOM of Quran-only
+ * view, above the native 65px nav; no transport duplicates and no page jump.
+ * A fixed control is stable even while the Quran's infinite list grows. */
+body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot {
+  position:fixed!important;
+  top:auto!important;
+  bottom:calc(74px + env(safe-area-inset-bottom,0px))!important;
+  inset-inline:12px!important;
+  width:auto!important;
+  max-width:none!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  z-index:700!important;
+  border:1px solid rgba(116,119,132,.64)!important;
+  border-radius:12px!important;
+  background:rgba(15,17,24,.97)!important;
+  box-shadow:0 6px 22px rgba(0,0,0,.52)!important;
+}
+body.dark #mushaf:not([hidden]) #qSheet .recitation-player.reference-player{
+  display:flex!important;
+  min-height:50px!important;
+  max-height:84px!important;
+  padding:7px 9px!important;
+  gap:8px!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+body.dark #mushaf #qSheet{
+  padding-bottom:130px!important; /* leave verses reachable above fixed transport */
+}
+body.dark #mushaf:not([hidden]) #qSheet .recitation-caption strong{
+  font-size:12px!important;
+}
+/* Consistent small matte OUTLINE for ordinary buttons across real pages;
+ * preserve blue play buttons, switches, prayer tiles, nav and ± steppers. */
+body.dark main>.tab button:not([role="switch"]):not(.dua-toggle):not(.primary):not(#qTransport):not(#qStop):not(#qFollowTransport):not(.nav-icon-button):not(.adjust-stepper button):not(:where(.adjust-stepper) button){
+  border:1px solid rgba(120,123,134,.60)!important;
+  border-radius:11px!important;
+  background-color:rgba(15,17,24,.65)!important;
+  box-shadow:none!important;
+}
+body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
+  width:calc(100% - 24px)!important;
+  max-width:calc(100% - 24px)!important;
+  padding:9px 11px!important;
+  margin-inline:auto!important;
+  min-height:42px!important;
+  border:1px solid rgba(119,122,134,.60)!important;
+  border-radius:11px!important;
+  background:rgba(15,17,24,.66)!important;
+  box-shadow:none!important;
+}
