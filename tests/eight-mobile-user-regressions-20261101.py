@@ -31,7 +31,7 @@ try:
    active.wait_for(state='visible',timeout=12000)
    pill=active.evaluate("""e=>({radius:getComputedStyle(e).borderTopLeftRadius,
        bg:getComputedStyle(e).backgroundColor,border:getComputedStyle(e).borderTopColor})""")
-   assert pill=={'radius':'8px','bg':'rgba(0, 0, 0, 0.72)','border':'rgb(131, 135, 139)'},(width,pill)
+   assert pill=={'radius':'24px','bg':'rgb(53, 74, 103)','border':'rgb(142, 167, 195)'},(width,pill)
    assert page.locator('.hero-picture img').get_attribute('src')=='images/mosque-reference-original.png'
    if width==390:page.locator('#times .prayer-overview').screenshot(path=str(out/'home-390.png'))
 
