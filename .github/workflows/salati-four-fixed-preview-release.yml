@@ -1,4 +1,4 @@
-name: Salati — fix four real device regressions and preview APK (NO PRODUCTION DEPLOY)
+name: Salati — corrected compact Quran player + 4 device fixes (PREVIEW ONLY)
 on:
   push:
     branches:
