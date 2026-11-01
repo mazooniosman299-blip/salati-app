@@ -26,7 +26,25 @@ function muscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Sha
 // Requested display correction for Muscat on 2026-10-21; not an official-table edit.
 function requestedMuscatDay(day){return day.getFullYear()===2026&&day.getMonth()===9&&day.getDate()===21}
 function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=45}
-function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return times}return new PrayerTimes(new Coordinates(state.lat,state.lon),day,prayerParameters(state,day))}
+// Some circumpolar days cause the astronomical library's shadow-based Asr
+// to be before solar noon or after sunset. This is not a valid prayer time.
+// Never invent a clock time or schedule an Adhan for that event; the UI
+// renders an unavailable marker until a locally approved high-latitude method
+// is selected. Dates at ordinary latitudes remain untouched.
+export function validateDayTimes(times){
+ const result={...times};
+ const t=key=>+result[key];
+ const absent=key=>{result[key]=new Date(NaN)};
+ const finite=(...keys)=>keys.every(key=>Number.isFinite(t(key)));
+ if(finite('fajr','sunrise')&&t('fajr')>=t('sunrise'))absent('fajr');
+ if(finite('sunrise','dhuhr')&&t('sunrise')>=t('dhuhr'))absent('sunrise');
+ if(finite('dhuhr','maghrib')&&t('dhuhr')>=t('maghrib')){absent('dhuhr');absent('asr')}
+ if(finite('asr','maghrib')&&t('asr')>=t('maghrib'))absent('asr');
+ if(finite('dhuhr','asr')&&t('asr')<=t('dhuhr'))absent('asr');
+ if(finite('maghrib','isha')&&t('isha')<=t('maghrib'))absent('isha');
+ return result;
+}
+function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return validateDayTimes(times)}return validateDayTimes(new PrayerTimes(new Coordinates(state.lat,state.lon),day,prayerParameters(state,day)))}
 export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
 export function calculateSchedule(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone);const day=new Date(d.year,d.month-1,d.day,12),today=dayTimes(state,day);day.setDate(day.getDate()+1);const tomorrow=dayTimes(state,day);return [...PRAYER_KEYS.map(key=>({key,time:today[key]})),{key:'fajr',time:tomorrow.fajr,tomorrow:true}]}
 
