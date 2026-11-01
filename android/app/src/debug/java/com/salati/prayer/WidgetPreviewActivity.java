@@ -31,9 +31,10 @@ public final class WidgetPreviewActivity extends Activity {
   for(int i=0;i<ids.length;i++)views.setTextViewText(ids[i],times[i]);
   String active=getIntent().getStringExtra("prayer");
   if(active==null)active="maghrib";
+  views.setTextViewText(R.id.widget_next,"asr".equals(active)?"العصر":"المغرب");
   PrayerWidget.applyUpcomingPrayerHighlight(views,active);
   View widget=views.apply(this,root);
-  FrameLayout.LayoutParams p=new FrameLayout.LayoutParams(-1,dp(this,226),Gravity.TOP);
+  FrameLayout.LayoutParams p=new FrameLayout.LayoutParams(-1,dp(this,192),Gravity.TOP);
   p.leftMargin=dp(this,12);p.rightMargin=dp(this,12);p.topMargin=dp(this,72);
   root.addView(widget,p);
   setContentView(root);
