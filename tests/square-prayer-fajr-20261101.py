@@ -24,7 +24,8 @@ try:
     active:el.classList.contains('active'),border:getComputedStyle(el).borderColor
    }))""")
    assert len(tiles)==6,(width,tiles)
-   assert all(c['radius']=='3px' for c in tiles),(width,'Square prayer tiles only',tiles)
+   assert sum(c['radius']=='18px' for c in tiles if c['active'])==1,(width,'Selected badge matches rounded screenshot',tiles)
+   assert all(c['radius']=='12px' for c in tiles if not c['active']),(width,'Unselected tiles retain prior style',tiles)
    assert any(c['bg']!='rgba(0, 0, 0, 0)' for c in tiles),(width,'Must preserve original fill',tiles)
    if width in (390,768):page.locator('#prayers').screenshot(path=str(out/f'prayers-{width}.png'))
    page.click('[data-tab=settings]')
