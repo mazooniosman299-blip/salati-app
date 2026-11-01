@@ -37,7 +37,7 @@ assert html.count('href="salati-ui.css"')==1
 assert stats['conflicting_selector_property_groups']<=103, ('CSS conflicting selector-property groups regressed',stats)
 assert stats['duplicate_selector_property_groups']<=107, ('CSS duplicate selector-property groups regressed',stats)
 assert stats['duplicate_declarations']<=134, ('CSS repeated declarations regressed',stats)
-assert important<=1991,('Old priority overrides reintroduced',stats)
+assert important<=1959,('CSS priority debt increased beyond 1959',stats)
 assert stats['css_bytes']<=222900,('Old CSS overlays reintroduced',stats)
 report=root/'reports/css-source-maintainability.json'
 report.parent.mkdir(exist_ok=True)
