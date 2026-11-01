@@ -17,7 +17,7 @@ assert(xml.includes('android:radius="100dp"'),'Native time highlight must be a s
 assert(xml.includes('#FF3D3D3D')&&xml.includes('#FF5D5D5D'),'Native time capsule uses approved charcoal-gray reference');
 const finalStyle=read('dist/mobile-layout-contract-20261101.css');
 assert(finalStyle.includes('border-radius:24px!important')&&finalStyle.includes('#2D3D56'),'Final owner must use approved blue-slate capsule rather than older square badges');
-assert(html.indexOf('mobile-layout-contract-20261101.css')>html.indexOf('eight-mobile-root-fixes-20261101.css'),'Final layout contract must load after legacy CSS');
+assert(html.includes('href="salati-ui.css"')?read('dist/salati-ui.css').includes('#2D3D56'):html.indexOf('mobile-layout-contract-20261101.css')>html.indexOf('eight-mobile-root-fixes-20261101.css'),'Final layout contract must remain in active CSS');
 const guide=read('quran-download-controls.js');
 assert(!guide.includes('setInterval(refresh,2000)'),'No excessive 2s Quran scans');
 assert(guide.includes('this.activeTransfers?15000:60000'),'Poll 15s only while active, 60s idle');
