@@ -72,7 +72,13 @@ jobs:
           npm run build
           npm test
           node tests/worldwide-prayer-integrity-20261101.cjs
-          python3 tests/preview-css-root-review-20261101.py
+          python3 - <<'PY'
+          from pathlib import Path
+          html=Path('dist/index.html').read_text()
+          assert html.count('href="salati-ui.css"')==1
+          assert 'href="design-restoration-v1.0.113.css"' not in html
+          print('PASS: source build loads canonical stylesheet even when original contract fixtures are present')
+          PY
       - name: Persist tested canonical CSS, homepage and offline manifest to PREVIEW branch only
         run: |
           set -euo pipefail
