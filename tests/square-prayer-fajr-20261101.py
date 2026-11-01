@@ -17,8 +17,12 @@ try:
   for width in (320,360,390,768,1440):
    page=browser.new_page(viewport={'width':width,'height':844},service_workers='block')
    errors=[];page.on('pageerror',lambda err:errors.append(str(err)))
+   # Select a real, valid city: without a location the app correctly has no
+   # active prayer and a selected-badge visual check would be meaningless.
+   page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,name:'مسقط',zone:'Asia/Muscat',locationSet:true,locationMode:'manual',method:'Auto',madhab:'Shafi'}))")
    page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
    page.click('[data-tab=times]')
+   page.wait_for_function("document.querySelector('#prayers .prayer.active') !== null")
    tiles=page.locator('#prayers .prayer').evaluate_all("""els=>els.map(el=>({
     radius:getComputedStyle(el).borderTopLeftRadius,bg:getComputedStyle(el).backgroundColor,
     active:el.classList.contains('active'),border:getComputedStyle(el).borderColor
