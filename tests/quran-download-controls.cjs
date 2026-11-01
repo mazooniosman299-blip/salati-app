@@ -4,12 +4,13 @@ const old={document:global.document,window:global.window,setInterval:global.setI
 const elements=new Map();const element=id=>{if(!elements.has(id))elements.set(id,{hidden:false,disabled:false,textContent:'',showModal(){this.open=true},close(){this.open=false}});return elements.get(id)};
 (async()=>{
  try{
-  global.document={getElementById:element,addEventListener(){}};global.window={addEventListener(){}};global.setInterval=()=>0;
+  global.document={getElementById:element,addEventListener(){}};global.window={addEventListener(){}};let tickMs=0;global.setInterval=(fn,ms)=>{tickMs=ms;return 0};
   const qatami={id:'qatami',ar:'ناصر القطامي',en:'Nasser Al-Qatami',surahs:[1,2]},shatri={id:'shatri',ar:'الشاطري',en:'Al-Shatri',surahs:[1,2]};
   let selected=qatami,stopped=false;const calls=[];
   const offline={available:true,list:async reciter=>reciter.id==='qatami'?[{surah:1,state:'saved'}]:[],download:async(...args)=>calls.push(['download',...args]),cancel:async(...args)=>calls.push(['cancel',...args]),remove:async(...args)=>{assert(stopped,'Playback must stop before deleting a saved source');calls.push(['remove',...args]);}};
   const controls=new m.exports.QuranDownloadControls({offline,getReciter:()=>selected,getSurah:()=>1,getLang:()=>'ar',beforeRemove:()=>{stopped=true}});
-  await controls.refresh();assert(element('qDownloadSurah').disabled);assert(!element('qDownloadDelete').hidden);
+  assert.equal(tickMs,15000,'Never scan Quran files every 2 seconds');
+  await controls.refresh();assert.equal(controls.activeTransfers,false);assert(element('qDownloadSurah').disabled);assert(!element('qDownloadDelete').hidden);
   selected=shatri;await controls.refresh();assert(!element('qDownloadSurah').disabled);assert(element('qDownloadDelete').hidden);
   element('qDownloadAll').onclick();assert(element('qDownloadConfirm').open);assert.equal(calls.length,0,'Full download must wait for the explicit confirmation button');
   selected=qatami;element('qDownloadConfirmYes').onclick();await new Promise(resolve=>setImmediate(resolve));assert.deepEqual(calls[0],['download',shatri]);
