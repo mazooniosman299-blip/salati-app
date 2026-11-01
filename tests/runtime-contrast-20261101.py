@@ -37,7 +37,7 @@ contrast_js=r"""selector=>{
          fg:val.color,bg:bg.map(Math.round),fontSize:val.fontSize,visible:el.getBoundingClientRect().height>0};
 }"""
 targets={
- 'times':['#times .prayer span','#times .prayer strong','#times .hero-prayer>span'],
+ 'times':['#times .prayer span','#times .prayer strong','#times .hero-prayer>span','#times .card.verse span'],
  'mushaf':['#mushaf .quran-play-options label','#mushaf #qTrack'],
  'qibla':['#qibla .qibla-reading p','#qibla .qibla-reading h2','#qibla #headingValue'],
  'settings':['#settings .minute-adjustments .prayer-adjust-row span','#settings .audio-card>.eyebrow']
@@ -58,6 +58,16 @@ try:
      assert not record.get('error'),(width,tab,record)
      if not record['visible']:continue
      checks.append(dict(width=width,tab=tab,**record))
+   # BrowserStack flagged these three nav labels for manual review because
+   # the nav surface contains gradients, not because a low ratio was proven.
+   # Compute the foreground against the rendered dark surface for all states.
+   for tab in ('times','mushaf','dhikr','settings'):
+    page.click(f'[data-tab={tab}]')
+    for name in ('mushaf','dhikr','settings'):
+     selector=f'header>.site-nav .nav-icon-button[data-tab="{name}"] span'
+     record=page.evaluate(contrast_js,selector)
+     assert not record.get('error'),(width,selector,record)
+     checks.append(dict(width=width,tab='nav-'+tab,**record))
    page.click('[data-tab=settings]')
    page.click('#locationPickerOpen')
    page.wait_for_timeout(60)
