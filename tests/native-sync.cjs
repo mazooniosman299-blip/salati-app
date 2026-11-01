@@ -13,8 +13,11 @@ try{
  state.audio.silentMode=false;m.exports.queueNativeSync(state,true);assert.equal(delivered.at(-1).silentMode,false);state.audio.silentMode=true;m.exports.queueNativeSync(state,true);assert.equal(delivered.at(-1).silentMode,true);assert.equal(delivered.length,3);
  state.audio.enabled=false;m.exports.queueNativeSync(state,true);assert.equal(delivered.length,4);assert.equal(delivered[3].enabled,false);
  const elements=new Map();global.document.getElementById=id=>{if(!elements.has(id))elements.set(id,{textContent:'',hidden:false});return elements.get(id)};
- let nativeStatus={ready:true,notificationsAllowed:false,exactAlarmsAllowed:true,nextAlarmTime:Date.now()+60000};global.window.SalatiNative.status=()=>JSON.stringify(nativeStatus);
+ let nativeStatus={ready:true,notificationsAllowed:false,exactAlarmsAllowed:true,nextAlarmTime:Date.now()+60000,nextAlarmMode:'exact'};global.window.SalatiNative.status=()=>JSON.stringify(nativeStatus);
  state.lang='ar';state.audio.enabled=true;m.exports.renderNativeAudio(state);assert.equal(elements.get('audioStatus').textContent,'');assert.equal(elements.get('audioStatus').hidden,true);assert(elements.get('nativeStatus').textContent.includes('الإشعارات غير مسموحة'));
- nativeStatus.nextAlarmTime=0;m.exports.renderNativeAudio(state);assert(elements.get('audioStatus').textContent.includes('لم يُحفظ'));assert.equal(elements.get('audioStatus').hidden,false);
+ nativeStatus.exactAlarmsAllowed=false;nativeStatus.ready=false;nativeStatus.nextAlarmMode='inexact';
+ m.exports.renderNativeAudio(state);assert(elements.get('audioStatus').textContent.includes('تقريبياً'),'Inexact fallback must be explained without promising exact delivery');
+ nativeStatus.nextAlarmTime=0;nativeStatus.nextAlarmMode='none';nativeStatus.exactAlarmsAllowed=true;nativeStatus.ready=true;
+ m.exports.renderNativeAudio(state);assert(elements.get('audioStatus').textContent.includes('لم يُحفظ'));assert.equal(elements.get('audioStatus').hidden,false);
  console.log('PASS: immediate offline schedule save before app/settings exit, duplicate suppression and disabling audio are persisted without a network request.');
 }finally{for(const [key,value]of Object.entries(old))global[key]=value}
