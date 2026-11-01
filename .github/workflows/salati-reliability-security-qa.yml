@@ -45,6 +45,7 @@ jobs:
           python3 tests/modern-instruments.py
           python3 tests/control-qibla-20261101.py
           python3 tests/offline-navigation.py
+          python3 tests/runtime-contrast-20261101.py
       - name: Archive visual and migration proof
         if: always()
         uses: actions/upload-artifact@v4
@@ -55,6 +56,7 @@ jobs:
             reports/four-screenshot-regressions/
             reports/ui-modern/
             reports/control-qibla-20261101/
+            reports/runtime-contrast-20261101/
           if-no-files-found: ignore
   native-build:
     runs-on: ubuntu-latest
