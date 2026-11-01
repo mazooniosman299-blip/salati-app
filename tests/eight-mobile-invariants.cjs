@@ -19,9 +19,11 @@ assert(quran.includes("document.addEventListener('visibilitychange'"),'App resum
 assert(css.includes('overflow-y:auto!important')&&css.includes('margin-bottom:calc(var(--mobile-nav-height'),
  'Main content must have independent viewport above nav instead of beneath nav');
 assert(!css.includes('body.dark .hero{'),'Do not restyle homepage hero');
-assert(css.includes('#prayers .prayer.active')&&css.includes('border-radius:18px'),'Selected prayer gets reference badge');
+const contract=read('dist/mobile-layout-contract-20261101.css');
+assert(html.includes('href="mobile-layout-contract-20261101.css"')&&html.indexOf('href="mobile-layout-contract-20261101.css"')>html.indexOf('href="eight-mobile-root-fixes-20261101.css"'));
+assert(contract.includes('border-radius:8px')&&contract.includes('rgba(0,0,0,.72)'),'Square black translucent prayer selection must be final CSS');
 const widget=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
-assert(widget.includes('android:radius="18dp"')&&widget.includes('#FF333539'),'External badge matches the requested shape and fill');
+assert(widget.includes('android:radius="8dp"')&&widget.includes('#B8000000'),'External badge matches the requested shape and fill');
 const layout=read('android/app/src/main/res/layout/prayer_widget.xml');
 assert(layout.includes('widget_location" android:gravity="left" android:textAlignment="viewStart"'),
  'Native location text anchored at physical left');
