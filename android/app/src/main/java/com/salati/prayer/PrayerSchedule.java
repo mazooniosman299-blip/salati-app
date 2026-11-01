@@ -63,6 +63,10 @@ public final class PrayerSchedule {
   long at=prefs.getLong("nextAlarmTime",0);
   String prayer=prefs.getString("nextAlarmPrayer","");
   String delivered=prefs.getString("last","");
+  // Android revokes and cancels pending exact alarms on permission loss.
+  // Do not preserve a now-nonexistent exact PendingIntent; install the
+  // inexact fallback on Activity resume instead.
+  if("exact".equals(prefs.getString("nextAlarmMode",""))&&!exactAlarmsAllowed(c))return false;
   return AlarmDeliveryPolicy.preserveOnActivityResume(
       valid(c,at,prayer),at,now,
       (prayer+at).equals(delivered));
