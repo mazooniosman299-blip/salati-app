@@ -1,0 +1,30 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs');
+const read=p=>fs.readFileSync(p,'utf8');
+const html=read('dist/index.html');
+for(const legacy of ['fajrAnnouncementToggle','previewFajrPhrase','announcementStatus','announcement-settings','تجربة عبارة الفجر']){
+ assert(!html.includes(legacy),'Remove retired Fajr UI: '+legacy);
+}
+assert(html.includes('data-audio-prayer="fajr"'),'Normal Fajr adhan setting must survive');
+assert(html.includes('id="previewAdhan"'),'Keep regular adhan preview');
+const js=read('app-source.js');
+assert(!js.includes('fajrAnnouncementToggle')&&!js.includes('previewFajrPhrase'),'Remove inactive handlers');
+const settings=read('settings-restore.js'),native=read('native-adapter.js');
+assert(settings.includes('fajrAnnouncement:false'),'Legacy settings must not reinstate hidden announcement');
+assert(native.includes('fajrAnnouncement:false'),'Android must not schedule the removed extra phrase');
+const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
+assert(xml.includes('android:radius="3dp"'),'Only active external prayer needs rectangular corners');
+assert(xml.includes('#FF15181D')&&xml.includes('#E6FFFFFF'),'Original active prayer colors unchanged');
+const css=read('dist/selection-refinement-20261101.css');
+const active=css.match(/body\.dark #times \.prayer-overview #prayers \.prayer\.active\{([^}]+)\}/)?.[1];
+assert(active?.includes('border-radius:3px!important'),'Only individual in-app prayer tile is square');
+const guide=read('quran-download-controls.js');
+assert(!guide.includes('setInterval(refresh,2000)'),'No excessive 2s Quran scans');
+assert(guide.includes('this.activeTransfers?15000:60000'),'Poll 15s only while active, 60s idle');
+const nativeAudio=read('android/app/src/main/java/com/salati/prayer/QuranDownloads.java');
+assert(nativeAudio.includes('boolean checkpoint=')&&nativeAudio.includes('if(checkpoint&&!playback)'),'Status must not hash unchanged MP3s');
+assert(nativeAudio.includes('ready(context,reciter,surah,preferences,rows,true)'),'Playback validates saved audio');
+const policy=read('android/app/src/main/java/com/salati/prayer/AlarmDeliveryPolicy.java');
+assert(policy.includes('INEXACT_GRACE_MS=30*60*1000L'),'Fallback grace capped at 30 minutes');
+assert(policy.includes('EXACT_GRACE_MS=5*60*1000L'),'Exact event still has strict grace');
+console.log('PASS: square individual highlights, original colors, no Fajr settings/previews, fast Quran caching and bounded alarm fallback.');
