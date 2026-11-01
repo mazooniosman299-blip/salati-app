@@ -1,0 +1,77 @@
+name: Salati — single canonical CSS source and Android regression (PREVIEW ONLY)
+on:
+  push:
+    branches:
+      - preview/salati-css-root-refactor-20261101
+    paths:
+      - .github/workflows/salati-canonical-css-check.yml
+      - dist/**
+      - scripts/**
+      - tests/**
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-canonical-source-check
+  cancel-in-progress: true
+jobs:
+  inspect-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild from permanent single CSS source and run every original JS contract
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+      - name: Permanent CSS architecture guard
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright
+          python3 tests/canonical-css-maintainability.py
+      - name: Real-browser smoke tests on seven phone and tablet sizes
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Build installable Android preview, not production
+        run: |
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Inspect ACTUAL APK assets for single source, no old CSS
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"' >/dev/null
+          unzip -p "$APK" assets/www/salati-ui.css | grep -F 'nav-icon-button.active' >/dev/null
+          if unzip -l "$APK" | grep -E 'assets/www/(design-restoration|preview-four-ui-changes|active-reference-nav|ui-refinement|final-visual|reference-layout-v|style-v|salati-design-v|light-theme-v)'; then
+             echo 'ERROR: retired CSS leaked into APK'; exit 1
+          fi
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F 'com.salati.prayer.preview'
+          sha256sum "$APK"
+          echo 'PASS: native preview APK contains canonical styling, and old CSS is absent'
+      - name: Preserve QA evidence and preview APK (NO production release)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-canonical-css-qa
+          path: |
+            reports/css-root-review-20261101/
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 7
