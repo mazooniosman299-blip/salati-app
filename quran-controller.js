@@ -36,7 +36,14 @@ export class QuranReader{
  });
  $('qFollowToggle').checked=this.followEnabled;$('qFollowToggle').onchange=()=>{this.followEnabled=$('qFollowToggle').checked;this.follow.setEnabled(this.followEnabled);this.save();};
  }
- setupReadingPosition(){window.addEventListener('scroll',()=>{if(this.readingPositionScheduled)return;this.readingPositionScheduled=true;requestAnimationFrame(()=>{this.readingPositionScheduled=false;this.captureReadingPosition()})},{passive:true});}
+ setupReadingPosition(){
+  const record=()=>{if(this.readingPositionScheduled)return;this.readingPositionScheduled=true;requestAnimationFrame(()=>{this.readingPositionScheduled=false;this.captureReadingPosition()})};
+  window.addEventListener('scroll',record,{passive:true});
+  document.querySelector('main')?.addEventListener('scroll',record,{passive:true});
+  document.addEventListener('visibilitychange',()=>{
+   if(document.visibilityState==='visible'&&!$('mushaf').hidden)this.enterAtSurahStart();
+  });
+ }
  captureReadingPosition(){
   if(!this.data||$('mushaf').hidden||document.querySelector('dialog[open]'))return;
   const anchor=Math.min(window.innerHeight*.3,160);
@@ -83,6 +90,29 @@ export class QuranReader{
  tr(ar,en){return this.getLang()==='ar'?ar:en} validPage(p){return Number.isInteger(p)&&p>=1&&p<=604}
  save(){try{localStorage.setItem('salati-quran',JSON.stringify({page:this.page,activeSurah:this.activeSurah,bookmark:this.bookmark,size:this.size,layoutVersion:2,reciter:this.reciter.id,audioSurah:this.audioSurah,repeat:$('qRepeat').checked,autoNext:$('qAutoNext').checked,follow:this.followEnabled}))}catch{}}
  async open(){if(this.data){this.follow.refresh(true);return true;}if(this.opening)return this.opening;this.opening=this.loadData();try{return await this.opening}finally{this.opening=null}}
+ // A fresh entry returns to verse 1 of the selected surah, NOT to a stored
+ // scroll offset or a mid-page ayah. The user's explicit bookmark remains saved.
+ // Keep background native recitation alive; only reset the reading viewport.
+ async enterAtSurahStart(){
+  if(!await this.open())return false;
+  const surah=this.data.surahs[this.activeSurah-1]||this.data.surahs[0];
+  if(!surah)return false;
+  this.follow?.clear();
+  this.page=surah.page;
+  this.readingStart=0;this.readingNext=0;
+  this.save();this.refresh();
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+   if($('mushaf').hidden)return;
+   const sheet=$('qSheet');
+   const main=document.querySelector('main');
+   const scrollContainer=matchMedia('(max-width:760px)').matches&&main?main:window;
+   const top=sheet.getBoundingClientRect().top-
+    (scrollContainer===window?0:main.getBoundingClientRect().top)+
+    (scrollContainer===window?scrollY:main.scrollTop)-12;
+   scrollContainer.scrollTo({top:Math.max(0,top),behavior:'instant'});
+  }));
+  return true;
+ }
  async loadData(){this.loading=true;this.loadFailed=false;$('qTransport').disabled=true;$('qTrack').textContent=this.tr('جارٍ فتح المصحف…','Loading Quran…');$('qLoadStatus').textContent=this.tr('جارٍ فتح المصحف…','Loading Quran…');$('qRetry').hidden=true;try{const r=await fetch('quran/data.json');if(!r.ok)throw Error();const data=await r.json();if(data.pages?.length!==604||data.surahs?.length!==114||data.pages.some(p=>!p.length)||data.pages.flat().length!==6236)throw Error();this.data=data;this.versePages=new Map();this.surahVerses=Array.from({length:114},()=>[]);data.pages.forEach((page,index)=>page.forEach(v=>{this.versePages.set(v.s+':'+v.a,index+1);this.surahVerses[v.s-1].push(v)}));const current=data.pages[this.page-1];const selected=current.some(v=>v.s===this.activeSurah)?this.activeSurah:current[0].s;let restored=false;if(!this.reciter.surahs.includes(selected)){const id=this.reciter.surahs[0];this.page=data.surahs[id-1].page;this.activeSurah=id;restored=true;this.save()}$('qLoadStatus').textContent='';$('qSheet').setAttribute('aria-busy','false');this.refresh();this.pageAudio?.syncNative?.();if(restored)this.audioMessage('السورة المحفوظة غير متاحة بصوت هذا القارئ؛ فُتحت سورة متاحة بصوته.','The saved surah is unavailable for this reciter; an available surah has been opened.');return true}catch{this.loadFailed=true;$('qTrack').textContent=this.tr('افتح المصحف وأعد المحاولة.','Open Quran and retry.');$('qLoadStatus').textContent=this.tr('تعذر فتح المصحف. تحقق من الاتصال وأعد المحاولة.','Could not load Quran. Check your connection and retry.');$('qRetry').hidden=false;return false}finally{this.loading=false}}
  async openVerse(surah,ayah){
   if(!Number.isInteger(surah)||surah<1||surah>114||!Number.isInteger(ayah)||ayah<1||!await this.open())return false;
