@@ -10,16 +10,16 @@ const layout=read('res/layout/prayer_widget.xml');
 const controller=read('java/com/salati/prayer/PrayerWidget.java');
 const manifest=read('AndroidManifest.xml');
 function attr(src,tag,key){return src.match(new RegExp('<'+tag+'\\b[^>]*android:'+key+'="([^"]+)"'))?.[1];}
-assert.equal(attr(selected,'solid','color'),'#595A5C','Only time pill is medium charcoal gray');
-assert.equal(attr(selected,'stroke','color'),'#9FA1A4','Small subtle silver outline');
+assert.equal(attr(selected,'solid','color'),'#FF3D3D3D','Only time pill is medium charcoal gray');
+assert.equal(attr(selected,'stroke','color'),'#FF5D5D5D','Small subtle silver outline');
 assert.equal(attr(selected,'stroke','width'),'1dp');
 assert.equal(attr(selected,'corners','radius'),'100dp','Pill must be fully rounded at 27dp height');
-assert.equal(attr(stripDrawable,'solid','color'),'#F40C1014','Strip is one matte charcoal panel');
-assert.equal(attr(stripDrawable,'stroke','color'),'#A9AEB4','Only strip has clearly visible silver border');
-assert.equal(attr(stripDrawable,'stroke','width'),'1.5dp');
-assert.equal(attr(stripDrawable,'corners','radius'),'27dp');
+assert.equal(attr(stripDrawable,'solid','color'),'#FF242424','Strip is one matte charcoal panel');
+assert.equal(attr(stripDrawable,'stroke','color'),'#FF3B3B3B','Only strip has clearly visible silver border');
+assert.equal(attr(stripDrawable,'stroke','width'),'0.7dp');
+assert.equal(attr(stripDrawable,'corners','radius'),'38dp');
 assert.equal(attr(widgetBg,'stroke','color'),'#16FFFFFF','Overall widget must NOT show a strong second outer outline');
-assert(layout.includes('android:layout_height="54dp" android:orientation="horizontal" android:background="@drawable/widget_glass_strip"'),'Keep original single 54dp horizontal row');
+assert(layout.includes('android:layout_height="77dp" android:orientation="horizontal" android:background="@drawable/widget_glass_strip"'),'Keep original single 54dp horizontal row');
 const keys=['fajr','sunrise','dhuhr','asr','maghrib','isha'];
 for(const key of keys){
  const cell=layout.match(new RegExp('<LinearLayout android:id="@\\+id/widget_cell_'+key+'"[^>]*>'))?.[0];
@@ -28,7 +28,7 @@ for(const key of keys){
  assert(cell&&label&&time,'Missing one of six original prayers: '+key);
  assert(cell.includes('android:layout_weight="1"'),'All prayer columns retain equal widths');
  assert(!cell.includes('android:background='),'Never place selected capsule behind prayer name or whole cell');
- assert(time.includes('android:minHeight="27dp"')&&time.includes('android:minWidth="44dp"'),'Only the clock receives a compact 44×27dp pill');
+ assert(time.includes('android:minHeight="22dp"')&&time.includes('android:minWidth="44dp"'),'Only the clock receives a compact 44×22dp pill');
  assert(time.includes('android:paddingLeft="6dp"')&&time.includes('android:paddingRight="6dp"'),'Clock is padded inside its own pill');
  assert(!label.includes('android:background='),'Name must remain OUTSIDE selection capsule');
  const start=layout.indexOf('android:id="@+id/widget_'+key+'"');
@@ -42,4 +42,4 @@ assert(controller.includes('!"sunrise".equals(key)'),'Sunrise must never become 
 assert(controller.includes('WidgetAppearancePolicy.nextRefresh('),'Widget must refresh at upcoming prayer boundary');
 assert(controller.includes('alarm.setExactAndAllowWhileIdle('),'Automatic prayer transition must be scheduled when allowed');
 assert(manifest.includes('android:usesCleartextTraffic="false"'),'Android network security unchanged');
-console.log('PASS: exactly six in original 54dp row, one short gray TIME-only pill, strong strip-only border and automatic prayer-to-prayer transition.');
+console.log('PASS: exactly six in six in one row at reference 77dp height, one short gray TIME-only pill, subtle graphite strip-only hairline and automatic prayer-to-prayer transition.');
