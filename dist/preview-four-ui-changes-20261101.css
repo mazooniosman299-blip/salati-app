@@ -75,7 +75,7 @@
    now INSIDE the real Quran article, following verses rather than above the
    reading area. A bottom-sticky compact player is reachable during reading.
    No duplicate ids, no detached floating app-level player. */
-body.dark #mushaf #qSheet #mushafPlayerSlot{
+body.dark #mushaf #mushafPlayerSlot{
   display:block!important;
   position:sticky!important;
   bottom:8px!important;
@@ -90,7 +90,7 @@ body.dark #mushaf #qSheet #mushafPlayerSlot{
   border-radius:15px!important;
   box-shadow:0 6px 20px rgba(0,0,0,.35)!important;
 }
-body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player{
+body.dark #mushaf #mushafPlayerSlot .recitation-player{
   box-sizing:border-box!important;
   max-width:100%!important;
   min-width:0!important;
@@ -100,18 +100,18 @@ body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player{
   background:transparent!important;
   border-radius:13px!important;
 }
-body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-caption{
+body.dark #mushaf #mushafPlayerSlot .recitation-caption{
   min-width:0!important;
 }
 @media(max-width:760px){
-  body.dark #mushaf #qSheet #mushafPlayerSlot {
+  body.dark #mushaf #mushafPlayerSlot {
     bottom:8px!important;
     margin-inline:auto!important;
   }
-  body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player {
+  body.dark #mushaf #mushafPlayerSlot .recitation-player {
     gap:7px!important;
   }
-  body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-player button {
+  body.dark #mushaf #mushafPlayerSlot .recitation-player button {
     min-width:32px!important;
     width:34px!important;
     height:34px!important;
@@ -169,7 +169,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget) {
  * Position the actual existing transport fixed at the BOTTOM of Quran-only
  * view, above the native 65px nav; no transport duplicates and no page jump.
  * A fixed control is stable even while the Quran's infinite list grows. */
-body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot {
+body.dark #mushaf:not([hidden]) #mushafPlayerSlot {
   position:fixed!important;
   top:auto!important;
   bottom:calc(74px + env(safe-area-inset-bottom,0px))!important;
@@ -225,7 +225,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
  * wrapped below the buttons. Lay out the SAME controls in a compact two-row
  * grid and keep all playback state and a11y IDs. */
 @media(max-width:760px){
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player{
   display:grid!important;
   grid-template-columns:34px 34px minmax(0,1fr)!important;
   grid-template-rows:18px 36px!important;
@@ -238,7 +238,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   padding:6px 9px!important;
   overflow:hidden!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-caption{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-caption{
   grid-column:1/-1!important;grid-row:1!important;
   display:flex!important;align-items:center!important;gap:6px!important;
   flex-direction:row!important;width:100%!important;
@@ -246,29 +246,29 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   overflow:hidden!important;white-space:nowrap!important;
   direction:rtl!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-caption strong{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-caption strong{
   flex:none!important;max-width:90px!important;
   overflow:hidden!important;text-overflow:ellipsis!important;
   font-size:11px!important;white-space:nowrap!important;line-height:1.2!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTrack{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qTrack{
   flex:1 1 0!important;min-width:0!important;
   overflow:hidden!important;text-overflow:ellipsis!important;
   white-space:nowrap!important;margin:0!important;
   font-size:11px!important;line-height:1.25!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qStop{
   grid-column:1!important;grid-row:2!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTransport{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qTransport{
   grid-column:2!important;grid-row:2!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-timeline{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-timeline{
   grid-column:3!important;grid-row:2!important;
   min-width:0!important;width:100%!important;
   margin:0!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qAudioStatus{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qAudioStatus{
   position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%)!important;white-space:nowrap!important; /* retain aria-live for accessibility */
  }
 }
@@ -323,7 +323,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
  * The existing single audio element, transport IDs and Quran-only visibility
  * are unchanged. */
 @media (max-width:760px){
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot{
     left:12px!important;
     right:12px!important;
     inset-inline:auto!important;
@@ -332,7 +332,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     box-sizing:border-box!important;
     overflow:hidden!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player{
     direction:ltr!important;
     display:grid!important;
     grid-template-columns:36px 36px minmax(0,1fr)!important;
@@ -345,7 +345,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     box-sizing:border-box!important;
     overflow:hidden!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-caption{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-caption{
     grid-area:1/1/2/4!important;
     justify-self:stretch!important;
     align-self:center!important;
@@ -354,7 +354,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     margin:0!important;
     padding:0!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot :is(#qStop,#qTransport){
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot :is(#qStop,#qTransport){
     width:36px!important;
     min-width:36px!important;
     height:36px!important;
@@ -364,13 +364,13 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     justify-self:center!important;
     align-self:center!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qStop{
     grid-area:2/1/3/2!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTransport{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qTransport{
     grid-area:2/2/3/3!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-timeline{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-timeline{
     display:flex!important;
     flex-direction:column!important;
     grid-area:2/3/3/4!important;
@@ -389,7 +389,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     border:0!important;
     box-shadow:none!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qSeek{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qSeek{
     display:block!important;
     position:static!important;
     grid-area:auto!important;
@@ -406,7 +406,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     border:0!important;
     box-shadow:none!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-times{
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-times{
     display:flex!important;
     flex:0 0 17px!important;
     position:static!important;
@@ -430,7 +430,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
     white-space:nowrap!important;
     direction:ltr!important;
   }
-  body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-times :is(#qElapsed,#qDuration){
+  body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-times :is(#qElapsed,#qDuration){
     display:inline-block!important;
     min-width:0!important;
     width:auto!important;
@@ -456,20 +456,20 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
  * before playback; never reserve a blank first column for that state.
  * Once playback begins, restore the independent three-column control row. */
 @media(max-width:760px){
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
    grid-template-columns:36px minmax(0,1fr)!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-caption{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-caption{
    grid-area:1/1/2/-1!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
    grid-area:2/1/3/2!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
    grid-area:2/2/3/3!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qDuration,
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qElapsed{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qDuration,
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qElapsed{
    position:static!important;
    clip-path:none!important;
    -webkit-clip-path:none!important;
@@ -582,8 +582,8 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   margin:0!important;
   padding:0!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot,
- body.dark #mushaf #qSheet #mushafPlayerSlot {
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot,
+ body.dark #mushaf #mushafPlayerSlot {
   position:relative!important;
   display:block!important;
   top:auto!important;
@@ -608,7 +608,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   border-radius:16px!important;
   box-shadow:none!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player {
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player {
   display:grid!important;
   grid-template-columns:36px 36px minmax(0,1fr)!important;
   grid-template-rows:22px 42px!important;
@@ -627,7 +627,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   overflow:hidden!important;
   direction:ltr!important;
  }
- body.dark #mushaf #qSheet #mushafPlayerSlot .recitation-caption {
+ body.dark #mushaf #mushafPlayerSlot .recitation-caption {
   grid-area:1/1/2/-1!important;
   width:100%!important;
   min-height:0!important;
@@ -639,7 +639,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   align-self:center!important;
   margin:0!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qStop{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qStop{
   grid-area:2/1/3/2!important;
   justify-self:center!important;
   align-self:center!important;
@@ -649,7 +649,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   min-height:36px!important;
   margin:0!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qTransport{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qTransport{
   grid-area:2/2/3/3!important;
   justify-self:center!important;
   align-self:center!important;
@@ -659,7 +659,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   min-height:36px!important;
   margin:0!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-timeline{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-timeline{
   grid-area:2/3/3/4!important;
   display:flex!important;
   flex-direction:column!important;
@@ -673,7 +673,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   height:40px!important;
   overflow:visible!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot #qSeek{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot #qSeek{
   position:static!important;
   grid-area:auto!important;
   width:100%!important;
@@ -685,7 +685,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   padding:0!important;
   flex:0 0 18px!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-times{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-times{
   position:static!important;
   grid-area:auto!important;
   display:flex!important;
@@ -704,7 +704,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   background:transparent!important;
   font-size:11px!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot :is(#qElapsed,#qDuration){
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot :is(#qElapsed,#qDuration){
   position:static!important;
   display:inline-block!important;
   width:auto!important;
@@ -725,13 +725,13 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   line-height:17px!important;
   transform:none!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
   grid-template-columns:36px minmax(0,1fr)!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
   grid-area:2/1/3/2!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
   grid-area:2/2/3/3!important;
  }
  body.dark #mushaf #qSheet #qPageLabel {
@@ -751,7 +751,7 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   overflow-x:hidden!important;
   overscroll-behavior-y:contain!important;
  }
- body.dark #mushaf:not([hidden]) #qSheet #mushafPlayerSlot{
+ body.dark #mushaf:not([hidden]) #mushafPlayerSlot{
   position:static!important;
   inset:auto!important;
   margin:14px auto!important;
@@ -766,5 +766,64 @@ body.dark #settings #nativeSettings :is(#nativePermissions,#nativeWidget){
   flex-direction:column!important;
   gap:4px!important;
   min-width:0!important;
+ }
+}
+
+/* USER ACCEPTANCE 2026-11-01: Quran parchment ends BEFORE its audio dock.
+   The reader stays scrollable and the transport is on the charcoal surface. */
+@media(max-width:760px){
+ body.dark #mushaf #qSheet #qVerses{
+   height:clamp(315px,calc(60dvh - 100px),610px)!important;
+   max-height:clamp(315px,calc(60dvh - 100px),610px)!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot{
+   position:relative!important;inset:auto!important;
+   width:calc(100% - 24px)!important;max-width:calc(100% - 24px)!important;
+   box-sizing:border-box!important;margin:12px auto 18px!important;
+   border-radius:18px!important;background:#18191D!important;
+   border:1px solid #414249!important;box-shadow:none!important;
+   overflow:hidden!important;isolation:isolate!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-player.reference-player{
+   display:grid!important;width:100%!important;box-sizing:border-box!important;
+   max-width:100%!important;grid-template-columns:36px 36px minmax(0,1fr)!important;
+   grid-template-rows:22px 42px!important;gap:5px 8px!important;
+   margin:0!important;padding:9px 10px!important;border:0!important;
+   background:transparent!important;box-shadow:none!important;direction:ltr!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-caption{
+   grid-area:1/1/2/-1!important;overflow:hidden!important;white-space:nowrap!important;direction:rtl!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot #qStop{
+   grid-area:2/1/3/2!important;width:36px!important;height:36px!important;
+   min-height:36px!important;min-width:36px!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot #qTransport{
+   grid-area:2/2/3/3!important;width:36px!important;height:36px!important;
+   min-height:36px!important;min-width:36px!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-timeline{
+   grid-area:2/3/3/4!important;display:flex!important;flex-direction:column!important;
+   min-width:0!important;gap:1px!important;width:100%!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled){
+   grid-template-columns:36px minmax(0,1fr)!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) #qTransport{
+   grid-area:2/1/3/2!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-player.reference-player:has(#qStop:disabled) .recitation-timeline{
+   grid-area:2/2/3/3!important;
+ }
+}
+@media(min-width:761px){
+ body.dark #mushaf #mushafPlayerSlot{
+   position:relative!important;inset:auto!important;background:#18191D!important;
+   border:1px solid #414249!important;margin:14px auto 22px!important;
+   width:calc(100% - 28px)!important;max-width:calc(100% - 28px)!important;
+   border-radius:18px!important;overflow:hidden!important;
+ }
+ body.dark #mushaf #mushafPlayerSlot .recitation-timeline{
+   display:flex!important;flex-direction:column!important;min-width:0!important;
  }
 }
