@@ -3,6 +3,15 @@ public final class AlarmDeliveryPolicyTest {
  static void check(boolean value){if(!value)throw new AssertionError();}
  public static void main(String[] args){
   long at=1800000000000L;
+  check(AlarmDeliveryPolicy.mayPlay(true,true,at,at));
+  check(AlarmDeliveryPolicy.mayPlay(true,false,at,at+300000));
+  check(!AlarmDeliveryPolicy.mayPlay(true,false,at,at+300001));
+  check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+600000));
+  check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+900000));
+  check(!AlarmDeliveryPolicy.mayPlay(true,true,at,at+900001));
+  check(!AlarmDeliveryPolicy.mayPlay(false,true,at,at+600000));
+  check(AlarmDeliveryPolicy.preserveOnActivityResume(true,true,at,at+600000,false));
+  check(!AlarmDeliveryPolicy.preserveOnActivityResume(true,true,at,at+600000,true));
   check(AlarmDeliveryPolicy.mayPlay(true,at,at));
   check(AlarmDeliveryPolicy.mayPlay(true,at,at+90001));
   check(AlarmDeliveryPolicy.mayPlay(true,at,at+300000));
