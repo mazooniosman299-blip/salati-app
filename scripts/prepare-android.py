@@ -35,3 +35,39 @@ s=s.replace('تُشغَّل عبارة «الصلاة خير من النوم» �
 s=s.replace('The Fajr phrase plays once according to your settings. In browsers, keep the page active.','The Fajr phrase plays once according to your settings. Allow notifications and exact alarms for background playback.')
 p.write_text(s)
 print('Packaged offline UI, Quran, fonts and recordings for Android.')
+
+
+# Public city pages and the main page use site-root paths such as
+# "/style.css" and "/ar/prayer-times/muscat.html". In Android those resolve
+# to https://appassets.androidplatform.net/<path>, outside MainActivity's
+# strictly validated /assets/www/ URL scope and fail to load. Rewrite only
+# URLs that actually correspond to packaged local files; leave external,
+# protocol-relative and download-site references untouched. The website
+# source remains unchanged.
+root_asset_ref=re.compile(r'(?P<attr>\b(?:href|src|poster|action)\s*=\s*)(?P<quote>["\x27])(?P<url>/[^"\x27]*)(?P=quote)',re.I)
+changed_pages=0;changed_urls=0
+for html in target.rglob('*.html'):
+    before=html.read_text(encoding='utf-8')
+    def local_asset(match):
+        global changed_urls
+        original=match.group('url')
+        if original.startswith('//') or original.startswith('/assets/www/'):
+            return match.group(0)
+        relative=original.partition('?')[0].partition('#')[0].lstrip('/')
+        if not relative or not (target/relative).is_file():
+            return match.group(0)
+        changed_urls+=1
+        return match.group('attr')+match.group('quote')+'/assets/www'+original+match.group('quote')
+    after=root_asset_ref.sub(local_asset,before)
+    if after!=before:
+        html.write_text(after,encoding='utf-8')
+        changed_pages+=1
+assert changed_pages>=30 and changed_urls>=140, ('Missing expected native public-page URL fixes',changed_pages,changed_urls)
+for html in target.rglob('*.html'):
+    text=html.read_text(encoding='utf-8')
+    for match in root_asset_ref.finditer(text):
+        url=match.group('url')
+        if url.startswith('//') or url.startswith('/assets/www/'):continue
+        target_file=target/url.partition('?')[0].partition('#')[0].lstrip('/')
+        assert not target_file.is_file(), ('Existing Android asset still has broken absolute URL',html,url)
+print('Fixed Android local asset URLs on',changed_pages,'HTML pages; corrected',changed_urls,'resource/navigation references.')
