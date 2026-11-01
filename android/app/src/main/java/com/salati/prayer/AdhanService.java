@@ -24,7 +24,7 @@ public final class AdhanService extends Service{
   duaPlaying="dua".equals(i.getStringExtra("kind"));
   String voice=settings.optString("voice","nufais");if(!voice.matches("nufais|qatami|makkah|aqsa"))voice="nufais";
   String name=duaPlaying?"wasilah":"qatami".equals(voice)?"qatami-user-v2":voice;
-  if(!preview&&"fajr".equals(prayer)&&settings.optBoolean("fajrAnnouncement",true)&&FajrAnnouncementPolicy.canPlay(PrayerSchedule.notificationsAllowed(this),getSystemService(NotificationManager.class).getCurrentInterruptionFilter(),settings.optDouble("volume",1))){
+  if(!preview&&"fajr".equals(prayer)&&settings.optBoolean("fajrAnnouncement",false)&&FajrAnnouncementPolicy.canPlay(PrayerSchedule.notificationsAllowed(this),getSystemService(NotificationManager.class).getCurrentInterruptionFilter(),settings.optDouble("volume",1))){
    pendingRecording=name;prelude=new ArabicSpeech(this,attributes);MainActivity.notifyPlayback("fajr");prelude.speak("الصلاة خير من النوم",(float)settings.optDouble("volume",1),()->{if(ticket!=generation)return;prelude=null;if(!focusState.paused&&pendingRecording!=null){String recording=pendingRecording;pendingRecording=null;play(recording);}});
   }else play(name);return START_NOT_STICKY;
  }
