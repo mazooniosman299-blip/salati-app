@@ -61,19 +61,22 @@ function revealTabControls(tab){
   const navBox=nav.getBoundingClientRect(),box=control.getBoundingClientRect();
   if(box.top<navBox.top-12&&box.bottom<=navBox.top-12)return;
   const needed=Math.ceil(box.bottom-navBox.top+16);
-  if(needed>0)window.scrollBy({top:needed,behavior:'instant'});
+  if(needed>0)(document.querySelector('main')||window).scrollBy({top:needed,behavior:'instant'});
  }));
 }
 const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
  if(b.classList.contains('active'))return;
  const panels=[...document.querySelectorAll('.tab')],previous=panels.find(t=>!t.hidden);
- if(previous){tabPositions.set(previous.id,window.scrollY);if(previous.contains(document.activeElement))document.activeElement.blur();}
+ const mainScroller=window.innerWidth<=760?document.querySelector('main'):null;
+  const scroller=mainScroller||window;
+  if(previous){tabPositions.set(previous.id,mainScroller?mainScroller.scrollTop:window.scrollY);
+   if(previous.contains(document.activeElement))document.activeElement.blur();}
  panels.forEach(t=>t.hidden=t.id!==b.dataset.tab);
  document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});
  $('status').textContent='';
  // Restore before opening Quran so following the currently playing verse retains priority.
- window.scrollTo({top:tabPositions.get(b.dataset.tab)||0,behavior:'instant'});
- if(b.dataset.tab==='mushaf')mushaf.open();
+ scroller.scrollTo({top:b.dataset.tab==='mushaf'?0:(tabPositions.get(b.dataset.tab)||0),behavior:'instant'});
+ if(b.dataset.tab==='mushaf'){tabPositions.delete('mushaf');mushaf.enterAtSurahStart();}
  revealTabControls(b.dataset.tab);
 });$('counter').onclick=()=>{state.count=Math.min(100,state.count+1);save();renderCount()};$('reset').onclick=()=>{state.count=0;save();renderCount()};$('privacy').onclick=()=>$('help').showModal();$('closeHelp').onclick=()=>$('help').close();window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});$('install').onclick=async()=>{if(installPrompt){await installPrompt.prompt();installPrompt=null}else status('للتثبيت افتح قائمة المتصفح واختر «إضافة إلى الشاشة الرئيسية».','To install, open your browser menu and choose Add to Home Screen.')};if('serviceWorker'in navigator&&!isNativeAndroid())navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>status('لم يتفعّل العمل دون اتصال؛ يمكنك استخدام التطبيق متصلًا.','Offline mode unavailable; you can continue online.'));
 
