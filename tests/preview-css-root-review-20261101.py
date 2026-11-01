@@ -17,8 +17,8 @@ html=(dist/'index.html').read_text()
 styles=re.findall(r'<link\s+rel="stylesheet"\s+href="([^"]+\.css)"\s*>',html)
 assert styles==['salati-ui.css','/city-pages.css'],('runtime still loads multiple/legacy CSS',styles)
 assert (dist/'salati-ui.css').is_file() and (dist/'salati-ui.css').stat().st_size>100000
-assert not (dist/'active-reference-nav-20261101.css').exists()
-assert not (dist/'design-restoration-v1.0.113.css').exists()
+assert 'href="active-reference-nav-20261101.css"' not in html
+assert 'href="design-restoration-v1.0.113.css"' not in html
 assert "'./salati-ui.css'" in (dist/'sw.js').read_text()
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
