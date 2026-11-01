@@ -14,7 +14,16 @@ if entry:
 index=(target/'index.html').read_text()
 stylesheet_references='\n'.join(page.read_text() for page in target.rglob('*.html'))
 for style in target.glob('*.css'):
-    if re.fullmatch(r'(style|light-theme|salati-design|reference-layout)(-v[\d.]+)?\.css',style.name) and not re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):style.unlink()
+    # Canonical UI and the two separately authored public-page surfaces are
+    # the ONLY stylesheet assets shipped. Old design patches are historical
+    # test fixtures, never Android runtime inputs.
+    if style.name in ('salati-ui.css','city-pages.css','public-pages.css'):
+        continue
+    if re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):
+        continue
+    style.unlink()
+assert (target/'salati-ui.css').is_file(), 'Missing canonical stylesheet in Android package'
+assert not any((target/n).exists() for n in ('design-restoration-v1.0.113.css','eight-mobile-root-fixes-20261101.css','mobile-layout-contract-20261101.css'))
 for image in (target/'images').glob('mosque*'):
     if image.is_file() and image.suffix in ['.webp','.jpg'] and 'images/'+image.name not in index:image.unlink()
 
