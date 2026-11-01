@@ -1,0 +1,98 @@
+name: Salati 1.0.120 mobile geometry and privacy release preflight (NO DEPLOY)
+on:
+  push:
+    branches: [release/salati-eight-mobile-v120-20261101]
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exact website and run unit/integrity/regression checks
+        run: |
+          npm ci
+          npm run build
+          npm test
+          bash scripts/test-audio-focus.sh
+          bash scripts/test-quran-background.sh
+          python3 tests/legacy-reminder-migration.py
+      - name: Install Chromium and visual test dependencies
+        run: |
+          python3 -m pip install playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Verify all 8 user requests across five screen sizes
+        run: |
+          python3 tests/mobile-layout-contract-20261101.py
+          python3 tests/local-prayer-privacy-browser-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/square-prayer-fajr-20261101.py
+          python3 tests/four-ui-screenshot-regressions-20261101.py
+          python3 tests/mushaf-legibility-20261101.py
+          python3 tests/selection-refinement-20261101.py
+          python3 tests/upgrade-mobile-alarms-regression-20261101.py
+          python3 tests/offline-navigation.py
+          python3 tests/modern-instruments.py
+          python3 tests/control-qibla-20261101.py
+      - name: Save screenshot and regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-v120-eight-fix-visual-evidence
+          path: |
+            reports/mobile-layout-contract/
+            reports/eight-mobile-20261101/
+            reports/square-prayer-20261101/
+            reports/four-screenshot-regressions/
+            reports/mushaf-acceptance/
+            reports/selection-refinement-20261101/
+          if-no-files-found: ignore
+  native-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build web and package the same content in Android
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+      - name: Build verified unsigned Android APK with versionCode 121
+        working-directory: android
+        run: |
+          bash gradlew :app:assembleDebug --no-daemon
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Verify unsigned APK assets and version
+        run: |
+          test -s android/app/build/outputs/apk/release/app-release-unsigned.apk
+          grep -q 'android:radius="24dp"' android/app/src/main/res/drawable/widget_prayer_active.xml
+          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/release/app-release-unsigned.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging android/app/build/outputs/apk/release/app-release-unsigned.apk | grep -F "name='com.salati.prayer' versionCode='121' versionName='1.0.120'"
+      - name: Preserve unsigned APK and signing verifier (no private key)
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.120-unsigned-for-original-key
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            /usr/local/lib/android/sdk/build-tools/36.0.0/lib/apksigner.jar
+            /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
+          retention-days: 3
+          if-no-files-found: error
