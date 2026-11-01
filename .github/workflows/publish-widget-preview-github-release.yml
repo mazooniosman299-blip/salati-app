@@ -1,0 +1,48 @@
+name: Publish direct-download widget preview APK to GitHub prerelease
+on:
+  push:
+    branches: [preview/widget-reference-graphite-20261101]
+    paths: [.github/workflows/publish-widget-preview-github-release.yml]
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download verified independently installable preview APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh run download 41313432600 --repo "$GITHUB_REPOSITORY" --name salati-widget-reference-graphite-standalone-apk --dir /tmp/salati-preview
+          test -s /tmp/salati-preview/salati-widget-reference-preview.apk
+          cd /tmp/salati-preview
+          sha256sum -c sha256.txt
+          test "$(stat -c %s salati-widget-reference-preview.apk)" = "27479505"
+      - name: Publish one preview APK under stable, direct GitHub URL
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="preview-widget-graphite-20261101"
+          FILE="/tmp/salati-preview/salati-widget-reference-preview.apk"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title 'Salati widget graphite preview — TEST ONLY' \
+              --prerelease \
+              --notes 'Separate unsigned-production-key Android debug preview (package com.salati.prayer.preview). Do NOT use as an official Salati update. Shows proposed graphite widget, 6 prayers in one row, automatic upcoming-time pill. Production app and website remain unchanged.'
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,isPrerelease,url | tee /tmp/salati-release-verification.json
+          python3 - <<'PY'
+          import json
+          j=json.load(open('/tmp/salati-release-verification.json'))
+          assert j['isPrerelease'] is True
+          assert any(a['name']=='salati-widget-reference-preview.apk' and a['size']==27479505 for a in j['assets']),j
+          print('PASS: exact test APK uploaded as a public direct-download prerelease asset')
+          PY
