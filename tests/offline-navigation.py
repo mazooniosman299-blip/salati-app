@@ -16,7 +16,9 @@ try:
   page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:24.7136,lon:46.6753,zone:'Asia/Riyadh',name:'الرياض',locationSet:true,locationMode:'manual'}));")
   url=f'http://127.0.0.1:{server.server_port}/'
   page.goto(url,wait_until='domcontentloaded')
-  page.evaluate('async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener("controllerchange",resolve,{once:true}));}')
+  # Never hang forever if an offline shell fails to install; report the root
+  # cause within bounded time instead of masking it in an unrelated CI timeout.
+  page.wait_for_function("navigator.serviceWorker?.controller !== null",timeout=20000)
   c.set_offline(True)
   for language in ['ar','en']:
    page.goto(url+language+'/prayer-times/never-visited-offline.html',wait_until='domcontentloaded')
