@@ -53,22 +53,24 @@ try:
      assert data['width']>=w-20,(w,tab,'nav not full width',data)
     if tab=='mushaf':
      p.wait_for_function("document.querySelector('[data-ayah=\"1:7\"]')!==null",timeout=20000)
+     p.wait_for_function("!!document.getElementById('qVerses').style.getPropertyValue('--salati-quran-window-height')",timeout=15000)
      d=p.evaluate("""()=>{
       const by=id=>document.getElementById(id),bounds=e=>{const r=e.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}};
       const root=by('qVerses'),sheet=by('qSheet'),player=by('mushafPlayerSlot'),last=root.querySelector('[data-ayah="1:7"]'),page=last.closest('.quran-reading-page');
       const rs=getComputedStyle(root);
       return {sheet:bounds(sheet),verses:bounds(root),last:bounds(last),page:bounds(page),player:bounds(player),
        pos:getComputedStyle(player).position,heightCSS:rs.height,maxHeightCSS:rs.maxHeight,overflowY:rs.overflowY,
-       scrollHeight:root.scrollHeight,clientHeight:root.clientHeight,outside:!sheet.contains(player),firstPageContainsLast:page.contains(last)};
+       firstPage:bounds(page),scrollHeight:root.scrollHeight,clientHeight:root.clientHeight,outside:!sheet.contains(player),firstPageContainsLast:page.contains(last)};
      }""")
      assert d['outside'] and d['firstPageContainsLast'],(w,'DOM Quran/player',d)
      assert d['verses']['bottom']>=d['last']['bottom']-2,(w,'last Fatiha verse outside Quran',d)
      assert d['sheet']['bottom']<=d['player']['top']+1,(w,'audio dock overlaps Quran',d)
-     assert d['overflowY'] in ('visible','clip'),(w,'Quran still scroll-clipped',d)
+     assert d['overflowY'] in ('auto','scroll'),(w,'scrollable Quran reading area missing',d)
      assert d['maxHeightCSS']=='none',(w,'Quran has hard maximum height',d)
-     assert abs(d['scrollHeight']-d['clientHeight'])<5,(w,'Quran still has internally clipped content',d)
+     assert abs(d['firstPage']['height']-d['verses']['height'])<4,(w,'first Quran page not fully shown in reading window',d)
+     assert d['sheet']['bottom']<=d['player']['top']+2,(w,'dock must be directly below full parchment',d)
      if w in (360,390,593):
-      p.screenshot(path=str(report/f'mushaf-{w}.png'),full_page=True)
+      p.screenshot(path=str(report/f'mushaf-{w}.png'),full_page=False)
    if faults:raise AssertionError((w,'JS errors',faults))
    p.close()
    print('PASS',w,'one runtime CSS, six movable blue tabs, no clipped Quran, player below parchment')
