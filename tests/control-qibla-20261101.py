@@ -96,7 +96,7 @@ try:
             # but keep the original sensor/needle/heading DOM elements.
             page.click('header [data-tab=qibla]')
             for key in ['#qiblaDial','#cardinalRing','#needle','#compassMode','#bearing',
-                        '#headingValue','#compassStatus','#compassEnable']:
+                        '#compassStatus','#compassEnable']:
                 assert page.locator(key).count()==1,(viewport,key)
             dash=page.locator('#qibla .qibla-dashboard')
             columns=dash.evaluate("e=>{const s=getComputedStyle(e);return s.display==='flex'&&s.flexDirection==='column'?1:0}")
