@@ -47,7 +47,11 @@ try:
                 verse.appendChild(document.createTextNode('\\u06dd\\u06de'));
             }""")
             page.wait_for_function("!/[\\u06dd\\u06de]/u.test(document.querySelector('#qVerses').textContent)")
-            number=page.locator("#qVerses .ayah-number").first.inner_text().strip()
+            # A long Quran scroll uses content-visibility:auto; force the
+            # first medallion into the visible viewport before testing text.
+            medallion=page.locator("#qVerses .ayah-number").first
+            medallion.scroll_into_view_if_needed()
+            number=medallion.inner_text().strip()
             assert number and all(c in "٠١٢٣٤٥٦٧٨٩" for c in number), (width, "readable number", number)
             assert "quran-ayah-rosette.svg" in page.locator("#qVerses .ayah-number").first.evaluate(
                 "e=>getComputedStyle(e).backgroundImage"
