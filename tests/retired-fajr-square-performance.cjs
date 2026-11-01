@@ -16,7 +16,7 @@ const xml=read('android/app/src/main/res/drawable/widget_prayer_active.xml');
 assert(xml.includes('android:radius="24dp"'),'Native active prayer must use approved rounded capsule');
 assert(xml.includes('#B8000000')&&xml.includes('#FF83878B'),'Native widget must match black translucent prayer cell');
 const finalStyle=read('dist/mobile-layout-contract-20261101.css');
-assert(finalStyle.includes('border-radius:24px!important')&&finalStyle.includes('#2D3D56'),'Final owner must use user's blue-slate capsule rather than older square badges');
+assert(finalStyle.includes('border-radius:24px!important')&&finalStyle.includes('#2D3D56'),'Final owner must use approved blue-slate capsule rather than older square badges');
 assert(html.indexOf('mobile-layout-contract-20261101.css')>html.indexOf('eight-mobile-root-fixes-20261101.css'),'Final layout contract must load after legacy CSS');
 const guide=read('quran-download-controls.js');
 assert(!guide.includes('setInterval(refresh,2000)'),'No excessive 2s Quran scans');
