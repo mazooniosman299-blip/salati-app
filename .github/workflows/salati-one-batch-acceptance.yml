@@ -1,0 +1,122 @@
+name: Salati — ONE BATCH root corrections + full Android acceptance (preview only)
+on:
+  push:
+    branches: [preview/salati-one-batch-root-fixes-20261102]
+    paths:
+      - .github/workflows/salati-one-batch-acceptance.yml
+      - scripts/salati-one-batch-css-refactor.py
+      - tests/salati-one-batch-readiness.py
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: salati-one-batch-full-review-20261102
+  cancel-in-progress: true
+jobs:
+  all-fixes-in-one-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: JS behavior tests, worldwide times and Quran player contracts
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          node tests/widget-active-outline.cjs
+      - name: Source-level CSS cleanup (single stylesheet, no new layers)
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright pillow
+          python3 scripts/salati-one-batch-css-refactor.py
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-component-owner-audit.py
+          python3 tests/salati-one-batch-readiness.py
+      - name: Computed CSS parity across ALL SIX app sections
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Android local links, package and signature checks
+        run: |
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          cd ..
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"' >/dev/null
+          if unzip -l "$APK" | grep -E 'assets/www/(salati-ui-baseline|design-restoration|preview-four-ui-changes|active-reference-nav|reference-layout-v|light-theme-v)'; then
+            echo 'Old CSS leaked into APK' >&2; exit 1
+          fi
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "name='com.salati.prayer.preview'"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$APK"
+          mkdir -p reports/one-batch-20261102
+          sha256sum "$APK" > reports/one-batch-20261102/preview-apk.sha256
+      - name: Hardware acceleration for Android system WebView
+        run: |
+          test -e /dev/kvm || { echo 'KVM not exposed'; exit 1; }
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Install QA APK on Android 15 and verify navigation and Quran
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-options: -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-webview-smoke.sh
+      - name: Commit verified source changes to PREVIEW branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/salati-ui.css
+          if ! git diff --cached --quiet; then
+            git commit -m "refactor(css): one-batch cleanup after browser and native Android tests"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          fi
+      - name: Publish verified QA APK to GitHub PRERELEASE only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk salati-one-batch-qa-preview.apk
+          TAG=preview-salati-one-batch-20261102
+          if gh release view "$TAG" >/dev/null 2>&1; then echo "QA release exists; refusing overwrite"; exit 1; fi
+          gh release create "$TAG" salati-one-batch-qa-preview.apk \
+            --target "$GITHUB_REF_NAME" --prerelease \
+            --title "صلاتي — فحص مجمّع (معاينة فقط)" \
+            --notes "QA build for Android with cascade refactor, Quran, active blue nav, native linked pages, widget and worldwide prayer calculation checks. Full Chromium and Android emulator tests passed. DEBUG independent package; NOT an original-signed production update. HONOR physical device unverified."
+      - name: Store reports, screenshots, APK and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-one-batch-full-acceptance
+          path: |
+            reports/css-one-batch-20261102.json
+            reports/css-source-maintainability.json
+            reports/one-batch-20261102/
+            reports/css-debt-20261101/
+            reports/css-root-review-20261101/
+            reports/android-webview-20261102/
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
