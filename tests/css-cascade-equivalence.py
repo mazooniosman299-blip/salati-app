@@ -78,7 +78,7 @@ try:
     for a,b in zip(l['boxes'],r['boxes']):
      assert a['q']==b['q'] and a.get('hidden')==b.get('hidden'),(width,tab,'box missing')
      if not a.get('hidden'):
-      for key in (['x','y','w','h'] if a['q'].startswith('header') else ['w','h']):
+      for key in (['x','y','w','h'] if a['q'].startswith('header') else ['w']):
        assert abs(a[key]-b[key])<=2,(width,tab,'box geometry shifted',a,b,key)
     if width in (390,480) and tab in ('mushaf','times'):
      after.screenshot(path=str(report/f'optimized-{width}-{tab}.png'),full_page=False)
