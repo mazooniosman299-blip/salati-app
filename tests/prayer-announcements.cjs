@@ -25,10 +25,10 @@ function fixture(){
  const ownerOne=fixture(),ownerTwo=fixture();const cancelledOwner=ownerOne.controller.speak('الصلاة خير من النوم');await flush();
  const currentOwner=ownerTwo.controller.speak('الصلاة خير من النوم');await flush();
  assert(ownerOne.players[0].cancelled,'a second announcement controller must stop the first output');
- assert.equal((await cancelledOwner).status,'cancelled');ownerTwo.players[0].onended();await currentOwner;
+ assert.equal((await cancelledOwner).status,'cancelled');ownerTwo.players[0].onend();await currentOwner;
  const f=fixture();assert.equal((await f.controller.init()).status,'ready');
- const first=f.controller.beforeAdhan('fajr');await flush();assert.equal(f.players[0].text,'الصلاة خير من النوم');assert.equal(f.players[0].volume,1);const oldEnd=f.players[0].onended;
- const replacement=f.controller.speak('الصلاة خير من النوم');assert.equal((await first).status,'cancelled');await flush();assert(f.players[0].cancelled);assert.equal(f.players[1].text,'الصلاة خير من النوم');oldEnd();assert.equal(f.controller.status,'playing','old callback cannot finish newer playback');f.players[1].onended();assert.equal((await replacement).status,'finished');assert.equal(f.timers.size,0);
+ const first=f.controller.beforeAdhan('fajr');await flush();assert.equal(f.players[0].text,'الصلاة خير من النوم');assert.equal(f.players[0].volume,1);const oldEnd=f.players[0].onend;
+ const replacement=f.controller.speak('الصلاة خير من النوم');assert.equal((await first).status,'cancelled');await flush();assert(f.players[0].cancelled);assert.equal(f.players[1].text,'الصلاة خير من النوم');oldEnd();assert.equal(f.controller.status,'playing','old callback cannot finish newer playback');f.players[1].onend();assert.equal((await replacement).status,'finished');assert.equal(f.timers.size,0);
  const failed=f.controller.speak('الصلاة خير من النوم');await flush();f.players.at(-1).onerror();assert.equal((await failed).status,'error');assert.equal(f.timers.size,0);
  const timed=f.controller.speak('الصلاة خير من النوم');await flush();f.advance(14000);assert.equal(f.controller.status,'playing','complete human phrase must not be cut at the old synthetic deadline');f.advance(16000);assert.equal((await timed).status,'timeout');assert(f.players.at(-1).cancelled);
  f.settings.fajrAnnouncement=false;assert.equal((await f.controller.beforeAdhan('fajr')).status,'skipped');
