@@ -2,6 +2,8 @@ package com.salati.prayer;
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 final class QuranAudioFiles {
  static boolean valid(File file){
@@ -22,9 +24,30 @@ final class QuranAudioFiles {
    return hex.toString();
   }catch(NoSuchAlgorithmException error){throw new IllegalStateException("Missing SHA-256",error);}
  }
+ // A media hash must not be recomputed for each HTTP Range / status refresh.
+ // Metadata changes invalidate this in-memory cache, and the expiry forces
+ // periodic full-file revalidation when an audio file is opened.
+ private static final long RECHECK_NS=5L*60L*1000000000L;
+ private static final Map<String,HashStamp> digestCache=new HashMap<>();
+ private static final class HashStamp {
+  final long size,modified,checked;final String hash;
+  HashStamp(File f,String value,long at){size=f.length();modified=f.lastModified();hash=value;checked=at;}
+ }
+ static synchronized String cachedSha256(File file)throws IOException{
+  String id=file.getAbsolutePath();long now=System.nanoTime();
+  HashStamp entry=digestCache.get(id);
+  if(entry!=null&&file.isFile()&&entry.size==file.length()
+     &&entry.modified==file.lastModified()&&now-entry.checked>=0
+     &&now-entry.checked<RECHECK_NS)return entry.hash;
+  String result=sha256(file);
+  digestCache.put(id,new HashStamp(file,result,now));
+  return result;
+ }
+ static synchronized void invalidate(File file){digestCache.remove(file.getAbsolutePath());}
  static boolean promote(File pending,File saved){
   if(valid(saved))return true;
   if(!valid(pending))return false;
+  invalidate(saved);
   if(!saved.getParentFile().isDirectory()&&!saved.getParentFile().mkdirs())return false;
   if(saved.exists()&&!saved.delete())return false;
   // Both directories are under the same app-specific Music directory. Rename
