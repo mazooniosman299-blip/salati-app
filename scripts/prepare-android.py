@@ -53,6 +53,13 @@ for html in target.rglob('*.html'):
         original=match.group('url')
         if original.startswith('//') or original.startswith('/assets/www/'):
             return match.group(0)
+        # The website's downloadable signed APK is intentionally not copied
+        # into the preview APK (avoids embedding an APK inside another APK).
+        # Always direct that link to the official HTTPS site rather than a
+        # guaranteed 404 under the appassets origin.
+        if original.startswith('/downloads/'):
+            changed_urls+=1
+            return match.group('attr')+match.group('quote')+'https://salati-app-ctc.pages.dev'+original+match.group('quote')
         relative=original.partition('?')[0].partition('#')[0].lstrip('/')
         if not relative or not (target/relative).is_file():
             return match.group(0)
