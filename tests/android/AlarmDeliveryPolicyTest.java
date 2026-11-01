@@ -8,7 +8,10 @@ public final class AlarmDeliveryPolicyTest {
   check(!AlarmDeliveryPolicy.mayPlay(true,false,at,at+300001));
   check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+600000));
   check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+900000));
-  check(!AlarmDeliveryPolicy.mayPlay(true,true,at,at+900001));
+  check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+900001));
+  check(AlarmDeliveryPolicy.mayPlay(true,true,at,at+1800000));
+  check(!AlarmDeliveryPolicy.mayPlay(true,true,at,at+1800001));
+  check(!AlarmDeliveryPolicy.mayPlay(false,true,at,at+1200000));
   check(!AlarmDeliveryPolicy.mayPlay(false,true,at,at+600000));
   check(AlarmDeliveryPolicy.preserveOnActivityResume(true,true,at,at+600000,false));
   check(!AlarmDeliveryPolicy.preserveOnActivityResume(true,true,at,at+600000,true));
