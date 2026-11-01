@@ -1,11 +1,11 @@
-name: Publish Salati 1.0.115 website and original-key APK atomically
+name: Publish Salati 1.0.116 website and original-key APK atomically
 on:
   push:
     branches:
-      - release/salati-approved-ui-v115-20261101
+      - release/salati-reliability-v116-20261101
     paths:
-      - release-proof/v1.0.115/metadata.json
-      - release-proof/v1.0.115/signature-block.zlib.b64
+      - release-proof/v1.0.116/metadata.json
+      - release-proof/v1.0.116/signature-block.zlib.b64
   workflow_dispatch:
 permissions:
   contents: write
@@ -36,8 +36,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          RUN="$(python3 -c 'import json;print(json.load(open("release-proof/v1.0.115/metadata.json"))["ciRunId"])')"
-          gh run download "$RUN" --repo "$GITHUB_REPOSITORY" --name 'salati-1.0.115-unsigned-for-original-key' --dir /tmp/salati-ci
+          RUN="$(python3 -c 'import json;print(json.load(open("release-proof/v1.0.116/metadata.json"))["ciRunId"])')"
+          gh run download "$RUN" --repo "$GITHUB_REPOSITORY" --name 'salati-1.0.116-unsigned-for-original-key' --dir /tmp/salati-ci
           find /tmp/salati-ci -name app-release-unsigned.apk -size +10M
           find /tmp/salati-ci -name apksigner.jar
       - name: Create disposable signing certificate — never import private production key
@@ -62,17 +62,17 @@ jobs:
           mkdir -p /tmp/salati-new
           python3 scripts/reconstruct-verified-apk.py \
             --unsigned "$UNSIGNED" --dummy /tmp/salati-dummy.apk \
-            --proof release-proof/v1.0.115/signature-block.zlib.b64 \
-            --manifest release-proof/v1.0.115/metadata.json \
-            --output /tmp/salati-new/salati-1.0.115.apk
-          java -jar "$SIGNER" verify --verbose --print-certs /tmp/salati-new/salati-1.0.115.apk > /tmp/apk-verify.txt
+            --proof release-proof/v1.0.116/signature-block.zlib.b64 \
+            --manifest release-proof/v1.0.116/metadata.json \
+            --output /tmp/salati-new/salati-1.0.116.apk
+          java -jar "$SIGNER" verify --verbose --print-certs /tmp/salati-new/salati-1.0.116.apk > /tmp/apk-verify.txt
           grep -F 'Verified using v2 scheme (APK Signature Scheme v2): true' /tmp/apk-verify.txt
           grep -F 'Verified using v3 scheme (APK Signature Scheme v3): true' /tmp/apk-verify.txt
           grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/apk-verify.txt
           AAPT="${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools/36.0.0/aapt2"
           test -x "$AAPT"
-          "$AAPT" dump badging /tmp/salati-new/salati-1.0.115.apk | grep -F "name='com.salati.prayer' versionCode='116' versionName='1.0.115'"
-          python3 scripts/verify-native-web-assets.py /tmp/salati-new/salati-1.0.115.apk
+          "$AAPT" dump badging /tmp/salati-new/salati-1.0.116.apk | grep -F "name='com.salati.prayer' versionCode='117' versionName='1.0.116'"
+          python3 scripts/verify-native-web-assets.py /tmp/salati-new/salati-1.0.116.apk
       - name: Prepare matching immutable APK chunks and release manifest
         shell: bash
         run: |
@@ -81,25 +81,25 @@ jobs:
           import hashlib,json,subprocess
           from pathlib import Path
           root=Path('.')
-          apk=Path('/tmp/salati-new/salati-1.0.115.apk').read_bytes()
-          meta=json.loads(Path('release-proof/v1.0.115/metadata.json').read_text())
+          apk=Path('/tmp/salati-new/salati-1.0.116.apk').read_bytes()
+          meta=json.loads(Path('release-proof/v1.0.116/metadata.json').read_text())
           hash_web=json.loads(subprocess.check_output(['node','scripts/release-fingerprint.cjs'],text=True))
-          directory=root/'apk-release-parts'/'v1.0.115'
+          directory=root/'apk-release-parts'/'v1.0.116'
           directory.mkdir(parents=True,exist_ok=True)
           size=1_800_000
           chunks=[apk[i:i+size] for i in range(0,len(apk),size)]
           for i,part in enumerate(chunks):
               (directory/f'part{i:02d}.bin').write_bytes(part)
           manifest={
-              'version':'1.0.115','versionCode':116,'applicationId':'com.salati.prayer',
-              'filename':'salati-1.0.115.apk','size':len(apk),
+              'version':'1.0.116','versionCode':117,'applicationId':'com.salati.prayer',
+              'filename':'salati-1.0.116.apk','size':len(apk),
               'sha256':hashlib.sha256(apk).hexdigest(),
               'certificateSha256':meta['certificateSha256'],
               'partCount':len(chunks),'chunkBytes':size,
               'webFingerprint':hash_web['sha256']
           }
           (directory/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
-          (root/'apk-release-parts'/'current.json').write_text(json.dumps({'version':'1.0.115'},indent=2)+'\n')
+          (root/'apk-release-parts'/'current.json').write_text(json.dumps({'version':'1.0.116'},indent=2)+'\n')
           print('SOURCE FINGERPRINT:',hash_web)
           print('RELEASE MANIFEST:',manifest)
           PY
@@ -114,8 +114,8 @@ jobs:
           python3 - <<'PY'
           import hashlib,json
           from pathlib import Path
-          manifest=json.loads(Path('apk-release-parts/v1.0.115/manifest.json').read_text())
-          apk=Path('dist/downloads/salati-1.0.115.apk').read_bytes()
+          manifest=json.loads(Path('apk-release-parts/v1.0.116/manifest.json').read_text())
+          apk=Path('dist/downloads/salati-1.0.116.apk').read_bytes()
           assert len(apk)==manifest['size']
           assert hashlib.sha256(apk).hexdigest()==manifest['sha256']
           print('Verified website bundle includes latest signed APK:',manifest['version'])
@@ -135,22 +135,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          APK=/tmp/salati-new/salati-1.0.115.apk
-          if ! gh release view v1.0.115 >/dev/null 2>&1; then
-            gh release create v1.0.115 "$APK" --target "$GITHUB_SHA" \
-              --title 'صلاتي — Salati 1.0.115' \
+          APK=/tmp/salati-new/salati-1.0.116.apk
+          if ! gh release view v1.0.116 >/dev/null 2>&1; then
+            gh release create v1.0.116 "$APK" --target "$GITHUB_SHA" \
+              --title 'صلاتي — Salati 1.0.116' \
               --notes 'نفس تصميم الموقع العام، رقم بناء 116، وتوقيع أندرويد الأصلي. لا يتم نشر الموقع دون ملف APK مطابق.'
           fi
-          gh release download v1.0.115 --pattern 'salati-1.0.115.apk' --dir /tmp/salati-public
-          sha256sum /tmp/salati-public/salati-1.0.115.apk
-          cmp -s "$APK" /tmp/salati-public/salati-1.0.115.apk
+          gh release download v1.0.116 --pattern 'salati-1.0.116.apk' --dir /tmp/salati-public
+          sha256sum /tmp/salati-public/salati-1.0.116.apk
+          cmp -s "$APK" /tmp/salati-public/salati-1.0.116.apk
       - name: Atomically promote matched website and APK to production branch
         run: |
           set -euo pipefail
           git config user.name 'Salati Verified Release'
           git config user.email 'actions@users.noreply.github.com'
-          git add apk-release-parts/current.json apk-release-parts/v1.0.115
-          git commit -m 'release: website + original-key signed APK 1.0.115 passed matching SHA-256 gate'
+          git add apk-release-parts/current.json apk-release-parts/v1.0.116
+          git commit -m 'release: website + original-key signed APK 1.0.116 passed matching SHA-256 gate'
           git fetch origin production
           git merge-base --is-ancestor origin/production HEAD
           git push origin HEAD:production
