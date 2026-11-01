@@ -146,7 +146,7 @@ body.dark #times .prayer-overview #prayers .prayer :is(span,strong,bdi){
     height:100%!important;
   }
   body.dark #times .prayer-overview #prayers {
-    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
     gap:8px!important;
   }
   body.dark #times .prayer-overview #prayers .prayer,
