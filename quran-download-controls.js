@@ -17,8 +17,19 @@ export class QuranDownloadControls{
   };
   $('qDownloadDeleteYes').onclick=()=>{$('qDownloadDeleteConfirm').close();this.act(async()=>{beforeRemove();await offline.remove(getReciter());});};
   $('qDownloadDeleteNo').onclick=()=>$('qDownloadDeleteConfirm').close();
-  const refresh=()=>{if(!document.hidden&&!$('mushaf').hidden)this.refresh();};
-  this.timer=setInterval(refresh,2000);document.addEventListener('visibilitychange',refresh);window.addEventListener('online',refresh);
+  // The previous 2-second loop triggered SHA and DownloadManager scans
+  // even when nothing was downloading. Poll 15s for active transfers and
+  // 60s for idle libraries; never poll a hidden page or background tab.
+  this.lastPoll=0;this.activeTransfers=false;
+  const refresh=(force=false)=>{
+   if(document.hidden||$('mushaf').hidden)return;
+   const now=Date.now(),minimum=this.activeTransfers?15000:60000;
+   if(!force&&now-this.lastPoll<minimum)return;
+   this.lastPoll=now;this.refresh();
+  };
+  this.timer=setInterval(()=>refresh(),15000);
+  document.addEventListener('visibilitychange',()=>refresh(true));
+  window.addEventListener('online',()=>refresh(true));
  }
  tr(ar,en){return this.getLang()==='ar'?ar:en;}
  async act(action){
@@ -31,6 +42,7 @@ export class QuranDownloadControls{
   try{
    const rows=await this.offline.list(reciter);if(serial!==this.serial)return;
    const saved=rows.filter(row=>row.state==='saved'),active=rows.filter(row=>['queued','downloading'].includes(row.state));
+   this.activeTransfers=active.length>0;
    const current=rows.find(row=>row.surah===surah),busy=current&&['queued','downloading'].includes(current.state);
    $('qDownloadSurah').disabled=!this.offline.available||busy||current?.state==='saved';
    $('qDownloadAll').disabled=!this.offline.available||saved.length===reciter.surahs.length||active.length>0;
