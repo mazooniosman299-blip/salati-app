@@ -40,6 +40,10 @@ function validateScope(changed,manifest,options={}) {
  assert(Array.isArray(manifest.allowed_paths)&&manifest.allowed_paths.length>0,'Empty scope allowlist');
  assert.equal(new Set(manifest.allowed_paths).size,manifest.allowed_paths.length,'Duplicate paths');
  assert(manifest.allowed_paths.every(p=>typeof p==='string'&&p.length>0&&!p.startsWith('/')&&!p.includes('..')&&!p.includes('*')),'Only exact repository-relative paths allowed');
+ if(manifest.visual_change===true){
+  assert(Array.isArray(manifest.visual_allowed_regions)&&manifest.visual_allowed_regions.length>0,'Visual request must explicitly list allowed DOM selector/tab/language regions');
+  assert(manifest.visual_allowed_regions.every(x=>typeof x.selector==='string'&&x.selector.trim()&&['times','mushaf','qibla','dhikr','tasbih','settings'].includes(x.tab)&&['ar','en','both'].includes(x.language)),'Invalid approved visual regions');
+ }
  assert(changed.length>0,'No PR file changes');
  const unexpected=changed.filter(p=>!manifest.allowed_paths.includes(p));
  assert.deepEqual(unexpected,[],'OUT-OF-SCOPE FILES: '+unexpected.join(', '));

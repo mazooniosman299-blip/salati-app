@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 from datetime import datetime, timezone
 import json, os, re
 
-ROOT=Path(__file__).resolve().parents[1]
+ROOT=Path(os.environ.get("SALATI_PROJECT_ROOT",str(Path(__file__).resolve().parents[1]))).resolve()
 DIST=ROOT/"dist"
 OUT=Path(os.environ.get("SALATI_VISUAL_OUT",str(ROOT/"reports/current-design-visual-proof")))
 OUT.mkdir(parents=True,exist_ok=True)

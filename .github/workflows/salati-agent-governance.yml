@@ -41,7 +41,7 @@ jobs:
         run: |
           npm ci
           npm run build
-          python3 -m pip install --quiet playwright
+          python3 -m pip install --quiet playwright pillow
           python3 -m playwright install --with-deps chromium
           BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BROWSER" /usr/bin/chromium
@@ -49,6 +49,25 @@ jobs:
         run: node tests/reference-provenance.cjs
       - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
         run: python3 tests/current-design-visual-proof.py
+      - name: Self-test visual diff rejecting unauthorized pixels
+        run: python3 tests/visual-scope-diff.py --self-test
+      - name: Compare original production runtime with candidate ONLY for approved visual change
+        run: |
+          set -euo pipefail
+          if [[ "$(node -p 'require("./docs/requests/ACTIVE_CHANGE.json").visual_change===true?"yes":"no"')" == "yes" ]]; then
+            export SALATI_BASELINE_DIR="$RUNNER_TEMP/salati-production-shots"
+            git fetch --no-tags origin production:refs/remotes/origin/production
+            git worktree add --detach "$RUNNER_TEMP/salati-production-reference" origin/production
+            (
+              cd "$RUNNER_TEMP/salati-production-reference"
+              npm ci
+              npm run build
+              SALATI_PROJECT_ROOT="$PWD" SALATI_VISUAL_OUT="$SALATI_BASELINE_DIR" python3 "$GITHUB_WORKSPACE/tests/current-design-visual-proof.py"
+            )
+            python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
+          else
+            echo 'No visual runtime changes; user image parity is not claimed.'
+          fi
       - name: Always retain real source/visual evidence
         if: always()
         uses: actions/upload-artifact@v4
