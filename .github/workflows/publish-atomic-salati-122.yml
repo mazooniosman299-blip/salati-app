@@ -84,6 +84,10 @@ jobs:
           Path('/tmp/salati-previous-v121.apk').write_bytes(apk)
           print('PASS verified previous signed APK to test exact upgrade path')
           PY
+      - name: Install required Python image analyzer BEFORE Android screenshot assertions
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 -c "from PIL import Image; print('PASS Pillow image preflight')"
       - name: Enable KVM and reject software-only emulator
         run: |
           test -c /dev/kvm
@@ -102,6 +106,14 @@ jobs:
           emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
           disable-animations: true
           script: bash scripts/android-release-upgrade-smoke.sh
+      - name: Preserve Android upgrade evidence for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-v122-original-key-upgrade-evidence
+          retention-days: 14
+          if-no-files-found: ignore
+          path: reports/salati-v122-release-candidate/native-upgrade/
       - name: Stage signed original-key APK chunks and immutable website fingerprint
         run: |
           python3 - <<'PY'
