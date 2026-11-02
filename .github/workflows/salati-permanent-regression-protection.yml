@@ -53,7 +53,7 @@ jobs:
 
   actual-browser-ui:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -78,6 +78,18 @@ jobs:
         run: |
           python3 tests/active-production-browser-20261102.py
           python3 tests/mobile-layout-contract-20261101.py
+      - name: Re-run EVERY retained historical visual acceptance test, without skipping failures
+        run: |
+          set -euo pipefail
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/four-ui-screenshot-regressions-20261101.py
+          python3 tests/mushaf-legibility-20261101.py
+          python3 tests/selection-refinement-20261101.py
+          python3 tests/user-visual-audit-20261101.py
+          python3 tests/control-qibla-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/square-prayer-fajr-20261101.py
+          python3 tests/modern-instruments.py
       - name: Store screenshot evidence, including failed runs
         if: always()
         uses: actions/upload-artifact@v4
@@ -86,6 +98,15 @@ jobs:
           path: |
             reports/active-production-browser-20261102/
             reports/mobile-layout-contract/
+            reports/mushaf-acceptance/
+            reports/selection-refinement-20261101/
+            reports/user-visual-audit-20261101/
+            reports/control-qibla-20261101/
+            reports/eight-mobile-20261101/
+            reports/square-prayer-20261101/
+            reports/ui-modern/
+            reports/four-screenshot-regressions/
+            reports/css-debt-20261101/
             reports/css-source-maintainability.json
           if-no-files-found: warn
 
