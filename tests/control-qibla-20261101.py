@@ -70,7 +70,9 @@ try:
                 if key=='#qStop': control.evaluate("e=>e.disabled=false")
                 box=control.evaluate("""e=>{const r=e.getBoundingClientRect();const s=getComputedStyle(e);
                     return [r.width,r.height,s.borderRadius]}""")
-                assert box==[44,44,'50%'],(viewport,key,box)
+                # Approved small-screen transport is 36px, wider reader keeps 44px.
+                size=36 if viewport<=390 else 44
+                assert box==[size,size,'50%'],(viewport,key,'responsive circular transport',box)
                 if key=='#qStop': control.evaluate("e=>e.disabled=true")
             for key in ['#qRepeat','#qAutoNext']:
                 dims=page.locator(key).evaluate("""e=>{const r=e.getBoundingClientRect(),t=getComputedStyle(e,'::before');

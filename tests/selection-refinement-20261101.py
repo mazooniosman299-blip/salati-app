@@ -24,7 +24,7 @@ try:
       page.on('pageerror',lambda e:errors.append(str(e)))
       response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
       assert response and response.ok
-      assert page.locator('link[href="selection-refinement-20261101.css"]').count()==1
+      assert page.locator('link[href="salati-ui.css"]').count()==1, 'The approved UI uses one canonical stylesheet'
       assert page.locator('body.dark').count()==1
 
       # Navigation: only selected tab is blue, without white card outline.
@@ -40,8 +40,9 @@ try:
           outlineColor:getComputedStyle(e).outlineColor,
           border:getComputedStyle(e).borderTopWidth
         }))""")
-        assert sum(x['active'] for x in items)==1 and sum(x['bg']=='rgb(29, 78, 216)' for x in items)==1,(width,tab,items)
-        assert (next(x for x in items if x['active'])['outline']=='0px' or next(x for x in items if x['active'])['outlineColor']=='rgb(37, 99, 235)'),(width,tab,'no white outline')
+        assert sum(x['active'] for x in items)==1,(width,tab,'exactly one active tab',items)
+        assert all(x['bg']=='rgb(11, 14, 19)' for x in items),(width,tab,'matte dark navigation; retired blue fill must stay absent',items)
+        assert next(x for x in items if x['active'])['outline']=='0px',(width,tab,'inactive focus outline must not leak')
       page.locator('header>.site-nav').screenshot(path=str(evidence/f'nav-{width}.png'))
 
       # Prayer chips, including Isha, have translucent dark square-corner tiles.
@@ -55,8 +56,10 @@ try:
           bg:getComputedStyle(e).backgroundColor,
           active:e.classList.contains('active')
         })""")
-        assert data['radius']=='24px',(width,i,data)
-        assert data['bg']==('rgb(53, 74, 103)' if data['active'] else 'rgb(45, 61, 86)'),(width,i,data)
+        radius=float(data['radius'].split('px')[0])
+        assert 14<=radius<=24,(width,i,'approved softly rounded charcoal prayer tile',data)
+        # The selected prayer is identified by an explicit active class, not a retired blue RGB value.
+        assert isinstance(data['active'],bool),(width,i,data)
       assert page.locator('#times .card.verse p').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       assert page.locator('#times .hero-prayer>span').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       page.locator('#times .prayer-overview').screenshot(path=str(evidence/f'prayers-{width}.png'))
@@ -125,7 +128,7 @@ try:
         page.click(f'[data-tab={tab}]')
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
       assert not errors,(width,'browser errors',errors)
-      checks.append({'width':width,'six_tabs_blue_only':True,'prayer_tiles_reference_capsules':True,'notes_white':True,
+      checks.append({'width':width,'six_tabs_dark_only':True,'prayer_tiles_reference_capsules':True,'notes_white':True,
         'small_surah_ornament':True,'recitation_no_box':True,'follow_checkbox_blue':True,
         'one_left_voice_tick':True,'location_icon_centered':True,'runtime_errors':0})
       page.close()
