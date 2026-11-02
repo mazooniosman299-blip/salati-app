@@ -1,0 +1,57 @@
+{
+  "request_id": "SALATI-20261103-ROOT-CONTROL",
+  "source_reference": "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md",
+  "producer_branch": "fix/salati-instruction-truth-20261103",
+  "code_runtime_changed": false,
+  "overall": "in_progress",
+  "complete": false,
+  "stages": {
+    "user_request_captured": {
+      "status": "pass",
+      "evidence": "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md"
+    },
+    "source_map_and_contract": {
+      "status": "pass",
+      "evidence": "https://github.com/mazooniosman299-blip/salati-app/pull/37"
+    },
+    "source_build": {
+      "status": "pass",
+      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
+      "note": "Prior commit builds; newest validation must be checked separately"
+    },
+    "functional_regressions": {
+      "status": "pass",
+      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
+      "note": "Previous source CI only"
+    },
+    "real_browser": {
+      "status": "pass",
+      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
+      "note": "Previous browser CI; new 48-shot evidence pending"
+    },
+    "screenshot_user_reference": {
+      "status": "blocked",
+      "reason": "Exact latest approved printed Mushaf asset and user image pixel parity not verified"
+    },
+    "android_emulator": {
+      "status": "pass",
+      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268"
+    },
+    "physical_android": {
+      "status": "not_run",
+      "reason": "Physical Android phone not available to CI"
+    },
+    "signed_release": {
+      "status": "not_applicable",
+      "reason": "No signed Android/web runtime files changed in governance PR"
+    },
+    "production_publication": {
+      "status": "not_applicable",
+      "reason": "Draft change not released; production SHA remains unchanged"
+    },
+    "latest_user_acceptance": {
+      "status": "blocked",
+      "reason": "Future user edit requests and reference matching not yet certified"
+    }
+  }
+}
