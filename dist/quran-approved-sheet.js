@@ -1,6 +1,6 @@
 /* Salati — approved Quran player UI. Uses the actual QuranReader/HTMLAudioElement
  * and native Android playback bridge; never replaces Quran/audio assets.
- * No chevron, notch, reader field, timer, padlock or generated Quran content.
+ * No chevron, notch, reader field, clock, padlock or generated Quran content.
  */
 (()=>{
   'use strict';
