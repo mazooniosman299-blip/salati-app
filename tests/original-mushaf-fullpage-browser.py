@@ -48,8 +48,21 @@ try:
      };
    }""")
    assert snapshot['surah']=='2' and snapshot['pageNum']=='17',(w,snapshot)
-   assert snapshot['hasTextShadow']=='none' and snapshot['natural'][1]==1120,(w,'wrong or segmented page',snapshot)
-   assert snapshot['natural'][0]>550 and snapshot['natural'][0]<784,(w,'original decorated page not trimmed',snapshot)
+   assert snapshot['hasTextShadow']=='none' and 960<=snapshot['natural'][1]<=1040,(w,'original four-side crop missing or Quran page segmented',snapshot)
+   assert snapshot['natural'][0]>550 and snapshot['natural'][0]<784,(w,'original ornament frame damaged/too narrow',snapshot)
+   # Printed Quran heading/folio are in the SAME image, with no paper-white
+   # band from the publisher PDF along the top and bottom of the image.
+   from PIL import Image as PILImage
+   import json
+   m=json.loads((root/'dist/quran-green-proof/manifest.json').read_text())
+   record=next(p for p in m['pages'] if p['quranPage']==17)
+   trims=record['whiteMarginTrimOnly']
+   assert trims['top']>=40 and trims['bottom']>=40,(w,'exterior white top/bottom not safely removed',trims)
+   with PILImage.open(root/'dist/quran-green-proof'/record['filename']) as actual:
+    import numpy as np
+    pix=np.asarray(actual.convert('RGB'))
+    assert (pix[:8].min(axis=2)<245).any(),(w,'no printed Quran header within 8px of page top')
+    assert (pix[-8:].min(axis=2)<245).any(),(w,'folio number or ornament missing near page bottom')
    assert snapshot['paper']=='rgb(255, 255, 255)' and snapshot['borderRadius']=='0px',(w,snapshot)
    assert snapshot['img']['w']>=w-1 or w>=768,(w,'image too narrow',snapshot)
    assert snapshot['img']['y']>=60 and snapshot['img']['y']<=90,(w,'page starts too low',snapshot)
