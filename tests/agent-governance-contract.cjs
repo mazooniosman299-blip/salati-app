@@ -59,6 +59,10 @@ const build={...manifest,allowed_paths:[...manifest.allowed_paths,'scripts/relea
 assert.throws(()=>validateScope([...permitted,'scripts/release-guard.cjs'],build),/Governance changes cannot mutate/,'Build/sign guard is runtime critical');
 const uiAllowed={...manifest,allowed_paths:[...manifest.allowed_paths,'glass-navigation.js']};
 assert.throws(()=>validateScope([...permitted,'glass-navigation.js'],uiAllowed),/Governance changes cannot mutate/,'Additional imported UI sources must not be allowed by governance mode');
+const missingTarget={...manifest,visual_change:true,allowed_paths:[...manifest.allowed_paths,'dist/salati-ui.css'],visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both'}],release_mode:'preview'};
+assert.throws(()=>validateScope([...permitted,'dist/salati-ui.css'],missingTarget),/before\/after\/preserve/,'Vague visual selector must be rejected');
+const specificTarget={...missingTarget,visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both',before:'charcoal button',after:'blue button',preserve:['size','position','Quran text','navigation']}]};
+assert.equal(validateScope([...permitted,'dist/salati-ui.css'],specificTarget),permitted.length+1,'Fully specified preview request should be permitted, but never published');
 const manifestReference=JSON.parse(read('design-references/APPROVED_REFERENCE_REGISTRY.json'));
 assert(manifestReference.references.some(x=>x.id==='mosque-original'&&x.status==='verified-user-asset'));
 assert(manifestReference.references.some(x=>x.id==='printed-mushaf-final'&&x.status==='unresolved'));
