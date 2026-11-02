@@ -52,6 +52,8 @@ try:
      return {border:s.borderStyle,outline:s.outlineStyle,card:s.borderRadius,art:i.display,
        fallback:getComputedStyle(c.querySelector('.quran-page-interactive-fallback')).display}}""")
    assert state['art']=='block' and state['fallback']=='none' and state['border']=='none',(width,state)
+   first.scroll_into_view_if_needed(timeout=10000)
+   page.screenshot(path=str(out/f'original-kfqc-plate-{width}.png'),full_page=False)
    # Tapping the plate reveals selectable offline verse text; users can
    # return to the original plate using the provided control.
    plate.click()
