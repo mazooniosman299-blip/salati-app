@@ -111,12 +111,17 @@ export class QuranReader{
   $('qVerses').scrollTop=0;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
    if($('mushaf').hidden)return;
-   const sheet=$('qSheet');
-   const main=document.querySelector('main');
-   const scrollContainer=matchMedia('(max-width:760px)').matches&&main?main:window;
-   const top=sheet.getBoundingClientRect().top-
+   const sheet=$('qSheet'),main=document.querySelector('main');
+   const mobile=matchMedia('(max-width:760px)').matches;
+   const scrollContainer=mobile&&main?main:window;
+   // The printed Madinah preview has its recitation dock BEFORE the long
+   // reading page. Entering Quran must reveal the dock, not scroll it behind
+   // the header by targeting the printed page below.
+   const target=mobile?($('mushafPlayerSlot')||sheet):sheet;
+   const top=target.getBoundingClientRect().top-
     (scrollContainer===window?0:main.getBoundingClientRect().top)+
-    (scrollContainer===window?scrollY:main.scrollTop)-12;
+    (scrollContainer===window?scrollY:main.scrollTop)-
+    (mobile?Math.max(98-(main?.getBoundingClientRect().top||0),18):12);
    scrollContainer.scrollTo({top:Math.max(0,top),behavior:'instant'});
   }));
   return true;
