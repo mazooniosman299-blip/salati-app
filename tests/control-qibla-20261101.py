@@ -24,7 +24,7 @@ try:
             page.on('pageerror',lambda e:errors.append(str(e)))
             response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
             assert response and response.ok
-            assert page.locator('link[href="ui-refinement-20261101.css"]').count()==1
+            assert page.locator('link[href="salati-ui.css"]').count()==1, 'Native and web use single canonical stylesheet'
             assert page.locator('body').evaluate("e=>e.classList.contains('dark')")
             page.click('header [data-tab=settings]')
             # Every native switch is a symmetrical capsule with one correctly centered thumb.
@@ -70,7 +70,9 @@ try:
                 if key=='#qStop': control.evaluate("e=>e.disabled=false")
                 box=control.evaluate("""e=>{const r=e.getBoundingClientRect();const s=getComputedStyle(e);
                     return [r.width,r.height,s.borderRadius]}""")
-                assert box==[44,44,'50%'],(viewport,key,box)
+                # Approved small-screen transport is 36px, wider reader keeps 44px.
+                size=36 if viewport<=390 else 44
+                assert box==[size,size,'50%'],(viewport,key,'responsive circular transport',box)
                 if key=='#qStop': control.evaluate("e=>e.disabled=true")
             for key in ['#qRepeat','#qAutoNext']:
                 dims=page.locator(key).evaluate("""e=>{const r=e.getBoundingClientRect(),t=getComputedStyle(e,'::before');
@@ -90,7 +92,7 @@ try:
             nav=active.evaluate("""e=>({bg:getComputedStyle(e).backgroundColor,
                 underline:getComputedStyle(e,'::after').backgroundColor,
                 icon:getComputedStyle(e.querySelector('.nav-symbol')).color})""")
-            assert nav['bg']=='rgb(29, 78, 216)' and nav['underline']=='rgba(0, 0, 0, 0)' and nav['icon']=='rgb(255, 255, 255)',(viewport,nav)
+            assert nav['bg']=='rgb(17, 74, 183)' and nav['icon']=='rgb(255, 255, 255)',(viewport,'approved blue active tab inside dark matte navigation',nav)
             page.locator('header>.site-nav').screenshot(path=str(out/f'nav-{viewport}.png'))
             # Redesigned two-column instrument on desktop and stacked on mobile,
             # but keep the original sensor/needle/heading DOM elements.

@@ -22,7 +22,25 @@ function canonicalOrigin(){
   return 'https://'+hostname+(parsed.port?':'+parsed.port:'');
 }
 const origin=canonicalOrigin();
+/* Require an exact-SHA successful GitHub Actions attestation on all public
+   Cloudflare Pages production builds. Preview/local builds remain isolated. */
+if(process.env.CF_PAGES_BRANCH==='production') {
+  const sha=process.env.CF_PAGES_COMMIT_SHA||'';
+  if(!/^[a-f0-9]{40}$/i.test(sha))throw Error('BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA');
+  require('node:child_process').execFileSync(process.execPath,
+    [path.join(root,'scripts/verify-publish-ci.cjs'),sha],{cwd:root,stdio:'inherit',timeout:30000});
+}
+
 if(process.env.SALATI_WEB_ALREADY_BUILT!=='1')require('./build-web.cjs');
+/*
+ * Enforce regression checks inside the deployment build itself, not merely
+ * optional GitHub CI. A direct production push must fail closed if either
+ * the approved core contracts or any existing JavaScript regression fails.
+ * Real Chromium and Android screenshot tests remain required CI checks.
+ */
+const {execFileSync}=require('node:child_process');
+execFileSync(process.execPath,[path.join(root,'tests/permanent-regression-contract.cjs')],{cwd:root,stdio:'inherit'});
+execFileSync('npm',['test'],{cwd:root,stdio:'inherit'});
 // Release CI builds once, computes its fingerprint and reuses that identical
 // output here. Rebuilding again would mutate generated HTML and invalidate
 // the signed build's exact-source proof.

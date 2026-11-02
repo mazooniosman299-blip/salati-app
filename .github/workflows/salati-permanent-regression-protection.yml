@@ -1,0 +1,281 @@
+name: Salati permanent regression protection (NO DEPLOY)
+on:
+  push:
+    branches:
+      - main
+      - production
+      - 'release/**'
+      - fix/salati-permanent-regression-gates-20261102
+  pull_request:
+    branches: [main, production]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-permanent-regressions-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  behavior-and-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build exact current source and block core regressions
+        run: |
+          npm run build
+          node tests/permanent-regression-contract.cjs
+          npm test
+          node tests/quran-dom.cjs
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          npm run test:seo
+          node tests/widget-quran-no-regression-20261102.cjs
+      - name: Fail if approved original-key signed release and website drift apart
+        if: github.ref == 'refs/heads/production'
+        run: node scripts/release-guard.cjs
+      - name: Reject missing controls and security artifacts
+        run: |
+          python3 scripts/full-source-audit.py
+          test -s dist/salati-ui.css
+          test -s dist/sw.js
+          test ! -f dist/preview-sample-location-20261101.js
+      - name: Keep full source report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-source-regressions
+          path: reports/full-source-audit-latest.json
+          if-no-files-found: warn
+
+  actual-browser-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Block returning CSS overrides and missing active UI elements
+        run: |
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-component-owner-audit.py
+      - name: Seven responsive sizes, all six tabs, Quran, city and fixed nav in Chromium
+        run: |
+          python3 tests/active-production-browser-20261102.py
+          python3 tests/mobile-layout-contract-20261101.py
+      - name: Re-run EVERY retained historical visual acceptance test, without skipping failures
+        run: |
+          set -euo pipefail
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/four-ui-screenshot-regressions-20261101.py
+          python3 tests/mushaf-legibility-20261101.py
+          python3 tests/selection-refinement-20261101.py
+          python3 tests/user-visual-audit-20261101.py
+          python3 tests/control-qibla-20261101.py
+          python3 tests/eight-mobile-user-regressions-20261101.py
+          python3 tests/square-prayer-fajr-20261101.py
+          python3 tests/modern-instruments.py
+      - name: Store screenshot evidence, including failed runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-browser-screenshots
+          path: |
+            reports/active-production-browser-20261102/
+            reports/mobile-layout-contract/
+            reports/mushaf-acceptance/
+            reports/selection-refinement-20261101/
+            reports/user-visual-audit-20261101/
+            reports/control-qibla-20261101/
+            reports/eight-mobile-20261101/
+            reports/square-prayer-20261101/
+            reports/ui-modern/
+            reports/four-screenshot-regressions/
+            reports/css-debt-20261101/
+            reports/css-source-maintainability.json
+          if-no-files-found: warn
+
+  real-android-webview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare native WebView from the identical rebuilt source
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build actual Android debug APK (NOT signed public update)
+        working-directory: android
+        run: bash gradlew :app:assembleDebug --no-daemon
+      - name: Audit native packaged assets and original mosque pixels
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 tests/apk-assets.py
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Require hardware accelerated Android 15 emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Open app in actual Android System WebView and test prayer/Quran screenshots
+        timeout-minutes: 16
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-webview-smoke.sh
+      - name: Preserve emulator screenshots, package, diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-android-device-evidence
+          path: |
+            reports/android-webview-20261102/
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
+
+  negative-publication-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Prepare actual future Cloudflare publication input
+        run: |
+          npm ci
+          npm run build
+          node tests/permanent-regression-contract.cjs
+      - name: Inject four broken releases and PROVE each deploy build exits nonzero
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          set -euo pipefail
+          mkdir -p reports/negative-release-tests
+          cp dist/salati-ui.css /tmp/salati-css-original
+          cp dist/index.html /tmp/salati-html-original
+          VERSION="$(node -p 'require("./apk-release-parts/current.json").version')"
+          echo "SALATI_TEST_VERSION=$VERSION" >> "$GITHUB_ENV"
+          cp "apk-release-parts/v$VERSION/manifest.json" /tmp/salati-manifest-original
+          restore() {
+            cp /tmp/salati-css-original dist/salati-ui.css
+            cp /tmp/salati-html-original dist/index.html
+            cp /tmp/salati-manifest-original "apk-release-parts/v$VERSION/manifest.json"
+          }
+          trap restore EXIT
+          must_reject() {
+            label="$1"; marker="$2"
+            if npm run build:cloudflare >"reports/negative-release-tests/$label.log" 2>&1; then
+              echo "SECURITY FAILURE: Cloudflare would accept corrupted release: $label" >&2
+              exit 1
+            fi
+            if ! grep -F "$marker" "reports/negative-release-tests/$label.log"; then
+              echo "Unexpected build failure instead of protection: $label" >&2
+              exit 1
+            fi
+            echo "PASS rejected corrupted publication: $label"
+          }
+          printf '\n.inject{color:red!important}\n' >> dist/salati-ui.css
+          must_reject forced-important "Force-priority CSS was reintroduced"
+          restore
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/index.html')
+          v=p.read_text()
+          assert 'id="qVerses"' in v
+          p.write_text(v.replace('id="qVerses"','id="deletedQuranReader"',1))
+          PY
+          must_reject missing-quran "Quran reader component missing"
+          restore
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/index.html')
+          v=p.read_text()
+          import json
+          version=json.loads(Path('apk-release-parts/current.json').read_text())['version']
+          real='/downloads/salati-'+version+'.apk'
+          assert real in v
+          p.write_text(v.replace(real,'/downloads/salati-0.0.0.apk',1))
+          PY
+          must_reject obsolete-apk "Website download link does not reference the verified signed APK"
+          restore
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          version=json.loads(Path('apk-release-parts/current.json').read_text())['version']
+          p=Path('apk-release-parts/v'+version+'/manifest.json')
+          v=json.loads(p.read_text())
+          assert len(v['certificateSha256'])==64
+          v['certificateSha256']='0'*64
+          p.write_text(json.dumps(v))
+          PY
+          must_reject forged-certificate "Original Android signing certificate changed"
+          restore
+      - name: Simulate unauthorized Cloudflare production build; it MUST be rejected
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+          CF_PAGES_BRANCH: production
+          CF_PAGES_COMMIT_SHA: INVALID-SHA
+        run: |
+          set -euo pipefail
+          if npm run build:cloudflare > reports/negative-release-tests/production-without-ci.log 2>&1; then
+            echo 'SECURITY FAILURE: production accepted invalid CI attestation' >&2
+            exit 1
+          fi
+          grep -F 'BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA' reports/negative-release-tests/production-without-ci.log
+          echo 'PASS production deployment blocked without a valid CI commit reference'
+      - name: Verify genuine, unmodified Cloudflare bundle PASSES identical release gate
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          npm run build:cloudflare
+          node scripts/release-guard.cjs
+          echo "PASS real publication build only after all four malicious mutations were blocked"
+      - name: Store independent rejection logs (including failures)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-negative-deployment-proof
+          path: reports/negative-release-tests/
+          retention-days: 30
+          if-no-files-found: error

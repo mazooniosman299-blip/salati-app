@@ -21,7 +21,7 @@ try:
       errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
       response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
       assert response.ok and page.locator('body.dark').count()
-      assert page.locator('link[href="mushaf-legibility-20261101.css"]').count()==1
+      assert page.locator('link[href="salati-ui.css"]').count()==1, 'The current Quran must use the single canonical CSS source'
       assert page.locator('script[src="quran-mushaf-markers-20261101.js"]').count()==1
       assert not page.get_by_text('تُشغَّل عبارة «الصلاة خير من النوم» مرة واحدة',exact=False).count()
       page.click('[data-tab=mushaf]')
@@ -57,7 +57,10 @@ try:
       active.wait_for(state='visible',timeout=10000)
       frame=active.evaluate("""e=>({border:getComputedStyle(e).borderTopColor,
          shadow:getComputedStyle(e).boxShadow})""")
-      assert frame['border']=='rgb(142, 167, 195)' and '255, 255, 255' in frame['shadow'],(width,'rounded blue-slate reference prayer frame',frame)
+      # Mobile uses high-contrast white focus; desktop retains the blue-slate outlined reference.
+      expected_border='rgb(255, 255, 255)' if width<=600 else 'rgb(142, 167, 195)'
+      expected_shadow='none' if width<=600 else 'rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset'
+      assert frame['border']==expected_border and frame['shadow']==expected_shadow,(width,'current responsive prayer outline',frame)
       instruction=page.get_by_text('المواقيت محسوبة فلكيًا.',exact=False).first
       assert instruction.evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
       page.click('[data-tab=settings]')
