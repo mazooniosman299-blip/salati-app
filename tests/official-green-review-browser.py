@@ -62,7 +62,26 @@ try:
             assert geometry['playerBottom'] <= geometry['frameBottom'] + 1, (width, 'dock outside mushaf', geometry)
             assert geometry['externalScripts'] == 0
             assert not errors, (width, errors)
+            # Capture unmodified source first, then ensure the ENTIRE audio dock
+            # is visible above the fixed bottom navigation on narrow phones.
             page.locator('#qSheet').screenshot(path=str(output / f"official-green-original-sheet-{width}.png"))
+            page.locator('#mushafPlayerSlot').scroll_into_view_if_needed()
+            if width <= 760:
+                page.evaluate("""() => {
+                    const p=document.getElementById('mushafPlayerSlot').getBoundingClientRect();
+                    const nav=document.querySelector('header>.site-nav').getBoundingClientRect();
+                    if(p.bottom>nav.top-7){
+                        const main=document.querySelector('main');
+                        if(main)main.scrollTop+=p.bottom-nav.top+20;
+                        else window.scrollBy(0,p.bottom-nav.top+20);
+                    }
+                }""")
+                page.wait_for_timeout(220)
+                visible = page.evaluate("""() => ({
+                    playerBottom:document.getElementById('mushafPlayerSlot').getBoundingClientRect().bottom,
+                    navTop:document.querySelector('header>.site-nav').getBoundingClientRect().top
+                })""")
+                assert visible['playerBottom'] <= visible['navTop'] - 4, (width, 'player covered by bottom tabs', visible)
             page.screenshot(path=str(output / f"original-salati-green-review-{width}.png"), full_page=True)
             page.close()
         # No query flag: unchanged production reader with NO preview UI ever.
