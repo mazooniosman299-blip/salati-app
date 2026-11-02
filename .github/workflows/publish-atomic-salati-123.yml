@@ -39,7 +39,7 @@ jobs:
           import hashlib,json,subprocess
           from pathlib import Path
           meta=json.loads(Path('release-proof/v1.0.123/metadata.json').read_text())
-          assert meta['version']=='1.0.123' and meta['versionCode']==123
+          assert meta['version']=='1.0.123' and meta['versionCode']==124
           assert meta['applicationId']=='com.salati.prayer'
           assert meta['ciRunId']==41431790510
           assert meta['unsignedSha256']=='ea5ec7f98f2bf981b600c97a8c90dc37051a75b480bf710b6c7a1ad1548721ac'
