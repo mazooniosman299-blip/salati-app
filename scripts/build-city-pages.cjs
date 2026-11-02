@@ -5,7 +5,12 @@ if(!/^pub-\d{16}$/.test(publisher.publisher_id)||publisher.client_id!=='ca-'+pub
 const publisherMeta=`<meta name="google-adsense-account" content="${publisher.client_id}">`;
 const built=esbuild.buildSync({entryPoints:[path.join(root,'city-pages/timetable.js')],bundle:true,platform:'node',format:'cjs',write:false});
 const mod=new Module('city-build',module);mod._compile(built.outputFiles[0].text,'city-build.cjs');
-const {cityTimetable,cityWeek}=mod.exports,origin='https://salati-world-prayer.sprytitan65.chatgpt.site',now=new Date();
+const {cityTimetable,cityWeek}=mod.exports,origin='https://salati-world-prayer.sprytitan65.chatgpt.site';
+const pinnedSnapshot=process.env.SALATI_BUILD_SNAPSHOT;
+if(pinnedSnapshot && !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/.test(pinnedSnapshot))
+  throw Error('Invalid pinned Salati build timestamp; aborting reproducible release');
+const now=pinnedSnapshot?new Date(pinnedSnapshot):new Date();
+if(!Number.isFinite(now.getTime()))throw Error('Invalid pinned Salati timestamp');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const absolute=p=>origin+p,cityPath=(c,l)=>`/${l}/prayer-times/${c.slug}.html`,directory=l=>`/${l}/prayer-times/index.html`,guide=l=>`/${l}/prayer-times/calculation-guide.html`,about=l=>`/${l}/about.html`;
 const names={ar:['الفجر','الشروق','الظهر','العصر','المغرب','العشاء'],en:['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha']};
