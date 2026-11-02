@@ -49,5 +49,12 @@ const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
 const prod={...more,release_mode:'production'};
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],prod),/original-key/);
-assert.equal(validateScope([...permitted,'dist/index.html'],{...prod,original_key_signing_verified:true,website_apk_fingerprint_verified:true}),permitted.length+1);
-console.log('PASS agent governance: 20 risks, source ownership, conflicting PRs, original release identity, 8 scoped negative cases; no visual match asserted');
+assert.throws(()=>validateScope([...permitted,'dist/index.html'],{...prod,original_key_signing_verified:true,website_apk_fingerprint_verified:true}),/Original-key APK verification requires|ENOENT|Signed APK|release|apksigner|fingerprint/i,'Editable JSON booleans are never signing evidence');
+assert.equal(validateScope([...permitted,'dist/index.html'],prod,{releaseVerifier:()=>{}}),permitted.length+1,'Only externally verified callback can certify release');
+const build={...manifest,allowed_paths:[...manifest.allowed_paths,'scripts/release-guard.cjs']};
+assert.throws(()=>validateScope([...permitted,'scripts/release-guard.cjs'],build),/Governance changes cannot mutate/,'Build/sign guard is runtime critical');
+const manifestReference=JSON.parse(read('design-references/APPROVED_REFERENCE_REGISTRY.json'));
+assert(manifestReference.references.some(x=>x.id==='mosque-original'&&x.status==='verified-user-asset'));
+assert(manifestReference.references.some(x=>x.id==='printed-mushaf-final'&&x.status==='unresolved'));
+
+console.log('PASS agent governance: 20 risks, source ownership, conflicting PRs, original release identity, additional negative cases; no visual match asserted');

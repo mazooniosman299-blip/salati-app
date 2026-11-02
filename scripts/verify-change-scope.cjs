@@ -1,55 +1,74 @@
 #!/usr/bin/env node
 'use strict';
-/* Per-request PR diff contract. No release/deployment commands. */
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const {execFileSync} = require('node:child_process');
-const path = require('node:path');
-const root = path.resolve(__dirname,'..');
-const activePath = path.join(root,'docs/requests/ACTIVE_CHANGE.json');
-const readManifest = () => JSON.parse(fs.readFileSync(activePath,'utf8'));
-const runtimePath = path => /^(?:dist\/|android\/|apk-release-parts\/|app-source\.js$|quran-controller\.js$|quran-page-audio\.js$|.*\.css$)/.test(path);
-const releaseCriticalPath = path => /^(?:dist\/|android\/|apk-release-parts\/)/.test(path);
-function validateScope(changed, manifest) {
-  assert(manifest && typeof manifest.request_id === 'string' && manifest.request_id.startsWith('SALATI-'), 'Missing request ID');
-  assert.equal(manifest.base_branch,'production','Every Salati production PR starts from production');
-  assert(['governance','preview','production'].includes(manifest.release_mode),'Declare release_mode: governance/preview/production');
-  assert(Array.isArray(manifest.allowed_paths) && manifest.allowed_paths.length>0,'Empty scope allowlist');
-  assert.equal(new Set(manifest.allowed_paths).size,manifest.allowed_paths.length,'Duplicate allowlist paths');
-  assert(manifest.allowed_paths.every(p=>typeof p==='string' && !!p && !p.startsWith('/') && !p.includes('..') && !p.includes('*')),'Only exact repository-relative paths allowed');
-  assert(changed.length>0,'No changes in PR');
-  const unexpected = changed.filter(p=>!manifest.allowed_paths.includes(p));
-  assert.deepEqual(unexpected,[], 'OUT-OF-SCOPE FILES: '+unexpected.join(', '));
-  if (manifest.release_mode==='governance') {
-    const runtime=changed.filter(runtimePath);
-    assert.deepEqual(runtime,[], 'Governance request must not modify runtime/style/native files: '+runtime.join(', '));
-  }
-  if(manifest.release_mode==='preview') {
-    assert.equal(manifest.android_release,false,'No Android official release from preview');
-    const protectedFiles=changed.filter(p=>p.startsWith('apk-release-parts/') || /^(?:scripts\/release-guard\.cjs|scripts\/sign-android\.py|scripts\/build-cloudflare-pages\.cjs)$/.test(p));
-    assert.deepEqual(protectedFiles,[], 'Preview must not change signed APK or release safeguards');
-  }
-  if (manifest.release_mode==='production' && changed.some(releaseCriticalPath)) {
-    assert.equal(manifest.original_key_signing_verified,true,'Production runtime/APK change requires original-key signing proof in request record');
-    assert.equal(manifest.website_apk_fingerprint_verified,true,'Production runtime/APK change requires exact signed site fingerprint verification');
-  }
-  return changed.length;
+/** Fail-closed declared scope and independent signed release proof. */
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),crypto=require('node:crypto'),os=require('node:os'),path=require('node:path');
+const {execFileSync}=require('node:child_process');
+const root=path.resolve(__dirname,'..');
+const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|app-source\.js$|quran-controller\.js$|quran-page-audio\.js$|.*\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
+const releaseCriticalPath=p=>runtimePath(p)||/^scripts\/(?:build-|release-|sign-|prepare-android)/.test(p);
+function independentReleaseVerification() {
+ const {verifiedManifest}=require('./release-guard.cjs');
+ const release=verifiedManifest(); // exact current site fingerprint + release version
+ const dir=path.join(root,'apk-release-parts','v'+release.version);
+ const tool=process.env.ANDROID_HOME && path.join(process.env.ANDROID_HOME,'build-tools','36.0.0','apksigner');
+ assert(tool && fs.existsSync(tool),'Original-key APK verification requires Android SDK build-tools/36.0.0/apksigner, not a claimed boolean');
+ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'salati-original-cert-'));
+ const apk=path.join(tmp,release.filename);
+ try {
+  const fd=fs.openSync(apk,'w');
+  const hash=crypto.createHash('sha256');
+  let count=0;
+  try {for(let i=0;i<release.partCount;i++){
+   const p=path.join(dir,'part'+String(i).padStart(2,'0')+'.bin');
+   const bytes=fs.readFileSync(p);
+   fs.writeSync(fd,bytes);hash.update(bytes);count+=bytes.length;
+  }}finally{fs.closeSync(fd);}
+  assert.equal(count,release.size,'Signed APK byte size mismatch');
+  assert.equal(hash.digest('hex'),release.sha256,'Signed APK actual SHA-256 mismatch');
+  const output=execFileSync(tool,['verify','--print-certs',apk],{encoding:'utf8',timeout:120000});
+  const match=output.match(/Signer #1 certificate SHA-256 digest:\s*([0-9a-f:]+)/i);
+  assert(match,'apksigner did not independently report a signer certificate');
+  assert.equal(match[1].replace(/:/g,'').toLowerCase(),release.certificateSha256,'Original signing certificate NOT present in reconstructed APK');
+  console.log('PASS independently inspected signed APK SHA, cert and exact linked website fingerprint:',release.version);
+ }finally{fs.rmSync(tmp,{recursive:true,force:true});}
 }
-function changedPaths(base){
-  const diff=execFileSync('git',['diff','--name-only','--diff-filter=ACDMRT',base+'...HEAD'],{cwd:root,encoding:'utf8'});
-  return diff.split(/\r?\n/).filter(Boolean);
+function validateScope(changed,manifest,options={}) {
+ assert(manifest && /^SALATI-\d{8}-[A-Z0-9-]+$/.test(manifest.request_id||''),'Missing valid per-request ID');
+ assert.equal(manifest.base_branch,'production','Salati work must start from production');
+ assert(['governance','preview','production'].includes(manifest.release_mode),'Declare release_mode');
+ assert(Array.isArray(manifest.allowed_paths)&&manifest.allowed_paths.length>0,'Empty scope allowlist');
+ assert.equal(new Set(manifest.allowed_paths).size,manifest.allowed_paths.length,'Duplicate paths');
+ assert(manifest.allowed_paths.every(p=>typeof p==='string'&&p.length>0&&!p.startsWith('/')&&!p.includes('..')&&!p.includes('*')),'Only exact repository-relative paths allowed');
+ assert(changed.length>0,'No PR file changes');
+ const unexpected=changed.filter(p=>!manifest.allowed_paths.includes(p));
+ assert.deepEqual(unexpected,[],'OUT-OF-SCOPE FILES: '+unexpected.join(', '));
+ if(manifest.release_mode==='governance') {
+  const execution=changed.filter(runtimePath);
+  assert.deepEqual(execution,[],'Governance changes cannot mutate web/native/build/signing: '+execution.join(', '));
+ }
+ if(manifest.release_mode==='preview') {
+  assert.equal(manifest.android_release,false,'Preview must not publish Android release');
+  const protectedPaths=changed.filter(p=>p.startsWith('apk-release-parts/')||/^(?:scripts\/release-guard\.cjs|scripts\/sign-android\.py|scripts\/build-cloudflare-pages\.cjs)$/.test(p));
+  assert.deepEqual(protectedPaths,[],'Preview cannot modify signed release or production guards');
+ }
+ if(manifest.release_mode==='production' && changed.some(releaseCriticalPath)) {
+  // NEVER treat boolean flags in user- or agent-edited JSON as signing evidence.
+  (options.releaseVerifier||independentReleaseVerification)();
+ }
+ return changed.length;
 }
-if(require.main===module){
-  try {
-    const base=process.argv[2]||'origin/production';
-    const manifest=readManifest();
-    const changes=changedPaths(base);
-    const n=validateScope(changes,manifest);
-    console.log('PASS Salati request scope:',manifest.request_id,'mode',manifest.release_mode,'changed paths',n);
-    for(const item of changes)console.log(' - '+item);
-  } catch(err) {
-    console.error('FAIL Salati request scope:',err.message);
-    process.exitCode=1;
-  }
+function changedPaths(base) {
+ const diff=execFileSync('git',['diff','--name-only','--diff-filter=ACDMRT',base+'...HEAD'],{cwd:root,encoding:'utf8'});
+ return diff.split(/\r?\n/).filter(Boolean);
 }
-module.exports={validateScope,changedPaths,runtimePath};
+if(require.main===module) {
+ try{
+  const current=JSON.parse(fs.readFileSync(path.join(root,'docs/requests/ACTIVE_CHANGE.json'),'utf8'));
+  const files=changedPaths(process.argv[2]||'origin/production');
+  const n=validateScope(files,current);
+  console.log('PASS scoped Salati change request',current.request_id,current.release_mode,n,'files');
+  files.forEach(p=>console.log(' - '+p));
+ }catch(e){console.error('FAIL scoped Salati change:',e.stack||e);process.exitCode=1;}
+}
+module.exports={validateScope,changedPaths,runtimePath,independentReleaseVerification};

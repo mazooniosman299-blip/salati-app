@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "as_of": "2026-11-03",
+  "policy": "A file is an approved final image only with original bytes, explicit latest approval, authorized usage and an immutable digest. Historic illustrations or web search images are never equivalent.",
+  "references": [
+    {
+      "id": "mosque-original",
+      "status": "verified-user-asset",
+      "file": "design-references/user-mosque-original.png",
+      "sha256": "942e0f4a3e3a55b0a3b569357687f67f75cbe90b4fc748083d988f689f5ea004",
+      "source": "User-uploaded original mosque reference archive; see design-references/mosque-crop.json",
+      "element": "Home mosque and native widget",
+      "rights": "User-supplied for this project; third-party redistribution rights not independently asserted"
+    },
+    {
+      "id": "mosque-web-cropped",
+      "status": "verified-derived-asset",
+      "file": "dist/images/mosque-reference-original.png",
+      "sha256": "e1b480d72a5723a35317fcc5442b1096a1465b32ae475837008eed0e351d9add",
+      "source": "Lossless crop of original user-provided mosque; see design-references/mosque-crop.json",
+      "element": "Hero image",
+      "rights": "Same rights as source"
+    },
+    {
+      "id": "mosque-native-cropped",
+      "status": "verified-derived-asset",
+      "file": "android/app/src/main/res/drawable-nodpi/widget_reference_mosque.png",
+      "sha256": "e1b480d72a5723a35317fcc5442b1096a1465b32ae475837008eed0e351d9add",
+      "source": "Same exact approved cropped PNG",
+      "element": "Native Android widget",
+      "rights": "Same rights as source"
+    },
+    {
+      "id": "old-approved-layout",
+      "status": "historical-unverified",
+      "file": "docs/design/approved-salati.png",
+      "sha256": null,
+      "source": "Repository historic design reference",
+      "element": "Multiple historic screens",
+      "rights": "Not independently verified"
+    },
+    {
+      "id": "old-tasbih-nav",
+      "status": "historical-unverified",
+      "file": "docs/design/selected-tasbih-navigation.png",
+      "sha256": null,
+      "source": "Repository historic illustrative reference",
+      "element": "Tasbih/navigation",
+      "rights": "Not independently verified"
+    },
+    {
+      "id": "printed-mushaf-final",
+      "status": "unresolved",
+      "file": null,
+      "sha256": null,
+      "source": "Latest user's Mushaf image in prior conversation, not recovered to a tracked authorized file",
+      "element": "Mushaf page frame/page layout",
+      "rights": "Unresolved; do not claim identical source"
+    },
+    {
+      "id": "quran-player-final",
+      "status": "unresolved",
+      "file": null,
+      "sha256": null,
+      "source": "Latest user-provided screenshot and later placement wording; no verified locked final bytes",
+      "element": "Quran audio player geometry",
+      "rights": "Unresolved; do not claim pixel parity"
+    }
+  ]
+}

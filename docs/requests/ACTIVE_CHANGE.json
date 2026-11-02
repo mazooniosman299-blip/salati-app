@@ -17,7 +17,10 @@
     "scripts/verify-change-scope.cjs",
     "tests/agent-governance-contract.cjs",
     ".github/workflows/salati-agent-governance.yml",
-    "docs/requests/SALATI-20261103-ROOT-CONTROL.md"
+    "docs/requests/SALATI-20261103-ROOT-CONTROL.md",
+    "design-references/APPROVED_REFERENCE_REGISTRY.json",
+    "tests/reference-provenance.cjs",
+    "docs/REFERENCE_EVIDENCE_20261103.md"
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
