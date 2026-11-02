@@ -25,6 +25,13 @@ function validate(html, css, worker, current, signed) {
   for (const marker of ['nav-icon-button.active', '#prayers', '#mushafPlayerSlot']) {
     assert(css.includes(marker), 'Approved dark UI component missing: ' + marker);
   }
+  const frameStart = html.indexOf('id="qSheet"');
+  const frameEnd = html.indexOf('</article>', frameStart);
+  const frame = frameStart >= 0 && frameEnd > frameStart ? html.slice(frameStart, frameEnd) : '';
+  assert(frame.includes('id="qVerses"') && frame.includes('id="mushafPlayerSlot"'),
+    'Original mushaf frame must contain BOTH the scrollable Quran and the player');
+  assert(frame.indexOf('id="qVerses"') < frame.indexOf('id="mushafPlayerSlot"'),
+    'Player must follow Quran scrollport, not cover Quran verses');
   for (const id of ['qVerses', 'mushafPlayerSlot']) {
     assert(html.includes('id="' + id + '"'), 'Quran reader component missing: ' + id);
   }
