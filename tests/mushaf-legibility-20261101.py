@@ -57,7 +57,7 @@ try:
       active.wait_for(state='visible',timeout=10000)
       frame=active.evaluate("""e=>({border:getComputedStyle(e).borderTopColor,
          shadow:getComputedStyle(e).boxShadow})""")
-      assert frame['border']=='rgb(142, 167, 195)' and '255, 255, 255' in frame['shadow'],(width,'rounded blue-slate reference prayer frame',frame)
+      assert frame['border']=='rgb(255, 255, 255)' and frame['shadow']=='none',(width,'current matte white outlined prayer, without obsolete glow',frame)
       instruction=page.get_by_text('المواقيت محسوبة فلكيًا.',exact=False).first
       assert instruction.evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
       page.click('[data-tab=settings]')
