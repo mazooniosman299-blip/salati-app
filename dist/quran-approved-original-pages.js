@@ -24,15 +24,59 @@
    figure.setAttribute('aria-label','صفحة كاملة أصلية من مصحف المدينة برواية حفص');
    const img=document.createElement('img');img.id='qApprovedOriginalImage';
    img.alt='الصفحة الأصلية من مصحف المدينة دون إعادة كتابة أو تعديل';
-   figure.append(img);sheet.insertBefore(figure,verses);
+   // Actual printed leaves are stacked vertically, NOT resized or stretched.
+   // The page after the folio becomes visible behind the floating Salati player,
+   // exactly as a continuous real Quran reader. No fake filler or white padding.
+   const following=document.createElement('div');following.id='qApprovedFollowingPages';
+   figure.append(img,following);sheet.insertBefore(figure,verses);
    let revision=0,activeUrl='',loadedPage=0,loadingPage=0;
+   let extraUrls=[],nextPage=0,nextBusy=false,activeManifest=null;
+   function clearFollowing(){
+     following.replaceChildren();
+     for(const url of extraUrls) URL.revokeObjectURL(url);
+     extraUrls=[];nextPage=0;nextBusy=false;
+   }
+   async function appendFollowing(manifest,rev){
+     if(nextBusy||rev!==revision||!nextPage||!mushaf.classList.contains('q-original-source-ready'))return;
+     const record=manifest.pages.find(p=>p.quranPage===nextPage);
+     if(!record)return; // Do not substitute another surah or duplicate a page!
+     nextBusy=true;
+     let candidate='';
+     try{
+       const response=await fetch(ROOT+record.filename,{cache:'force-cache'});
+       if(!response.ok)throw Error('Missing authentic adjoining Quran page');
+       const bytes=await response.arrayBuffer();
+       if(bytes.byteLength!==record.bytes||await sha256(bytes)!==record.sha256)throw Error('Adjacent Quran page failed SHA-256');
+       if(rev!==revision)return;
+       candidate=URL.createObjectURL(new Blob([bytes],{type:'image/webp'}));
+       const decoded=new Image();decoded.alt='مصحف المدينة، صفحة '+nextPage+' الأصلية كاملة';
+       decoded.dataset.quranPage=String(nextPage);
+       decoded.className='q-approved-following-image';
+       decoded.src=candidate;await decoded.decode();
+       if(rev!==revision)return;
+       following.append(decoded);
+       extraUrls.push(candidate);candidate='';
+       nextPage++;
+     }catch(error){
+       if(rev===revision)console.warn('Next verified Quran page not yet available:',error.message);
+       nextPage=0; // no gaps concealed by wrong-page content
+     }finally{
+       if(candidate)URL.revokeObjectURL(candidate);
+       nextBusy=false;
+     }
+   }
+   figure.addEventListener('scroll',()=>{
+     if(!activeManifest||!nextPage)return;
+     if(figure.scrollHeight-figure.scrollTop-figure.clientHeight<figure.clientHeight*1.5)
+       appendFollowing(activeManifest,revision);
+   },{passive:true});
    async function load(page,manifest){
      if(page===loadedPage||page===loadingPage)return; // no repeat fetch/flicker on qPageLabel mutations
      const record=manifest.pages.find(x=>x.quranPage===page);
      const rev=++revision;
      loadingPage=page;
      if(!record){
-       loadedPage=0;loadingPage=0;
+       loadedPage=0;loadingPage=0;activeManifest=null;clearFollowing();
        figure.hidden=true;verses.hidden=false;verses.style.display='';
        mushaf.classList.remove('q-original-source-ready');return;
      }
@@ -50,15 +94,20 @@
        await decoded.decode(); // do not expose blank image between page updates
        if(rev!==revision)return;
        const prior=activeUrl;
+       clearFollowing();
        img.src=candidate;img.alt='مصحف المدينة، صفحة '+page+' كاملة بالرسم العثماني';
        activeUrl=candidate;candidate='';
        loadedPage=page;loadingPage=0;
+       activeManifest=manifest;
        verses.hidden=true;verses.style.display='none';figure.hidden=false;
        mushaf.classList.add('q-original-source-ready');
+       figure.scrollTop=0;
+       nextPage=page+1; // real 604-page sequence, never a repeated fallback image
        if(prior)URL.revokeObjectURL(prior);
+       appendFollowing(manifest,rev);
      }catch(error){
        if(rev!==revision)return;
-       loadingPage=0;loadedPage=0;
+       loadingPage=0;loadedPage=0;activeManifest=null;clearFollowing();
        figure.hidden=true;verses.hidden=false;verses.style.display='';
        mushaf.classList.remove('q-original-source-ready');
        console.warn('Original Quran page unavailable. Original, verified text reader retained.',error.message);
@@ -92,7 +141,10 @@
        figure.remove();
        console.warn('Publisher full-page proof unavailable; canonical text unchanged.',err.message);
      });
-   window.addEventListener('pagehide',()=>{if(activeUrl)URL.revokeObjectURL(activeUrl)},{once:true});
+   window.addEventListener('pagehide',()=>{
+     if(activeUrl)URL.revokeObjectURL(activeUrl);
+     clearFollowing();
+   },{once:true});
  }
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});
  else install();
