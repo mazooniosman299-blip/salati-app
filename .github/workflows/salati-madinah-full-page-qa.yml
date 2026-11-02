@@ -1,0 +1,43 @@
+name: Salati Madinah full-page mushaf and CSS regex QA — preview only
+on:
+  push:
+    branches: [fix/salati-madinah-full-page-scroll-20261102]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run positive/negative forced priority detection and legacy contracts
+        run: |
+          npm ci
+          npm run build
+          node tests/widget-quran-no-regression-20261102.cjs
+          npm test
+      - name: Inspect real current mobile, tablet and desktop mushaf
+        run: |
+          python3 -m pip install --quiet playwright pillow tinycss2
+          python3 -m playwright install --with-deps chromium
+          python3 tests/madinah-full-page-scroll-20261102.py
+          python3 tests/css-component-owner-audit.py
+      - name: Ensure native embedded page uses the same new reader
+        run: |
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+          grep -F 'The full printed-style Quran flows in the DOCUMENT' quran-controller.js
+      - name: Save actual browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-madinah-full-page-preview
+          path: reports/madinah-full-page-scroll-20261102/
+          if-no-files-found: warn
