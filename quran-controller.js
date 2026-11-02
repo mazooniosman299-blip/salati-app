@@ -141,7 +141,7 @@ export class QuranReader{
   // fully interactive local text page instead of showing a blank page.
   const plate=document.createElement('img');
   plate.className='quran-madinah-plate';plate.alt='مصحف المدينة المنورة، الصفحة '+(index+1);
-  plate.width=345;plate.height=550;plate.loading='lazy';plate.decoding='async';
+  plate.width=345;plate.height=550;plate.loading='eager';plate.decoding='async';
   const fallback=document.createElement('div');
   fallback.className='quran-page-interactive-fallback';
   plate?.addEventListener?.('load',()=>{page.classList.add('quran-print-plate-ready');});
