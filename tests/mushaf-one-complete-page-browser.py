@@ -71,11 +71,11 @@ try:
    page.screenshot(path=str(out/f'salati-mushaf-ONE-FULL-PAGE-{w}.png'),full_page=False)
    # Tapping the Quran image hides the player, allowing an unbroken full-height
    # page. A second tap restores the controls without resetting audio state.
-   page.locator('#qGreenOriginalReview img').click(position={'x':30,'y':30})
+   page.locator('#qGreenOriginalReview img').click(position={'x':w//2,'y':min(150,h//3)})
    assert not page.locator('#mushafPlayerSlot').is_visible(),(w,'tap did not dismiss player')
    assert abs(page.locator('#qGreenOriginalReview').bounding_box()['height']-h)<=1
    page.screenshot(path=str(out/f'salati-mushaf-FULL-PAGE-PLAYER-HIDDEN-{w}.png'),full_page=False)
-   page.locator('#qGreenOriginalReview img').click(position={'x':30,'y':30})
+   page.locator('#qGreenOriginalReview img').click(position={'x':w//2,'y':min(150,h//3)})
    assert page.locator('#mushafPlayerSlot').is_visible(),(w,'tap did not restore player')
    page.locator('#mushafPlayerSlot').scroll_into_view_if_needed()
    player=page.locator('#mushafPlayerSlot')
