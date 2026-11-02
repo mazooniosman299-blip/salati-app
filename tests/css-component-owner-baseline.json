@@ -1,0 +1,12 @@
+{
+  "note": "Measured from ACTUAL layered 1.0.122 CSS + city-only stylesheet on 2026-11-02, not a claim of zero defects. Safe optimization should reduce these values; never permit increase.",
+  "conflicting_selector_property_groups": 71,
+  "duplicate_selector_property_groups": 75,
+  "duplicate_declarations": 84,
+  "expected_layers": [
+    "salati-base",
+    "salati-priority",
+    "salati-first-paint"
+  ],
+  "measured_rule_count": 1777
+}
