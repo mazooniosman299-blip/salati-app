@@ -1,0 +1,75 @@
+name: Salati six real app tabs + genuine full Mushaf screen (NO DEPLOY)
+on:
+  push:
+    branches:
+      - release/salati-approved-mushaf-player-20261103
+    paths:
+      - dist/quran-approved-sheet.js
+      - dist/salati-ui.css
+      - tests/real-salati-all-tabs-browser.py
+      - .github/workflows/salati-all-tabs-real-screenshots.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: salati-six-actual-tabs-proof
+  cancel-in-progress: true
+jobs:
+  real-app-all-tabs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build real Salati and run unchanged underlying audio/reader tests
+        run: |
+          npm ci
+          npm run build
+          node tests/quran-approved-sheet.cjs
+          npm test
+      - name: Retrieve ONLY exact cryptographically verified publisher print plates
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-real-proof
+          gh run download 41523512136 --repo "$GITHUB_REPOSITORY" \
+            --name salati-TRUE-MADINAH-MUSHAF-real-screenshots-UNRELEASED \
+            --dir /tmp/salati-real-proof
+          test -s /tmp/salati-real-proof/dist/quran-green-proof/manifest.json
+          cp -a /tmp/salati-real-proof/dist/quran-green-proof dist/
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          d=Path('dist/quran-green-proof')
+          m=json.loads((d/'manifest.json').read_text())
+          assert m['sourceSha256']=='5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07'
+          assert m['edition']=='KFGQPC Hafs standard39-2 green PDF'
+          assert m['riwaya']=='Hafs'
+          assert any(x['quranPage']==17 for x in m['pages'])
+          for x in m['pages']:
+            raw=(d/x['filename']).read_bytes()
+            assert len(raw)==x['bytes']
+            assert hashlib.sha256(raw).hexdigest()==x['sha256']
+          print('PASS original Hafs full printed pages individually SHA-256 verified')
+          PY
+      - name: Screenshot ALL SIX actual Salati app sections (not only Quran)
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tests/real-salati-all-tabs-browser.py
+      - name: Save unmodified real app screenshots, no publish and no APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: REAL-SALATI-SIX-TABS-390-412-UNRELEASED
+          path: reports/complete-salati-app/
+          if-no-files-found: warn
+          retention-days: 21
