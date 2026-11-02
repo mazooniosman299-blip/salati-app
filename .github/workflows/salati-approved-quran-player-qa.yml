@@ -1,0 +1,51 @@
+name: Salati approved Quran player — REAL Chromium QA (NO DEPLOY)
+on:
+  push:
+    branches:
+      - release/salati-approved-mushaf-player-20261103
+    paths:
+      - dist/index.html
+      - dist/salati-ui.css
+      - dist/quran-approved-sheet.js
+      - tests/quran-approved-player-browser.py
+      - tests/quran-approved-sheet.cjs
+      - .github/workflows/salati-approved-quran-player-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-approved-player
+  cancel-in-progress: true
+jobs:
+  genuine-chromium-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify actual Salati playback model and 604-page unchanged Quran
+        run: |
+          npm ci
+          npm run build
+          node --check dist/quran-approved-sheet.js
+          node tests/quran-approved-sheet.cjs
+          npm test
+      - name: Screenshot LIVE original Salati player on four screen sizes
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tests/quran-approved-player-browser.py
+      - name: Preserve real screenshots — NO PRODUCTION DEPLOY OR APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-approved-player-REAL-mobile-screenshots-UNRELEASED
+          path: reports/approved-quran-player/
+          if-no-files-found: warn
+          retention-days: 21
