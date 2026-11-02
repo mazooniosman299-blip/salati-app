@@ -146,37 +146,22 @@ export class QuranReader{
  image.addEventListener('error',()=>{if(image.dataset.mirror!=='1'){image.dataset.mirror='1';image.src=mirror+filename;}else{page.classList.add('madinah-text-fallback-only');fallback.inert=false;image.remove();}});
  page.prepend(image);image.src=cdn+filename;return page;
  }
+ renderMadinahMode(){
+  const sheet=$('qSheet');sheet.classList.toggle('madinah-text-mode',this.textMode);
+  const button=$('qTextMode');button.textContent=this.textMode?this.tr('عرض صفحات المصحف','Printed Mushaf pages'):this.tr('نص الآيات التفاعلي','Interactive Quran text');
+  button.setAttribute('aria-pressed',String(this.textMode));
+  $('qVerses').querySelectorAll('.quran-reading-page').forEach(page=>{const text=page.querySelector('.mushaf-text-fallback');if(text)text.inert=!this.textMode&&page.classList.contains('madinah-image-loaded');});
+ }
  renderReadingPages(){
- if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
+ if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();const container=$('qVerses');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
  const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
  container.append(sentinel);append();
-  // A full natural Quran page determines its scrollport height. This ensures
-  // page 1 is NEVER cropped by arbitrary viewport clamps, while the reader
-  // can scroll to later pages and the AUDIO DOCK stays directly below it.
-  const firstPage=container.querySelector?.('.quran-reading-page');
-  const measure=()=>{
-   if(!firstPage?.isConnected)return;
-   firstPage.style.contentVisibility='visible';
-   const h=Math.ceil(Math.max(firstPage.getBoundingClientRect().height,firstPage.scrollHeight));
-   if(h>120&&h<5000){
-    const old=Number.parseFloat(container.style.getPropertyValue('--salati-quran-window-height'));
-    if(!Number.isFinite(old)||Math.abs(old-h)>1)container.style.setProperty('--salati-quran-window-height',h+'px');
-   }
-  };
-  if(firstPage){
-   if(typeof ResizeObserver!=='undefined'){
-    this.readingHeightObserver=new ResizeObserver(measure);
-    this.readingHeightObserver.observe(firstPage);
-   }
-   requestAnimationFrame(()=>requestAnimationFrame(measure));
-   document.fonts?.ready?.then(measure).catch(()=>{});
-  }
   this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{rootMargin:'600px 0px'});this.readingObserver.observe(sentinel);
  }
  refresh(){const name=s=>this.getLang()==='ar'?s.name:s.transliteration;const select=(id,options,value)=>{const el=$(id);el.replaceChildren(...options.map(([val,label])=>new Option(label,val)));el.value=String(value)};
  select('qReciter',this.reciters.map(r=>[r.id,r[this.getLang()]]),this.reciter.id);$('qFollowToggle').checked=this.followEnabled&&!this.reciter.fullSurahOnly;$('qFollowToggle').disabled=!!this.reciter.fullSurahOnly;const followLabel=$('qFollowToggle').parentElement?.querySelector('span');if(followLabel)followLabel.textContent=this.reciter.fullSurahOnly?this.tr('هذه النسخة تعمل بالسورة كاملة','This edition plays complete surahs'):this.tr('متابعة الآية','Follow verse');this.refreshBookmarkControls();$('qSmaller').disabled=this.size<=22;$('qLarger').disabled=this.size>=36;$('qVerses').style.fontSize=this.size+'px';
  $('qTransport').disabled=!this.data;if(!this.data){$('qTrack').textContent=this.loadFailed?this.tr('افتح المصحف وأعد المحاولة.','Open Quran and retry.'):this.tr('جارٍ فتح المصحف…','Loading Quran…');return;}const pageVerses=this.data.pages[this.page-1];if(!pageVerses.some(v=>v.s===this.activeSurah)&&!this.pageAudio.active&&!this.pageAudio.loading)this.activeSurah=pageVerses[0].s;const continuous=this.continuousReading(),verses=pageVerses,first=pageVerses.find(v=>v.s===this.activeSurah)||pageVerses[0];const audible=this.pageAudio.active||this.pageAudio.loading;const currentClip=audible?this.pageAudio.queue?.[this.pageAudio.index]:null;this.audioSurah=audible?(currentClip?.surah||currentClip?.verse?.s||this.follow?.current?.verse?.s||this.audioSurah||this.activeSurah):this.activeSurah;$('qPageNumber').value=this.page;select('qSurah',this.data.surahs.map(s=>[s.id,s.id+' · '+name(s)]),this.activeSurah);select('qJuz',Array.from({length:30},(_,i)=>[i+1,this.tr('الجزء ','Juz ')+(i+1)]),first.j);$('qSurah').disabled=$('qJuz').disabled=false;const ids=continuous?[this.activeSurah]:[...new Set(verses.map(v=>v.s))];$('qPageSurah').textContent=ids.map(id=>this.data.surahs[id-1].name).join(' · ');$('qPageJuz').textContent='الجزء '+new Intl.NumberFormat('ar').format(first.j);$('qPageLabel').textContent=new Intl.NumberFormat('ar').format(this.page);$('qProgress').textContent=this.page+' / 604';$('qPageForm').hidden=continuous;$('qPageLabel').hidden=continuous;if(continuous){$('qProgress').textContent=this.activeSurah+' / 114';}
- this.renderReadingPages();this.follow?.refresh();
+ this.renderReadingPages();this.renderMadinahMode();this.follow?.refresh();
  const available=this.reciter.surahs.includes(this.audioSurah);$('qPlay').disabled=!available;$('qCoverage').textContent=this.reciter.surahs.length===114?this.tr('جميع السور متاحة بصوت هذا القارئ.','All surahs available for this reciter.'):this.tr('السور المتاحة بصوت هذا القارئ: '+this.reciter.surahs.length+'؛ اختر منها في القائمة.','Available surahs for this reciter: '+this.reciter.surahs.length+'. Choose from the list.');$('qCoverage').hidden=this.surahMode();if(this.surahMode())$('qCoverage').textContent='';$('qRepeat').parentElement.querySelector('span').textContent=this.surahMode()?this.tr('تكرار السورة','Repeat surah'):this.tr('تكرار الصفحة','Repeat page');$('qAutoNext').parentElement.querySelector('span').textContent=this.surahMode()?this.tr('السورة التالية تلقائيًا','Auto-play next surah'):this.tr('الصفحة التالية تلقائيًا','Auto-play next page');if(available){const currentVerse=audible?(this.follow?.current?.verse?.s===this.audioSurah?this.follow.current.verse:currentClip?.verse):undefined;const currentReader=audible?(this.player?.nativeQuran?(this.reciters.find(r=>r.id===this.player.state.reciter)||this.reciter):(this.playingReciter||this.reciter)):this.reciter;this.renderTrack(this.audioSurah,currentVerse,currentReader);}else $('qTrack').textContent=this.tr('اختر سورة من قائمة السور المتاحة','Choose a surah from the available list');}
  audioMessage(ar,en){$('qAudioStatus').textContent=this.tr(ar,en)}
  async play(){this.versePlayback=false;if(!this.data)return;this.refresh();const surah=this.activeSurah,options=this.player.nativeQuran?{surah,repeat:$('qRepeat').checked,autoNext:$('qAutoNext').checked,nextSurahs:this.surahVerses.slice(surah),surahNames:this.data.surahs.map(s=>s.name)}:{surah};if(!recitationUrl(this.reciter,surah)){this.audioMessage('هذه السورة غير متاحة بصوت القارئ المختار.','This surah is unavailable for this reciter.');return;}this.beforePlay();this.playingReciter=this.reciter;$('qStop').disabled=false;if(this.reciter.fullSurahOnly){this.audioMessage('هذه التلاوة تعمل بالسورة كاملة؛ متابعة الآيات غير متاحة لهذا التسجيل.','This recording plays complete surahs; verse tracking is unavailable.');await this.pageAudio.playSurah(this.reciter,surah,options);return;}if(navigator.onLine===false){this.audioMessage('جارٍ فتح التسجيل المحفوظ؛ متابعة الآيات تحتاج اتصالًا بالإنترنت.','Opening saved audio; verse tracking needs an internet connection.');await this.pageAudio.playSurah(this.reciter,surah,options);return;}this.audioMessage('جارٍ تحميل التلاوة مع متابعة الآيات…','Loading recitation with verse tracking…');await this.pageAudio.play(this.reciter,this.surahVerses[surah-1],options);}
