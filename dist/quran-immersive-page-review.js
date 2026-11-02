@@ -39,11 +39,65 @@
       maxHeight:'100dvh',margin:'0',padding:'0',border:'0',borderRadius:'0',
       boxShadow:'none',objectFit:'contain',objectPosition:'center',
       background:'#FFFFFF'});
-    // The already approved player is directly AFTER the complete page in
-    // real document flow; swipe down for controls. It cannot cover an ayah.
+    // Reference player arrangement with the EXISTING Salati charcoal/blue/white
+    // palette. Reserve its own bottom area: shrink the COMPLETE Quran leaf with
+    // contain, never overlay/clip a single ayah or ornament.
+    const dockHeight=108;
+    const fullLeafHeight='calc(100dvh - '+dockHeight+'px - env(safe-area-inset-bottom, 0px))';
+    style(sheet,{overflowY:'hidden',scrollSnapType:'none'});
+    style(section,{flex:'0 0 '+fullLeafHeight,height:fullLeafHeight,minHeight:fullLeafHeight,
+      maxHeight:fullLeafHeight});
+    style(image,{height:'100%',maxHeight:'100%'});
     style(player,{position:'relative',inset:'auto',display:'block',flex:'0 0 auto',
-      alignSelf:'stretch',width:'100%',maxWidth:'100%',margin:'0',padding:'0',borderRadius:'0',
-      scrollSnapAlign:'start',zIndex:'auto'});
+      alignSelf:'stretch',width:'100%',maxWidth:'100%',height:dockHeight+'px',
+      minHeight:dockHeight+'px',maxHeight:'none',margin:'0',padding:'0',
+      border:'0',borderTop:'1px solid #414249',borderRadius:'0',
+      background:'#18191D',boxShadow:'none',overflow:'hidden',zIndex:'auto'});
+    const controls=player.querySelector('.recitation-player.reference-player');
+    const caption=player.querySelector('.recitation-caption');
+    const timeline=player.querySelector('.recitation-timeline');
+    const transport=one('qTransport'),stop=one('qStop'),seek=one('qSeek');
+    const times=player.querySelector('.recitation-times');
+    style(controls,{position:'relative',display:'grid',direction:'ltr',
+      gridTemplateColumns:'46px minmax(0,1fr) 36px',
+      gridTemplateRows:'24px 50px',columnGap:'10px',rowGap:'3px',
+      alignItems:'center',boxSizing:'border-box',width:'100%',height:'100%',
+      minHeight:'0',maxHeight:'none',margin:'0',padding:'8px 12px',
+      border:'0',borderRadius:'0',background:'#18191D',boxShadow:'none',
+      overflow:'hidden'});
+    style(caption,{gridArea:'1/1/2/4',display:'flex',direction:'rtl',
+      gap:'8px',alignItems:'center',justifyContent:'flex-start',maxWidth:'100%',
+      minWidth:'0',height:'24px',margin:'0',overflow:'hidden',
+      textOverflow:'ellipsis',whiteSpace:'nowrap'});
+    const status=one('qAudioStatus');
+    style(status,{position:'absolute',left:'-10000px',width:'1px',height:'1px',
+      overflow:'hidden'}); // Status remains audible to assistive technology.
+    style(transport,{gridArea:'2/1/3/2',justifySelf:'center',alignSelf:'center',
+      width:'44px',height:'44px',minWidth:'44px',minHeight:'44px',
+      maxWidth:'44px',maxHeight:'44px',margin:'0',padding:'0',
+      borderRadius:'50%'});
+    style(stop,{gridArea:'2/3/3/4',justifySelf:'center',alignSelf:'center',
+      width:'34px',height:'34px',minWidth:'34px',minHeight:'34px',
+      maxWidth:'34px',maxHeight:'34px',padding:'0',margin:'0'});
+    style(timeline,{gridArea:'2/2/3/3',display:'flex',flexDirection:'column',
+      direction:'ltr',justifyContent:'center',gap:'2px',width:'100%',height:'44px',
+      maxWidth:'100%',minWidth:'0',margin:'0',padding:'0',overflow:'visible'});
+    style(seek,{width:'100%',height:'21px',minHeight:'21px',maxHeight:'21px',
+      margin:'0',padding:'0',flex:'0 0 21px'});
+    style(times,{display:'flex',direction:'ltr',justifyContent:'space-between',
+      alignItems:'center',width:'100%',height:'17px',minHeight:'17px',
+      margin:'0',padding:'0',whiteSpace:'nowrap'});
+    // A tap on the paper hides the dock and enlarges the ENTIRE sheet;
+    // another tap restores controls. Audio continues uninterrupted.
+    let dockVisible=true;
+    section.addEventListener('click',()=>{
+      dockVisible=!dockVisible;
+      player.style.display=dockVisible?'block':'none';
+      section.style.flex=dockVisible?'0 0 '+fullLeafHeight:'0 0 100dvh';
+      section.style.height=dockVisible?fullLeafHeight:'100dvh';
+      section.style.minHeight=dockVisible?fullLeafHeight:'100dvh';
+      section.style.maxHeight=dockVisible?fullLeafHeight:'100dvh';
+    });
     const exit=document.createElement('button');
     exit.id='salatiImmersivePageExit';exit.type='button';
     exit.textContent='رجوع';exit.setAttribute('aria-label','العودة إلى صلاتي');
