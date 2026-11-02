@@ -69,6 +69,37 @@ jobs:
           grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/salati-verified-v122.txt
           "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging /tmp/salati-v122-signed/salati-1.0.122.apk | grep -F "name='com.salati.prayer' versionCode='123' versionName='1.0.122'"
           python3 scripts/verify-native-web-assets.py /tmp/salati-v122-signed/salati-1.0.122.apk
+      - name: Reassemble PREVIOUS signed v121 APK for real install-over-install test
+        run: |
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          folder=Path('apk-release-parts/v1.0.121')
+          meta=json.loads((folder/'manifest.json').read_text())
+          assert meta['version']=='1.0.121' and meta['versionCode']==122
+          apk=b''.join((folder/f'part{i:02d}.bin').read_bytes() for i in range(meta['partCount']))
+          assert len(apk)==meta['size'] and hashlib.sha256(apk).hexdigest()==meta['sha256']
+          Path('/tmp/salati-previous-v121.apk').write_bytes(apk)
+          print('PASS verified previous signed APK to test exact upgrade path')
+          PY
+      - name: Enable KVM and reject software-only emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Verify original certificate allows native Android v121 to v122 upgrade
+        timeout-minutes: 12
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-release-upgrade-smoke.sh
       - name: Stage signed original-key APK chunks and immutable website fingerprint
         run: |
           python3 - <<'PY'
