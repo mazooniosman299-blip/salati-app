@@ -16,6 +16,15 @@ for state in maghrib dhuhr; do
   for attempt in 1 2 3 4; do
     sleep 12
     adb exec-out screencap -p > "$file"
+    # GitHub emulator occasionally displays a Pixel Launcher ANR over our
+    # VALID native widget. Dismiss that system dialog before judging pixels.
+    # This is a real UI interaction; a dimmed widget is never accepted.
+    if python3 tests/android-emulator-screen-preflight.py dialog "$file"; then
+      echo "Dismissing system Pixel Launcher ANR (not a Salati crash)" >&2
+      adb shell input tap 270 1150
+      sleep 3
+      adb exec-out screencap -p > "$file"
+    fi
     if python3 - "$file" <<'PY'
 import sys
 from PIL import Image
