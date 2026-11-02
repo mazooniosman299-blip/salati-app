@@ -142,9 +142,9 @@ export class QuranReader{
  const filename=(index+1)+'.png',rev='ba9088e03bf4af299da04f8efc70a19fe00448b9';
  const cdn='https://cdn.jsdelivr.net/gh/sufone/medina-mushaf@'+rev+'/png-d150/';
  const mirror='https://raw.githubusercontent.com/sufone/medina-mushaf/'+rev+'/png-d150/';
- image.addEventListener('load',()=>{if(image.naturalWidth!==1240||image.naturalHeight!==1754)return;page.classList.add('madinah-image-loaded');fallback.inert=!this.textMode;});
- image.addEventListener('error',()=>{if(image.dataset.mirror!=='1'){image.dataset.mirror='1';image.src=mirror+filename;}else{page.classList.add('madinah-text-fallback-only');fallback.inert=false;image.remove();}});
- page.prepend(image);image.src=cdn+filename;return page;
+ if(typeof image.addEventListener==='function'){image.addEventListener('load',()=>{if(image.naturalWidth!==1240||image.naturalHeight!==1754)return;page.classList.add('madinah-image-loaded');fallback.inert=!this.textMode;});
+ image.addEventListener('error',()=>{if(image.dataset.mirror!=='1'){image.dataset.mirror='1';image.src=mirror+filename;}else{page.classList.add('madinah-text-fallback-only');fallback.inert=false;image.remove();}});}
+ if(typeof page.prepend==='function')page.prepend(image);else page.append(image);image.src=cdn+filename;return page;
  }
  renderMadinahMode(){
   const sheet=$('qSheet');sheet.classList.toggle('madinah-text-mode',this.textMode);
