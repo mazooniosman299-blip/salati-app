@@ -28,9 +28,11 @@ try:
     active:el.classList.contains('active'),border:getComputedStyle(el).borderColor
    }))""")
    assert len(tiles)==6,(width,tiles)
-   assert sum(c['radius']=='24px' for c in tiles if c['active'])==1,(width,'Selected capsule matches rounded reference',tiles)
-   assert all(c['radius']=='24px' for c in tiles if not c['active']),(width,'Unselected cells match rounded capsules',tiles)
-   assert any(c['bg']!='rgba(0, 0, 0, 0)' for c in tiles),(width,'Must preserve original fill',tiles)
+   assert sum(c['active'] for c in tiles)==1,(width,'one active prayer after valid city and time calculation',tiles)
+   assert all(c['radius']=='0px' for c in tiles),(width,'original square prayer cells',tiles)
+   assert all(c['bg']=='rgba(0, 0, 0, 0)' for c in tiles),(width,'no duplicated solid background',tiles)
+   assert all(c['border']=='rgb(255, 255, 255)' for c in tiles),(width,'visible white separators on every prayer',tiles)
+   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,'prayer strip overflows viewport')
    if width in (390,768):page.locator('#prayers').screenshot(path=str(out/f'prayers-{width}.png'))
    page.click('[data-tab=settings]')
    assert page.locator('#fajrAnnouncementToggle,#previewFajrPhrase,.announcement-settings,#announcementStatus').count()==0
@@ -39,6 +41,6 @@ try:
    assert not errors,(width,errors)
    page.close()
   browser.close()
- print('PASS: five widths, 6 individual rounded reference prayer capsules, unchanged dark fills and ordinary Fajr adhan, removed old Fajr controls')
+ print('PASS: five widths, 6 square prayer cells, transparent matte backgrounds and ordinary Fajr adhan, removed old Fajr controls')
 finally:
  server.shutdown()

@@ -58,9 +58,10 @@ try:
           active:e.classList.contains('active')
         })""")
         radius=float(data['radius'].split('px')[0])
-        assert 14<=radius<=24,(width,i,'approved softly rounded charcoal prayer tile',data)
-        # The selected prayer is identified by an explicit active class, not a retired blue RGB value.
-        assert isinstance(data['active'],bool),(width,i,data)
+        assert radius==0,(width,i,'current square, unrounded prayer cells',data)
+        assert data['bg']=='rgba(0, 0, 0, 0)',(width,i,'no duplicate glass card over the prayer strip',data)
+        assert isinstance(data['active'],bool),(width,i,'active prayer state invalid',data)
+      assert tiles.locator('.active').count()==1,(width,'exactly one selected prayer')
       assert page.locator('#times .card.verse p').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       assert page.locator('#times .hero-prayer>span').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       page.locator('#times .prayer-overview').screenshot(path=str(evidence/f'prayers-{width}.png'))
@@ -129,7 +130,7 @@ try:
         page.click(f'[data-tab={tab}]')
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
       assert not errors,(width,'browser errors',errors)
-      checks.append({'width':width,'six_tabs_blue_active_only':True,'prayer_tiles_reference_capsules':True,'notes_white':True,
+      checks.append({'width':width,'six_tabs_blue_active_only':True,'square_transparent_prayer_cells':True,'notes_white':True,
         'small_surah_ornament':True,'recitation_no_box':True,'follow_checkbox_blue':True,
         'one_left_voice_tick':True,'location_icon_centered':True,'runtime_errors':0})
       page.close()
