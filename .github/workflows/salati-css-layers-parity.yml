@@ -9,8 +9,9 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: salati-css-layers-parity
-  cancel-in-progress: false
+  # Isolated group: an orphaned Android emulator in the old workflow must not block validation.
+  group: salati-css-layers-validation-v2-${{ github.ref_name }}
+  cancel-in-progress: true
 jobs:
   parity:
     runs-on: ubuntu-latest
@@ -63,6 +64,7 @@ jobs:
           fi
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$APK"
       - name: Native Android WebView screenshots on emulator
+        timeout-minutes: 12
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
