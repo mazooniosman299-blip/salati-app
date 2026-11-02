@@ -5,6 +5,8 @@ on:
     paths:
       - .github/workflows/salati-css-layers-parity.yml
       - scripts/salati-css-priority-layers.py
+      - scripts/android-webview-smoke.sh
+      - tests/android-emulator-screen-preflight.py
   workflow_dispatch:
 permissions:
   contents: write
