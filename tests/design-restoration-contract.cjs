@@ -20,7 +20,8 @@ assert(sw.includes("'./salati-ui.css'"),'Offline shell must cache the currently 
 // Printed-Madinah review preview: the 604-page uninterrupted scroll requires
 // the audio player above the first page, still inside the Quran section.
 if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'){
- assert(html.indexOf('id="mushafPlayerSlot"')<html.indexOf('id="qSheet"'),'Madinah preview player must appear before scrollable printed pages');
+ assert(html.indexOf('id="qSheet"')<html.indexOf('id="mushafPlayerSlot"'),'Real audio dock must be inside Quran page article');
+ assert(html.indexOf('id="mushafPlayerSlot"')<html.indexOf('</article>'),'Real audio dock must not sit in a separate external card');
  assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="mushaf"'),'Player must remain inside Quran section');
  assert(css.includes('.quran-madinah-plate'),'The Madinah page viewer must be styled');
 }else{

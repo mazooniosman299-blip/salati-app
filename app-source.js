@@ -64,26 +64,6 @@ function revealTabControls(tab){
   if(needed>0)(document.querySelector('main')||window).scrollBy({top:needed,behavior:'instant'});
  }));
 }
-// Preview only: make the Quran audio controls visible above the fixed mobile nav
-// immediately after the Quran tab opens, without making the player fixed or
-// covering the printed Madinah pages. The other production tabs are unchanged.
-function revealMadinahPreviewPlayer(){
- if(window.innerWidth>760)return;
- requestAnimationFrame(()=>requestAnimationFrame(()=>{
-  const card=document.getElementById('mushafPlayerSlot');
-  const nav=document.querySelector('header>.site-nav');
-  if(!card||!nav||document.getElementById('mushaf')?.hidden)return;
-  const scroller=document.querySelector('main')||window;
-  const topEdge=Math.max(98,(scroller===window?0:scroller.getBoundingClientRect().top)+18);
-  const bottomEdge=nav.getBoundingClientRect().top-14;
-  const player=card.getBoundingClientRect();
-  // Correct BOTH boundaries: do not bury audio under the header while trying
-  // to clear the bottom navbar, including after async Quran page hydration.
-  const move=player.top<topEdge?Math.floor(player.top-topEdge):
-    player.bottom>bottomEdge?Math.ceil(player.bottom-bottomEdge):0;
-  if(move!==0)scroller.scrollBy({top:move,behavior:'instant'});
- }));
-}
 const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
  if(b.classList.contains('active'))return;
  const panels=[...document.querySelectorAll('.tab')],previous=panels.find(t=>!t.hidden);
@@ -96,15 +76,8 @@ const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>
  $('status').textContent='';
  // Restore before opening Quran so following the currently playing verse retains priority.
  scroller.scrollTo({top:b.dataset.tab==='mushaf'?0:(tabPositions.get(b.dataset.tab)||0),behavior:'instant'});
- if(b.dataset.tab==='mushaf'){
-  tabPositions.delete('mushaf');
-  const opening=mushaf.enterAtSurahStart();
-  // The printed page loads asynchronously; correct the initial scroll again
-  // when layout settles so a 61px dock never obscures the player controls.
-  Promise.resolve(opening).then(revealMadinahPreviewPlayer,revealMadinahPreviewPlayer);
- }
- if(b.dataset.tab==='mushaf')revealMadinahPreviewPlayer();
- else revealTabControls(b.dataset.tab);
+ if(b.dataset.tab==='mushaf'){tabPositions.delete('mushaf');mushaf.enterAtSurahStart();}
+ revealTabControls(b.dataset.tab);
 });$('counter').onclick=()=>{state.count=Math.min(100,state.count+1);save();renderCount()};$('reset').onclick=()=>{state.count=0;save();renderCount()};$('privacy').onclick=()=>$('help').showModal();$('closeHelp').onclick=()=>$('help').close();window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});$('install').onclick=async()=>{if(installPrompt){await installPrompt.prompt();installPrompt=null}else status('للتثبيت افتح قائمة المتصفح واختر «إضافة إلى الشاشة الرئيسية».','To install, open your browser menu and choose Add to Home Screen.')};if('serviceWorker'in navigator&&!isNativeAndroid())navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>status('لم يتفعّل العمل دون اتصال؛ يمكنك استخدام التطبيق متصلًا.','Offline mode unavailable; you can continue online.'));
 
 const audioMessages={inactive:['الأذان التلقائي متوقف.','Automatic adhan is off.'],loading:['جارٍ تجهيز الصوت…','Preparing audio…'],ready:['',''],error:['اختيار التفعيل محفوظ، لكن تعذر تجهيز التسجيلات. تحقق من الاتصال واضغط إعادة تجهيز الصوت.','Your preference is saved, but recordings could not load. Check your connection and retry.'],blocked:['الأذان مفعّل ومحفوظ، لكن المتصفح يمنع الصوت حاليًا. اضغط «السماح بالصوت».','Adhan is enabled and saved, but your browser is blocking audio. Tap Allow sound.'],adhan:['يُشغّل الأذان الآن…','Playing adhan…'],fajr:['يُشغّل أذان الفجر الآن…','Playing Fajr adhan…'],dua:['يُشغّل دعاء الوسيلة الآن…','Playing Dua al-Wasilah…'],finished:['انتهى التشغيل. الأذان التلقائي ما زال مفعّلًا.','Playback finished. Automatic adhan remains on.'],stopped:['تم إيقاف المقطع الحالي. الأذان التلقائي ما زال مفعّلًا.','Current playback stopped. Automatic adhan remains on.']};

@@ -285,3 +285,39 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  }
  body.dark #mushaf #qVerses .quran-plate-text-mode .quran-back-to-print {display:block}
 }
+
+/* Preview ONLY: embed the original Salati audio card INSIDE the real printed
+   Madinah mushaf frame, below page artwork and above the next page. No new
+   buttons, color palette, fake menu, or verse-image overlays. */
+body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot){
+ display:block;box-sizing:border-box;width:100%;max-width:100%;height:auto;
+ overflow:hidden;background:#F6F0E4;border:1px solid #C8B28C;
+ border-radius:14px;outline:none;box-shadow:none;
+}
+body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot)>.quran-madinah-plate{
+ display:block;width:100%;max-width:100%;height:auto;margin:0;padding:0;
+ object-fit:contain;background:#F6F0E4;
+}
+body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot,
+body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready #mushafPlayerSlot{
+ display:block;position:relative;inset:auto;float:none;box-sizing:border-box;
+ width:100%;min-width:0;max-width:100%;height:auto;min-height:0;
+ margin:0;padding:0;overflow:hidden;z-index:1;
+ background:#18191D;border:0;border-top:1px solid #BDA77F;
+ border-radius:0 0 13px 13px;box-shadow:none;
+}
+body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player{
+ margin:0;width:100%;max-width:100%;border:0;border-radius:0;
+ background:#18191D;box-shadow:none;
+}
+@media (max-width:760px){
+ body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot){
+  margin-bottom:14px;padding:0;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot{
+  margin:0;width:100%;max-width:100%;border:0;border-top:1px solid #BDA77F;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player{
+  margin:0;width:100%;max-width:100%;
+ }
+}

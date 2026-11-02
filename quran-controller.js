@@ -111,17 +111,12 @@ export class QuranReader{
   $('qVerses').scrollTop=0;
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
    if($('mushaf').hidden)return;
-   const sheet=$('qSheet'),main=document.querySelector('main');
-   const mobile=matchMedia('(max-width:760px)').matches;
-   const scrollContainer=mobile&&main?main:window;
-   // The printed Madinah preview has its recitation dock BEFORE the long
-   // reading page. Entering Quran must reveal the dock, not scroll it behind
-   // the header by targeting the printed page below.
-   const target=mobile?($('mushafPlayerSlot')||sheet):sheet;
-   const top=target.getBoundingClientRect().top-
+   const sheet=$('qSheet');
+   const main=document.querySelector('main');
+   const scrollContainer=matchMedia('(max-width:760px)').matches&&main?main:window;
+   const top=sheet.getBoundingClientRect().top-
     (scrollContainer===window?0:main.getBoundingClientRect().top)+
-    (scrollContainer===window?scrollY:main.scrollTop)-
-    (mobile?Math.max(98-(main?.getBoundingClientRect().top||0),18):12);
+    (scrollContainer===window?scrollY:main.scrollTop)-12;
    scrollContainer.scrollTo({top:Math.max(0,top),behavior:'instant'});
   }));
   return true;
@@ -165,9 +160,15 @@ export class QuranReader{
  const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);fallback.append(number);return page;
  }
  renderReadingPages(){
- if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
+ if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');const liveAudioDock=$('mushafPlayerSlot');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
  const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
  container.append(sentinel);append();
+ // The original real audio controls are physically part of the first rendered
+ // Mushaf page (after the unmodified printed plate), never a detached card.
+ // Capture/re-home the same node across lazy page regeneration, keeping all
+ // original playback event handlers and the existing reciter bottom-sheet.
+ if(liveAudioDock){const firstPrinted=container.querySelector('.quran-reading-page');firstPrinted?.append(liveAudioDock);}
+
   // The full printed-style Quran flows in the DOCUMENT, not a height-clamped inner box.
   container.style?.removeProperty?.('--salati-quran-window-height');
   this.readingHeightObserver?.disconnect?.();
