@@ -77,6 +77,7 @@ try:
   local=offline.locator('#qVerses .quran-reading-page').first
   local.wait_for(timeout=20000)
   local.scroll_into_view_if_needed()
+  offline.locator('#qVerses .quran-madinah-plate').first.evaluate("e=>{e.loading='eager'}")
   offline.wait_for_function("() => !document.querySelector('#qVerses .quran-reading-page .quran-madinah-plate')",timeout=10000)
   assert local.locator('[data-ayah]').count()>0,'No offline Quran verses available'
   assert local.evaluate("e=>getComputedStyle(e.querySelector('.quran-page-interactive-fallback')).display")!='none'
