@@ -37,7 +37,7 @@
     // Existing audio player stays an in-flow child of #qSheet; no overlay ever.
     verses.before(section);
     const previousHidden=verses.hidden,previousDisplay=verses.style.display;verses.hidden=true;verses.style.display='none';
-    let index=0, activeUrl='', requestId=0;
+    let index=Math.max(0,manifest.pages.findIndex(p=>p.pdfPage===20)), activeUrl='', requestId=0;
     async function show(i){
       index=i;const entry=manifest.pages[index],generation=++requestId;
       back.disabled=index===0;next.disabled=index===manifest.pages.length-1;
