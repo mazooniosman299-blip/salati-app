@@ -13,7 +13,9 @@ import json
 
 root=Path(__file__).resolve().parents[1]
 css=root/'dist'
-baseline=(css/'salati-ui-baseline.css').read_text()
+# Immutable source-controlled approved production snapshot. This fixture must
+# change only after full visual review; a normal web build cannot erase it.
+baseline=(root/'tests/fixtures/salati-v123-approved-ui.css').read_text()
 optimized=(css/'salati-ui.css').read_text()
 assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # Re-running a cleanup on an already canonical production branch is
