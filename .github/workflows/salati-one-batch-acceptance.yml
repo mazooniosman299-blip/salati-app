@@ -8,6 +8,8 @@ on:
       - tests/salati-one-batch-readiness.py
       - scripts/prepare-android.py
       - tests/android-webview-pixel-qa-20261102.py
+      - tests/android-emulator-screen-preflight.py
+      - scripts/android-webview-smoke.sh
   workflow_dispatch:
 permissions:
   contents: write
