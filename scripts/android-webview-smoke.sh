@@ -32,6 +32,11 @@ test -n "$quran_x" && test -n "$quran_y"
 adb shell input tap "$quran_x" "$quran_y"
 sleep 7
 adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
+# Reader sits below the header/selection controls on compact displays.
+# Swipe the real Android WebView and capture a separate parchment screenshot.
+adb shell input swipe 216 755 216 315 580
+sleep 3
+adb exec-out screencap -p > reports/android-webview-20261102/mushaf-reader.png
 adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
 python3 tests/android-webview-pixel-qa-20261102.py
 if grep -E 'FATAL EXCEPTION.*com.salati.prayer.preview|Process: com.salati.prayer.preview.*FATAL EXCEPTION' reports/android-webview-20261102/logcat.txt; then
