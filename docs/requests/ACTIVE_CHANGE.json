@@ -31,7 +31,8 @@
     "docs/archive/README-LEGACY-20261101.md",
     "docs/source-README.md",
     "design-qa.md",
-    "docs/VISUAL_SCOPE_GATE_20261103.md"
+    "docs/VISUAL_SCOPE_GATE_20261103.md",
+    "tests/quran-source-integrity.cjs"
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",

@@ -23,6 +23,8 @@ jobs:
         run: |
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
+      - name: Verify unchanged, original 604-page Quran data
+        run: node tests/quran-source-integrity.cjs
       - name: Generate actual runtime source/import graph
         run: node scripts/inventory-current-sources.cjs
       - name: Self-test PR conflict classifier

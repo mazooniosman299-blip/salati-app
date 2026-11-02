@@ -38,3 +38,6 @@ Audit date: **2026-11-03**. Repository baseline: `production@f47ca69e37e5cdbdad3
 - New governance branch only changes docs/tests/CI/scoping scripts; no production deployment, Quran text, audio settings, widget source, or APK release is touched.
 
 Keep status **in progress** until relevant CI ends and user-requested actual design is independently accepted.
+
+## إضافات تحقق سلامة النص القرآني
+تم فحص نسخة قرآن صلاتي المضمّنة في APK التجريبي من CI: **604 صفحة، 114 سورة، 6236 آية فريدة، ولا تكرارات**؛ عدد آيات كل سورة يطابق البيان الداخلي. أُضيف `tests/quran-source-integrity.cjs` للتحقق من العدد والبيانات وبصمة SHA-256 الثابتة `cb2be527751f8671b89595a0d81cc059c3db894c213772200bcf9a01dc5096e5`. هذا يثبت عدم تغيير نسخة الملف الموجودة، وليس حكمًا على صحة أي نسخة مصحف جديدة أو زخارف لم يُعتمد مصدرها بعد.
