@@ -26,6 +26,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Rebuild exact candidate website and Android assets
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T02:43:14.142Z'
         run: |
           npm ci
           npm run build
