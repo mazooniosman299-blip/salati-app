@@ -1,0 +1,78 @@
+name: Salati genuine green PDF cached preview (FAST / NO DEPLOY)
+on:
+  push:
+    branches: [feature/salati-mushaf-inframe-player-20261102]
+    paths:
+      - .github/workflows/salati-green-cached-preview.yml
+      - dist/quran-official-green-preview.js
+      - tests/official-green-review-browser.py
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: salati-green-cached-preview
+  cancel-in-progress: true
+jobs:
+  original-green-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reuse independently verified original green pages from successful publisher PDF workflow
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kfqc-confirmed
+          gh run download 41506039824 \
+            --repo "$GITHUB_REPOSITORY" \
+            --name salati-genuine-green-pdf-original-ui-review-UNAPPROVED \
+            --dir /tmp/kfqc-confirmed
+          test -s /tmp/kfqc-confirmed/dist/quran-green-review/manifest.json
+          cp -a /tmp/kfqc-confirmed/dist/quran-green-review dist/
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          root=Path('dist/quran-green-review')
+          m=json.loads((root/'manifest.json').read_text())
+          assert m['edition']=='KFGQPC Hafs standard39-2 green PDF'
+          assert m['sourceSha256']=='5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07'
+          assert m['referenceMatch'].startswith('UNVERIFIED')
+          assert len(m['pages'])==9 and any(p['pdfPage']==20 for p in m['pages'])
+          for p in m['pages']:
+            raw=(root/p['filename']).read_bytes()
+            assert len(raw)==p['bytes']
+            assert hashlib.sha256(raw).hexdigest()==p['sha256']
+          print('PASS: authentic publisher PDF pages from verified SHA-256 source, no synthetic artwork')
+          PY
+      - name: Rebuild original Salati and validate unchanged default behavior
+        run: |
+          npm ci
+          npm run build
+          node tests/quran-official-green-preview.cjs
+          node tests/permanent-regression-contract.cjs
+      - name: Capture actual Salati phone and desktop with green interior page and visible player
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          BIN="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BIN" /usr/bin/chromium
+          python3 tests/official-green-review-browser.py
+      - name: Store screenshots for visual comparison; never deploy
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-authentic-green-interior-page-mobile-review-UNAPPROVED
+          path: |
+            reports/official-green-review/
+            dist/quran-green-review/manifest.json
+          retention-days: 14
+          if-no-files-found: warn
