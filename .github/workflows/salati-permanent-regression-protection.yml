@@ -77,6 +77,7 @@ jobs:
       - name: Seven responsive sizes, all six tabs, Quran, city and fixed nav in Chromium
         run: |
           python3 tests/active-production-browser-20261102.py
+          python3 tests/mushaf-player-inframe-browser-20261102.py
           python3 tests/mobile-layout-contract-20261101.py
       - name: Re-run EVERY retained historical visual acceptance test, without skipping failures
         run: |
@@ -97,6 +98,7 @@ jobs:
           name: salati-permanent-browser-screenshots
           path: |
             reports/active-production-browser-20261102/
+            reports/mushaf-inframe-player-20261102/
             reports/mobile-layout-contract/
             reports/mushaf-acceptance/
             reports/selection-refinement-20261101/
