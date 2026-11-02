@@ -56,13 +56,13 @@
     settings.setAttribute('aria-expanded','false');
     const show=()=>{slot.hidden=false;opener.hidden=true;slot.classList.remove('q-player-closed');};
     const hide=()=>{slot.hidden=true;opener.hidden=false;panel.hidden=true;settings.setAttribute('aria-expanded','false');};
-    close.onclick=hide;opener.onclick=show;
+    close.onclick=hide;opener.onclick=show;show();
     settings.onclick=()=>{panel.hidden=!panel.hidden;settings.setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)select.focus({preventScroll:true});};
     const speeds=[1,1.25,1.5,2];let rateIndex=0;
     const nativeAudio=typeof window.SalatiNative?.quranPlay==='function';
     if(nativeAudio){speed.disabled=true;speed.title='تغيير سرعة التلاوة غير متاح في مشغّل أندرويد الأصلي';speed.setAttribute('aria-label',speed.title);}
     speed.onclick=()=>{if(nativeAudio)return;rateIndex=(rateIndex+1)%speeds.length;
-      qAudio.playbackRate=speeds[rateIndex];speed.textContent=speeds[rateIndex].toFixed(speeds[rateIndex]===1?1:2).replace(/0$/,'')+'×';
+      qAudio.playbackRate=speeds[rateIndex];speed.textContent=(speeds[rateIndex]===1?'1.0':String(speeds[rateIndex]))+'×';
       speed.setAttribute('aria-label','سرعة التلاوة '+speed.textContent);};
     const changeSurah=step=>{
       const q=byId('qSurah');
