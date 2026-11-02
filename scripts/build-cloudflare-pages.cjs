@@ -49,6 +49,27 @@ execFileSync('npm',['test'],{cwd:root,stdio:'inherit'});
 // match this exact website build. The release guard fails deployment otherwise.
 // The original private signing key never leaves secure local signing.
 const crypto=require('node:crypto');
+// Preview-only route. NEVER run on production. No signed APK is distributed
+// when the Quran/UI changes are still awaiting user acceptance.
+if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'){
+ const homePath=path.join(dist,'index.html');
+ let html=fs.readFileSync(homePath,'utf8');
+ const apkLink=/<a class="primary apk-download"[^>]*>[\s\S]*?<\/a>/;
+ if(!apkLink.test(html))throw Error('Preview must explicitly suppress APK download');
+ html=html.replace(apkLink,'<p class="note" id="previewApkNotice">هذه معاينة للموقع فقط؛ تحميل APK يبقى من النسخة الرسمية بعد الموافقة والاختبار.</p>');
+ html=html.replace('<head>','<head><meta name="robots" content="noindex,nofollow">');
+ fs.writeFileSync(homePath,html);
+ fs.rmSync(path.join(dist,'downloads','salati-1.0.123.apk'),{force:true});
+ fs.writeFileSync(path.join(dist,'robots.txt'),'User-agent: *\\nDisallow: /\\n');
+ const hashes=new Set();
+ const digest=source=>"'sha256-"+crypto.createHash('sha256').update(source).digest('base64')+"'";
+ const walk=directory=>{for(const ent of fs.readdirSync(directory,{withFileTypes:true})){const full=path.join(directory,ent.name);if(ent.isDirectory()){if(ent.name!=='downloads')walk(full);continue;}if(!ent.name.endsWith('.html'))continue;const source=fs.readFileSync(full,'utf8');for(const m of source.matchAll(/<script\\b([^>]*)>([\\s\\S]*?)<\\/script>/gi)){if(/\\bsrc\\s*=/.test(m[1])||/application\\/ld\\+json/.test(m[1])||!m[2].trim())continue;hashes.add(digest(m[2]));}}};
+ walk(dist);
+ const policy=["default-src 'self'","base-uri 'self'","object-src 'none'","frame-ancestors 'none'","script-src 'self' "+[...hashes].join(' '),"style-src 'self' 'unsafe-inline'","img-src 'self' data: blob: https:","font-src 'self' data:","connect-src 'self' https:","media-src 'self' blob: https:","worker-src 'self' blob:","manifest-src 'self'"].join('; ');
+ fs.writeFileSync(path.join(dist,'_headers'), '/*\\n  Content-Security-Policy: '+policy+'\\n  X-Robots-Tag: noindex, nofollow\\n  X-Content-Type-Options: nosniff\\n  Referrer-Policy: strict-origin-when-cross-origin\\n\\n/sw.js\\n  Cache-Control: no-store\\n');
+ console.log('PASS: isolated Madinah Quran web-only preview; no APK, production release guard unchanged.');
+ process.exit(0);
+}
 const signedRelease=require('./release-guard.cjs').verifiedManifest();
 const releaseParts=path.join(root,'apk-release-parts','v'+signedRelease.version);
 const signedPath=path.join(dist,'downloads',signedRelease.filename);

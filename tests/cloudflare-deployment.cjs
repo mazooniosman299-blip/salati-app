@@ -1,4 +1,10 @@
 'use strict';
+// This separate web-only preview must not masquerade as a signed Android release.
+if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'){
+ const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const page=read('dist/index.html'),ui=read('dist/salati-ui.css'),js=read('dist/app-v1.0.109.js'),headers=read('dist/_headers');
+ assert(page.includes('id="mushafPlayerSlot"')&&page.includes('id="qVerses"'),'Missing Quran/player');assert(page.indexOf('id="mushafPlayerSlot"')<page.indexOf('id="qSheet"'),'Player must be visible before endless scrolling Mushaf');assert(ui.includes('.quran-madinah-plate'),'Madinah print stylesheet missing');assert(js.includes('cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc'),'Actual Madinah/KFQC SVG viewer absent');assert(!page.includes('href="/downloads/salati-'),'Old APK offered on preview');assert(headers.includes('noindex, nofollow'),'Preview index protection missing');assert(read('dist/robots.txt').includes('Disallow: /'),'Preview must not be indexed');console.log('PASS web-only Madinah Mushaf preview: printed plates, player with Quran, no old APK, noindex');process.exit(0);
+}
+
 const assert=require('node:assert/strict');
 const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const root=path.join(__dirname,'..'),dist=path.join(root,'dist');
