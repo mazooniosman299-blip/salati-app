@@ -45,10 +45,13 @@ jobs:
           gh run download 41524169044 --repo "$GITHUB_REPOSITORY" \
             --name salati-ALL-604-authentic-mushaf-pages-verified-SOURCE \
             --dir /tmp/verified-604
-          test -s /tmp/verified-604/quran-mushaf-assets/manifest.json
+          # GitHub flattens the uploaded directory for path: quran-mushaf-assets/
+          MANIFEST="$(find /tmp/verified-604 -type f -name manifest.json -print -quit)"
+          test -n "$MANIFEST" && test -s "$MANIFEST"
+          echo "Original verified artifact manifest: $MANIFEST"
           python3 -m pip install --quiet Pillow
           python3 scripts/prepare-continuous-kfqc-proof.py \
-            /tmp/verified-604/quran-mushaf-assets dist/quran-green-proof
+            "$(dirname "$MANIFEST")" dist/quran-green-proof
       - name: Real Chromium source images and Salati page proof, 4 viewport sizes
         run: |
           python3 -m pip install --quiet playwright
