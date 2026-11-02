@@ -1,0 +1,75 @@
+name: Salati — TRUE complete Medina Quran page in real mobile screen (NO DEPLOY)
+on:
+  push:
+    branches:
+      - release/salati-approved-mushaf-player-20261103
+    paths:
+      - dist/index.html
+      - dist/quran-approved-original-pages.js
+      - dist/salati-ui.css
+      - scripts/trim-official-quran-pages.py
+      - tests/original-mushaf-fullpage-browser.py
+      - .github/workflows/salati-original-fullpage-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: salati-original-fullpage-review
+  cancel-in-progress: true
+jobs:
+  actual-salati-with-authentic-quran:
+    runs-on: ubuntu-latest
+    timeout-minutes: 27
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build existing Salati with its REAL audio engine, not a visual mockup
+        run: |
+          npm ci
+          npm run build
+          node tests/quran-approved-sheet.cjs
+          node tests/quran.cjs
+      - name: Retrieve previously verified full-page originals from original publisher PDF, not generated art
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/authentic-quran-pages
+          gh run download 41506039824 --repo "$GITHUB_REPOSITORY" \
+            --name salati-genuine-green-pdf-original-ui-review-UNAPPROVED \
+            --dir /tmp/authentic-quran-pages
+          test -s /tmp/authentic-quran-pages/dist/quran-green-review/manifest.json
+          python3 -m pip install --quiet pillow
+          python3 scripts/trim-official-quran-pages.py \
+            /tmp/authentic-quran-pages/dist/quran-green-review \
+            dist/quran-green-proof
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          j=json.loads(Path('dist/quran-green-proof/manifest.json').read_text())
+          assert j['sourceSha256']=='5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07'
+          assert 17 in [x['quranPage'] for x in j['pages']]
+          print('Verified original page 17, green/pink complete Quran leaf no cropped glyphs')
+          PY
+      - name: Produce true Chromium screenshots from the actual Salati original page reader
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tests/original-mushaf-fullpage-browser.py
+      - name: Keep complete 390px app screenshots, original Quran proof and integrity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-TRUE-MADINAH-MUSHAF-real-screenshots-UNRELEASED
+          path: |
+            reports/original-mushaf-complete/
+            dist/quran-green-proof/
+          if-no-files-found: warn
+          retention-days: 21
