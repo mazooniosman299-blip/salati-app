@@ -145,7 +145,19 @@ export class QuranReader{
   const fallback=document.createElement('div');
   fallback.className='quran-page-interactive-fallback';
   plate?.addEventListener?.('load',()=>{page.classList.add('quran-print-plate-ready');});
-  plate?.addEventListener?.('error',()=>{page.classList.remove('quran-print-plate-ready');plate.remove();});
+  plate?.addEventListener?.('error',()=>{
+   // Use the previously verified 604-page printed vector edition as a
+   // fallback if Quran Android's classic 15-line Madani page is offline.
+   if(plate.dataset.source!=='fallback-svg'){
+    plate.dataset.source='fallback-svg';
+    // Quran Android's original Madani Hafs 15-line page images (604 pages).
+  // This is the familiar printed Madinah layout, not the earlier SVG styling.
+  plate.dataset.source='madani-print';
+  plate.src='https://files.quran.app/hafs/madani/width_1024/page'+String(index+1).padStart(3,'0')+'.png';
+    return;
+   }
+   page.classList.remove('quran-print-plate-ready');plate.remove();
+  });
   plate?.addEventListener?.('click',()=>{page.classList.add('quran-plate-text-mode');});
   const returnToPrint=document.createElement('button');
   returnToPrint.type='button';returnToPrint.className='quran-back-to-print';
@@ -167,7 +179,19 @@ export class QuranReader{
  // Mushaf page (after the unmodified printed plate), never a detached card.
  // Capture/re-home the same node across lazy page regeneration, keeping all
  // original playback event handlers and the existing reciter bottom-sheet.
- if(liveAudioDock){const firstPrinted=container.querySelector('.quran-reading-page');firstPrinted?.append(liveAudioDock);}
+ if(liveAudioDock){
+  const firstPrinted=container.querySelector('.quran-reading-page');
+  firstPrinted?.append(liveAudioDock);
+  const visibility=liveAudioDock.querySelector('#qOverlayToggle');
+  if(visibility&&!visibility.dataset.bound){
+   visibility.dataset.bound='1';
+   visibility.addEventListener('click',()=>{
+    const collapsed=liveAudioDock.classList.toggle('is-collapsed');
+    visibility.textContent=collapsed?'إظهار المشغّل':'إخفاء المشغّل';
+    visibility.setAttribute('aria-expanded',String(!collapsed));
+   });
+  }
+ }
 
   // The full printed-style Quran flows in the DOCUMENT, not a height-clamped inner box.
   container.style?.removeProperty?.('--salati-quran-window-height');
