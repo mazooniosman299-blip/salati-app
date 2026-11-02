@@ -2,6 +2,10 @@ from pathlib import Path
 import shutil,re
 root=Path(__file__).resolve().parent.parent
 source=root/'dist';target=root/'android/app/src/main/assets/www'
+# A production Android WebView has SalatiNative before the first page load.
+# Never package preview-only code that could silently overwrite user location.
+assert 'preview-sample-location-20261101.js' not in (source/'index.html').read_text(), 'Preview location setter imported by native homepage'
+assert not (source/'preview-sample-location-20261101.js').exists(), 'Preview location setter still in shipped distribution'
 if target.exists():shutil.rmtree(target)
 shutil.copytree(source,target,ignore=shutil.ignore_patterns('downloads','sw.js'))
 # Android loads the versioned entry from index.html. Omit its unreferenced compatibility copy.
