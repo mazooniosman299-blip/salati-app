@@ -284,3 +284,30 @@ body.dark.salati-quran-approved-screen #mushaf #qApprovedOpen:not([hidden]){
 body.dark #mushaf #mushafPlayerSlot.q-approved-player[hidden],
 body.dark #mushaf #qApprovedOpen[hidden]{display:none}
 }
+
+/* One-piece Quran reader top: real native Surah and Juz selectors, not a separate reciter field. */
+@layer salati-priority{
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader{
+   position:fixed;z-index:847;top:0;left:0;right:0;display:grid;
+   grid-template-columns:44px minmax(0,1fr) minmax(0,1.08fr) 44px;
+   align-items:center;gap:7px;box-sizing:border-box;width:100vw;
+   height:66px;padding:9px 10px 5px;margin:0;background:#FAF7F1;
+   border-bottom:1px solid #E8DCCE;direction:ltr}
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader label{
+   display:flex;align-items:center;min-width:0;height:43px;margin:0;padding:0;
+   background:#FAF7F1;border:1px solid #CFBEA9;border-radius:13px;overflow:hidden}
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader label>span{display:none}
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader select{
+   display:block;min-width:0;max-width:100%;width:100%;height:100%;min-height:0;box-sizing:border-box;
+   margin:0;padding:4px 2px;border:0;border-radius:12px;background:#FAF7F1;box-shadow:none;
+   color:#2D281F;-webkit-text-fill-color:#2D281F;font:700 12px SalatiCairo,Tahoma,Arial,sans-serif;
+   direction:rtl;text-align:center}
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader #qApprovedReaderBack,
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedReadingHeader #qApprovedReaderMenu{
+   position:static;inset:auto;display:grid;place-items:center;z-index:auto;
+   width:42px;height:42px;min-width:42px;min-height:42px;max-width:42px;max-height:42px;
+   margin:0;padding:0;background:#EFE7DC;border:1px solid #D5C3B0;border-radius:14px;
+   color:#1E252C;-webkit-text-fill-color:#1E252C;box-shadow:none;font-size:23px}
+ body.dark.salati-quran-approved-screen #mushaf #qVerses.mushaf-verses{
+   padding-top:76px;scroll-padding-top:76px}
+}
