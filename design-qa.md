@@ -1,3 +1,5 @@
+> Historical visual QA for version 1.0.109 only. The earlier phrase "final result: passed" is **not** evidence of acceptance of the current 1.0.123 UI or the user's newest Mushaf/player images. See docs/CURRENT_APPROVED_DESIGN.md.
+
 # Salati1.0.109 user screenshot corrections
 
 final result: passed

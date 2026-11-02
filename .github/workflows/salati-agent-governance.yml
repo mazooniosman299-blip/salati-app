@@ -23,6 +23,8 @@ jobs:
         run: |
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
+      - name: Generate actual runtime source/import graph
+        run: node scripts/inventory-current-sources.cjs
       - name: Self-test PR conflict classifier
         run: node scripts/pr-conflict-review.cjs --self-test
       - name: Reject overlapping live source files across open PRs
@@ -34,7 +36,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: salati-pr-source-overlap-evidence
-          path: reports/pr-overlap-latest.json
+          path: |
+            reports/pr-overlap-latest.json
+            reports/active-source-map.json
           if-no-files-found: warn
       - name: Explicitly mark limited validation
         run: echo "Source/scope contract only; NOT runtime browser visual reference, Android hardware, original-key signing, or production publication proof."

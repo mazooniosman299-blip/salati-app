@@ -26,7 +26,11 @@
     "docs/TEST_CLASSIFICATION_20261103.md",
     "tests/visual-scope-diff.py",
     "scripts/pr-conflict-review.cjs",
-    "docs/PR_COLLISION_AUDIT_20261103.md"
+    "docs/PR_COLLISION_AUDIT_20261103.md",
+    "scripts/inventory-current-sources.cjs",
+    "docs/archive/README-LEGACY-20261101.md",
+    "docs/source-README.md",
+    "design-qa.md"
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",

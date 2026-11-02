@@ -1,3 +1,5 @@
+> **Historical source/installation notes:** This document contains prior release facts and is not the current live version authority. Use apk-release-parts/current.json, README.md and docs/CURRENT_APPROVED_DESIGN.md for the examined production code. Avoid relying on old version numbers in this historical file.
+
 # Salati / صلاتي
 
 تطبيق ويب قابل للتثبيت، عربي وإنجليزي، يحسب المواقيت على الجهاز بمكتبة Adhan. يحتوي على القبلة بزاوية ثابتة، عداد أذكار، مدن جاهزة وإحداثيات لأي مكان، وطريقة حساب ومذهب عصر قابلين للتغيير. يعمل دون اتصال بعد التحميل الأول.
