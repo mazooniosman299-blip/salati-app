@@ -63,6 +63,14 @@
     Object.assign(header.style,{display:'grid',gridTemplateColumns:'43px minmax(0,1fr) 43px',
       gridTemplateRows:'44px',alignItems:'center',gap:'5px',minHeight:'44px',
       width:'100%',direction:'ltr'});
+    const caption=header.querySelector('.recitation-caption');
+    if(caption)Object.assign(caption.style,{gridArea:'1/2/2/3',gridColumn:'2',gridRow:'1',
+      display:'flex',justifyContent:'center',alignItems:'center',minWidth:'0',maxWidth:'100%',
+      width:'100%',height:'42px',overflow:'hidden',pointerEvents:'none'});
+    Object.assign(close.style,{gridArea:'1/1/2/2',gridColumn:'1',gridRow:'1',
+      zIndex:'3',position:'relative',justifySelf:'center'});
+    Object.assign(settings.style,{gridArea:'1/3/2/4',gridColumn:'3',gridRow:'1',
+      zIndex:'3',position:'relative',justifySelf:'center'});
     Object.assign(actions.style,{display:'grid',
       gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr) minmax(64px,1.2fr) minmax(0,1fr) minmax(0,1fr)',
       gridTemplateRows:'64px',gap:'4px',alignItems:'center',width:'100%',minHeight:'64px',direction:'ltr'});
