@@ -45,6 +45,7 @@ jobs:
           BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BROWSER" /usr/bin/chromium
           python3 tests/mobile-layout-contract-20261101.py
+          python3 tests/active-production-browser-20261102.py
       - name: Commit rebuilt SAFE app bundle to audit branch only
         if: github.ref == 'refs/heads/fix/salati-production-root-audit-20261102'
         run: |
@@ -65,6 +66,7 @@ jobs:
           path: |
             reports/css-source-maintainability.json
             reports/mobile-layout-contract/
+            reports/active-production-browser-20261102/
           if-no-files-found: warn
           retention-days: 14
   android-embedded-production-contract:
