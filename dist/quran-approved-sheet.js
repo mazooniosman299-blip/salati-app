@@ -52,6 +52,26 @@
     actions.append(speed,previous,qTransport,next,repeat);
     player.prepend(header);
     player.append(actions,panel);
+    // Compatibility with prior high-specificity mobile Quran CSS. Explicit
+    // component geometry wins without !important or rewriting the global theme.
+    Object.assign(slot.style,{background:'#18191D',backgroundImage:'none',height:'auto',
+      minHeight:'146px',maxHeight:'none',borderRadius:'28px'});
+    Object.assign(player.style,{display:'flex',flexDirection:'column',background:'#18191D',
+      backgroundImage:'none',width:'100%',height:'auto',minHeight:'142px',maxHeight:'none',
+      gap:'8px',padding:'12px 12px 15px',border:'0',borderRadius:'28px',
+      overflow:'visible',boxShadow:'none'});
+    Object.assign(header.style,{display:'grid',gridTemplateColumns:'43px minmax(0,1fr) 43px',
+      gridTemplateRows:'44px',alignItems:'center',gap:'5px',minHeight:'44px',
+      width:'100%',direction:'ltr'});
+    Object.assign(actions.style,{display:'grid',
+      gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr) minmax(64px,1.2fr) minmax(0,1fr) minmax(0,1fr)',
+      gridTemplateRows:'64px',gap:'4px',alignItems:'center',width:'100%',minHeight:'64px',direction:'ltr'});
+    Object.assign(qTransport.style,{gridArea:'1/3/2/4',justifySelf:'center',
+      alignSelf:'center',width:'62px',height:'62px',minWidth:'62px',minHeight:'62px',
+      maxWidth:'62px',maxHeight:'62px',background:'#2563EB',
+      backgroundImage:'none',borderRadius:'50%',padding:'0',margin:'0'});
+    const verses=byId('qVerses');
+    if(verses)Object.assign(verses.style,{paddingBottom:'240px',scrollPaddingBottom:'220px'});
     tab.append(opener,back);
     settings.setAttribute('aria-expanded','false');
     const show=()=>{slot.hidden=false;opener.hidden=true;slot.classList.remove('q-player-closed');};
