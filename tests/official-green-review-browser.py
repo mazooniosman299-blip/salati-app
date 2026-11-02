@@ -38,6 +38,8 @@ try:
                 "() => document.querySelector('#qGreenOriginalReview img')?.naturalWidth > 250",
                 timeout=30000
             )
+            # The first shown page must be a NORMAL reading page, not the decorative opening.
+            page.wait_for_function("() => document.querySelector('#qGreenOriginalReview span')?.textContent?.includes('20')",timeout=10000)
             geometry = page.evaluate("""() => {
                 const rect = x => x.getBoundingClientRect();
                 const a = document.getElementById('qGreenOriginalReview');
