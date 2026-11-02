@@ -1,9 +1,9 @@
 name: Salati full code checks
 on:
   push:
-    branches: [main]
+    branches: [main, production, fix/salati-production-root-audit-20261102]
   pull_request:
-    branches: [main]
+    branches: [main, production]
 permissions:
   contents: read
 jobs:
@@ -56,7 +56,7 @@ jobs:
           npm ci
           npm run build
           python3 scripts/prepare-android.py
-          test -f android/app/src/main/assets/www/style-v1.0.109.css
+          test -f android/app/src/main/assets/www/salati-ui.css
           test -f android/app/src/main/assets/www/app-v1.0.109.js
       - name: Accept licenses and install Android SDK 36
         run: |
@@ -87,7 +87,7 @@ jobs:
       - name: Upload unsigned build and SDK signature tools (private staging only)
         uses: actions/upload-artifact@v4
         with:
-          name: salati-1.0.113-unsigned-for-original-key
+          name: salati-code-audit-unsigned-for-original-key
           path: |
             android/app/build/outputs/apk/release/app-release-unsigned.apk
             /usr/local/lib/android/sdk/build-tools/36.0.0/apksigner
