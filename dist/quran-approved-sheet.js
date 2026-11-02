@@ -13,7 +13,7 @@
     return e;
   };
   const arrow='<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M6 5v14h2V5H6Zm13 7L9 5v14l10-7Z"/></svg>';
-  const gear='<svg viewBox="0 0 24 24" width="25" height="25" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 2h4l1 2.4 2.4 1 2.4-1 2.8 2.8-1 2.4L22 12l-.4 2.4 1 2.4-2.8 2.8-2.4-1-2.4 1L14 22h-4l-1-2.4-2.4-1-2.4 1-2.8-2.8 1-2.4L2 12l.4-2.4-1-2.4 2.8-2.8 2.4 1 2.4-1L10 2Z"/><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+  const gear='<svg viewBox="0 0 256 256" width="25" height="25" aria-hidden="true" focusable="false"><use href="icons/navigation.svg#settings"/></svg>';
   const loop='<svg viewBox="0 0 24 24" width="29" height="29" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 2l4 4-4 4M3 11V9a3 3 0 0 1 3-3h15M7 22l-4-4 4-4m14-1v2a3 3 0 0 1-3 3H3"/></svg>';
   const cross='<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M5 5l14 14M19 5L5 19"/></svg>';
   const install=()=>{
@@ -113,12 +113,18 @@
     const readingHeader=make('div','qApprovedReadingHeader');
     const currentSurah=byId('qSurah')?.closest('label');
     const currentJuz=byId('qJuz')?.closest('label');
-    const readerMenu=make('button','qApprovedReaderMenu','قائمة التلاوة');
-    readerMenu.textContent='☰';
+    const readerMenu=make('button','qApprovedReaderMenu','إعدادات التلاوة',gear);
     readingHeader.append(back);
     if(currentSurah)readingHeader.append(currentSurah);
     if(currentJuz)readingHeader.append(currentJuz);
     readingHeader.append(readerMenu);
+    // Native original Salati gear icon, NOT a generic replacement glyph.
+    // Both player gear and Quran header reuse the exact settings sprite.
+    for(const button of [settings,readerMenu]){
+      const svg=button.querySelector('svg');
+      if(svg)Object.assign(svg.style,{display:'block',width:'25px',height:'25px',
+        color:'#FFFFFF',fill:'currentColor',stroke:'none'});
+    }
     tab.append(readingHeader);
     readerMenu.onclick=()=>{show();settings.click();};
     settings.setAttribute('aria-expanded','false');
