@@ -87,6 +87,24 @@
     style(times,{display:'flex',direction:'ltr',justifyContent:'space-between',
       alignItems:'center',width:'100%',height:'17px',minHeight:'17px',
       margin:'0',padding:'0',whiteSpace:'nowrap'});
+    // This verified PDF sample is leaf 20 = printed Hafs page 17 (Al-Baqarah).
+    // Keep the genuine QuranReader / audio engine, but align its selected surah
+    // with the visible Quran artwork so the player never labels it Al-Fatiha.
+    // The complete-surah recording still starts from verse 1, not page 17.
+    let alignmentAttempts=0;
+    const alignReader=()=>{
+      if(!one('salatiImmersivePageExit')&&alignmentAttempts>0)return;
+      const form=one('qPageForm'),input=one('qPageNumber'),surah=one('qSurah');
+      if(form&&input&&surah&&!surah.disabled){
+        if(input.value!=='17'||surah.value!=='2'){
+          input.value='17';
+          form.dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}));
+        }
+      }else if(++alignmentAttempts<30){
+        setTimeout(alignReader,150);
+      }
+    };
+    alignReader();
     // A tap on the paper hides the dock and enlarges the ENTIRE sheet;
     // another tap restores controls. Audio continues uninterrupted.
     let dockVisible=true;
