@@ -28,6 +28,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Rebuild original Salati and validate unchanged default behavior
+        run: |
+          npm ci
+          npm run build
+          node tests/quran-official-green-preview.cjs
+          node tests/permanent-regression-contract.cjs
       - name: Reuse independently verified original green pages from successful publisher PDF workflow
         run: |
           set -euo pipefail
@@ -53,12 +59,6 @@ jobs:
             assert hashlib.sha256(raw).hexdigest()==p['sha256']
           print('PASS: authentic publisher PDF pages from verified SHA-256 source, no synthetic artwork')
           PY
-      - name: Rebuild original Salati and validate unchanged default behavior
-        run: |
-          npm ci
-          npm run build
-          node tests/quran-official-green-preview.cjs
-          node tests/permanent-regression-contract.cjs
       - name: Capture actual Salati phone and desktop with green interior page and visible player
         run: |
           python3 -m pip install --quiet playwright
