@@ -1,14 +1,8 @@
 name: Salati genuine KFQC green Mushaf PDF in original UI (REVIEW ONLY)
+# Full publisher PDF (232 MiB) is intentionally only fetched on manual dispatch.
+# Subsequent visual iterations reuse nine cryptographically verified samples
+# from successful run 41506039824 via the lightweight preview workflow.
 on:
-  push:
-    branches:
-      - feature/salati-mushaf-inframe-player-20261102
-    paths:
-      - .github/workflows/salati-official-green-pdf-preview.yml
-      - scripts/render-official-green-review.py
-      - tests/official-green-review-browser.py
-      - dist/quran-official-green-preview.js
-      - dist/index.html
   workflow_dispatch:
 permissions:
   contents: read
