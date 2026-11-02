@@ -23,10 +23,9 @@ if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'
  assert(html.indexOf('id="qSheet"')<html.indexOf('id="mushafPlayerSlot"'),'Real audio dock must be inside Quran page article');
  assert(html.indexOf('id="mushafPlayerSlot"')<html.indexOf('</article>'),'Real audio dock must not sit in a separate external card');
  assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="mushaf"'),'Player must remain inside Quran section');
- assert(!css.includes('.quran-madinah-plate'),'No replacement artwork or fake printed image');
- assert(css.includes('.quran-reading-page .quran-text')&&css.includes('.ayah-number'),'Keep exact Salati Quran font/medallion style');
- assert(css.includes('top:50%;left:50%'),'Player must overlay center of printed page');
- assert(html.includes('id="qOverlayToggle"'),'Player must be collapsible for reading');
+ assert(css.includes('.quran-madinah-plate'),'The Madinah page viewer must be styled');
+ assert(css.includes('salati-bottom-inside-page'),'Player must be INSIDE lower edge of illustrated page');
+ assert(!html.includes('id="qOverlayToggle"'),'Floating overlay prohibited');
 }else{
  assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="qSheet"'),'Quran player remains below reader');
 }

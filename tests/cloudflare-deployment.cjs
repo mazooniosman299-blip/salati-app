@@ -2,10 +2,10 @@
 // This separate web-only preview must not masquerade as a signed Android release.
 if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'){
  const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const root=path.resolve(__dirname,'..');const read=p=>fs.readFileSync(path.join(root,p),'utf8');const page=read('dist/index.html'),ui=read('dist/salati-ui.css'),js=read('dist/app-v1.0.109.js'),headers=read('dist/_headers');
- assert(page.includes('id="mushafPlayerSlot"')&&page.includes('id="qVerses"'),'Missing Quran/player');assert(page.indexOf('id="qSheet"')<page.indexOf('id="mushafPlayerSlot"')&&page.indexOf('id="mushafPlayerSlot"')<page.indexOf('</article>'),'Audio player must be INSIDE the Quran reading frame');assert(!ui.includes('.quran-madinah-plate'),'Original user reference is the Salati parchment; no external plate');
- assert(ui.includes('top:50%;left:50%'),'Madinah player must be centered on page');
- assert(!js.includes('files.quran.app/hafs/madani')&&!js.includes('cdn.quran.ws/svg/pages'),'No replacement image of the original mushaf allowed');
- assert(read('quran-controller.js').includes('originalPage.append(audioDock)'),'Original audio must move into original first Quran page');assert(!page.includes('href="/downloads/salati-'),'Old APK offered on preview');assert(headers.includes('noindex, nofollow'),'Preview index protection missing');assert(read('dist/robots.txt').includes('Disallow: /'),'Preview must not be indexed');console.log('PASS original Salati mushaf unchanged, original real player centered within first page, no old APK, noindex');process.exit(0);
+ assert(page.includes('id="mushafPlayerSlot"')&&page.includes('id="qVerses"'),'Missing Quran/player');assert(page.indexOf('id="qSheet"')<page.indexOf('id="mushafPlayerSlot"')&&page.indexOf('id="mushafPlayerSlot"')<page.indexOf('</article>'),'Audio player must be INSIDE the Quran reading frame');assert(ui.includes('.quran-madinah-plate'),'Madinah print stylesheet missing');
+ assert(ui.includes('salati-bottom-inside-page'),'Player must be inside lower part of page');
+ assert(js.includes('files.quran.app/hafs/madani/width_1024/page'),'Madani Hafs page image must be PRIMARY asset');
+ assert(read('quran-controller.js').includes('firstPrinted?.append(liveAudioDock)'),'Original player must be a child of illustrated page');assert(js.includes('cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc'),'Actual Madinah/KFQC SVG viewer absent');assert(!page.includes('href="/downloads/salati-'),'Old APK offered on preview');assert(headers.includes('noindex, nofollow'),'Preview index protection missing');assert(read('dist/robots.txt').includes('Disallow: /'),'Preview must not be indexed');console.log('PASS Madani page and real player INSIDE lower page border, no overlay, no APK, noindex');process.exit(0);
 }
 
 const assert=require('node:assert/strict');

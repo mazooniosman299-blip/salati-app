@@ -136,51 +136,54 @@ export class QuranReader{
   const printable=text=>text.replace(/[\u06DD\u06DE\u06DF\u06E0]/gu,'');
  const verses=this.data.pages[index],page=document.createElement('section');page.className='quran-reading-page';page.dataset.readingPage=index+1;
  
- const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}page.append(fragment);const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
- const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);page.append(number);return page;
+ const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}// Original 604-plate Madinah/KFQC print artwork, fetched only when visible.
+  // Offline or an SVG/network failure retains the existing licensed,
+  // fully interactive local text page instead of showing a blank page.
+  const plate=document.createElement('img');
+  plate.className='quran-madinah-plate';plate.alt='مصحف المدينة المنورة، الصفحة '+(index+1);
+  plate.width=345;plate.height=550;plate.loading='eager';plate.decoding='async';
+  const fallback=document.createElement('div');
+  fallback.className='quran-page-interactive-fallback';
+  plate?.addEventListener?.('load',()=>{page.classList.add('quran-print-plate-ready');});
+  plate?.addEventListener?.('error',()=>{
+    if(plate.dataset.source==='madani-png'){
+      plate.dataset.source='fallback-svg';
+      plate.src='https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/'+String(index+1).padStart(3,'0')+'.svg';
+      return;
+    }
+    page.classList.remove('quran-print-plate-ready');plate.remove();
+  });
+  plate?.addEventListener?.('click',()=>{page.classList.add('quran-plate-text-mode');});
+  const returnToPrint=document.createElement('button');
+  returnToPrint.type='button';returnToPrint.className='quran-back-to-print';
+  returnToPrint.textContent='العودة إلى صفحة المصحف الأصلية';
+  returnToPrint?.addEventListener?.('click',()=>page.classList.remove('quran-plate-text-mode'));
+  // CDN release v1.1.1 from quran-ws; official KFQC Hafs printed plate.
+  // The source is immutable; no third-party JS is loaded.
+  plate.dataset.source='madani-png';
+  plate.width=1024;plate.height=1656;
+  plate.src='https://files.quran.app/hafs/madani/width_1024/page'+String(index+1).padStart(3,'0')+'.png';
+  fallback.append(fragment);page.append(plate,fallback);
+  fallback.append(returnToPrint);
+  const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
+ const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);fallback.append(number);return page;
  }
  renderReadingPages(){
- if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');const audioDock=this.mushafAudioDock||$('mushafPlayerSlot');if(audioDock)this.mushafAudioDock=audioDock;container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
+ if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');
+ const liveAudioDock=this.mushafAudioDock||$('mushafPlayerSlot');
+ if(liveAudioDock)this.mushafAudioDock=liveAudioDock;
+ container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
  const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
  container.append(sentinel);append();
- // Preserve the exact historic Salati Madinah-style parchment artwork.
- // Move the original working Quran audio node into its first page, without
- // replacing Arabic text, surah ornament, gold ayah medallions or reciter UI.
- const originalPage=container.querySelector('.quran-reading-page');
- if(audioDock&&originalPage){
-  originalPage.append(audioDock);
-  const toggle=$('qOverlayToggle');
-  if(toggle&&!toggle.dataset.bound){
-   toggle.dataset.bound='1';
-   toggle.addEventListener?.('click',()=>{
-    const collapsed=audioDock.classList.toggle('is-collapsed');
-    toggle.textContent=collapsed?'إظهار المشغّل':'إخفاء المشغّل';
-    toggle.setAttribute('aria-expanded',String(!collapsed));
-   });
-  }
- }
+ // The original real audio controls are physically part of the first rendered
+ // Mushaf page (after the unmodified printed plate), never a detached card.
+ // Capture/re-home the same node across lazy page regeneration, keeping all
+ // original playback event handlers and the existing reciter bottom-sheet.
+ if(liveAudioDock){const firstPrinted=container.querySelector('.quran-reading-page');firstPrinted?.append(liveAudioDock);}
 
-  // A full natural Quran page determines its scrollport height. This ensures
-  // page 1 is NEVER cropped by arbitrary viewport clamps, while the reader
-  // can scroll to later pages and the AUDIO DOCK stays directly below it.
-  const firstPage=container.querySelector?.('.quran-reading-page');
-  const measure=()=>{
-   if(!firstPage?.isConnected)return;
-   firstPage.style.contentVisibility='visible';
-   const h=Math.ceil(Math.max(firstPage.getBoundingClientRect().height,firstPage.scrollHeight));
-   if(h>120&&h<5000){
-    const old=Number.parseFloat(container.style.getPropertyValue('--salati-quran-window-height'));
-    if(!Number.isFinite(old)||Math.abs(old-h)>1)container.style.setProperty('--salati-quran-window-height',h+'px');
-   }
-  };
-  if(firstPage){
-   if(typeof ResizeObserver!=='undefined'){
-    this.readingHeightObserver=new ResizeObserver(measure);
-    this.readingHeightObserver.observe(firstPage);
-   }
-   requestAnimationFrame(()=>requestAnimationFrame(measure));
-   document.fonts?.ready?.then(measure).catch(()=>{});
-  }
+  // The full printed-style Quran flows in the DOCUMENT, not a height-clamped inner box.
+  container.style?.removeProperty?.('--salati-quran-window-height');
+  this.readingHeightObserver?.disconnect?.();
   this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{rootMargin:'600px 0px'});this.readingObserver.observe(sentinel);
  }
  refresh(){const name=s=>this.getLang()==='ar'?s.name:s.transliteration;const select=(id,options,value)=>{const el=$(id);el.replaceChildren(...options.map(([val,label])=>new Option(label,val)));el.value=String(value)};

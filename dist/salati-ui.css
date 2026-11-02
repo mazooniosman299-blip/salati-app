@@ -202,58 +202,159 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
 /* Quran: continuously scroll pages by touch/wheel, never horizontal swipe or arrow pagination. */
 @layer salati-priority { body.dark #mushaf #qSheet #qVerses.mushaf-verses { touch-action: pan-y; -webkit-overflow-scrolling: touch; scroll-behavior: auto; } }
 
-/* REVIEW-ONLY: authentic Salati parchment and gold verse medallions are left
-   pixel-for-pixel under the original production CSS above. The ONLY visual
-   addition is the real original Quran player at the center of the same page. */
-body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot) {
- position:relative;isolation:isolate;
+/* FULL-PAGE MADINAH-STYLE READER — page sheets belong to the main scroll.
+   One framed parchment per printed page, never a clipped inset scroll box. */
+@layer salati-mushaf {
+ body.dark #mushaf #qSheet.mushaf-sheet.continuous-sheet {
+   display:block; width:100%; max-width:none; height:auto; max-height:none;
+   overflow:visible; padding:0; margin:0; border:0; border-radius:0;
+   background:transparent; box-shadow:none;
+ }
+ body.dark #mushaf #qSheet #qVerses.mushaf-verses {
+   display:block; height:auto; max-height:none; min-height:0;
+   overflow:visible; overflow-x:clip; scroll-behavior:auto;
+   padding:0; margin:0; border:0; background:transparent;
+   touch-action:pan-y; -webkit-overflow-scrolling:auto;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page {
+   position:relative; box-sizing:border-box;
+   width:100%; min-height:0; max-height:none; height:auto;
+   overflow:visible; margin:0 0 16px; padding:clamp(25px,5vw,56px) clamp(16px,4vw,48px) 20px;
+   background:#F6F0E4; color:#27231E; border:2px solid #BD9F70;
+   border-radius:2px; box-shadow:none;
+   outline:5px double #BFA57E; outline-offset:-13px;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page::before {
+   content:""; position:absolute; pointer-events:none; inset:17px;
+   border:1px solid #DDC9A8;
+ }
+ body.dark #mushaf #qVerses .quran-text {
+   font-family:SalatiMadinahClassic,AmiriQuran,serif;
+   font-size:clamp(23px,3.1vw,35px); line-height:2.15;
+   text-align:justify; text-align-last:center; direction:rtl;
+   color:#27231E; background:transparent; overflow:visible;
+   margin:16px 0 20px; padding:0; border:0;
+ }
+ body.dark #mushaf #qVerses .quran-surah-title {
+   box-sizing:border-box; width:min(100%,640px); margin:4px auto 18px;
+   border:1px solid #B99B69; border-radius:2px; min-height:52px;
+   background:#EEE0C9; color:#35291B; padding:8px 26px;
+   font-family:SalatiCairo,sans-serif; font-size:clamp(17px,2.8vw,23px);
+   position:relative; text-align:center;
+ }
+ body.dark #mushaf #qVerses .reading-page-number {
+   margin:18px auto 4px; width:max-content; min-height:28px;
+   border:0; background:transparent; color:#604928; font-size:16px;
+   font-weight:700; padding:2px 14px;
+ }
+ body.dark #mushaf #qVerses .reading-page-sentinel {height:2px}
+ @media (max-width:760px) {
+   body.dark #mushaf #qSheet #qVerses {height:auto;max-height:none;overflow:visible}
+   body.dark #mushaf #qVerses .quran-reading-page {padding:29px 19px 20px;margin-bottom:12px}
+   body.dark #mushaf #qVerses .quran-reading-page::before {inset:13px}
+   body.dark #mushaf #qVerses .quran-text {font-size:clamp(22px,5.7vw,29px);line-height:2.08}
+ }
+}
+
+/* Authentic original King Fahd / Madinah printed plate with offline text fallback.
+   Source artwork: quran-ws immutable Hafs/KFQC SVG 604 printed pages. */
+@layer salati-print-plate {
+ body.dark #mushaf #qVerses .quran-madinah-plate {
+   display:none;box-sizing:border-box;width:100%;height:auto;max-width:100%;
+   aspect-ratio:345/550;object-fit:contain;cursor:pointer;
+   background:#F6F0E4;border:0;border-radius:0;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready {
+   width:100%;padding:0;min-height:0;max-height:none;overflow:visible;
+   border:0;outline:0;border-radius:0;background:#F6F0E4;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready::before {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready .quran-madinah-plate {display:block}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready .quran-page-interactive-fallback {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode {
+   border:2px solid #BD9F70;outline:5px double #BFA57E;outline-offset:-13px;
+   padding:clamp(25px,5vw,56px) clamp(16px,4vw,48px) 20px;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode .quran-madinah-plate {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode .quran-page-interactive-fallback {display:block}
+ body.dark #mushaf #qVerses .quran-page-interactive-fallback {width:100%}
+ body.dark #mushaf #qVerses .quran-back-to-print {
+   display:none;margin:14px auto 0;min-height:42px;max-width:100%;
+   border:1px solid #B99B69;background:#EEDFC6;color:#40301C;
+   border-radius:6px;padding:8px 15px;font:600 13px SalatiCairo,sans-serif;
+ }
+ body.dark #mushaf #qVerses .quran-plate-text-mode .quran-back-to-print {display:block}
+}
+
+/* Preview ONLY: embed the original Salati audio card INSIDE the real printed
+   Madinah mushaf frame, below page artwork and above the next page. No new
+   buttons, color palette, fake menu, or verse-image overlays. */
+body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot){
+ display:block;box-sizing:border-box;width:100%;max-width:100%;height:auto;
+ overflow:hidden;background:#F6F0E4;border:1px solid #C8B28C;
+ border-radius:14px;outline:none;box-shadow:none;
+}
+body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot)>.quran-madinah-plate{
+ display:block;width:100%;max-width:100%;height:auto;margin:0;padding:0;
+ object-fit:contain;background:#F6F0E4;
 }
 body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot,
-body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot:not(.is-collapsed) {
- position:absolute;top:50%;left:50%;right:auto;bottom:auto;
- transform:translate(-50%,-50%);z-index:5;
- box-sizing:border-box;width:calc(100% - 20px);max-width:390px;
- min-width:0;min-height:0;height:auto;
- margin:0;padding:26px 0 0;float:none;overflow:visible;
- background:#18191D;border:1px solid #414249;border-radius:16px;
- box-shadow:0 4px 18px rgba(0,0,0,.24);
+body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready #mushafPlayerSlot{
+ display:block;position:relative;inset:auto;float:none;box-sizing:border-box;
+ width:100%;min-width:0;max-width:100%;height:auto;min-height:0;
+ margin:0;padding:0;overflow:hidden;z-index:1;
+ background:#18191D;border:0;border-top:1px solid #BDA77F;
+ border-radius:0 0 13px 13px;box-shadow:none;
 }
-body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player {
- display:grid;box-sizing:border-box;width:100%;max-width:100%;
- margin:0;padding:7px 10px 10px;min-height:0;height:auto;
- border:0;border-radius:0 0 15px 15px;
+body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player{
+ margin:0;width:100%;max-width:100%;border:0;border-radius:0;
  background:#18191D;box-shadow:none;
 }
-body.dark #mushaf #qVerses .quran-reading-page #qOverlayToggle{
- position:absolute;right:8px;top:2px;min-height:22px;
- width:auto;max-width:90%;margin:0;padding:2px 9px;
- border:1px solid #474B52;border-radius:12px;
- background:#25272C;color:#FFF;line-height:17px;font:700 11px SalatiCairo,sans-serif;
-}
-body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot.is-collapsed {
- position:absolute;top:50%;left:50%;right:auto;bottom:auto;
- transform:translate(-50%,-50%);width:126px;max-width:90%;
- min-width:0;min-height:0;height:32px;margin:0;padding:3px;
- background:#18191D;border:1px solid #414249;border-radius:16px;
- box-shadow:none;
-}
-body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot.is-collapsed .recitation-player.reference-player{display:none}
-body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot.is-collapsed #qOverlayToggle {
- position:relative;inset:auto;width:100%;max-width:100%;
- margin:0;padding:0 4px;height:24px;min-height:24px;
-}
-@media(max-width:760px){
- body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot,
- body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot:not(.is-collapsed) {
-  position:absolute;left:50%;top:50%;right:auto;bottom:auto;
-  transform:translate(-50%,-50%);
-  width:calc(100% - 18px);max-width:calc(100% - 18px);
-  min-height:0;height:auto;margin:0;padding:26px 0 0;overflow:visible;
+@media (max-width:760px){
+ body.dark #mushaf #qVerses .quran-reading-page:has(#mushafPlayerSlot){
+  margin-bottom:14px;padding:0;
  }
- body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot.is-collapsed{
-  width:126px;max-width:90%;height:32px;padding:3px;
+ body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot{
+  margin:0;width:100%;max-width:100%;border:0;border-top:1px solid #BDA77F;
  }
  body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player{
-  width:100%;max-width:100%;min-height:0;height:auto;
+  margin:0;width:100%;max-width:100%;
+ }
+}
+
+
+/* Quran review: preserve exact original Salati menu and transport controls.
+   Reserve a LOWER SEGMENT inside the printed page's outer border, after the
+   Quran plate and before the border ends. NEVER overlay the ayat. */
+@layer salati-bottom-inside-page {
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready:has(#mushafPlayerSlot){
+   position:relative;display:flex;flex-direction:column;box-sizing:border-box;
+   width:100%;height:auto;max-height:none;min-height:0;overflow:hidden;
+   padding:0 0 12px;margin-bottom:15px;border:2px solid #A6C6D8;
+   border-radius:9px;background:#fff;outline:0;box-shadow:0 1px 6px rgba(0,0,0,.10);
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready:has(#mushafPlayerSlot)::before{display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready:has(#mushafPlayerSlot)>.quran-madinah-plate {
+   display:block;flex:0 0 auto;box-sizing:border-box;
+   width:100%;height:auto;max-width:100%;aspect-ratio:auto;
+   object-fit:contain;margin:0;padding:0;border:0;background:white;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot,
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready #mushafPlayerSlot {
+   position:relative;inset:auto;transform:none;float:none;z-index:1;
+   display:block;flex:0 0 auto;align-self:stretch;box-sizing:border-box;
+   width:auto;max-width:none;min-height:0;height:auto;
+   margin:7px 10px 0;padding:0;overflow:hidden;
+   border:1px solid #4C5865;border-radius:11px;background:#17191D;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot .recitation-player.reference-player {
+   width:100%;max-width:100%;min-height:0;height:auto;
+   margin:0;padding:8px 9px 10px;box-sizing:border-box;
+   border:0;border-radius:11px;background:#17191D;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready:has(#mushafPlayerSlot) .quran-page-interactive-fallback{display:none}
+ @media(max-width:760px){
+   body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready:has(#mushafPlayerSlot){margin-bottom:12px;padding:0 0 10px}
+   body.dark #mushaf #qVerses .quran-reading-page #mushafPlayerSlot{margin:6px 8px 0;padding:0;border-radius:10px}
  }
 }
