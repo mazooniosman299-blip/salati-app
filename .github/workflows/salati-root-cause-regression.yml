@@ -46,6 +46,11 @@ jobs:
           sudo ln -sf "$BROWSER" /usr/bin/chromium
           python3 tests/mobile-layout-contract-20261101.py
           python3 tests/active-production-browser-20261102.py
+          # Compare original live production CSS to cleaned CSS on 6 tabs x 6 widths.
+          git fetch --depth=1 origin production:refs/remotes/origin/production
+          git show origin/production:dist/salati-ui.css > dist/salati-ui-baseline.css
+          python3 tests/css-cascade-equivalence.py
+          test "$(python3 -c "import json;d=json.load(open('reports/css-source-maintainability.json'));print(d['conflicting_selector_property_groups'])")" = 0
       - name: Commit rebuilt SAFE app bundle to audit branch only
         if: github.ref == 'refs/heads/fix/salati-production-root-audit-20261102'
         run: |
@@ -67,6 +72,7 @@ jobs:
             reports/css-source-maintainability.json
             reports/mobile-layout-contract/
             reports/active-production-browser-20261102/
+            reports/css-debt-20261101/
           if-no-files-found: warn
           retention-days: 14
   android-embedded-production-contract:
