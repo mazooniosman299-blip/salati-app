@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs');
-const css=fs.readFileSync('dist/light-theme.css','utf8');
+const css=fs.readFileSync('dist/salati-ui.css','utf8');
 const block=css.match(/:root\{([^}]+)\}/)[1];
 const tokens=Object.fromEntries([...block.matchAll(/--([\w-]+):([^;]+)/g)].map(x=>[x[1],x[2]]));
 const rgb=h=>{if(h.startsWith('#'))return h.slice(1).match(/../g).map(v=>parseInt(v,16));const [r,g,b,a=1]=h.match(/[\d.]+/g).map(Number);return [r,g,b].map((v,i)=>Math.round(v*a+[4,5,9][i]*(1-a)));};
