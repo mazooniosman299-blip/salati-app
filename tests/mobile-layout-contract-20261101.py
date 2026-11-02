@@ -25,11 +25,16 @@ try:
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6")
    cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,height:e.getBoundingClientRect().height,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
-   assert all(c['radius']=='24px' for c in cells),(width,'reference capsule radius',cells)
-   assert next(c for c in cells if c['active'])['bg']=='rgb(53, 74, 103)',(width,'blue-slate reference selected',cells)
+   # Current production reference is ONE rounded shared six-prayer strip,
+   # with transparent individual cells and underlined active time, NOT six old blue pills.
+   assert all(c['radius']=='0px' and c['bg']=='rgba(0, 0, 0, 0)' for c in cells),(width,'one-strip geometry',cells)
+   strip=page.locator('#prayers').evaluate("e=>({r:getComputedStyle(e).borderRadius,w:e.getBoundingClientRect().width})")
+   assert strip['w']>width*.6,(width,'shared six-prayer strip missing',strip)
+   activeStyle=page.locator('#prayers .prayer.active>strong').evaluate("e=>getComputedStyle(e).textDecorationLine")
+   assert 'underline' in activeStyle,(width,'selected time must be underlined',activeStyle)
    assert all(c['x']>=0 and c['right']<=width+1 for c in cells),(width,'prayer cells must fit')
    if width<=760:
-    assert all((c['right']-c['x'])/c['height']>=1.55 for c in cells),(width,'prayer cells must be horizontal capsules resembling the supplied 11:55 image',cells)
+    assert all(c['height']>=40 and c['height']<=90 for c in cells),(width,'six equal-height shared-strip cells',cells)
    for tab in ['settings','times','mushaf','qibla','dhikr','tasbih','settings']:
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
@@ -63,10 +68,10 @@ try:
     page.click('[data-tab=times]')
     page.screenshot(path=str(out/f'prayers-{width}.png'))
    assert not errors,(width,'browser exception',errors)
-   stats.append({'viewport':[width,height],'six_rounded_reference_capsules':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
+   stats.append({'viewport':[width,height],'one_shared_prayer_strip':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
    page.close()
   browser.close()
 finally:
  server.shutdown()
 (out/'results.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2)+'\n')
-print('PASS: settings/main never clip, selected prayer rounded blue-slate reference and nav stays at viewport bottom at six responsive sizes')
+print('PASS: settings/main never clip, single matte strip with underlined active prayer and nav stays at viewport bottom at six responsive sizes')
