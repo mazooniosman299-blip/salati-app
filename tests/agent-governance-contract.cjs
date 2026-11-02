@@ -31,6 +31,7 @@ for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTranspor
 }
 const rows=report.split('\n').filter(line=>/^\|\s*(?:[1-9]|1\d|20)\s*\|/.test(line));
 assert.equal(rows.length,20,'20-risk audit missing row(s)');
+assert(read('docs/requests/SALATI-20261103-ROOT-CONTROL.md').includes(manifest.original_verbatim_excerpt),'Original user wording must be copied verbatim into acceptance record');
 assert.equal(manifest.release_mode,'governance','This no-UI-change PR must declare governance mode');
 assert.equal(manifest.visual_change,false,'Governance PR must not claim UI change');
 assert.equal(manifest.android_release,false,'Governance PR must not claim Android release');

@@ -16,10 +16,13 @@
     "docs/ROOT_CAUSE_AUDIT_20261103.md",
     "scripts/verify-change-scope.cjs",
     "tests/agent-governance-contract.cjs",
-    ".github/workflows/salati-agent-governance.yml"
+    ".github/workflows/salati-agent-governance.yml",
+    "docs/requests/SALATI-20261103-ROOT-CONTROL.md"
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
   "status": "in_progress",
-  "release_mode": "governance"
+  "release_mode": "governance",
+  "source": "طلب المستخدم المرفق Pasted text(9).txt بتاريخ 2026-11-03؛ يحتوي على 20 مشكلة واشتراطات تنفيذ مفصلة",
+  "original_verbatim_excerpt": "النتيجة التي أريدها: عندما أقول لـChatGPT «غيّر هذا العنصر بهذا الشكل»، ينفّذ ذلك على واجهة صلاتي الحقيقية، دون تخمين أو تغيير عناصر أخرى، ويُثبت لي أن النتيجة مطابقة لما طلبته."
 }
