@@ -152,7 +152,7 @@ export class QuranReader{
   const toggle=$('qOverlayToggle');
   if(toggle&&!toggle.dataset.bound){
    toggle.dataset.bound='1';
-   toggle.addEventListener('click',()=>{
+   toggle.addEventListener?.('click',()=>{
     const collapsed=audioDock.classList.toggle('is-collapsed');
     toggle.textContent=collapsed?'إظهار المشغّل':'إخفاء المشغّل';
     toggle.setAttribute('aria-expanded',String(!collapsed));
