@@ -10,7 +10,10 @@ const canonicalLinked=currentHtml.includes('href="salati-ui.css"');
 if(canonicalLinked){
  if(!fs.existsSync(path.join(root,'dist/salati-ui.css')))throw Error('Canonical salati-ui.css is missing');
  const linked=[...currentHtml.matchAll(/href="([^"]+[.]css)"/g)].map(m=>m[1]);
- if(linked.join('|')!=='salati-ui.css|/city-pages.css')throw Error('STOP: new CSS overlay was linked; edit salati-ui.css instead');
+ if(linked.join('|')!=='salati-ui.css')throw Error('STOP: app homepage must load ONLY canonical salati-ui.css; public city stylesheet belongs to city pages');
+ if(currentHtml.includes('preview-sample-location-20261101.js')||fs.existsSync(path.join(root,'dist','preview-sample-location-20261101.js')))
+   throw Error('STOP: debug location setter leaked into production web source');
+ if(/style="[^"]*!\\s*important\\b/i.test(currentHtml))throw Error('STOP: forced inline navigation priority reintroduced');
  console.log('Canonical Salati UI stylesheet enabled; no legacy versioned CSS generated.');
 }else{
  // Legacy bootstrap only. Removed from production after canonical migration.
