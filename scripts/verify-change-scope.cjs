@@ -5,8 +5,8 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),crypto=require('node:crypto'),os=require('node:os'),path=require('node:path');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
-const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|app-source\.js$|quran-controller\.js$|quran-page-audio\.js$|.*\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
-const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/(?:index\.html|salati-ui\.css)|app-source\.js|quran-controller\.js|quran-page-audio\.js)$/.test(p));
+const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|[^/]+\.js$|[^/]+\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
+const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/(?:index\.html|.*\.(?:css|js|svg|png|webp|ttf|json))|[^/]+\.(?:js|css))$/.test(p));
 const releaseCriticalPath=p=>runtimePath(p)||/^scripts\/(?:build-|release-|sign-|prepare-android)/.test(p);
 function independentReleaseVerification() {
  const {verifiedManifest}=require('./release-guard.cjs');
