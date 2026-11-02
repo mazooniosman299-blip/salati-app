@@ -1,0 +1,66 @@
+name: Salati contiguous Quran pages no white gap — REAL browser (NO DEPLOY)
+on:
+  push:
+    branches:
+      - release/salati-approved-mushaf-player-20261103
+    paths:
+      - dist/quran-approved-original-pages.js
+      - dist/salati-ui.css
+      - scripts/prepare-continuous-kfqc-proof.py
+      - tests/quran-continuous-reader-browser.py
+      - .github/workflows/salati-quran-no-gap-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: salati-quran-no-gap-real-browser
+  cancel-in-progress: true
+jobs:
+  exact-source-and-real-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build actual Salati app and test underlying original Quran/media engine
+        run: |
+          npm ci
+          npm run build
+          node --check dist/quran-approved-original-pages.js
+          node tests/quran-approved-sheet.cjs
+          node tests/quran.cjs
+      - name: Reuse ALL 604 previously hash-verified real publisher pages, prepare consecutive 17 18 19
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/verified-604
+          gh run download 41524169044 --repo "$GITHUB_REPOSITORY" \
+            --name salati-ALL-604-authentic-mushaf-pages-verified-SOURCE \
+            --dir /tmp/verified-604
+          test -s /tmp/verified-604/quran-mushaf-assets/manifest.json
+          python3 -m pip install --quiet Pillow
+          python3 scripts/prepare-continuous-kfqc-proof.py \
+            /tmp/verified-604/quran-mushaf-assets dist/quran-green-proof
+      - name: Real Chromium source images and Salati page proof, 4 viewport sizes
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          python3 tests/quran-continuous-reader-browser.py
+      - name: Save REAL screenshots and source-hash proof (no production update)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: REAL-SALATI-NO-WHITE-GAP-CONTINUOUS-MUSHAF
+          path: |
+            reports/continuous-mushaf/
+            dist/quran-green-proof/
+          retention-days: 21
+          if-no-files-found: warn
