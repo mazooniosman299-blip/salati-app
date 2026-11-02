@@ -21,7 +21,7 @@ try:
    page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual'}))")
    errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
    page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
-   assert page.locator('link[href="mobile-layout-contract-20261101.css"]').count()==1
+   assert page.locator('link[href="salati-ui.css"]').count()==1, 'Validate the ACTIVE canonical stylesheet'
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6")
    cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,height:e.getBoundingClientRect().height,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
