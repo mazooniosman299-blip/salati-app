@@ -18,7 +18,7 @@ assert(!js.includes('innerHTML = user'),'no unsanitized HTML input');
 assert(!css.includes('!important'),'no priority overrides');
 assert(css.includes('body.dark.salati-quran-approved-screen #mushaf #mushafPlayerSlot'));
 assert(css.includes('color:#FFFFFF;-webkit-text-fill-color:#FFFFFF'),'surah names must be white');
-assert(css.includes('#qTransport::before{content:none;display:none}'),'no fake curved player decoration');
+assert(/#qTransport::before\{(?:display:none;content:none|content:none;display:none)\}/.test(css),'no fake curved player decoration');
 assert(!js.includes('timer')&&!js.includes('qTimer'),'no timer inside player');
 assert(!js.includes('qGreenOriginalReview'),'approved audio player must not depend on 9-page PDF review');
 console.log('PASS: original Salati audio player controls, white surah title, charcoal/blue, no reciter field, clock, notch or chevron');
