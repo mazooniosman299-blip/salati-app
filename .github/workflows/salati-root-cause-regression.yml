@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [production]
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: salati-root-cause-\${{ github.ref }}
   cancel-in-progress: true
@@ -45,6 +45,18 @@ jobs:
           BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BROWSER" /usr/bin/chromium
           python3 tests/mobile-layout-contract-20261101.py
+      - name: Commit rebuilt SAFE app bundle to audit branch only
+        if: github.ref == 'refs/heads/fix/salati-production-root-audit-20261102'
+        run: |
+          ! grep -F 'api.aladhan.com' dist/app-v1.0.109.js
+          node tests/provider-bundle-integrity.cjs
+          if ! git diff --quiet -- dist/app-v1.0.109.js dist/app.js; then
+            git config user.name 'salati-audit[bot]'
+            git config user.email 'actions@users.noreply.github.com'
+            git add dist/app-v1.0.109.js dist/app.js
+            git commit -m 'build(safety): synchronize production JS with verified local-only source'
+            git push origin HEAD:fix/salati-production-root-audit-20261102
+          fi
       - name: Archive CSS conflicts and browser screenshots
         if: always()
         uses: actions/upload-artifact@v4
