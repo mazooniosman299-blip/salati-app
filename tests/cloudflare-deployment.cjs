@@ -12,7 +12,7 @@ const read=p=>fs.readFileSync(path.join(dist,p),'utf8');
 const home=read('index.html'),map=read('sitemap.xml'),robots=read('robots.txt');
 const sw=read('sw.js'),header=read('_headers');
 const pointer=JSON.parse(fs.readFileSync(path.join(root,'apk-release-parts/current.json'),'utf8'));
-assert(/^1\\.0\\.\\d+$/.test(pointer.version),'Invalid current verified release pointer');
+assert(/^1\.0\.\d+$/.test(pointer.version),'Invalid current verified release pointer');
 const version=pointer.version;
 const versionNumber=Number(version.split('.').pop());
 const folder=path.join(root,'apk-release-parts','v'+version);
@@ -30,7 +30,7 @@ assert(header.includes('/sw.js') && header.includes('no-cache'),'Service worker 
 for(const name of ['index.html','privacy.html','sitemap.xml','robots.txt']){
  assert(!read(name).includes('salati-world-prayer.sprytitan65.chatgpt.site'),name+' contains old canonical host');
 }
-const swVersion=sw.match(/salati-shell-v(\\d+)/);
+const swVersion=sw.match(/salati-shell-v(\d+)/);
 assert(swVersion && Number(swVersion[1])>=179,'Offline cache revision is too old for current release');
 assert(sw.includes('./salati-ui.css'),'Offline app shell must include canonical CSS');
 for(const asset of ['manifest.json','app-v1.0.109.js','salati-ui.css',
@@ -41,7 +41,7 @@ for(const asset of ['manifest.json','app-v1.0.109.js','salati-ui.css',
 const styles=read('salati-ui.css');
 assert(styles.startsWith('@layer salati-base,salati-priority;'),'CSS cascade layers not preserved');
 assert(!styles.includes('!important'),'CSS priority flags unexpectedly restored');
-const urls=[...map.matchAll(/<loc>([^<]+)<\\/loc>/g)].map(x=>x[1]);
+const urls=[...map.matchAll(/<loc>([^<]+)<\/loc>/g)].map(x=>x[1]);
 assert(urls.length>=12,'City sitemap entries absent');
 for(const url of urls){
  assert(url.startsWith(origin+'/'),'Foreign sitemap hostname: '+url);
