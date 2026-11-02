@@ -39,7 +39,8 @@ try:
    plate=page.locator('#qVerses .quran-reading-page .quran-madinah-plate').first
    assert plate.count()==1,(width,'original printed SVG element absent')
    assert '/hafs-kfqc/' in plate.get_attribute('src'),(width,'wrong Mushaf edition')
-   plate.scroll_into_view_if_needed(timeout=10000)
+   first.scroll_into_view_if_needed(timeout=10000)
+   plate.evaluate("e=>{e.loading='eager'}")
    try:
     page.wait_for_function("() => !!document.querySelector('#qVerses .quran-print-plate-ready')",timeout=20000)
    except Exception:
