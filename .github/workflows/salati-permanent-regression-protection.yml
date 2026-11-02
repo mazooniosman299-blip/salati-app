@@ -249,6 +249,20 @@ jobs:
           PY
           must_reject forged-certificate "Original Android signing certificate changed"
           restore
+      - name: Simulate unauthorized Cloudflare production build; it MUST be rejected
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+          CF_PAGES_BRANCH: production
+          CF_PAGES_COMMIT_SHA: INVALID-SHA
+        run: |
+          set -euo pipefail
+          if npm run build:cloudflare > reports/negative-release-tests/production-without-ci.log 2>&1; then
+            echo 'SECURITY FAILURE: production accepted invalid CI attestation' >&2
+            exit 1
+          fi
+          grep -F 'BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA' reports/negative-release-tests/production-without-ci.log
+          echo 'PASS production deployment blocked without a valid CI commit reference'
       - name: Verify genuine, unmodified Cloudflare bundle PASSES identical release gate
         env:
           SALATI_WEB_ALREADY_BUILT: '1'

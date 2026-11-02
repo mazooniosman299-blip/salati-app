@@ -22,6 +22,15 @@ function canonicalOrigin(){
   return 'https://'+hostname+(parsed.port?':'+parsed.port:'');
 }
 const origin=canonicalOrigin();
+/* Require an exact-SHA successful GitHub Actions attestation on all public
+   Cloudflare Pages production builds. Preview/local builds remain isolated. */
+if(process.env.CF_PAGES_BRANCH==='production') {
+  const sha=process.env.CF_PAGES_COMMIT_SHA||'';
+  if(!/^[a-f0-9]{40}$/i.test(sha))throw Error('BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA');
+  require('node:child_process').execFileSync(process.execPath,
+    [path.join(root,'scripts/verify-publish-ci.cjs'),sha],{cwd:root,stdio:'inherit',timeout:30000});
+}
+
 if(process.env.SALATI_WEB_ALREADY_BUILT!=='1')require('./build-web.cjs');
 /*
  * Enforce regression checks inside the deployment build itself, not merely
