@@ -102,3 +102,28 @@ jobs:
           name: salati-current-48-real-screenshots-and-computed-styles
           path: reports/current-design-visual-proof/
           if-no-files-found: warn
+
+  isolated-pr-preview-artifact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build real application for review without official release build
+        run: |
+          npm ci
+          npm run build
+      - name: Mark standalone nonindexed preview and validate production isolation
+        run: |
+          node scripts/create-isolated-preview.cjs
+          node tests/isolated-preview-contract.cjs
+      - name: Publish downloadable review artifact, NOT Cloudflare production
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-ui-review-only-static-no-apk-no-deploy
+          retention-days: 14
+          if-no-files-found: error
+          path: reports/isolated-pr-preview/
