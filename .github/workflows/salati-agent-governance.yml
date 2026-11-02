@@ -24,3 +24,35 @@ jobs:
           node scripts/verify-change-scope.cjs origin/production
       - name: Explicitly mark limited validation
         run: echo "Source/scope contract only; NOT runtime browser visual reference, Android hardware, original-key signing, or production publication proof."
+
+  real-browser-design-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build existing real source without publishing
+        run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Verify immutable user-provided mosque reference bytes
+        run: node tests/reference-provenance.cjs
+      - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
+        run: python3 tests/current-design-visual-proof.py
+      - name: Always retain real source/visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-current-48-real-screenshots-and-computed-styles
+          path: reports/current-design-visual-proof/
+          if-no-files-found: warn
