@@ -44,6 +44,11 @@ function validateScope(changed,manifest,options={}) {
  if(manifest.visual_change===true){
   assert(Array.isArray(manifest.visual_allowed_regions)&&manifest.visual_allowed_regions.length>0,'Visual request must explicitly list allowed DOM selector/tab/language regions');
   assert(manifest.visual_allowed_regions.every(x=>typeof x.selector==='string'&&x.selector.trim()&&['times','mushaf','qibla','dhikr','tasbih','settings'].includes(x.tab)&&['ar','en','both'].includes(x.language)),'Invalid approved visual regions');
+  // A color/position request is not implementable from a CSS selector alone.
+  // Record the exact current vs requested result and every property to preserve.
+  assert(manifest.visual_allowed_regions.every(x=>typeof x.before==='string'&&x.before.trim()&&typeof x.after==='string'&&x.after.trim()&&Array.isArray(x.preserve)&&x.preserve.length>0),'Visual request missing before/after/preserve contract');
+  assert(manifest.visual_allowed_regions.every(x=>x.preserve.every(y=>typeof y==='string'&&y.trim())),'Preserved component properties must be explicit');
+  assert(manifest.visual_allowed_regions.every(x=>x.selector.startsWith('#')||x.selector.startsWith('.')),'Visual targets must identify a real DOM id/class, not a vague page description');
  }
  assert(changed.length>0,'No PR file changes');
  const unexpected=changed.filter(p=>!manifest.allowed_paths.includes(p));
