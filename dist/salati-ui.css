@@ -311,3 +311,25 @@ body.dark #mushaf #qApprovedOpen[hidden]{display:none}
  body.dark.salati-quran-approved-screen #mushaf #qVerses.mushaf-verses{
    padding-top:76px;scroll-padding-top:76px}
 }
+
+/* ORIGINAL KFQC QURAN — whole authentic printed page, never segmented verses.
+   Safely trim blank OUTER horizontal PDF margins, never alter Quran pixels. */
+@layer salati-priority {
+ body.dark.salati-quran-approved-screen #mushaf #qApprovedOriginalPage[hidden]{display:none}
+ body.dark.salati-quran-approved-screen #mushaf.q-original-source-ready #qVerses{display:none}
+ body.dark.salati-quran-approved-screen #mushaf.q-original-source-ready #qSheet{
+   width:100vw;max-width:none;height:100dvh;max-height:100dvh;
+   overflow:hidden;background:#FFF;border:0;border-radius:0;padding:0;margin:0}
+ body.dark.salati-quran-approved-screen #mushaf.q-original-source-ready #qApprovedOriginalPage:not([hidden]){
+   display:flex;box-sizing:border-box;position:relative;flex:1 1 auto;
+   align-items:flex-start;justify-content:center;min-height:0;min-width:0;
+   width:100vw;max-width:none;height:100dvh;max-height:100dvh;
+   margin:0;padding:66px 0 175px;border:0;border-radius:0;box-shadow:none;
+   background:#FFF;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;
+   scroll-padding-top:66px;scroll-padding-bottom:175px}
+ body.dark.salati-quran-approved-screen #mushaf.q-original-source-ready #qApprovedOriginalImage{
+   display:block;box-sizing:border-box;width:100%;max-width:100%;min-width:0;
+   height:auto;min-height:0;max-height:none;flex:0 0 auto;margin:0;padding:0;
+   border:0;border-radius:0;box-shadow:none;background:#FFF;
+   object-fit:contain;object-position:top center;user-select:none}
+}
