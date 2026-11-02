@@ -25,12 +25,18 @@
    const img=document.createElement('img');img.id='qApprovedOriginalImage';
    img.alt='الصفحة الأصلية من مصحف المدينة دون إعادة كتابة أو تعديل';
    figure.append(img);sheet.insertBefore(figure,verses);
-   let revision=0,activeUrl='';
+   let revision=0,activeUrl='',loadedPage=0,loadingPage=0;
    async function load(page,manifest){
+     if(page===loadedPage||page===loadingPage)return; // no repeat fetch/flicker on qPageLabel mutations
      const record=manifest.pages.find(x=>x.quranPage===page);
      const rev=++revision;
-     if(!record){figure.hidden=true;verses.hidden=false;verses.style.display='';
-       mushaf.classList.remove('q-original-source-ready');return;}
+     loadingPage=page;
+     if(!record){
+       loadedPage=0;loadingPage=0;
+       figure.hidden=true;verses.hidden=false;verses.style.display='';
+       mushaf.classList.remove('q-original-source-ready');return;
+     }
+     let candidate='';
      try{
        const response=await fetch(ROOT+record.filename,{cache:'force-cache'});
        if(!response.ok)throw Error('Missing original page '+page);
@@ -38,16 +44,26 @@
        if(bytes.byteLength!==record.bytes||!crypto?.subtle||
           await sha256(bytes)!==record.sha256)throw Error('Original Quran page integrity mismatch');
        if(rev!==revision)return;
-       const url=URL.createObjectURL(new Blob([bytes],{type:'image/webp'}));
-       img.onload=()=>{if(activeUrl&&activeUrl!==url)URL.revokeObjectURL(activeUrl);activeUrl=url};
-       img.src=url;img.alt='مصحف المدينة، صفحة '+page+' كاملة بالرسم العثماني';
+       candidate=URL.createObjectURL(new Blob([bytes],{type:'image/webp'}));
+       const decoded=new Image();
+       decoded.src=candidate;
+       await decoded.decode(); // do not expose blank image between page updates
+       if(rev!==revision)return;
+       const prior=activeUrl;
+       img.src=candidate;img.alt='مصحف المدينة، صفحة '+page+' كاملة بالرسم العثماني';
+       activeUrl=candidate;candidate='';
+       loadedPage=page;loadingPage=0;
        verses.hidden=true;verses.style.display='none';figure.hidden=false;
        mushaf.classList.add('q-original-source-ready');
+       if(prior)URL.revokeObjectURL(prior);
      }catch(error){
        if(rev!==revision)return;
+       loadingPage=0;loadedPage=0;
        figure.hidden=true;verses.hidden=false;verses.style.display='';
        mushaf.classList.remove('q-original-source-ready');
        console.warn('Original Quran page unavailable. Original, verified text reader retained.',error.message);
+     }finally{
+       if(candidate)URL.revokeObjectURL(candidate);
      }
    }
    fetch(ROOT+'manifest.json',{cache:'no-store'})
