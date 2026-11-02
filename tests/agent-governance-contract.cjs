@@ -44,7 +44,7 @@ for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/
 assert.throws(()=>validateScope(permitted,{...manifest,base_branch:'main'}),/production/);
 assert.throws(()=>validateScope(permitted,{...manifest,allowed_paths:[]}),/Empty/);
 const more={...manifest,allowed_paths:[...manifest.allowed_paths,'dist/index.html']};
-assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance request/);
+assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance changes/);
 const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
 const prod={...more,release_mode:'production'};
