@@ -1,0 +1,31 @@
+name: Salati licensed Mushaf artwork provenance (NO DEPLOY)
+on:
+  pull_request:
+    branches: [production]
+    paths:
+      - reference-data/kfqc-hafs-604-plate-manifest.json
+      - scripts/verify-kfqc-mushaf-source.cjs
+      - tests/kfqc-mushaf-source.cjs
+      - .github/workflows/salati-kfqc-artwork-source-qa.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  authorized-plate-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify pinned complete 604-page Hafs manifest and tamper tests
+        run: |
+          node scripts/verify-kfqc-mushaf-source.cjs
+          node tests/kfqc-mushaf-source.cjs
+      - name: Fetch 3 pristine original sample print plates, verify byte-for-byte
+        run: node scripts/verify-kfqc-mushaf-source.cjs --verify-samples
+      - name: Never approve unlicensed style 5 artwork or publish
+        run: |
+          test ! -d dist/quran-style-5
+          echo "PASS: source integrity is verified, but selected green/pink style #5 is NOT verified and there is NO DEPLOY"
