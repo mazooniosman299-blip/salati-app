@@ -204,7 +204,7 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
 
 /* FULL-PAGE MADINAH-STYLE READER — page sheets belong to the main scroll.
    One framed parchment per printed page, never a clipped inset scroll box. */
-@layer salati-priority {
+@layer salati-mushaf {
  body.dark #mushaf #qSheet.mushaf-sheet.continuous-sheet {
    display:block; width:100%; max-width:none; height:auto; max-height:none;
    overflow:visible; padding:0; margin:0; border:0; border-radius:0;
