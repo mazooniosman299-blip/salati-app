@@ -17,5 +17,8 @@ assert(js.includes('continuousReading(){return true}'),'Original Quran continuou
 assert(js.includes('new IntersectionObserver'),'Page preloading must remain');
 assert(!html.includes('preview-sample-location-20261101'),'Production must not import demo geo code');
 assert(!fs.existsSync('dist/preview-sample-location-20261101.js'),'Production must not ship demo code');
-assert(!/!\\s*important\\b/i.test(html+css),'No inline or canonical forced CSS priorities');
+assert(!/!\s*important\b/i.test(html+css),'No inline or canonical forced CSS priorities');
+assert(/!\s*important\b/i.test('color:red !important'),'The audit MUST flag real CSS priorities');
+assert(/!\s*important\b/i.test('color:red !  important'),'The audit MUST recognize whitespace within priority markers');
+assert(!/!\s*important\b/i.test('important as a plain word'),'Do not reject non-priority documentation text');
 console.log('PASS: two native widget 14dp insets, image/time layout, Quran pan-y, automatic pages, no preview location code');
