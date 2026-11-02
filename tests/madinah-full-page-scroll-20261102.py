@@ -34,7 +34,28 @@ try:
    assert state['scroll']=='visible' and state['sheetOverflow']=='visible', (width,state)
    assert state['font'].startswith('SalatiMadinahClassic'),(width,state)
    assert state['pageHeight']>250,(width,state)
-   assert state['frame']=='double' and state['card'] in ('2px','0px'),(width,state)
+   # SVG artwork must load as the DEFAULT print page when online. It is
+   # the exact printed plate, not just our Medina-like font fallback.
+   plate=page.locator('#qVerses .quran-reading-page .quran-madinah-plate').first
+   assert plate.count()==1,(width,'original printed SVG element absent')
+   assert '/hafs-kfqc/' in plate.get_attribute('src'),(width,'wrong Mushaf edition')
+   try:
+    page.wait_for_function("() => !!document.querySelector('#qVerses .quran-print-plate-ready')",timeout=20000)
+   except Exception:
+    raise AssertionError((width,'KFQC original page did not load. Keep preview unapproved, do not deploy'))
+   assert plate.evaluate("e=>e.complete&&e.naturalWidth>0"),(width,'authentic plate image missing')
+   state=page.evaluate("""() => {
+     const c=document.querySelector('#qVerses .quran-reading-page'),
+       s=getComputedStyle(c),a=c.querySelector('.quran-madinah-plate'),i=getComputedStyle(a);
+     return {border:s.borderStyle,outline:s.outlineStyle,card:s.borderRadius,art:i.display,
+       fallback:getComputedStyle(c.querySelector('.quran-page-interactive-fallback')).display}}""")
+   assert state['art']=='block' and state['fallback']=='none' and state['border']=='none',(width,state)
+   # Tapping the plate reveals selectable offline verse text; users can
+   # return to the original plate using the provided control.
+   plate.click()
+   assert page.locator('#qVerses .quran-reading-page').first.evaluate("e=>e.classList.contains('quran-plate-text-mode')")
+   page.locator('#qVerses .quran-back-to-print').first.click()
+   assert not page.locator('#qVerses .quran-reading-page').first.evaluate("e=>e.classList.contains('quran-plate-text-mode')")
    assert not page.locator('.mushaf-pagination button').count()
    # Document/main scrolling must reach the next dynamically appended page.
    page.evaluate("""() => {document.querySelector('#mushaf').scrollIntoView();window.scrollBy(0,1200);
