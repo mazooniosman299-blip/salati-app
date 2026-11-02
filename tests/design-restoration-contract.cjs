@@ -17,6 +17,14 @@ for(const text of ['--bg:#0B0E13','--card:#040509','--action-fill:#2563EB','#mus
  assert(css.includes(text),'Loaded design lost required component/property: '+text);
 }
 assert(sw.includes("'./salati-ui.css'"),'Offline shell must cache the currently linked stylesheet');
-assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="qSheet"'),'Quran player remains below reader');
+// Printed-Madinah review preview: the 604-page uninterrupted scroll requires
+// the audio player above the first page, still inside the Quran section.
+if(process.env.CF_PAGES_BRANCH==='preview/salati-madinah-reader-review-20261102'){
+ assert(html.indexOf('id="mushafPlayerSlot"')<html.indexOf('id="qSheet"'),'Madinah preview player must appear before scrollable printed pages');
+ assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="mushaf"'),'Player must remain inside Quran section');
+ assert(css.includes('.quran-madinah-plate'),'The Madinah page viewer must be styled');
+}else{
+ assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="qSheet"'),'Quran player remains below reader');
+}
 assert(!/href="[^"]*(?:light-theme|design-restoration|eight-mobile-root-fixes|mobile-layout-contract)[^"]*\.css"/.test(html));
 console.log('PASS: approved charcoal design, Quran-only player and six tabs verified against active canonical stylesheet and DOM');
