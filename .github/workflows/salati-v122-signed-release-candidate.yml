@@ -9,6 +9,7 @@ on:
       - dist/sw.js
       - dist/salati-ui.css
       - scripts/verify-native-web-assets.py
+      - tests/eight-mobile-invariants.cjs
   workflow_dispatch:
 permissions:
   contents: read
