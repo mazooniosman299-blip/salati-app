@@ -17,5 +17,14 @@ assert(js.includes('continuousReading(){return true}'),'Original Quran continuou
 assert(js.includes('new IntersectionObserver'),'Page preloading must remain');
 assert(!html.includes('preview-sample-location-20261101'),'Production must not import demo geo code');
 assert(!fs.existsSync('dist/preview-sample-location-20261101.js'),'Production must not ship demo code');
-assert(!/!\s*important\b/i.test(html+css),'No inline or canonical forced CSS priorities');
+const forcedPriority=/!\s*important\b/i;
+assert(forcedPriority.test('outline:0!important')&&forcedPriority.test('outline:0 ! important')&&forcedPriority.test('outline:0 !\nimportant'),'Priority detector must catch whitespace and linebreaks');
+assert(!forcedPriority.test('color:important')&&!forcedPriority.test('important'),'Priority detector must not over-match');
+assert(!forcedPriority.test(html+css),'No inline or canonical forced CSS priorities');
+const reader=read('quran-controller.js');
+assert(!reader.includes('--salati-quran-window-height'),'Fixed-height Quran scrollbar must be permanently removed');
+assert(reader.includes('medina-mushaf@ba9088e03bf4af299da04f8efc70a19fe00448b9'),'Source of verified Medina printed pages changed');
+assert(reader.includes('this.data.pages[index]')||reader.includes('this.data.pages[index],'),'Offline verified Quran text must remain');
+assert(html.includes('id="qTextMode"'),'Interactive text fallback toggle must remain');
+
 console.log('PASS: two native widget 14dp insets, image/time layout, Quran pan-y, automatic pages, no preview location code');
