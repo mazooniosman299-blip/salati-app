@@ -1,0 +1,18 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const source=fs.readFileSync('dist/quran-official-green-preview.js','utf8');
+const html=fs.readFileSync('dist/index.html','utf8');
+const css=fs.readFileSync('dist/salati-ui.css','utf8');
+assert(html.includes('src="quran-official-green-preview.js"'));
+assert(source.includes("params.get('mushaf-preview')!=='official-green'"));
+assert(source.includes("verses.hidden=true"));
+assert(source.includes("verses.hidden=previousHidden"));
+assert(source.includes("sheet.contains(player)"));
+assert(source.includes("crypto.subtle.digest('SHA-256',bytes)"));
+assert(source.includes('URL.revokeObjectURL'));
+assert(!source.includes('innerHTML')&&!source.includes('eval('));
+assert(!/!\s*important\b/i.test(css));
+assert(html.includes('id="mushafPlayerSlot"'));
+assert(!fs.existsSync('dist/quran-green-review/manifest.json'), 'CI-only official-page proof may not ship accidentally in the application');
+console.log('PASS: optional authentic PDF review never replaces Quran by default, uses no AI decor, verifies image bytes, and retains original player');
