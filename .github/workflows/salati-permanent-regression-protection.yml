@@ -33,6 +33,7 @@ jobs:
           node tests/quran-dom.cjs
           node tests/worldwide-prayer-integrity-20261101.cjs
           npm run test:seo
+          node tests/widget-quran-no-regression-20261102.cjs
       - name: Fail if approved original-key signed release and website drift apart
         if: github.ref == 'refs/heads/production'
         run: node scripts/release-guard.cjs
@@ -146,3 +147,94 @@ jobs:
             android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: warn
           retention-days: 14
+
+  negative-publication-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Prepare actual future Cloudflare publication input
+        run: |
+          npm ci
+          npm run build
+          node tests/permanent-regression-contract.cjs
+      - name: Inject four broken releases and PROVE each deploy build exits nonzero
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          set -euo pipefail
+          mkdir -p reports/negative-release-tests
+          cp dist/salati-ui.css /tmp/salati-css-original
+          cp dist/index.html /tmp/salati-html-original
+          cp apk-release-parts/v1.0.123/manifest.json /tmp/salati-manifest-original
+          restore() {
+            cp /tmp/salati-css-original dist/salati-ui.css
+            cp /tmp/salati-html-original dist/index.html
+            cp /tmp/salati-manifest-original apk-release-parts/v1.0.123/manifest.json
+          }
+          trap restore EXIT
+          must_reject() {
+            label="$1"; marker="$2"
+            if npm run build:cloudflare >"reports/negative-release-tests/$label.log" 2>&1; then
+              echo "SECURITY FAILURE: Cloudflare would accept corrupted release: $label" >&2
+              exit 1
+            fi
+            if ! grep -F "$marker" "reports/negative-release-tests/$label.log"; then
+              echo "Unexpected build failure instead of protection: $label" >&2
+              exit 1
+            fi
+            echo "PASS rejected corrupted publication: $label"
+          }
+          printf '\n.inject{color:red!important}\n' >> dist/salati-ui.css
+          must_reject forced-important "Force-priority CSS was reintroduced"
+          restore
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/index.html')
+          v=p.read_text()
+          assert 'id="qVerses"' in v
+          p.write_text(v.replace('id="qVerses"','id="deletedQuranReader"',1))
+          PY
+          must_reject missing-quran "Quran reader component missing"
+          restore
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/index.html')
+          v=p.read_text()
+          assert '/downloads/salati-1.0.123.apk' in v
+          p.write_text(v.replace('/downloads/salati-1.0.123.apk','/downloads/salati-0.0.0.apk',1))
+          PY
+          must_reject obsolete-apk "Website download link does not reference the verified signed APK"
+          restore
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('apk-release-parts/v1.0.123/manifest.json')
+          v=json.loads(p.read_text())
+          assert len(v['certificateSha256'])==64
+          v['certificateSha256']='0'*64
+          p.write_text(json.dumps(v))
+          PY
+          must_reject forged-certificate "Original Android signing certificate changed"
+          restore
+      - name: Verify genuine, unmodified Cloudflare bundle PASSES identical release gate
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          npm run build:cloudflare
+          node scripts/release-guard.cjs
+          echo "PASS real publication build only after all four malicious mutations were blocked"
+      - name: Store independent rejection logs (including failures)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-negative-deployment-proof
+          path: reports/negative-release-tests/
+          retention-days: 30
+          if-no-files-found: error
