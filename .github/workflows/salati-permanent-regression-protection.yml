@@ -265,14 +265,34 @@ jobs:
           fi
           grep -F 'BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA' reports/negative-release-tests/production-without-ci.log
           echo 'PASS production deployment blocked without a valid CI commit reference'
-      - name: Verify genuine, unmodified Cloudflare bundle PASSES identical release gate
+      - name: Verify genuine, unmodified PRODUCTION Cloudflare bundle PASSES identical release gate
+        if: github.ref == 'refs/heads/production'
         env:
           SALATI_WEB_ALREADY_BUILT: '1'
           SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
         run: |
           npm run build:cloudflare
           node scripts/release-guard.cjs
-          echo "PASS real publication build only after all four malicious mutations were blocked"
+          echo "PASS: production release still matches original-key signed APK"
+      - name: Prove isolated PR preview cannot bypass original-key APK fingerprint gate
+        if: github.ref != 'refs/heads/production'
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          set -euo pipefail
+          REPORT=reports/negative-release-tests/preview-signed-asset-guard.log
+          if npm run build:cloudflare >"$REPORT" 2>&1; then
+            node scripts/release-guard.cjs
+            echo "PASS: no website/APK drift; original signed release is already identical"
+          elif grep -F 'Website assets do NOT match APK release' "$REPORT"; then
+            echo "PASS: PR preview with modified Quran layout was correctly REJECTED by original-key release guard"
+            echo "Production must NOT publish until a new original-key signed APK is built and verified."
+          else
+            cat "$REPORT" >&2
+            echo "FAIL: unexpected preview publication failure; do not ignore broken checks" >&2
+            exit 1
+          fi
       - name: Store independent rejection logs (including failures)
         if: always()
         uses: actions/upload-artifact@v4
