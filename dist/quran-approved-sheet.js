@@ -107,7 +107,20 @@
       backgroundImage:'none',borderRadius:'50%',padding:'0',margin:'0'});
     const verses=byId('qVerses');
     if(verses)Object.assign(verses.style,{paddingBottom:'240px',scrollPaddingBottom:'220px'});
-    tab.append(opener,back);
+    tab.append(opener);
+    // Full-page reader must keep genuine Surah/Juz navigation reachable.
+    // Relocate existing selects, never create a competing Quran metadata model.
+    const readingHeader=make('div','qApprovedReadingHeader');
+    const currentSurah=byId('qSurah')?.closest('label');
+    const currentJuz=byId('qJuz')?.closest('label');
+    const readerMenu=make('button','qApprovedReaderMenu','قائمة التلاوة');
+    readerMenu.textContent='☰';
+    readingHeader.append(back);
+    if(currentSurah)readingHeader.append(currentSurah);
+    if(currentJuz)readingHeader.append(currentJuz);
+    readingHeader.append(readerMenu);
+    tab.append(readingHeader);
+    readerMenu.onclick=()=>{show();settings.click();};
     settings.setAttribute('aria-expanded','false');
     const show=()=>{slot.hidden=false;opener.hidden=true;slot.classList.remove('q-player-closed');};
     const hide=()=>{slot.hidden=true;opener.hidden=false;panel.hidden=true;settings.setAttribute('aria-expanded','false');};
