@@ -143,27 +143,9 @@ export class QuranReader{
  if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
  const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
  container.append(sentinel);append();
-  // A full natural Quran page determines its scrollport height. This ensures
-  // page 1 is NEVER cropped by arbitrary viewport clamps, while the reader
-  // can scroll to later pages and the AUDIO DOCK stays directly below it.
-  const firstPage=container.querySelector?.('.quran-reading-page');
-  const measure=()=>{
-   if(!firstPage?.isConnected)return;
-   firstPage.style.contentVisibility='visible';
-   const h=Math.ceil(Math.max(firstPage.getBoundingClientRect().height,firstPage.scrollHeight));
-   if(h>120&&h<5000){
-    const old=Number.parseFloat(container.style.getPropertyValue('--salati-quran-window-height'));
-    if(!Number.isFinite(old)||Math.abs(old-h)>1)container.style.setProperty('--salati-quran-window-height',h+'px');
-   }
-  };
-  if(firstPage){
-   if(typeof ResizeObserver!=='undefined'){
-    this.readingHeightObserver=new ResizeObserver(measure);
-    this.readingHeightObserver.observe(firstPage);
-   }
-   requestAnimationFrame(()=>requestAnimationFrame(measure));
-   document.fonts?.ready?.then(measure).catch(()=>{});
-  }
+  // The full printed-style Quran flows in the DOCUMENT, not a height-clamped inner box.
+  container.style.removeProperty('--salati-quran-window-height');
+  this.readingHeightObserver?.disconnect?.();
   this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{rootMargin:'600px 0px'});this.readingObserver.observe(sentinel);
  }
  refresh(){const name=s=>this.getLang()==='ar'?s.name:s.transliteration;const select=(id,options,value)=>{const el=$(id);el.replaceChildren(...options.map(([val,label])=>new Option(label,val)));el.value=String(value)};
