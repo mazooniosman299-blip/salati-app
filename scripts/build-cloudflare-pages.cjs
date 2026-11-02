@@ -23,6 +23,15 @@ function canonicalOrigin(){
 }
 const origin=canonicalOrigin();
 if(process.env.SALATI_WEB_ALREADY_BUILT!=='1')require('./build-web.cjs');
+/*
+ * Enforce regression checks inside the deployment build itself, not merely
+ * optional GitHub CI. A direct production push must fail closed if either
+ * the approved core contracts or any existing JavaScript regression fails.
+ * Real Chromium and Android screenshot tests remain required CI checks.
+ */
+const {execFileSync}=require('node:child_process');
+execFileSync(process.execPath,[path.join(root,'tests/permanent-regression-contract.cjs')],{cwd:root,stdio:'inherit'});
+execFileSync('npm',['test'],{cwd:root,stdio:'inherit'});
 // Release CI builds once, computes its fingerprint and reuses that identical
 // output here. Rebuilding again would mutate generated HTML and invalidate
 // the signed build's exact-source proof.
