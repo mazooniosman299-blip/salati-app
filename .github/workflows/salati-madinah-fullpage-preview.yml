@@ -81,3 +81,56 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  native-webview-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build Android WebView and verify screenshot prerequisites
+        run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet pillow
+          python3 scripts/prepare-android.py
+          (cd android && bash gradlew :app:assembleDebug --no-daemon)
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Hardware KVM preflight
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Show and verify real 604-page Medina Mushaf print inside Android
+        timeout-minutes: 12
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-madinah-fullpage-smoke.sh
+      - name: Keep REAL emulator Quran screenshots for user inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-madinah-fullpage-native-screenshots
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            reports/android-webview-20261102/
+            android/app/build/outputs/apk/debug/app-debug.apk
