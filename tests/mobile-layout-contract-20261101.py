@@ -27,11 +27,15 @@ try:
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
    # Current production reference is ONE rounded shared six-prayer strip,
    # with transparent individual cells and underlined active time, NOT six old blue pills.
-   assert all(c['radius']=='0px' and c['bg']=='rgba(0, 0, 0, 0)' for c in cells),(width,'one-strip geometry',cells)
-   strip=page.locator('#prayers').evaluate("e=>({r:getComputedStyle(e).borderRadius,w:e.getBoundingClientRect().width})")
-   assert strip['w']>width*.6,(width,'shared six-prayer strip missing',strip)
-   activeStyle=page.locator('#prayers .prayer.active>strong').evaluate("e=>getComputedStyle(e).textDecorationLine")
-   assert 'underline' in activeStyle,(width,'selected time must be underlined',activeStyle)
+   if width<=760:
+    assert all(c['radius']=='0px' and c['bg']=='rgba(0, 0, 0, 0)' for c in cells),(width,'phone strip geometry',cells)
+    strip=page.locator('#prayers').evaluate("e=>({r:getComputedStyle(e).borderRadius,w:e.getBoundingClientRect().width})")
+    assert strip['w']>width*.6,(width,'shared six-prayer strip missing',strip)
+    activeStyle=page.locator('#prayers .prayer.active>strong').evaluate("e=>getComputedStyle(e).textDecorationLine")
+    assert 'underline' in activeStyle,(width,'selected time must be underlined',activeStyle)
+   else:
+    assert all(c['radius']=='24px' for c in cells),(width,'tablet cards reference',cells)
+    assert next(c for c in cells if c['active'])['bg']=='rgb(53, 74, 103)',(width,'tablet selected card',cells)
    assert all(c['x']>=0 and c['right']<=width+1 for c in cells),(width,'prayer cells must fit')
    if width<=760:
     assert all(c['height']>=40 and c['height']<=90 for c in cells),(width,'six equal-height shared-strip cells',cells)
