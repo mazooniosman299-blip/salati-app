@@ -171,11 +171,13 @@ jobs:
           mkdir -p reports/negative-release-tests
           cp dist/salati-ui.css /tmp/salati-css-original
           cp dist/index.html /tmp/salati-html-original
-          cp apk-release-parts/v1.0.123/manifest.json /tmp/salati-manifest-original
+          VERSION="$(node -p 'require("./apk-release-parts/current.json").version')"
+          echo "SALATI_TEST_VERSION=$VERSION" >> "$GITHUB_ENV"
+          cp "apk-release-parts/v$VERSION/manifest.json" /tmp/salati-manifest-original
           restore() {
             cp /tmp/salati-css-original dist/salati-ui.css
             cp /tmp/salati-html-original dist/index.html
-            cp /tmp/salati-manifest-original apk-release-parts/v1.0.123/manifest.json
+            cp /tmp/salati-manifest-original "apk-release-parts/v$VERSION/manifest.json"
           }
           trap restore EXIT
           must_reject() {
@@ -206,15 +208,19 @@ jobs:
           from pathlib import Path
           p=Path('dist/index.html')
           v=p.read_text()
-          assert '/downloads/salati-1.0.123.apk' in v
-          p.write_text(v.replace('/downloads/salati-1.0.123.apk','/downloads/salati-0.0.0.apk',1))
+          import json
+          version=json.loads(Path('apk-release-parts/current.json').read_text())['version']
+          real='/downloads/salati-'+version+'.apk'
+          assert real in v
+          p.write_text(v.replace(real,'/downloads/salati-0.0.0.apk',1))
           PY
           must_reject obsolete-apk "Website download link does not reference the verified signed APK"
           restore
           python3 - <<'PY'
           import json
           from pathlib import Path
-          p=Path('apk-release-parts/v1.0.123/manifest.json')
+          version=json.loads(Path('apk-release-parts/current.json').read_text())['version']
+          p=Path('apk-release-parts/v'+version+'/manifest.json')
           v=json.loads(p.read_text())
           assert len(v['certificateSha256'])==64
           v['certificateSha256']='0'*64
