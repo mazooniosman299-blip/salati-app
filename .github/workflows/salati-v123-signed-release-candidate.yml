@@ -1,0 +1,109 @@
+name: Salati v123 — synchronized web + unsigned APK; original-key proof REQUIRED (NO PRODUCTION DEPLOY)
+on:
+  push:
+    branches: [release/salati-v123-rootfix-20261102]
+    paths:
+      - .github/workflows/salati-v123-signed-release-candidate.yml
+      - android/app/build.gradle
+      - dist/index.html
+      - dist/sw.js
+      - dist/salati-ui.css
+      - scripts/verify-native-web-assets.py
+      - tests/eight-mobile-invariants.cjs
+      - tests/android-asset-path-contract-20261102.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-v123-candidate
+  cancel-in-progress: true
+jobs:
+  prepare-unsigned-for-private-original-key:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify zero-important CSS, target version and original fixed signing identity
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          python3 - <<'PY'
+          import json,re
+          from pathlib import Path
+          s=Path('dist/salati-ui.css').read_text()
+          assert s.startswith('@layer salati-base,salati-priority;')
+          assert len(re.findall(r'!\s*important\b',s,re.I))==0
+          html=Path('dist/index.html').read_text()
+          assert html.count('1.0.123')>=2
+          assert '1.0.122' not in html
+          identity=json.loads(Path('android/signing-identity.json').read_text())
+          assert identity['certificate_sha256']=='559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e'
+          assert identity['application_id']=='com.salati.prayer'
+          print('PASS release identity and CSS source; private signing key NOT present')
+          PY
+      - name: Build synchronized public site and run application contracts
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          node tests/widget-active-outline.cjs
+      - name: Stage exact same web source for Android and verify asset paths
+        run: |
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build original-package RELEASE APK WITHOUT signing
+        working-directory: android
+        run: |
+          bash gradlew :app:assembleRelease -x verifyReleaseSigningIdentity --no-daemon
+      - name: Verify Android package, complete native/web assets, and immutable hashes
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='124' versionName='1.0.123'"
+          python3 scripts/verify-native-web-assets.py "$APK"
+          mkdir -p reports/salati-v123-release-candidate
+          node scripts/release-fingerprint.cjs > reports/salati-v123-release-candidate/web-fingerprint.json
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          path=Path('android/app/build/outputs/apk/release/app-release-unsigned.apk')
+          fp=json.loads(Path('reports/salati-v123-release-candidate/web-fingerprint.json').read_text())
+          result={'version':'1.0.123','versionCode':124,'applicationId':'com.salati.prayer',
+            'unsignedSha256':hashlib.sha256(path.read_bytes()).hexdigest(),
+            'unsignedBytes':path.stat().st_size,'webFingerprint':fp['sha256'],
+            'certificateSha256Required':'559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e',
+            'productionPublished':False,'status':'AWAITING OFFLINE ORIGINAL KEY SIGNING PROOF'}
+          Path('reports/salati-v123-release-candidate/unsigned-manifest.json').write_text(json.dumps(result,indent=2)+'\n')
+          print('PASS unsigned APK + web fingerprint prepared; release BLOCKED pending original-key proof')
+          PY
+      - name: Preserve UNSIGNED release candidate for authorized offline original-key signing
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.123-unsigned-for-original-key
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            reports/salati-v123-release-candidate/
+            /usr/local/lib/android/sdk/build-tools/36.0.0/lib/apksigner.jar
+      - name: Release is NOT permitted without matching original-key APK
+        run: |
+          echo 'Signed APK/certificate proof for v1.0.123 is NOT in the repository.'
+          echo 'No production push or Cloudflare deploy is performed by this candidate workflow.'
+          echo 'Cloudflare release-guard.cjs correctly blocks stale v1.0.122 APK with v1.0.123 web assets.'
