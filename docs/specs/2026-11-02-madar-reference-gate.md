@@ -43,3 +43,11 @@ The original web image response was referenced in chat as `turn578192image1`, wh
 2. Verify a licensed 604-page Hafs corpus with consistent script, verse markers, line breaks, decorations, and pagination, rather than only one illustrative scan.
 3. Display its page with unaltered image pixels inside the real Salati Quran screen; keep the existing player in-flow below the verse viewport, and keep navigation unchanged.
 4. Capture the actual render at phone size and compare it side-by-side to the source. If pixel identity is not demonstrated or page assets are unavailable, leave the feature draft, do not ship to Cloudflare or alter signed APK.
+
+## Original Hafs plate source inventory — in progress
+
+The original 604-page KFQC `quran-ws/quran-svg` inventory is now checked in at `reference-data/kfqc-hafs-604-plate-manifest.json` with **all 604 consecutively numbered pages**, the immutable upstream commit `b4155f07e4aea087d2c458069acff9f7c7e749f6`, each original Git blob hash, and each page size. These **original vector print plates** total **372,827,329 bytes** (about 355.6 MiB) before compression and would not be appropriate to silently bundle inside the existing Android APK.
+
+`scripts/verify-kfqc-mushaf-source.cjs` confirms the complete 604-page inventory and can validate every locally imported SVG using the real Git blob hash algorithm. `--verify-samples` independently downloads and checks unaltered upstream pages **1, 12 and 604**. The non-publishing workflow `salati-kfqc-artwork-source-qa.yml` runs the checks.
+
+**Scope boundary:** this confirms authentic Hafs text geometry and verse markers once actual pages are fetched; it neither proves nor replicates the soft green/pink floral border in the user's exact chosen picture #5. The original application and the already approved in-frame player remain intact and no pages are deployed. Do not accept the 604-page source manifest itself as approval to merge the PR.
