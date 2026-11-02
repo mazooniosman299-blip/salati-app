@@ -1,0 +1,83 @@
+name: Salati — real full Medina Mushaf printed pages and CSS regex (NO DEPLOY)
+on:
+  push:
+    branches: [preview/salati-madinah-fullpage-regression-20261102]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-madinah-fullpages
+  cancel-in-progress: true
+jobs:
+  full-pages-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build real release source and test all existing functionality
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/widget-quran-no-regression-20261102.cjs
+      - name: Inspect CSS layers and force priority detector
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright pillow
+          python3 tests/css-component-owner-audit.py
+          python3 tests/canonical-css-maintainability.py
+      - name: Open full printed Medina pages in real Chrome at four sizes
+        run: |
+          python3 -m playwright install --with-deps chromium
+          python3 tests/madinah-fullpage-browser-20261102.py
+      - name: Preserve screenshots of real printed Quran pages
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-real-medina-mushaf-visual-evidence
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            reports/madinah-fullpage-20261102/
+            reports/css-source-maintainability.json
+  android-native-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build exact HTML and JS with verified Medina page mode
+        run: |
+          npm ci
+          npm run build
+          node tests/widget-quran-no-regression-20261102.cjs
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+          (cd android && bash gradlew :app:assembleDebug --no-daemon)
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Confirm Android APK bundles Quran reader and no demo location
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 tests/apk-assets.py
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Save preview-only APK, never publish it as official update
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-madinah-fullpage-debug-apk
+          retention-days: 7
+          if-no-files-found: warn
+          path: android/app/build/outputs/apk/debug/app-debug.apk
