@@ -64,13 +64,14 @@ try:
     return {reader:rect('qVerses'),player:rect('mushafPlayerSlot'),sheet:rect('qSheet'),
       seek:rect('qSeek'),transport:rect('qTransport'),elapsed:rect('qElapsed'),duration:rect('qDuration'),
       pos:getComputedStyle(p).position,display:getComputedStyle(v).overflowY,scrollHeight:v.scrollHeight,clientHeight:v.clientHeight,
-      order:v.compareDocumentPosition(p),outside:q.contains(p),navTop:n.top,parchmentColor:getComputedStyle(q).backgroundColor,bodyColor:getComputedStyle(document.body).backgroundColor,scriptErrors:[]};
+      order:v.compareDocumentPosition(p),inside:q.contains(p),navTop:n.top,parchmentColor:getComputedStyle(q).backgroundColor,bodyColor:getComputedStyle(document.body).backgroundColor,scriptErrors:[]};
    }"""
    before=page.evaluate(js)
    assert before["order"] & 4,(width,"player must follow reading area in DOM",before)
-   assert before["outside"] is False,(width,"player must be OUTSIDE parchment, not its child",before)
+   assert before["inside"] is True,(width,"player must be INSIDE the original mushaf frame",before)
    assert before["pos"] not in ("fixed","sticky","absolute"),(width,"player may not float over Quran",before)
-   assert before["sheet"]["bottom"]<=before["player"]["top"]+1,(width,"player still covers parchment",before)
+   assert before["reader"]["bottom"]<=before["player"]["top"]+1,(width,"player must follow ALL Quran verses, without overlay",before)
+    assert before["player"]["bottom"]<=before["sheet"]["bottom"]+1,(width,"player escapes mushaf frame",before)
    if width<=760:
     assert before["display"]=="auto",(width,"reader must scroll independently",before)
     assert before["scrollHeight"]>=before["clientHeight"],(width,"reader dimensions invalid",before)
@@ -84,7 +85,8 @@ try:
    }""")
    page.wait_for_timeout(120)
    after=page.evaluate(js)
-   assert after["sheet"]["bottom"]<=after["player"]["top"]+1,(width,"player covers parchment after scroll",after)
+   assert after["reader"]["bottom"]<=after["player"]["top"]+1,(width,"player covers Quran verses after scroll",after)
+    assert after["player"]["bottom"]<=after["sheet"]["bottom"]+1,(width,"player escapes mushaf after scroll",after)
    assert after["player"]["left"]>=-1 and after["player"]["right"]<=width+1,(width,"player horizontal clipping",after)
    for key in ("seek","transport","elapsed","duration"):
     r=after[key];pr=after["player"]
@@ -101,7 +103,7 @@ try:
     assert state["range"]>10 and 10<state["top"]<=state["range"]+2,(width,"Quran scrollport must move and remain within its range",state)
    assert not faults,(width,"JavaScript runtime errors",faults)
    page.close()
-   print("PASS",width,"no prayer boxes; Quran dock outside parchment on dark surface; player controls fit")
+   print("PASS",width,"no prayer boxes; Quran player inside mushaf below verses; player controls fit")
   browser.close()
 finally:
  srv.shutdown()
