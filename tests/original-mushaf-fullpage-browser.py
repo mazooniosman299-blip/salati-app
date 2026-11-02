@@ -30,6 +30,11 @@ try:
      document.querySelector('#mushaf.q-original-source-ready #qApprovedOriginalImage')?.naturalWidth>300 &&
      document.getElementById('qPageNumber').value==='17'
    """,timeout=35000)
+   page.wait_for_function("""() => {
+     const img=document.getElementById('qApprovedOriginalImage');
+     return img && img.complete && img.naturalWidth>550 && img.naturalHeight>=960 &&
+       document.getElementById('qPageNumber').value==='17';
+   }""",timeout=10000)
    snapshot=page.evaluate("""() => {
      const q=id=>document.getElementById(id);
      const rect=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,bottom:r.bottom,right:r.right}};
