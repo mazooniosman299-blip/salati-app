@@ -25,7 +25,7 @@ public final class WidgetPreviewActivity extends Activity {
   views.setTextViewText(R.id.widget_date,"1/11/2026");
   views.setTextViewText(R.id.widget_hijri,"هـ 1448/5/22");
   views.setTextViewText(R.id.widget_next_label,"الصلاة القادمة");
-  views.setTextViewText(R.id.widget_next,"المغرب");
+  views.setTextViewText(R.id.widget_next,getIntent().getIntExtra("active",4)==2?"الظهر":"المغرب");
   views.setChronometerCountDown(R.id.widget_countdown,true);
   views.setChronometer(R.id.widget_countdown,SystemClock.elapsedRealtime()+6760000,null,true);
   String[] names={"fajr","sunrise","dhuhr","asr","maghrib","isha"};
