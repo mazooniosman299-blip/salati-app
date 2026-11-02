@@ -68,6 +68,20 @@ try:
    page.screenshot(path=str(out/f'madinah-{width}.png'),full_page=False)
    print('PASS:',width,'full-page visible flow, Medina Hafs font, ornamental frame, auto append')
    page.close()
+  # No network: the reader must not become blank. The full local Hafs text,
+  # verse selection and decorative framing must remain accessible.
+  offline=b.new_page(viewport={'width':390,'height':850},service_workers='block')
+  offline.route('**/cdn.quran.ws/**',lambda r:r.abort())
+  offline.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
+  offline.locator('button[data-tab="mushaf"]').click()
+  local=offline.locator('#qVerses .quran-reading-page').first
+  local.wait_for(timeout=20000)
+  local.scroll_into_view_if_needed()
+  offline.wait_for_function("() => !document.querySelector('#qVerses .quran-reading-page .quran-madinah-plate')",timeout=10000)
+  assert local.locator('[data-ayah]').count()>0,'No offline Quran verses available'
+  assert local.evaluate("e=>getComputedStyle(e.querySelector('.quran-page-interactive-fallback')).display")!='none'
+  offline.screenshot(path=str(out/'mushaf-offline-fallback-390.png'),full_page=False)
+  offline.close()
   b.close()
 finally:
  server.shutdown();server.server_close()
