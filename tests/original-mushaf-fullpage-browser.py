@@ -59,10 +59,11 @@ try:
    trims=record['whiteMarginTrimOnly']
    assert trims['top']>=40 and trims['bottom']>=40,(w,'exterior white top/bottom not safely removed',trims)
    with PILImage.open(root/'dist/quran-green-proof'/record['filename']) as actual:
-    import numpy as np
-    pix=np.asarray(actual.convert('RGB'))
-    assert (pix[:8].min(axis=2)<245).any(),(w,'no printed Quran header within 8px of page top')
-    assert (pix[-8:].min(axis=2)<245).any(),(w,'folio number or ornament missing near page bottom')
+    rgb=actual.convert('RGB')
+    topband=rgb.crop((0,0,rgb.width,8))
+    footband=rgb.crop((0,rgb.height-8,rgb.width,rgb.height))
+    assert min(v[0] for v in topband.getextrema())<245,(w,'no printed Quran header within 8px of page top')
+    assert min(v[0] for v in footband.getextrema())<245,(w,'folio number or ornament missing near page bottom')
    assert snapshot['paper']=='rgb(255, 255, 255)' and snapshot['borderRadius']=='0px',(w,snapshot)
    assert snapshot['img']['w']>=w-1 or w>=768,(w,'image too narrow',snapshot)
    assert snapshot['img']['y']>=60 and snapshot['img']['y']<=90,(w,'page starts too low',snapshot)
