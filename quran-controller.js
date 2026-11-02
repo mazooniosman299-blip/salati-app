@@ -144,7 +144,7 @@ export class QuranReader{
  const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
  container.append(sentinel);append();
   // The full printed-style Quran flows in the DOCUMENT, not a height-clamped inner box.
-  container.style.removeProperty('--salati-quran-window-height');
+  container.style?.removeProperty?.('--salati-quran-window-height');
   this.readingHeightObserver?.disconnect?.();
   this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{rootMargin:'600px 0px'});this.readingObserver.observe(sentinel);
  }
