@@ -75,6 +75,8 @@ jobs:
         run: node tests/reference-provenance.cjs
       - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
         run: python3 tests/current-design-visual-proof.py
+      - name: Verify dynamic DOM is owned by upstream source across tab, language and reload
+        run: python3 tests/dynamic-source-runtime-browser.py
       - name: Self-test visual diff rejecting unauthorized pixels
         run: python3 tests/visual-scope-diff.py --self-test
       - name: Compare original production runtime with candidate ONLY for approved visual change
