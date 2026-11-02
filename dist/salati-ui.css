@@ -255,3 +255,33 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
    body.dark #mushaf #qVerses .quran-text {font-size:clamp(22px,5.7vw,29px);line-height:2.08}
  }
 }
+
+/* Authentic original King Fahd / Madinah printed plate with offline text fallback.
+   Source artwork: quran-ws immutable Hafs/KFQC SVG 604 printed pages. */
+@layer salati-print-plate {
+ body.dark #mushaf #qVerses .quran-madinah-plate {
+   display:none;box-sizing:border-box;width:100%;height:auto;max-width:100%;
+   aspect-ratio:345/550;object-fit:contain;cursor:pointer;
+   background:#F6F0E4;border:0;border-radius:0;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready {
+   width:100%;padding:0;min-height:0;max-height:none;overflow:visible;
+   border:0;outline:0;border-radius:0;background:#F6F0E4;box-shadow:none;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready::before {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready .quran-madinah-plate {display:block}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready .quran-page-interactive-fallback {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode {
+   border:2px solid #BD9F70;outline:5px double #BFA57E;outline-offset:-13px;
+   padding:clamp(25px,5vw,56px) clamp(16px,4vw,48px) 20px;
+ }
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode .quran-madinah-plate {display:none}
+ body.dark #mushaf #qVerses .quran-reading-page.quran-print-plate-ready.quran-plate-text-mode .quran-page-interactive-fallback {display:block}
+ body.dark #mushaf #qVerses .quran-page-interactive-fallback {width:100%}
+ body.dark #mushaf #qVerses .quran-back-to-print {
+   display:none;margin:14px auto 0;min-height:42px;max-width:100%;
+   border:1px solid #B99B69;background:#EEDFC6;color:#40301C;
+   border-radius:6px;padding:8px 15px;font:600 13px SalatiCairo,sans-serif;
+ }
+ body.dark #mushaf #qVerses .quran-plate-text-mode .quran-back-to-print {display:block}
+}
