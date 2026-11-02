@@ -1,0 +1,148 @@
+name: Salati permanent regression protection (NO DEPLOY)
+on:
+  push:
+    branches:
+      - main
+      - production
+      - 'release/**'
+      - fix/salati-permanent-regression-gates-20261102
+  pull_request:
+    branches: [main, production]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-permanent-regressions-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  behavior-and-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build exact current source and block core regressions
+        run: |
+          npm run build
+          node tests/permanent-regression-contract.cjs
+          npm test
+          node tests/quran-dom.cjs
+          node tests/worldwide-prayer-integrity-20261101.cjs
+          npm run test:seo
+      - name: Fail if approved original-key signed release and website drift apart
+        if: github.ref == 'refs/heads/production'
+        run: node scripts/release-guard.cjs
+      - name: Reject missing controls and security artifacts
+        run: |
+          python3 scripts/full-source-audit.py
+          test -s dist/salati-ui.css
+          test -s dist/sw.js
+          test ! -f dist/preview-sample-location-20261101.js
+      - name: Keep full source report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-source-regressions
+          path: reports/full-source-audit-latest.json
+          if-no-files-found: warn
+
+  actual-browser-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet playwright tinycss2 cssselect2 lxml pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Block returning CSS overrides and missing active UI elements
+        run: |
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-component-owner-audit.py
+      - name: Seven responsive sizes, all six tabs, Quran, city and fixed nav in Chromium
+        run: |
+          python3 tests/active-production-browser-20261102.py
+          python3 tests/mobile-layout-contract-20261101.py
+      - name: Store screenshot evidence, including failed runs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-browser-screenshots
+          path: |
+            reports/active-production-browser-20261102/
+            reports/mobile-layout-contract/
+            reports/css-source-maintainability.json
+          if-no-files-found: warn
+
+  real-android-webview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prepare native WebView from the identical rebuilt source
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build actual Android debug APK (NOT signed public update)
+        working-directory: android
+        run: bash gradlew :app:assembleDebug --no-daemon
+      - name: Audit native packaged assets and original mosque pixels
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 tests/apk-assets.py
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Require hardware accelerated Android 15 emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+      - name: Open app in actual Android System WebView and test prayer/Quran screenshots
+        timeout-minutes: 16
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-webview-smoke.sh
+      - name: Preserve emulator screenshots, package, diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-permanent-android-device-evidence
+          path: |
+            reports/android-webview-20261102/
+            android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 14
