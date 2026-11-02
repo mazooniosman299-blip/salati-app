@@ -25,7 +25,7 @@
     const section=document.createElement('section');section.id='qGreenOriginalReview';
     section.setAttribute('aria-label','معاينة صفحات الطبعة الخضراء الأصلية');
     Object.assign(section.style,{background:'#F9F6EF',color:'#27231E',padding:'8px',display:'grid',gap:'8px'});
-    const notice=md('معاينة تجريبية من PDF رسمي · لم يُثبت تطابقها مع اختيارك رقم ٥ · لم تُنشر');
+    const notice=md('معاينة بصرية من PDF رسمي · لم يُثبت تطابقها مع الشكل رقم ٥ · المشغّل لم يُربط بعد بصفحات المعاينة · لم تُنشر');
     Object.assign(notice.style,{color:'#282622',fontSize:'12px',margin:'4px',textAlign:'center',lineHeight:'1.6'});
     const img=document.createElement('img');img.alt='صفحة كاملة غير مقصوصة من نسخة مجمع الملك فهد الأصلية';
     Object.assign(img.style,{width:'100%',height:'auto',display:'block',objectFit:'contain',background:'white'});
@@ -37,6 +37,9 @@
     // Existing audio player stays an in-flow child of #qSheet; no overlay ever.
     verses.before(section);
     const previousHidden=verses.hidden,previousDisplay=verses.style.display;verses.hidden=true;verses.style.display='none';
+    const printedHeader=sheet.querySelector('.mushaf-page-head');
+    const headerDisplay=printedHeader?.style.display;
+    if(printedHeader) printedHeader.style.display='none'; // Avoid a false Fatiha heading on independently numbered PDF leaves.
     let index=Math.max(0,manifest.pages.findIndex(p=>p.pdfPage===20)), activeUrl='', requestId=0;
     async function show(i){
       index=i;const entry=manifest.pages[index],generation=++requestId;
@@ -56,6 +59,7 @@
     async function choose(i){
       try{await show(i)}catch(error){
         section.remove();verses.hidden=previousHidden;verses.style.display=previousDisplay;
+        if(printedHeader)printedHeader.style.display=headerDisplay;
         if(activeUrl)URL.revokeObjectURL(activeUrl);
         const status=q('qLoadStatus');if(status)status.textContent='معاينة الصفحات الأصلية غير متاحة أو غير موثقة؛ المصحف الحالي لم يتغير.';
         console.warn('Verified Quran PDF preview failed:',error.message);
@@ -63,7 +67,7 @@
     }
     back.addEventListener('click',()=>choose(Math.max(0,index-1)));
     next.addEventListener('click',()=>choose(Math.min(manifest.pages.length-1,index+1)));
-    choose(0);
+    choose(index);
   }
   // Delayed until the actual original Salati app DOM exists, no alternate UI.
   document.addEventListener('DOMContentLoaded',()=>initialize().catch(()=>{}),{once:true});
