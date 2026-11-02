@@ -64,6 +64,21 @@ function revealTabControls(tab){
   if(needed>0)(document.querySelector('main')||window).scrollBy({top:needed,behavior:'instant'});
  }));
 }
+// Preview only: make the Quran audio controls visible above the fixed mobile nav
+// immediately after the Quran tab opens, without making the player fixed or
+// covering the printed Madinah pages. The other production tabs are unchanged.
+function revealMadinahPreviewPlayer(){
+ if(window.innerWidth>760)return;
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  const card=document.getElementById('mushafPlayerSlot');
+  const nav=document.querySelector('header>.site-nav');
+  if(!card||!nav||document.getElementById('mushaf')?.hidden)return;
+  const edge=nav.getBoundingClientRect().top-14;
+  const player=card.getBoundingClientRect();
+  const move=Math.ceil(player.bottom-edge);
+  if(move>0)(document.querySelector('main')||window).scrollBy({top:move,behavior:'instant'});
+ }));
+}
 const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
  if(b.classList.contains('active'))return;
  const panels=[...document.querySelectorAll('.tab')],previous=panels.find(t=>!t.hidden);
@@ -76,7 +91,13 @@ const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>
  $('status').textContent='';
  // Restore before opening Quran so following the currently playing verse retains priority.
  scroller.scrollTo({top:b.dataset.tab==='mushaf'?0:(tabPositions.get(b.dataset.tab)||0),behavior:'instant'});
- if(b.dataset.tab==='mushaf'){tabPositions.delete('mushaf');mushaf.enterAtSurahStart();}
+ if(b.dataset.tab==='mushaf'){
+  tabPositions.delete('mushaf');
+  const opening=mushaf.enterAtSurahStart();
+  // The printed page loads asynchronously; correct the initial scroll again
+  // when layout settles so a 61px dock never obscures the player controls.
+  Promise.resolve(opening).then(revealMadinahPreviewPlayer,revealMadinahPreviewPlayer);
+ }
  revealTabControls(b.dataset.tab);
 });$('counter').onclick=()=>{state.count=Math.min(100,state.count+1);save();renderCount()};$('reset').onclick=()=>{state.count=0;save();renderCount()};$('privacy').onclick=()=>$('help').showModal();$('closeHelp').onclick=()=>$('help').close();window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e});$('install').onclick=async()=>{if(installPrompt){await installPrompt.prompt();installPrompt=null}else status('للتثبيت افتح قائمة المتصفح واختر «إضافة إلى الشاشة الرئيسية».','To install, open your browser menu and choose Add to Home Screen.')};if('serviceWorker'in navigator&&!isNativeAndroid())navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>status('لم يتفعّل العمل دون اتصال؛ يمكنك استخدام التطبيق متصلًا.','Offline mode unavailable; you can continue online.'));
 
