@@ -13,3 +13,6 @@
 | Source vs bundle | `app-v1.0.109.js` runtime name, but `app-source.js` builds into it | Modify source, rebuild bundle and validate; do not conclude bundle name means 1.0.109 installed |
 
 This register is evidence of **why an agent could make the wrong choice**, not a claim that all twenty systemic risks are already fixed. Missing reference bytes/rights are an explicit blocker to exact visual acceptance.
+
+## Newest 2026-11-02 approval sequence
+At 19:37 UTC the user requires the **complete printed page** unbroken (not a boxed fragment), which supersedes split-page cards. At 19:54 UTC they approve specific player **shape/order/size** with Salati charcoal/blue/white palette, and remove lock/timer/chevron/notch/separate reciter picker; this supersedes older generic player descriptions in PR35. A later user instruction mentions placing the player **in the middle of the page**, which conflicts with bottom-only acceptance assertions. Preserve all approved constraints and explicitly mark precise final placement/overlap prevention for genuine UI verification, instead of inventing a geometry from a concept image. PR36 implements some controls but remains DRAFT and does not guarantee 604-page printed-art accuracy.

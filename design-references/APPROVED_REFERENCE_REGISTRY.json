@@ -65,6 +65,36 @@
       "source": "Latest user-provided screenshot and later placement wording; no verified locked final bytes",
       "element": "Quran audio player geometry",
       "rights": "Unresolved; do not claim pixel parity"
+    },
+    {
+      "id": "historical-green-pink-demo",
+      "status": "historical-unverified",
+      "file": null,
+      "sha256": null,
+      "library_filename": "Salati App with Ornate Green-Pink Mushaf.png",
+      "source": "User-discussed prior Library illustration, 2026-11-02 17:14 UTC",
+      "element": "Conceptual printed Mushaf green/pink frame",
+      "rights": "Illustration/context only; not original Quran publisher source and not approved redistribution artwork; no embed or pixel-parity claim."
+    },
+    {
+      "id": "full-printed-page-demo",
+      "status": "historical-unverified",
+      "file": null,
+      "sha256": null,
+      "library_filename": "Salati App Full Quran Page.png",
+      "source": "User-discussed prior Library illustration, 2026-11-02 19:37 UTC",
+      "element": "Full uninterrupted printed-page composition in Salati",
+      "rights": "Illustration/context only; not original Quran publisher source and not approved redistribution artwork; no embed or pixel-parity claim."
+    },
+    {
+      "id": "dark-player-layout-demo",
+      "status": "historical-unverified",
+      "file": null,
+      "sha256": null,
+      "library_filename": "Salati Quran Reading Screen with Dark Player.png",
+      "source": "User-discussed prior Library illustration, 2026-11-02 20:15 UTC",
+      "element": "Charcoal player shape/order/size and blue transport; user explicitly removes timer/lock/chevron/notch and separate reciter selector",
+      "rights": "Illustration/context only; not original Quran publisher source and not approved redistribution artwork; no embed or pixel-parity claim."
     }
   ]
 }
