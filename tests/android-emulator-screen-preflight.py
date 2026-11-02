@@ -16,8 +16,13 @@ if mode=='dialog':
  # The emulator sometimes displays a Pixel Launcher ANR over our app. The
  # translucent white rounded dialog spans the center AND lower-middle, while
  # both Salati's home and Mushaf screens are dark at ~72% screen height.
- samples=[im.getpixel((w//2,int(h*y))) for y in (.40,.72)]
- modal=all(min(rgb)>185 and max(rgb)-min(rgb)<40 for rgb in samples)
+ # Actual Pixel Launcher ANR dialog occupies roughly Y=43–60% of
+ # a 960px screen, NOT Y=72%; sampling at 72% produced false negatives.
+ # Check several bright interior points to avoid button text or icon pixels.
+ samples=[im.getpixel((int(w*x),int(h*y)))
+          for y in (.46,.49,.52,.55)
+          for x in (.18,.35,.65,.82)]
+ modal=sum(min(rgb)>185 and max(rgb)-min(rgb)<45 for rgb in samples)>=11
  if modal: print('SYSTEM ANR overlay detected, close Pixel Launcher dialog',file=sys.stderr)
  raise SystemExit(0 if modal else 1)
 if mode=='quran-tap':
