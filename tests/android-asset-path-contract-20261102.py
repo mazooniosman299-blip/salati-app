@@ -16,7 +16,10 @@ assert 'p.startsWith("/assets/www/")' in java
 assert 'trustedResourceOrigin' in java
 assert pkg.is_dir(),'Run scripts/prepare-android.py before contract test'
 assert (pkg/'index.html').is_file()
-assert 'https://salati-app-ctc.pages.dev/downloads/salati-1.0.121.apk' in (pkg/'index.html').read_text(encoding='utf-8')
+gradle=(root/'android/app/build.gradle').read_text(encoding='utf-8')
+version=re.search(r"getOrElse\('(1\.0\.\d+)'\)",gradle)
+assert version, 'Missing release versionName in Gradle'
+assert 'https://salati-app-ctc.pages.dev/downloads/salati-'+version.group(1)+'.apk' in (pkg/'index.html').read_text(encoding='utf-8')
 # Native app may link external downloads; those are intentionally not package assets.
 local=re.compile(r'\b(?:src|href|poster|action)\s*=\s*["\x27](/[^"\x27]+)["\x27]',re.I)
 counter=Counter()
