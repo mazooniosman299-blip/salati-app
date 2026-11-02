@@ -21,8 +21,9 @@ assert not errors,errors
 priority=len(re.findall(r'!\s*important\b',css,re.I))
 assert priority==0,('Canonical CSS must contain zero priority flags',priority)
 assert len(css.encode())<=222900,('CSS unreviewed expansion',len(css.encode()))
-for key in ['#mushafPlayerSlot','--salati-quran-window-height','nav-icon-button.active','#prayers','.recitation-timeline','background:#242424']:
+for key in ['#mushafPlayerSlot','.madinah-printed-image','nav-icon-button.active','#prayers','.recitation-timeline','background:#242424']:
  assert key in css,('Approved component missing',key)
+assert '--salati-quran-window-height' not in css, 'Regression: fixed-height Quran scroller would crop full printed pages'
 assert not any(s in html for s in ['href="active-reference-nav-20261101.css"','href="preview-four-ui-changes-20261101.css"','href="design-restoration-v1.0.113.css"'])
 assert 'preview-sample-location' not in html, 'Production preview location script must not be imported'
 assert not (root/'preview-sample-location-20261101.js').exists(), 'Production must not ship preview-only location code'
