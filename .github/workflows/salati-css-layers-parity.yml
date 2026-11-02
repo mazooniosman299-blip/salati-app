@@ -1,0 +1,88 @@
+name: Salati — remove all 1959 CSS important flags ONLY if visual and Android parity
+on:
+  push:
+    branches: [preview/salati-css-layers-test-20261102]
+    paths:
+      - .github/workflows/salati-css-layers-parity.yml
+      - scripts/salati-css-priority-layers.py
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-css-layers-parity
+  cancel-in-progress: true
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build current approved UI and run all JS behavior tests
+        run: |
+          npm ci
+          npm run build
+          npm test
+          python3 -m pip install --quiet tinycss2 playwright pillow
+      - name: Migrate 1959 priority flags into two explicit CSS cascade layers
+        run: |
+          python3 scripts/salati-css-priority-layers.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/salati-ui.css')
+          assert '!important' not in p.read_text(), 'Priority flags still present'
+          assert p.read_text().count('@layer salati-priority')==2
+          print('PASS zero !important and two defined layers')
+          PY
+      - name: Full computed-style and geometry parity — six tabs, six viewport widths
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/css-cascade-equivalence.py
+          python3 tests/preview-css-root-review-20261101.py
+      - name: Build Android native APK with same zero-priority CSS
+        run: |
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+          (cd android && bash gradlew :app:assembleDebug --no-daemon)
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          if unzip -p "$APK" assets/www/salati-ui.css | grep -F '!important'; then
+            echo "Important flags leaked into Android APK" >&2; exit 1
+          fi
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$APK"
+      - name: Native Android WebView screenshots on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-webview-smoke.sh
+      - name: Preserve all screenshots and migration report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-layered-css-parity-evidence
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            reports/css-layered-experiment-20261102.json
+            reports/css-debt-20261101/
+            reports/css-root-review-20261101/
+            reports/android-webview-20261102/
