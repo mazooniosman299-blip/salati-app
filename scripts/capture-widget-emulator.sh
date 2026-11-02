@@ -9,8 +9,8 @@ adb shell input keyevent 82 || true
 for state in maghrib dhuhr; do
   selection=4
   [[ "$state" == "dhuhr" ]] && selection=2
-  adb shell am force-stop com.salati.prayer || true
-  adb shell am start -W -n com.salati.prayer/.WidgetPreviewActivity --ei active "$selection"
+  adb shell am force-stop com.salati.prayer.preview || true
+  adb shell am start -W -n com.salati.prayer.preview/com.salati.prayer.WidgetPreviewActivity --ei active "$selection"
   file="reports/native-widget-preview/${state}-active.png"
   ready=false
   for attempt in 1 2 3 4; do
