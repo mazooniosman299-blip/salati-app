@@ -23,7 +23,7 @@ assert(!forcedPriority.test('color:important')&&!forcedPriority.test('important'
 assert(!forcedPriority.test(html+css),'No inline or canonical forced CSS priorities');
 const reader=read('quran-controller.js');
 assert(!reader.includes('--salati-quran-window-height'),'Fixed-height Quran scrollbar must be permanently removed');
-assert(reader.includes('medina-mushaf@ba9088e03bf4af299da04f8efc70a19fe00448b9'),'Source of verified Medina printed pages changed');
+assert(reader.includes("rev='ba9088e03bf4af299da04f8efc70a19fe00448b9'")&&reader.includes('medina-mushaf@'),'Source of verified Medina printed pages changed');
 assert(reader.includes('this.data.pages[index]')||reader.includes('this.data.pages[index],'),'Offline verified Quran text must remain');
 assert(html.includes('id="qTextMode"'),'Interactive text fallback toggle must remain');
 
