@@ -1,0 +1,93 @@
+name: Salati production root-cause audit - CSS layers, GPS, browser and APK (NO DEPLOY)
+on:
+  push:
+    branches: [fix/salati-production-root-audit-20261102, production]
+  pull_request:
+    branches: [production]
+permissions:
+  contents: read
+concurrency:
+  group: salati-root-cause-\${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  active-sources-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build actual deployable web and run all JavaScript contracts
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - name: Audit loaded CSS recursively including layers, at-rules and inline shell
+        run: |
+          python3 -m pip install --quiet tinycss2 playwright pillow
+          python3 tests/css-component-owner-audit.py
+          python3 tests/canonical-css-maintainability.py
+      - name: Reject demo code and forced inline CSS in production
+        run: |
+          test ! -e dist/preview-sample-location-20261101.js
+          ! grep -n 'preview-sample-location' dist/index.html
+          ! grep -n 'locationSet:true.*مسقط' dist/app-v1.0.109.js
+      - name: Inspect real responsive geometry with Chromium
+        run: |
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          python3 tests/mobile-layout-contract-20261101.py
+      - name: Archive CSS conflicts and browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-root-cause-css-and-browser
+          path: |
+            reports/css-source-maintainability.json
+            reports/mobile-layout-contract/
+          if-no-files-found: warn
+          retention-days: 14
+  android-embedded-production-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Build exact source and reject preview-only code in signed-app WebView
+        run: |
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          test ! -e android/app/src/main/assets/www/preview-sample-location-20261101.js
+          ! grep -n 'preview-sample-location' android/app/src/main/assets/www/index.html
+          (cd android && bash gradlew :app:assembleDebug --no-daemon)
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'href="salati-ui.css"'
+          if unzip -l "$APK" | grep -F 'assets/www/preview-sample-location-20261101.js'; then
+            echo 'ERROR: native APK still includes location demo' >&2; exit 1
+          fi
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "$APK"
+      - name: Preserve debug candidate only, never sign or publish production
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-root-cause-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: warn
+          retention-days: 7
