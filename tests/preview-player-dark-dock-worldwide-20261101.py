@@ -71,7 +71,7 @@ try:
    assert before["inside"] is True,(width,"player must be INSIDE the original mushaf frame",before)
    assert before["pos"] not in ("fixed","sticky","absolute"),(width,"player may not float over Quran",before)
    assert before["reader"]["bottom"]<=before["player"]["top"]+1,(width,"player must follow ALL Quran verses, without overlay",before)
-    assert before["player"]["bottom"]<=before["sheet"]["bottom"]+1,(width,"player escapes mushaf frame",before)
+   assert before["player"]["bottom"]<=before["sheet"]["bottom"]+1,(width,"player escapes mushaf frame",before)
    if width<=760:
     assert before["display"]=="auto",(width,"reader must scroll independently",before)
     assert before["scrollHeight"]>=before["clientHeight"],(width,"reader dimensions invalid",before)
@@ -86,7 +86,7 @@ try:
    page.wait_for_timeout(120)
    after=page.evaluate(js)
    assert after["reader"]["bottom"]<=after["player"]["top"]+1,(width,"player covers Quran verses after scroll",after)
-    assert after["player"]["bottom"]<=after["sheet"]["bottom"]+1,(width,"player escapes mushaf after scroll",after)
+   assert after["player"]["bottom"]<=after["sheet"]["bottom"]+1,(width,"player escapes mushaf after scroll",after)
    assert after["player"]["left"]>=-1 and after["player"]["right"]<=width+1,(width,"player horizontal clipping",after)
    for key in ("seek","transport","elapsed","duration"):
     r=after[key];pr=after["player"]
