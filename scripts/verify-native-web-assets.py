@@ -70,9 +70,9 @@ with zipfile.ZipFile(apk) as archive:
         checked += 1
     index = archive.read("assets/www/index.html").decode("utf-8")
     check('href="salati-ui.css"' in index, "native UI not loading canonical CSS")
-    check('href="/downloads/salati-1.0.122.apk"' in (WEB/"index.html").read_text(encoding="utf-8"),
+    check('href="/downloads/salati-1.0.123.apk"' in (WEB/"index.html").read_text(encoding="utf-8"),
           "website points to another APK version")
-    check('v1.0.122' in (WEB/"index.html").read_text(encoding="utf-8"),
+    check('v1.0.123' in (WEB/"index.html").read_text(encoding="utf-8"),
           "website footer has stale version")
     for old in ("style-v1.0.", "design-restoration-v1.0.", "active-reference-nav-20261101.css"):
         check(not any(x.startswith("assets/www/" + old) for x in names),
