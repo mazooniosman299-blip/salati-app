@@ -23,6 +23,8 @@ jobs:
         run: |
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
+      - name: Validate original 20-risk mandate and every acceptance stage
+        run: node scripts/verify-request-status.cjs
       - name: Verify unchanged, original 604-page Quran data
         run: node tests/quran-source-integrity.cjs
       - name: Generate actual runtime source/import graph
@@ -65,6 +67,8 @@ jobs:
           python3 -m playwright install --with-deps chromium
           BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Prove JS bundle survives regeneration from real upstream source
+        run: node tests/source-lifecycle-contract.cjs
       - name: Verify immutable user-provided mosque reference bytes
         run: node tests/reference-provenance.cjs
       - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
