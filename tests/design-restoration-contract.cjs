@@ -17,6 +17,13 @@ for(const text of ['--bg:#0B0E13','--card:#040509','--action-fill:#2563EB','#mus
  assert(css.includes(text),'Loaded design lost required component/property: '+text);
 }
 assert(sw.includes("'./salati-ui.css'"),'Offline shell must cache the currently linked stylesheet');
-assert(html.indexOf('id="mushafPlayerSlot"')>html.indexOf('id="qSheet"'),'Quran player remains below reader');
+// The old bottom-only placement was superseded by the latest scoped user request.
+// Preserve actual Quran tab ownership; runtime screenshot/ayah nonoverlap is tested separately.
+const start=html.indexOf('<section id="mushaf"'),end=html.indexOf('<section id="qibla"');
+assert(start>=0&&end>start,'Dedicated original Mushaf section missing');
+for(const id of ['qSheet','qVerses','mushafPlayerSlot','qTransport','qSeek']){
+ const at=html.indexOf('id="'+id+'"');
+ assert(at>start&&at<end,'Mushaf control escaped its own tab: '+id);
+}
 assert(!/href="[^"]*(?:light-theme|design-restoration|eight-mobile-root-fixes|mobile-layout-contract)[^"]*\.css"/.test(html));
 console.log('PASS: approved charcoal design, Quran-only player and six tabs verified against active canonical stylesheet and DOM');

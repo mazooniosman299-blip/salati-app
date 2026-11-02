@@ -6,5 +6,9 @@
   "source_files_verified": 1041,
   "source_readme_preserved_at": "docs/source-README.md",
   "original_github_history_preserved": true,
-  "private_signing_keys_included": false
+  "private_signing_keys_included": false,
+  "record_type": "historical_source_snapshot_not_current_release",
+  "current_release_manifest": "apk-release-parts/current.json",
+  "current_release_version_on_review": "1.0.123",
+  "version_note": "1.0.109 is an imported source snapshot, not the currently signed 1.0.123 Android release nor deployed production claim"
 }
