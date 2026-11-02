@@ -21,10 +21,23 @@ assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # Re-running a cleanup on an already canonical production branch is
 # intentionally idempotent. The Chromium computed-style/geometry parity below
 # remains mandatory in BOTH cases; identical input is not a regression.
+# The user explicitly accepted moving the audio dock INTO #qSheet. Its one
+# audited suffix is an intentional feature addition, not a CSS optimisation.
+# Do not let any other CSS growth, or an unreviewed rewrite, bypass the gate.
+inframe_suffix = optimized[len(baseline):] if optimized.startswith(baseline) else ''
+approved_inframe = (
+    bool(inframe_suffix) and
+    inframe_suffix.strip().startswith('/* In-frame mushaf player: a real bottom band') and
+    inframe_suffix.count('@layer salati-priority') == 1 and
+    'body.dark #mushaf #qSheet #mushafPlayerSlot' in inframe_suffix and
+    '!important' not in inframe_suffix
+)
 if baseline == optimized:
  print('PASS idempotent canonical CSS: no obsolete declarations to remove')
+elif approved_inframe:
+ print('PASS CSS addition is strictly scoped to user-approved in-frame Quran player')
 else:
- assert len(optimized) < len(baseline), 'Optimized CSS unexpectedly grew'
+ assert len(optimized) < len(baseline), 'Unapproved CSS growth or changed canonical source'
 report=root/'reports/css-debt-20261101'
 report.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
@@ -46,7 +59,10 @@ def snap(page,tab):
    const elements=[document.documentElement,document.body,...document.querySelectorAll('header *')];
    if(active)elements.push(...[active,...active.querySelectorAll('*')].filter(n=>!n.closest('#qVerses')||n.id==='qVerses').slice(0,350));
    const clean=n=>{const cs=getComputedStyle(n);return Object.fromEntries(props.map(k=>[k,cs[k]]))};
-   const selected=elements.map((n,i)=>({key:i,tag:n.tagName,id:n.id||'',css:clean(n)}));
+   const selected=elements.map((n,i)=>({
+     key:i,tag:n.tagName,id:n.id||'',css:clean(n),
+     playerScope:n.id==='qSheet'||n.id==='qVerses'||n.id==='mushafPlayerSlot'||!!n.closest('#mushafPlayerSlot')
+   }));
    const boxes=['header>.site-nav','header>.site-nav button.active','#qSheet',
     '#mushafPlayerSlot','#prayers','.prayer-overview']
     .map(q=>{const e=document.querySelector(q);if(!e||e.getClientRects().length===0)return {q,hidden:true};
@@ -82,12 +98,22 @@ try:
     assert len(l['selected'])==len(r['selected']),(width,tab,'DOM changed between baseline/canonical')
     for a,b in zip(l['selected'],r['selected']):
      assert a['id']==b['id'] and a['tag']==b['tag'],(width,tab,'DOM changed',a['key'])
+     assert a['playerScope']==b['playerScope'],(width,tab,'Quran player DOM scope changed',a['key'])
+     # Approved in-frame player is tested independently with nonoverlap, clipping,
+     # and five responsive viewports. Retain pixel-level parity everywhere else.
+     if approved_inframe and tab=='mushaf' and a['playerScope']:
+      continue
      for prop,val in a['css'].items():
       assert val==b['css'][prop],(width,tab,'CSS REGRESSION',a['id'] or a['tag'],prop,val,b['css'][prop])
     for a,b in zip(l['boxes'],r['boxes']):
      assert a['q']==b['q'] and a.get('hidden')==b.get('hidden'),(width,tab,'box missing')
      if not a.get('hidden'):
-      for key in (['x','y','w','h'] if a['q'].startswith('header') else ['w']):
+      keys=['x','y','w','h'] if a['q'].startswith('header') else ['w']
+      # The player width intentionally grows into the entire in-frame bottom
+      # band; the dedicated responsive geometry test checks its true bounds.
+      if approved_inframe and tab=='mushaf' and a['q']=='#mushafPlayerSlot':
+       keys=[]
+      for key in keys:
        assert abs(a[key]-b[key])<=2,(width,tab,'box geometry shifted',a,b,key)
     if width in (390,480) and tab in ('mushaf','times'):
      after.screenshot(path=str(report/f'optimized-{width}-{tab}.png'),full_page=False)
