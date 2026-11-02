@@ -147,10 +147,10 @@ export class QuranReader{
  if(typeof page.prepend==='function')page.prepend(image);else page.append(image);image.src=cdn+filename;return page;
  }
  renderMadinahMode(){
-  const sheet=$('qSheet');sheet.classList.toggle('madinah-text-mode',this.textMode);
+  const sheet=$('qSheet');if(this.textMode)sheet.classList.add('madinah-text-mode');else sheet.classList.remove('madinah-text-mode');
   const button=$('qTextMode');button.textContent=this.textMode?this.tr('عرض صفحات المصحف','Printed Mushaf pages'):this.tr('نص الآيات التفاعلي','Interactive Quran text');
-  button.setAttribute('aria-pressed',String(this.textMode));const controls=document.querySelector('#mushaf .font-tools');if(controls)controls.hidden=!this.textMode;
-  $('qVerses').querySelectorAll('.quran-reading-page').forEach(page=>{const text=page.querySelector('.mushaf-text-fallback');if(text)text.inert=!this.textMode&&page.classList.contains('madinah-image-loaded');});
+  button.setAttribute?.('aria-pressed',String(this.textMode));const controls=document.querySelector('#mushaf .font-tools');if(controls)controls.hidden=!this.textMode;
+  $('qVerses').querySelectorAll?.('.quran-reading-page')?.forEach(page=>{const text=page.querySelector('.mushaf-text-fallback');if(text)text.inert=!this.textMode&&page.classList.contains('madinah-image-loaded');});
  }
  renderReadingPages(){
  if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();const container=$('qVerses');container.replaceChildren();$('qSheet').classList.add('continuous-sheet','madinah-fullview');container.classList.add('madinah-scroll');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
