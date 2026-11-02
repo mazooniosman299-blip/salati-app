@@ -36,7 +36,7 @@
     section.append(notice,img,controls);
     // Existing audio player stays an in-flow child of #qSheet; no overlay ever.
     verses.before(section);
-    const previousHidden=verses.hidden;verses.hidden=true;
+    const previousHidden=verses.hidden,previousDisplay=verses.style.display;verses.hidden=true;verses.style.display='none';
     let index=0, activeUrl='', requestId=0;
     async function show(i){
       index=i;const entry=manifest.pages[index],generation=++requestId;
@@ -55,7 +55,7 @@
     }
     async function choose(i){
       try{await show(i)}catch(error){
-        section.remove();verses.hidden=previousHidden;
+        section.remove();verses.hidden=previousHidden;verses.style.display=previousDisplay;
         if(activeUrl)URL.revokeObjectURL(activeUrl);
         const status=q('qLoadStatus');if(status)status.textContent='معاينة الصفحات الأصلية غير متاحة أو غير موثقة؛ المصحف الحالي لم يتغير.';
         console.warn('Verified Quran PDF preview failed:',error.message);
