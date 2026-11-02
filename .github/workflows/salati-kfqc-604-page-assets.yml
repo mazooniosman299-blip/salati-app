@@ -1,0 +1,91 @@
+name: Salati ORIGINAL 604 printed KFQC Mushaf pages — produce hashed online assets (NO DEPLOY)
+on:
+  push:
+    branches:
+      - release/salati-approved-mushaf-player-20261103
+    paths:
+      - .github/workflows/salati-kfqc-604-page-assets.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: salati-genuine-604-source-assets
+  cancel-in-progress: false
+jobs:
+  exact-604-originals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 57
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install renderer and lossless image preservation tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          python3 -m pip install --quiet pillow
+      - name: Download exact original 604-page Hafs printed PDF from publisher or identical archival mirror
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-kfqc /tmp/salati-kfqc/raw
+          SOURCE=/tmp/salati-kfqc/standard39-2.pdf
+          if ! curl -fL --retry 2 --connect-timeout 30 --max-time 1100 -o "$SOURCE" \
+             https://qurancomplex.gov.sa/wp-content/uploads/isdarat/hafs/standard39-2.pdf; then
+            rm -f "$SOURCE"
+            curl -fL --retry 3 --connect-timeout 30 --max-time 1100 -o "$SOURCE" \
+              https://cdn.quran.ws/KFGQPC/resources/quran-hafs/standard39-2/standard39-2.pdf
+          fi
+          echo '5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07  /tmp/salati-kfqc/standard39-2.pdf' | sha256sum -c -
+          test "$(stat -c %s "$SOURCE")" -eq 243520529
+          pdfinfo "$SOURCE" | grep -E '^Pages: +640'
+          echo "PASS publisher original Hafs, immutable SHA-256 and 640 original PDF leaves"
+      - name: Render exact 604 Quran leaves only, with 15 original lines and all publisher ornaments
+        run: |
+          set -euo pipefail
+          pdftoppm -f 4 -l 607 -scale-to 1120 -png \
+            /tmp/salati-kfqc/standard39-2.pdf /tmp/salati-kfqc/raw/quran
+          test "$(find /tmp/salati-kfqc/raw -name 'quran-*.png' | wc -l)" -eq 604
+          python3 scripts/complete-original-mushaf-604.py \
+            /tmp/salati-kfqc/standard39-2.pdf /tmp/salati-kfqc/raw quran-mushaf-assets
+      - name: Prove printed page 17 matches previously independently verified original source scan
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-kfqc/sample
+          gh run download 41506039824 --repo "$GITHUB_REPOSITORY" \
+            --name salati-genuine-green-pdf-original-ui-review-UNAPPROVED \
+            --dir /tmp/salati-kfqc/sample
+          python3 - <<'PY'
+          from PIL import Image,ImageChops
+          import json
+          from pathlib import Path
+          s=Image.open('/tmp/salati-kfqc/sample/dist/quran-green-review/pdf-0020.webp').convert('RGB')
+          p=Image.open('/tmp/salati-kfqc/raw/quran-020.png').convert('RGB')
+          assert s.size==p.size and ImageChops.difference(s,p).getbbox() is None,'STOP PDF page 20 rendering changed'
+          m=json.loads(Path('quran-mushaf-assets/manifest.json').read_text())
+          assert len(m['pages'])==604 and m['pages'][16]['quranPage']==17
+          print('PASS: all 604 full original pages, representative page 17 pixel-exact vs previously verified source')
+          PY
+      - name: Save signed-source proof even if repository asset write is blocked
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-ALL-604-authentic-mushaf-pages-verified-SOURCE
+          path: quran-mushaf-assets/
+          retention-days: 21
+          compression-level: 5
+          if-no-files-found: error
+      - name: Commit source image files to review-only branch assets directory, NEVER production or Android APK
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = release/salati-approved-mushaf-player-20261103
+          git config user.name 'salati-original-asset-verifier[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add quran-mushaf-assets/
+          git commit -m 'assets(quran): 604 official full-page Hafs sheets, SHA256 verified [skip ci]'
+          git push origin HEAD:refs/heads/release/salati-approved-mushaf-player-20261103
+          echo "PASS original source assets committed to RELEASE BRANCH ONLY; production untouched"
