@@ -1,0 +1,24 @@
+{
+  "request_id": "SALATI-20261103-ROOT-CONTROL",
+  "original_request": "إصلاح جذري لنظام فهم ChatGPT لتعديلات مشروع صلاتي، ومراجعة المخاطر العشرين دون إعادة تصميم أو نشر",
+  "base_branch": "production",
+  "base_commit": "f47ca69e37e5cdbdad38909761a9583a0f70ed49",
+  "visual_change": false,
+  "android_release": false,
+  "allowed_paths": [
+    "AGENTS.md",
+    "README.md",
+    "docs/CURRENT_APPROVED_DESIGN.md",
+    "docs/ACTUAL_SOURCE_MAP.md",
+    "docs/INSTRUCTION_CONFLICTS.md",
+    "docs/requests/TEMPLATE.md",
+    "docs/requests/ACTIVE_CHANGE.json",
+    "docs/ROOT_CAUSE_AUDIT_20261103.md",
+    "scripts/verify-change-scope.cjs",
+    "tests/agent-governance-contract.cjs",
+    ".github/workflows/salati-agent-governance.yml"
+  ],
+  "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
+  "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
+  "status": "in_progress"
+}
