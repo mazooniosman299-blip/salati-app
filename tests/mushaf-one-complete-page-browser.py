@@ -31,6 +31,7 @@ try:
    # The preview is a branch-only mode inside the real Salati tab, never a separate app.
    page.locator('header>.site-nav button[data-tab=mushaf]').click()
    page.wait_for_function("() => document.body.classList.contains('salati-mushaf-fullpage-review')",timeout=30000)
+   page.wait_for_function("() => document.getElementById('qTrack')?.textContent?.includes('البقرة') && document.getElementById('qPageNumber')?.value==='17'",timeout=20000)
    a=page.evaluate("""() => {
       const r=id=>document.getElementById(id).getBoundingClientRect();
       const sheet=document.getElementById('qSheet');
