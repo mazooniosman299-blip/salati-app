@@ -144,13 +144,13 @@ export class QuranReader{
   plate.width=345;plate.height=550;plate.loading='lazy';plate.decoding='async';
   const fallback=document.createElement('div');
   fallback.className='quran-page-interactive-fallback';
-  plate.addEventListener('load',()=>{page.classList.add('quran-print-plate-ready');});
-  plate.addEventListener('error',()=>{page.classList.remove('quran-print-plate-ready');plate.remove();});
-  plate.addEventListener('click',()=>{page.classList.add('quran-plate-text-mode');});
+  plate?.addEventListener?.('load',()=>{page.classList.add('quran-print-plate-ready');});
+  plate?.addEventListener?.('error',()=>{page.classList.remove('quran-print-plate-ready');plate.remove();});
+  plate?.addEventListener?.('click',()=>{page.classList.add('quran-plate-text-mode');});
   const returnToPrint=document.createElement('button');
   returnToPrint.type='button';returnToPrint.className='quran-back-to-print';
   returnToPrint.textContent='العودة إلى صفحة المصحف الأصلية';
-  returnToPrint.addEventListener('click',()=>page.classList.remove('quran-plate-text-mode'));
+  returnToPrint?.addEventListener?.('click',()=>page.classList.remove('quran-plate-text-mode'));
   // CDN release v1.1.1 from quran-ws; official KFQC Hafs printed plate.
   // The source is immutable; no third-party JS is loaded.
   plate.src='https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/'+String(index+1).padStart(3,'0')+'.svg';
