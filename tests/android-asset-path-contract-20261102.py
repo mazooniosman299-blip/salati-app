@@ -16,6 +16,7 @@ assert 'p.startsWith("/assets/www/")' in java
 assert 'trustedResourceOrigin' in java
 assert pkg.is_dir(),'Run scripts/prepare-android.py before contract test'
 assert (pkg/'index.html').is_file()
+assert 'preview-sample-location-20261101.js' not in (pkg/'index.html').read_text(encoding='utf-8'), 'Demo city script may not run in native WebView'
 gradle=(root/'android/app/build.gradle').read_text(encoding='utf-8')
 version=re.search(r"getOrElse\('(1\.0\.\d+)'\)",gradle)
 assert version, 'Missing release versionName in Gradle'
@@ -37,7 +38,7 @@ for h in pkg.rglob('*.html'):
   else:
    counter['unbundled_root_urls']+=1
  assert not re.search(r'(?<!assets/www)/city-pages\.css',text) if h.name=='index.html' else True
-assert counter['valid_local']>=833,counter
+assert counter['valid_local']>=832, ('Original 833 packaged references minus the removed unused city CSS homepage import',counter)
 assert counter['unbundled_root_urls']==0, ('Unresolved Android-native root URL, expected HTTPS redirect for downloads',counter)
 for test in ('index.html','ar/about.html','en/prayer-times/muscat.html','privacy.html'):
  assert (pkg/test).is_file(),test
