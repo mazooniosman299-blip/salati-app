@@ -7,7 +7,7 @@ const built=esbuild.buildSync({entryPoints:[path.join(root,'city-pages/timetable
 const mod=new Module('city-build',module);mod._compile(built.outputFiles[0].text,'city-build.cjs');
 const {cityTimetable,cityWeek}=mod.exports,origin='https://salati-world-prayer.sprytitan65.chatgpt.site';
 const pinnedSnapshot=process.env.SALATI_BUILD_SNAPSHOT;
-if(pinnedSnapshot && !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/.test(pinnedSnapshot))
+if(pinnedSnapshot && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(pinnedSnapshot))
   throw Error('Invalid pinned Salati build timestamp; aborting reproducible release');
 const now=pinnedSnapshot?new Date(pinnedSnapshot):new Date();
 if(!Number.isFinite(now.getTime()))throw Error('Invalid pinned Salati timestamp');
