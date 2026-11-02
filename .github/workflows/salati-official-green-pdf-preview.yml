@@ -1,0 +1,85 @@
+name: Salati genuine KFQC green Mushaf PDF in original UI (REVIEW ONLY)
+on:
+  push:
+    branches:
+      - feature/salati-mushaf-inframe-player-20261102
+    paths:
+      - .github/workflows/salati-official-green-pdf-preview.yml
+      - scripts/render-official-green-review.py
+      - tests/official-green-review-browser.py
+      - dist/quran-official-green-preview.js
+      - dist/index.html
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: salati-original-green-pdf-preview
+  cancel-in-progress: true
+jobs:
+  real-publisher-page-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 42
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild existing Salati and verify existing functionality BEFORE adding any review-only pages
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/quran-official-green-preview.cjs
+          node tests/permanent-regression-contract.cjs
+      - name: Obtain precise official green 1439 Hafs standard PDF, never a generated mushaf
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/official-kfqc
+          cd /tmp/official-kfqc
+          URL=https://qurancomplex.gov.sa/wp-content/uploads/isdarat/hafs/standard39-2.pdf
+          MIRROR=https://cdn.quran.ws/KFGQPC/resources/quran-hafs/standard39-2/standard39-2.pdf
+          if ! curl -fL --retry 2 --connect-timeout 25 --max-time 1100 -o standard39-2.pdf "$URL"; then
+            rm -f standard39-2.pdf
+            curl -fL --retry 3 --connect-timeout 25 --max-time 1100 -o standard39-2.pdf "$MIRROR"
+          fi
+          echo '5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07  standard39-2.pdf' | sha256sum -c -
+          test "$(stat -c %s standard39-2.pdf)" -eq 243520529
+          echo "PASS original publisher-issued Hafs GREEN book byte-for-byte identical to pinned public archive"
+      - name: Convert only nine sample PDF leaves losslessly; keep exact original ornaments and text
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          python3 -m pip install --quiet pillow
+          python3 scripts/render-official-green-review.py /tmp/official-kfqc/standard39-2.pdf dist/quran-green-review
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          m=json.loads(Path('dist/quran-green-review/manifest.json').read_text())
+          assert m['referenceMatch'].startswith('UNVERIFIED')
+          for e in m['pages']:
+            p=Path('dist/quran-green-review')/e['filename']
+            assert p.stat().st_size==e['bytes']
+            assert hashlib.sha256(p.read_bytes()).hexdigest()==e['sha256']
+          print('PASS 9 original Green PDF page images with SHA-256 fingerprints, NO synthetic ornaments')
+          PY
+      - name: Chromium screenshots from REAL original Salati with publisher PDF in lower mushaf frame
+        run: |
+          python3 -m pip install --quiet playwright
+          python3 -m playwright install --with-deps chromium
+          BIN="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BIN" /usr/bin/chromium
+          python3 tests/official-green-review-browser.py
+      - name: Preserve authentic-source page samples and real app screenshots; NO production, NO APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-genuine-green-pdf-original-ui-review-UNAPPROVED
+          path: |
+            dist/quran-green-review/
+            reports/official-green-review/
+          retention-days: 14
+          if-no-files-found: warn
