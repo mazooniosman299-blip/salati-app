@@ -7,7 +7,7 @@ Mode quran-tap: print x y of the next tab left of the rightmost blue tab.
 from PIL import Image
 import sys
 
-assert len(sys.argv)==3, 'usage: preflight.py dialog|quran-tap /path/to/screenshot.png'
+assert len(sys.argv)==3, 'usage: preflight.py dialog|ready|quran-tap /path/to/screenshot.png'
 mode,path=sys.argv[1:]
 im=Image.open(path).convert('RGB')
 w,h=im.size
@@ -25,13 +25,18 @@ if mode=='dialog':
  modal=sum(min(rgb)>185 and max(rgb)-min(rgb)<45 for rgb in samples)>=11
  if modal: print('SYSTEM ANR overlay detected, close Pixel Launcher dialog',file=sys.stderr)
  raise SystemExit(0 if modal else 1)
-if mode=='quran-tap':
+if mode in ('ready','quran-tap'):
  pixels=[]
  for y in range(h-145,h-25):
   for x in range(int(w*.07),int(w*.96)):
    r,g,b=im.getpixel((x,y))
    if 5<=r<=60 and 40<=g<=150 and 110<=b<=255 and b>g*1.5:
     pixels.append((x,y))
+ if mode=='ready':
+  if len(pixels)>300:
+   print('Native Salati navigation ready',file=sys.stderr)
+   raise SystemExit(0)
+  raise SystemExit(1)
  assert len(pixels)>300, ('No undimmed blue tab in real Android screenshot',len(pixels),w,h)
  xs=[x for x,_ in pixels];ys=[y for _,y in pixels]
  active_x=(min(xs)+max(xs))//2
