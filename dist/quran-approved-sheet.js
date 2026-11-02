@@ -48,6 +48,25 @@
     panel.prepend(panelTitle);panel.append(stopRow);
     const header=make('div','qApprovedHeader');
     header.append(close,player.querySelector('.recitation-caption'),settings);
+    // The QuranReader continues updating its original metadata node. Mirror only
+    // the surah title into this compact WHITE caption; don't mutate QuranReader data.
+    const titleTrack=byId('qTrack'),caption=header.querySelector('.recitation-caption');
+    const middleDot=make('span','qApprovedTitleDot');middleDot.textContent='·';
+    const shortSurah=make('span','qApprovedSurahTitle');
+    if(caption&&titleTrack){
+      caption.append(middleDot,shortSurah);
+      const refreshSurah=()=>{
+        shortSurah.textContent=(titleTrack.textContent||'').split('·')[0].trim();
+      };
+      new MutationObserver(refreshSurah).observe(titleTrack,{childList:true,characterData:true,subtree:true});
+      refreshSurah();
+      Object.assign(titleTrack.style,{position:'absolute',width:'1px',height:'1px',
+        overflow:'hidden',clipPath:'inset(50%)',pointerEvents:'none'});
+      for(const e of [middleDot,shortSurah])Object.assign(e.style,{
+        display:'block',flex:'0 1 auto',minWidth:'0',margin:'0',padding:'0',
+        color:'#FFFFFF',WebkitTextFillColor:'#FFFFFF',fontSize:'clamp(11px,3.1vw,15px)',
+        fontWeight:'800',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'});
+    }
     const actions=make('div','qApprovedActions');
     actions.append(speed,previous,qTransport,next,repeat);
     player.prepend(header);
@@ -63,7 +82,6 @@
     Object.assign(header.style,{display:'grid',gridTemplateColumns:'43px minmax(0,1fr) 43px',
       gridTemplateRows:'44px',alignItems:'center',gap:'5px',minHeight:'44px',
       width:'100%',direction:'ltr'});
-    const caption=header.querySelector('.recitation-caption');
     if(caption)Object.assign(caption.style,{gridArea:'1/2/2/3',gridColumn:'2',gridRow:'1',
       display:'flex',justifyContent:'center',alignItems:'center',minWidth:'0',maxWidth:'100%',
       width:'100%',height:'42px',overflow:'hidden',pointerEvents:'none'});
@@ -71,6 +89,15 @@
       zIndex:'3',position:'relative',justifySelf:'center'});
     Object.assign(settings.style,{gridArea:'1/3/2/4',gridColumn:'3',gridRow:'1',
       zIndex:'3',position:'relative',justifySelf:'center'});
+    // Avoid legacy outlined utility buttons: original approved player uses
+    // plain WHITE glyphs, only its central play button is BLUE.
+    for(const control of [close,settings,speed,previous,next,repeat]){
+      Object.assign(control.style,{border:'0',background:'transparent',
+        backgroundImage:'none',boxShadow:'none',borderRadius:'50%',width:'42px',
+        height:'42px',minWidth:'0',minHeight:'0',padding:'0',margin:'0',
+        color:'#FFFFFF',WebkitTextFillColor:'#FFFFFF'});
+    }
+    close.style.background='#343842';
     Object.assign(actions.style,{display:'grid',
       gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr) minmax(64px,1.2fr) minmax(0,1fr) minmax(0,1fr)',
       gridTemplateRows:'64px',gap:'4px',alignItems:'center',width:'100%',minHeight:'64px',direction:'ltr'});
