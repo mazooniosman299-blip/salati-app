@@ -65,6 +65,15 @@ jobs:
             echo "Important flags leaked into Android APK" >&2; exit 1
           fi
           "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose "$APK"
+      - name: Require hardware KVM acceleration before booting Android
+        run: |
+          if [ ! -c /dev/kvm ]; then
+            echo 'ERROR: GitHub runner has no /dev/kvm; refusing software TCG fallback' >&2
+            exit 1
+          fi
+          sudo chmod 0666 /dev/kvm
+          test -r /dev/kvm && test -w /dev/kvm
+          ls -l /dev/kvm
       - name: Native Android WebView screenshots on emulator
         timeout-minutes: 12
         uses: reactivecircus/android-emulator-runner@v2
@@ -75,7 +84,7 @@ jobs:
           profile: pixel_6
           disk-size: 2048M
           ram-size: 2048M
-          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
           disable-animations: true
           script: bash scripts/android-webview-smoke.sh
       - name: Commit verified zero-important stylesheet to experiment branch ONLY
