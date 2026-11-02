@@ -136,7 +136,27 @@ export class QuranReader{
   const printable=text=>text.replace(/[\u06DD\u06DE\u06DF\u06E0]/gu,'');
  const verses=this.data.pages[index],page=document.createElement('section');page.className='quran-reading-page';page.dataset.readingPage=index+1;
  
- const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}page.append(fragment);const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
+ const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}// Original 604-plate Madinah/KFQC print artwork, fetched only when visible.
+  // Offline or an SVG/network failure retains the existing licensed,
+  // fully interactive local text page instead of showing a blank page.
+  const plate=document.createElement('img');
+  plate.className='quran-madinah-plate';plate.alt='مصحف المدينة المنورة، الصفحة '+(index+1);
+  plate.width=345;plate.height=550;plate.loading='lazy';plate.decoding='async';
+  const fallback=document.createElement('div');
+  fallback.className='quran-page-interactive-fallback';
+  plate.addEventListener('load',()=>{page.classList.add('quran-print-plate-ready');});
+  plate.addEventListener('error',()=>{page.classList.remove('quran-print-plate-ready');plate.remove();});
+  plate.addEventListener('click',()=>{page.classList.add('quran-plate-text-mode');});
+  const returnToPrint=document.createElement('button');
+  returnToPrint.type='button';returnToPrint.className='quran-back-to-print';
+  returnToPrint.textContent='العودة إلى صفحة المصحف الأصلية';
+  returnToPrint.addEventListener('click',()=>page.classList.remove('quran-plate-text-mode'));
+  // CDN release v1.1.1 from quran-ws; official KFQC Hafs printed plate.
+  // The source is immutable; no third-party JS is loaded.
+  plate.src='https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/'+String(index+1).padStart(3,'0')+'.svg';
+  fallback.append(fragment);page.append(plate,fallback);
+  fallback.append(returnToPrint);
+  const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
  const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);page.append(number);return page;
  }
  renderReadingPages(){
