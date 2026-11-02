@@ -1,8 +1,8 @@
 {
-  "note": "Measured from ACTUAL layered 1.0.122 CSS + city-only stylesheet on 2026-11-02, not a claim of zero defects. Safe optimization should reduce these values; never permit increase.",
-  "conflicting_selector_property_groups": 71,
-  "duplicate_selector_property_groups": 75,
-  "duplicate_declarations": 84,
+  "note": "Exact layered source tree on 2026-11-02 after removing 84 redundant declarations and duplicated glass fallback; zero repeated selector-property ownership in identical layer and @conditional context. Runtime overlap and state still checked separately via browser.",
+  "conflicting_selector_property_groups": 0,
+  "duplicate_selector_property_groups": 0,
+  "duplicate_declarations": 0,
   "expected_layers": [
     "salati-base",
     "salati-priority",
