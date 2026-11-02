@@ -4,7 +4,7 @@
 const fs=require('node:fs'),https=require('node:https'),path=require('node:path'),assert=require('node:assert/strict');
 const ROOT=path.resolve(__dirname,'..');
 const repo='mazooniosman299-blip/salati-app';
-function isRuntime(p){return /^(?:dist\/|android\/|app-source\.js$|quran-controller\.js$|quran-page-audio\.js$|(?:prayer|settings|qibla|compass|tasbih|adhkar|audio|location)-[^/]*\.js$|scripts\/(?:build-|release-|sign-|prepare-android)|\.github\/workflows\/(?:publish-|salati-permanent-regression))/i.test(p)}
+function isRuntime(p){return /^(?:dist\/|android\/|[^/]+\.(?:js|css)$|scripts\/(?:build-|release-|sign-|prepare-android)|\.github\/workflows\/(?:publish-|salati-permanent-regression))/i.test(p)}
 function intersections(ours,others){
  const a=new Set(ours.filter(isRuntime));
  return others.filter(isRuntime).filter(p=>a.has(p)).sort();
@@ -45,6 +45,7 @@ function selfTest(){
  assert.deepEqual(intersections(['AGENTS.md'],['dist/index.html']),[]);
  assert.deepEqual(intersections(['dist/index.html'],['tests/legacy.py']),[]);
  assert.deepEqual(intersections(['android/app/src/main/AndroidManifest.xml'],['android/app/src/main/AndroidManifest.xml']),['android/app/src/main/AndroidManifest.xml']);
+ assert.deepEqual(intersections(['glass-navigation.js','docs/a.md'],['glass-navigation.js','docs/b.md']),['glass-navigation.js'],'Unlisted frontend modules must be treated as runtime, not documentation');
  console.log('PASS PR collision rejection/allowance self-test');
 }
 (async()=>{
