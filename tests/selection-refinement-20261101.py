@@ -41,7 +41,8 @@ try:
           border:getComputedStyle(e).borderTopWidth
         }))""")
         assert sum(x['active'] for x in items)==1,(width,tab,'exactly one active tab',items)
-        assert all(x['bg']=='rgb(11, 14, 19)' for x in items),(width,tab,'matte dark navigation; retired blue fill must stay absent',items)
+        assert sum(x['bg']=='rgb(17, 74, 183)' for x in items)==1,(width,tab,'exactly one approved blue active tab',items)
+        assert all(x['bg']=='rgba(0, 0, 0, 0)' for x in items if not x['active']),(width,tab,'inactive tab backgrounds must remain transparent',items)
         assert next(x for x in items if x['active'])['outline']=='0px',(width,tab,'inactive focus outline must not leak')
       page.locator('header>.site-nav').screenshot(path=str(evidence/f'nav-{width}.png'))
 
@@ -128,7 +129,7 @@ try:
         page.click(f'[data-tab={tab}]')
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'overflow')
       assert not errors,(width,'browser errors',errors)
-      checks.append({'width':width,'six_tabs_dark_only':True,'prayer_tiles_reference_capsules':True,'notes_white':True,
+      checks.append({'width':width,'six_tabs_blue_active_only':True,'prayer_tiles_reference_capsules':True,'notes_white':True,
         'small_surah_ornament':True,'recitation_no_box':True,'follow_checkbox_blue':True,
         'one_left_voice_tick':True,'location_icon_centered':True,'runtime_errors':0})
       page.close()
