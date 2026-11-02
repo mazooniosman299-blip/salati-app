@@ -51,3 +51,19 @@ The original 604-page KFQC `quran-ws/quran-svg` inventory is now checked in at `
 `scripts/verify-kfqc-mushaf-source.cjs` confirms the complete 604-page inventory and can validate every locally imported SVG using the real Git blob hash algorithm. `--verify-samples` independently downloads and checks unaltered upstream pages **1, 12 and 604**. The non-publishing workflow `salati-kfqc-artwork-source-qa.yml` runs the checks.
 
 **Scope boundary:** this confirms authentic Hafs text geometry and verse markers once actual pages are fetched; it neither proves nor replicates the soft green/pink floral border in the user's exact chosen picture #5. The original application and the already approved in-frame player remain intact and no pages are deployed. Do not accept the 604-page source manifest itself as approval to merge the PR.
+
+
+## Authentic green 1439 PDF review implemented (2026-11-02)
+
+The user's chosen **#5 green/pink screenshot** remains the sole visual target. The publisher's original *green* standard 1439H Hafs PDF is candidate \`standard39-2.pdf\`, 243,520,529 bytes and SHA-256 \`5c4297de1fb6b654f641eed33242408d89432cbecf8a96ff5d297cb45fea7f07\`:
+https://qurancomplex.gov.sa/wp-content/uploads/isdarat/hafs/standard39-2.pdf
+
+Original release hash documented in the public \`quran-ws/kfgqpc-resources/metadata/quran-hafs.json\`; the archive is not the publisher or a source of separate reuse rights.
+
+A **real opt-in preview only** has been implemented:
+- \`dist/quran-official-green-preview.js\` activates on \`/?mushaf-preview=official-green\` only if lossless PDF page samples with matching source and per-page SHA hashes exist. All other visits display the original Salati reader unmodified.
+- \`scripts/render-official-green-review.py\` validates the entire source PDF's bytes, then renders nine **lossless** WEBP review leaves, preserving the publisher's original verse text, line distribution and borders. Every image has its own content hash. Display uses the true **PDF leaf index**, never invents the corresponding 604-page Mushaf index.
+- \`tests/official-green-review-browser.py\` opens the **original** Salati website at 390/768/1440px, verifies the entire Quran source image remains inside the existing page frame and the approved player follows without overlay.
+- \`.github/workflows/salati-official-green-pdf-preview.yml\` obtains the genuine publisher PDF (or a byte-identical mirror), validates SHA-256, runs source and real-Chromium tests and saves screenshots as an artifact. **NO LIVE SITE/APK DEPLOY.**
+
+**Still blocked:** checksum authenticity does NOT prove exact identity to the user's shortlist image #5. Full 604-page alignment and visual parity must be approved before this preview becomes a released Quran reader. Any current screenshots are labelled as preview samples, not finished implementation.
