@@ -58,10 +58,14 @@ try:
           active:e.classList.contains('active')
         })""")
         radius=float(data['radius'].split('px')[0])
-        assert radius==0,(width,i,'current square, unrounded prayer cells',data)
-        assert data['bg']=='rgba(0, 0, 0, 0)',(width,i,'no duplicate glass card over the prayer strip',data)
+        expected_radius=0 if width<=600 else 24
+        assert radius==expected_radius,(width,i,'responsive square mobile/rounded desktop prayer cells',data)
+        if width<=600:
+          assert data['bg']=='rgba(0, 0, 0, 0)',(width,i,'no duplicate mobile glass tile',data)
+        else:
+          assert data['bg'] in ('rgb(45, 61, 86)','rgb(53, 74, 103)'),(width,i,'approved desktop fill',data)
         assert isinstance(data['active'],bool),(width,i,'active prayer state invalid',data)
-      assert tiles.locator('.active').count()==1,(width,'exactly one selected prayer')
+      assert page.locator('#prayers .prayer.active').count()==1,(width,'exactly one selected prayer')
       assert page.locator('#times .card.verse p').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       assert page.locator('#times .hero-prayer>span').evaluate("e=>getComputedStyle(e).color")=='rgb(255, 255, 255)'
       page.locator('#times .prayer-overview').screenshot(path=str(evidence/f'prayers-{width}.png'))

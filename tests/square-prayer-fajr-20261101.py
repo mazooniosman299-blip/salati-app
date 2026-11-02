@@ -29,9 +29,14 @@ try:
    }))""")
    assert len(tiles)==6,(width,tiles)
    assert sum(c['active'] for c in tiles)==1,(width,'one active prayer after valid city and time calculation',tiles)
-   assert all(c['radius']=='0px' for c in tiles),(width,'original square prayer cells',tiles)
-   assert all(c['bg']=='rgba(0, 0, 0, 0)' for c in tiles),(width,'no duplicated solid background',tiles)
-   assert all(c['border']=='rgb(255, 255, 255)' for c in tiles),(width,'visible white separators on every prayer',tiles)
+   if width<=600:
+    assert all(c['radius']=='0px' for c in tiles),(width,'square mobile prayer strip',tiles)
+    assert all(c['bg']=='rgba(0, 0, 0, 0)' for c in tiles),(width,'transparent mobile prayer strip',tiles)
+    assert all(c['border']=='rgb(255, 255, 255)' for c in tiles),(width,'visible white borders on mobile',tiles)
+   else:
+    assert all(c['radius']=='24px' for c in tiles),(width,'approved rounded desktop prayer cards',tiles)
+    assert all(c['bg']==('rgb(53, 74, 103)' if c['active'] else 'rgb(45, 61, 86)') for c in tiles),(width,'desktop highlight colors',tiles)
+    assert all(c['border']==('rgb(142, 167, 195)' if c['active'] else 'rgb(83, 107, 138)') for c in tiles),(width,'desktop card border colors',tiles)
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,'prayer strip overflows viewport')
    if width in (390,768):page.locator('#prayers').screenshot(path=str(out/f'prayers-{width}.png'))
    page.click('[data-tab=settings]')
