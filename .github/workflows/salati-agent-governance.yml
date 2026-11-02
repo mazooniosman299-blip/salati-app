@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: read
 jobs:
   request-contract:
     runs-on: ubuntu-latest
@@ -22,6 +23,19 @@ jobs:
         run: |
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
+      - name: Self-test PR conflict classifier
+        run: node scripts/pr-conflict-review.cjs --self-test
+      - name: Reject overlapping live source files across open PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/pr-conflict-review.cjs
+      - name: Preserve live overlap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-pr-source-overlap-evidence
+          path: reports/pr-overlap-latest.json
+          if-no-files-found: warn
       - name: Explicitly mark limited validation
         run: echo "Source/scope contract only; NOT runtime browser visual reference, Android hardware, original-key signing, or production publication proof."
 
