@@ -57,7 +57,10 @@ try:
       active.wait_for(state='visible',timeout=10000)
       frame=active.evaluate("""e=>({border:getComputedStyle(e).borderTopColor,
          shadow:getComputedStyle(e).boxShadow})""")
-      assert frame['border']=='rgb(255, 255, 255)' and frame['shadow']=='none',(width,'current matte white outlined prayer, without obsolete glow',frame)
+      # Mobile uses high-contrast white focus; desktop retains the blue-slate outlined reference.
+      expected_border='rgb(255, 255, 255)' if width<=600 else 'rgb(142, 167, 195)'
+      expected_shadow='none' if width<=600 else 'rgba(255, 255, 255, 0.12) 0px 0px 0px 1px inset'
+      assert frame['border']==expected_border and frame['shadow']==expected_shadow,(width,'current responsive prayer outline',frame)
       instruction=page.get_by_text('المواقيت محسوبة فلكيًا.',exact=False).first
       assert instruction.evaluate('e=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
       page.click('[data-tab=settings]')

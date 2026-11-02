@@ -24,7 +24,7 @@ try:
             page.on('pageerror',lambda e:errors.append(str(e)))
             response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
             assert response and response.ok
-            assert page.locator('link[href="ui-refinement-20261101.css"]').count()==1
+            assert page.locator('link[href="salati-ui.css"]').count()==1, 'Native and web use single canonical stylesheet'
             assert page.locator('body').evaluate("e=>e.classList.contains('dark')")
             page.click('header [data-tab=settings]')
             # Every native switch is a symmetrical capsule with one correctly centered thumb.
@@ -90,7 +90,7 @@ try:
             nav=active.evaluate("""e=>({bg:getComputedStyle(e).backgroundColor,
                 underline:getComputedStyle(e,'::after').backgroundColor,
                 icon:getComputedStyle(e.querySelector('.nav-symbol')).color})""")
-            assert nav['bg']=='rgb(29, 78, 216)' and nav['underline']=='rgba(0, 0, 0, 0)' and nav['icon']=='rgb(255, 255, 255)',(viewport,nav)
+            assert nav['bg']=='rgb(11, 14, 19)' and nav['icon']=='rgb(255, 255, 255)',(viewport,'dark matte active nav without retired blue card',nav)
             page.locator('header>.site-nav').screenshot(path=str(out/f'nav-{viewport}.png'))
             # Redesigned two-column instrument on desktop and stacked on mobile,
             # but keep the original sensor/needle/heading DOM elements.

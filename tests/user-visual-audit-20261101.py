@@ -24,7 +24,7 @@ try:
    page.on('pageerror',lambda e:errors.append(str(e)))
    response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
    assert response and response.ok
-   assert page.locator('link[href="user-fixes-20261101.css"]').count()==1
+   assert page.locator('link[href="salati-ui.css"]').count()==1, 'Canonical stylesheet required'
 
    # Surah artwork: every Arabic title, even آل عمران, is ONE LINE, inside white center.
    page.click('[data-tab=mushaf]')
@@ -114,7 +114,8 @@ try:
    # Signed APK must download from SAME domain, not navigate to GitHub.
    href=page.locator('#androidDownload .apk-download').get_attribute('href')
    name=page.locator('#androidDownload .apk-download').get_attribute('download')
-   assert href=='/downloads/salati-1.0.121.apk' and name=='salati-1.0.121.apk',(width,'same-origin APK',href,name)
+   release=json.loads((root/'apk-release-parts/current.json').read_text())['version']
+   assert href=='/downloads/salati-'+release+'.apk' and name=='salati-'+release+'.apk',(width,'same-origin current signed APK',href,name)
    assert not errors,(width,'browser errors',errors)
    results.append({'viewport':width,'surahs':114,'countries':len(offsets),'muezzinChoices':4,
                    'whitePrayerRows':len(colors),'blackKaaba':True,'directDownload':True,'errors':0})
