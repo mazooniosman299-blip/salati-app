@@ -14,7 +14,7 @@ import json,re,hashlib,tinycss2
 root=Path(__file__).resolve().parents[1]
 path=root/"dist/salati-ui.css"
 source=path.read_text(encoding="utf8")
-assert not re.search(r"(?m)^\\s*@(?:import|charset|layer)\\b",source), "Already layered/imported source requires manual audit"
+assert not re.search(r"(?m)^\s*@(?:import|charset|layer)\b",source), "Already layered/imported source requires manual audit"
 stats=Counter()
 
 def split(nodes):
@@ -52,16 +52,16 @@ def split(nodes):
             # at-rules intact. These do not participate in the author cascade
             # like individual style declarations.
             raw=tinycss2.serialize([n])
-            assert not re.search(r"!\\s*important\\b",raw,re.I),("Unmapped priority in at-rule",raw[:80])
+            assert not re.search(r"!\s*important\b",raw,re.I),("Unmapped priority in at-rule",raw[:80])
             normal.append(raw)
     return "".join(normal),"".join(priority)
 
 ast=tinycss2.parse_stylesheet(source,skip_whitespace=False,skip_comments=False)
 assert not any(x.type=="error" for x in ast)
 lo,hi=split(ast)
-assert stats["migrated_flags"]==len(re.findall(r"!\\s*important\\b",source,re.I))
-layered="@layer salati-base,salati-priority;\\n@layer salati-base{"+lo+"}\\n@layer salati-priority{"+hi+"}"
-assert not re.search(r"!\\s*important\\b",layered,re.I)
+assert stats["migrated_flags"]==len(re.findall(r"!\s*important\b",source,re.I))
+layered="@layer salati-base,salati-priority;\n@layer salati-base{"+lo+"}\n@layer salati-priority{"+hi+"}"
+assert not re.search(r"!\s*important\b",layered,re.I)
 assert not any(x.type=="error" for x in tinycss2.parse_stylesheet(layered))
 (path.parent/"salati-ui-baseline.css").write_text(source,encoding="utf8")
 path.write_text(layered,encoding="utf8")
