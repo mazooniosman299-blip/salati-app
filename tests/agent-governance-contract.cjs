@@ -63,4 +63,8 @@ const manifestReference=JSON.parse(read('design-references/APPROVED_REFERENCE_RE
 assert(manifestReference.references.some(x=>x.id==='mosque-original'&&x.status==='verified-user-asset'));
 assert(manifestReference.references.some(x=>x.id==='printed-mushaf-final'&&x.status==='unresolved'));
 
+const verbatim=read('docs/requests/ORIGINAL_FULL_PROMPT_20261103.md');
+assert(verbatim.includes('## المشكلة 1: غياب تعليمات موحدة لـChatGPT')&&verbatim.includes('## المشكلة 20: غياب سجل نهائي لتنفيذ الطلبات وقبولها'),'Original 20-point user request is incomplete');
+assert(agent.includes('ORIGINAL_FULL_PROMPT_20261103.md'),'AGENTS no longer requires whole original user mandate');
+require('../scripts/verify-request-status.cjs');
 console.log('PASS agent governance: 20 risks, source ownership, conflicting PRs, original release identity, additional negative cases; no visual match asserted');
