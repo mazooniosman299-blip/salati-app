@@ -21,7 +21,7 @@ try:
       errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
       response=page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
       assert response.ok and page.locator('body.dark').count()
-      assert page.locator('link[href="mushaf-legibility-20261101.css"]').count()==1
+      assert page.locator('link[href="salati-ui.css"]').count()==1, 'The current Quran must use the single canonical CSS source'
       assert page.locator('script[src="quran-mushaf-markers-20261101.js"]').count()==1
       assert not page.get_by_text('تُشغَّل عبارة «الصلاة خير من النوم» مرة واحدة',exact=False).count()
       page.click('[data-tab=mushaf]')
