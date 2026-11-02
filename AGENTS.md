@@ -1,6 +1,6 @@
 # Salati — mandatory implementation contract for AI agents
 
-> Applies to every new AI coding session and every proposed change. Start here, then read `docs/CURRENT_APPROVED_DESIGN.md`, `docs/ACTUAL_SOURCE_MAP.md`, `docs/INSTRUCTION_CONFLICTS.md`, and the current request record. Do not treat this document as a substitute for direct code inspection.
+> Applies to every new AI coding session and every proposed change. Start here, first read the complete 567-line user mandate `docs/requests/ORIGINAL_FULL_PROMPT_20261103.md`, then read `docs/CURRENT_APPROVED_DESIGN.md`, `docs/ACTUAL_SOURCE_MAP.md`, `docs/INSTRUCTION_CONFLICTS.md`, and the current request record. Do not treat this document as a substitute for direct code inspection.
 
 ## 1. Source of truth and precedence
 1. Explicit, most recent USER instruction for the specific element and scope, where its wording and evidence are available.
@@ -49,3 +49,6 @@ Report separately: source changed / build passed / functional tests passed / bro
 
 ## 9. Every new request
 Update the request record, `docs/requests/ACTIVE_CHANGE.json` path allowlist, visual spec and conflict register as needed; run `node tests/agent-governance-contract.cjs` and `node scripts/verify-change-scope.cjs origin/production` in PR CI. Deliver changes as a reviewable PR; don't merge or deploy without all required signed-release gates.
+
+## 10. Verbatim user requirements and truth-in-reporting
+Read `docs/requests/ORIGINAL_FULL_PROMPT_20261103.md` in full before implementing Salati requests. The original twenty per-risk acceptance criteria override condensed summaries. Use `docs/requests/ACCEPTANCE_STATUS.json` to distinguish stages; never mark a missing visual reference, physical Android test, or future user acceptance as PASS. Do not treat documentation work as proof of actual AI instruction compliance.

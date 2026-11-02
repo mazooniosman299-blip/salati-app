@@ -32,7 +32,13 @@
     "docs/source-README.md",
     "design-qa.md",
     "docs/VISUAL_SCOPE_GATE_20261103.md",
-    "tests/quran-source-integrity.cjs"
+    "tests/quran-source-integrity.cjs",
+    "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md",
+    "docs/requests/ACCEPTANCE_STATUS.json",
+    "scripts/verify-request-status.cjs",
+    "tests/source-lifecycle-contract.cjs",
+    "tests/design-restoration-contract.cjs",
+    "docs/github-source.json"
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
