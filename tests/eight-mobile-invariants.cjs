@@ -5,7 +5,7 @@ const html=read('dist/index.html'),css=read('dist/eight-mobile-root-fixes-202611
 const quran=read('quran-controller.js'),clean=read('dist/quran-mushaf-markers-20261101.js');
 const app=read('app-source.js');
 const migrated=html.includes('href="salati-ui.css"');
-assert(migrated?read('dist/salati-ui.css').includes('overflow-y:auto!important'):html.includes('href="eight-mobile-root-fixes-20261101.css"'),'Mobile containment must be in active stylesheet');
+assert(migrated?(read('dist/salati-ui.css').includes('@layer salati-priority') && /overflow-y:\\s*auto\\s*;/.test(read('dist/salati-ui.css'))):html.includes('href="eight-mobile-root-fixes-20261101.css"'),'Mobile containment must be in active stylesheet');
 for(const ch of ['06DD','06DE','06DF','06E0']){
  assert(quran.includes('\\u'+ch),'Source Quran renderer must sanitize '+ch);
  assert(clean.includes('\\u'+ch),'Cached Quran DOM repair must sanitize '+ch);
