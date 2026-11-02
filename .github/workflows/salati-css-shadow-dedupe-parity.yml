@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/salati-css-shadow-dedupe-parity.yml
       - scripts/dedupe-layered-css.py
+      - tests/eight-mobile-invariants.cjs
 permissions:
   contents: write
 concurrency:
