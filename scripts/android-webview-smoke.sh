@@ -45,7 +45,12 @@ sleep 7
 adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
 # Reader sits below the header/selection controls on compact displays.
 # Swipe the real Android WebView and capture a separate parchment screenshot.
-adb shell input swipe 216 755 216 315 580
+# Swipe INSIDE the visible Quran parchment (image evidence: y=137..620 at
+# 432x960), not from the voice/player controls at y=630..760.
+# The old start at y=755 hit the reciter-picker and created a false
+# "parchment missing after scroll" failure, while the original screenshot
+# clearly contained the cream reader with the full Surah Al-Fatihah.
+adb shell input swipe 216 520 216 280 580
 sleep 3
 adb exec-out screencap -p > reports/android-webview-20261102/mushaf-reader.png
 adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
