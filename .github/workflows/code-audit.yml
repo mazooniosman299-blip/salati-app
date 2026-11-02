@@ -21,10 +21,10 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Full JavaScript regression suite
-        run: npm test
-      - name: Compile the web app
+      - name: Compile actual production bundle BEFORE testing it
         run: npm run build
+      - name: Full JavaScript regression suite against rebuilt code
+        run: npm test
       - name: Run remaining web/SEO/Quran DOM tests
         run: |
           node tests/quran-dom.cjs
