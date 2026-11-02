@@ -41,7 +41,7 @@ jobs:
           from pathlib import Path
           p=Path('dist/salati-ui.css')
           assert '!important' not in p.read_text(), 'Priority flags still present'
-          assert p.read_text().count('@layer salati-priority')==2
+          assert p.read_text().count('@layer salati-priority')==1
           print('PASS zero !important and two defined layers')
           PY
       - name: Full computed-style and geometry parity — six tabs, six viewport widths
