@@ -16,11 +16,11 @@
     // The single unchanged publisher print page is the viewport: no card,
     // no rounded clipping, no secondary dark panel and no cropped border.
     style(mushaf,{position:'fixed',inset:'0',width:'100vw',height:'100dvh',margin:'0',padding:'0',
-      maxWidth:'none',zIndex:'100000',background:'#FAF9F5',overflow:'hidden'});
+      maxWidth:'none',zIndex:'100000',background:'#FFFFFF',overflow:'hidden'});
     style(sheet,{position:'fixed',inset:'0',width:'100vw',height:'100dvh',maxWidth:'none',
       display:'flex',flexDirection:'column',alignItems:'stretch',gap:'0',overflowY:'auto',
       overflowX:'hidden',margin:'0',padding:'0',border:'0',borderRadius:'0',boxShadow:'none',
-      background:'#FAF9F5',scrollSnapType:'y proximity',overscrollBehavior:'contain',
+      background:'#FFFFFF',scrollSnapType:'y proximity',overscrollBehavior:'contain',
       WebkitOverflowScrolling:'touch',zIndex:'100001'});
     // No toolbars from the rest of Salati compete for the screen.
     for(const node of [
@@ -30,7 +30,7 @@
     ])style(node,{display:'none'});
     style(section,{display:'flex',flex:'0 0 100dvh',width:'100vw',maxWidth:'100%',
       height:'100dvh',minHeight:'100dvh',margin:'0',padding:'0',gap:'0',border:'0',
-      borderRadius:'0',boxShadow:'none',background:'#FAF9F5',
+      borderRadius:'0',boxShadow:'none',background:'#FFFFFF',
       overflow:'hidden',alignItems:'center',justifyContent:'center',
       scrollSnapAlign:'start'});
     const note=section.querySelector('p'),paging=section.querySelector('div');
@@ -38,7 +38,7 @@
     style(image,{display:'block',width:'100vw',maxWidth:'100%',height:'100dvh',
       maxHeight:'100dvh',margin:'0',padding:'0',border:'0',borderRadius:'0',
       boxShadow:'none',objectFit:'contain',objectPosition:'center',
-      background:'#FAF9F5'});
+      background:'#FFFFFF'});
     // The already approved player is directly AFTER the complete page in
     // real document flow; swipe down for controls. It cannot cover an ayah.
     style(player,{position:'relative',inset:'auto',display:'block',flex:'0 0 auto',
