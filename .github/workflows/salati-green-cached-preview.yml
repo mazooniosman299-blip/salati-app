@@ -5,7 +5,10 @@ on:
     paths:
       - .github/workflows/salati-green-cached-preview.yml
       - dist/quran-official-green-preview.js
+      - dist/quran-immersive-page-review.js
+      - tests/mushaf-one-complete-page-browser.py
       - tests/official-green-review-browser.py
+      - dist/index.html
   workflow_dispatch:
 permissions:
   contents: read
@@ -66,6 +69,7 @@ jobs:
           BIN="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BIN" /usr/bin/chromium
           python3 tests/official-green-review-browser.py
+          python3 tests/mushaf-one-complete-page-browser.py
       - name: Store screenshots for visual comparison; never deploy
         if: always()
         uses: actions/upload-artifact@v4
@@ -73,6 +77,7 @@ jobs:
           name: salati-authentic-green-interior-page-mobile-review-UNAPPROVED
           path: |
             reports/official-green-review/
+            reports/official-green-fullpage/
             dist/quran-green-review/manifest.json
           retention-days: 14
           if-no-files-found: warn
