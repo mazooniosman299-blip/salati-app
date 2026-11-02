@@ -21,7 +21,10 @@ def visible_rectangle(case,selector):
 
 def compare(baseline,candidate,policy):
  approved=policy.get('visual_allowed_regions',[])
- assert policy.get('visual_change') is True and approved,'Visual changes require exact per-tab selector allowlist'
+ if policy.get('visual_change') is True:
+  assert approved,'Visual changes require exact per-tab selector allowlist'
+ else:
+  assert not approved,'Unchanged-visual request must not claim allowed changed areas'
  a=json.loads((baseline/'metrics.json').read_text())
  b=json.loads((candidate/'metrics.json').read_text())
  old={e['image']:e for e in a['screenshots']};new={e['image']:e for e in b['screenshots']}
@@ -41,7 +44,8 @@ def compare(baseline,candidate,policy):
    assert outside<=int(x.width*x.height*.0005),(key,'unrequested visual change',outside,bbox)
   if rules:changed_authorized+=count
   results.append({'image':key,'changed_pixels':count,'outside_approved_regions':outside,'allowed_boxes':boxes})
- assert changed_authorized>0,'Requested visual change produced no changed pixels in the target'
+ if policy.get('visual_change') is True:
+  assert changed_authorized>0,'Requested visual change produced no changed pixels in the target'
  (candidate/'visual-scope-diff.json').write_text(json.dumps({'status':'PASS_SCOPE_NOT_REFERENCE_PARITY','images':results},indent=2)+'\n')
  print('PASS 48 actual screenshot comparisons with no visual changes outside declared components')
 

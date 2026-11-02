@@ -6,6 +6,7 @@ const fs=require('node:fs'),crypto=require('node:crypto'),os=require('node:os'),
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|app-source\.js$|quran-controller\.js$|quran-page-audio\.js$|.*\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
+const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/(?:index\.html|salati-ui\.css)|app-source\.js|quran-controller\.js|quran-page-audio\.js)$/.test(p));
 const releaseCriticalPath=p=>runtimePath(p)||/^scripts\/(?:build-|release-|sign-|prepare-android)/.test(p);
 function independentReleaseVerification() {
  const {verifiedManifest}=require('./release-guard.cjs');
@@ -75,4 +76,4 @@ if(require.main===module) {
   files.forEach(p=>console.log(' - '+p));
  }catch(e){console.error('FAIL scoped Salati change:',e.stack||e);process.exitCode=1;}
 }
-module.exports={validateScope,changedPaths,runtimePath,independentReleaseVerification};
+module.exports={validateScope,changedPaths,runtimePath,requiresWebVisualDiff,independentReleaseVerification};

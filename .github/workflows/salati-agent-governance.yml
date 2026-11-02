@@ -72,9 +72,10 @@ jobs:
       - name: Compare original production runtime with candidate ONLY for approved visual change
         run: |
           set -euo pipefail
-          if [[ "$(node -p 'require("./docs/requests/ACTIVE_CHANGE.json").visual_change===true?"yes":"no"')" == "yes" ]]; then
+          git fetch --no-tags origin production:refs/remotes/origin/production
+          RUNTIME_DIFF="$(node -e 'const x=require("./scripts/verify-change-scope.cjs");process.stdout.write(x.requiresWebVisualDiff(x.changedPaths("origin/production"))?"yes":"no")')"
+          if [[ "$RUNTIME_DIFF" == "yes" ]]; then
             export SALATI_BASELINE_DIR="$RUNNER_TEMP/salati-production-shots"
-            git fetch --no-tags origin production:refs/remotes/origin/production
             git worktree add --detach "$RUNNER_TEMP/salati-production-reference" origin/production
             (
               cd "$RUNNER_TEMP/salati-production-reference"
@@ -84,7 +85,7 @@ jobs:
             )
             python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
           else
-            echo 'No visual runtime changes; user image parity is not claimed.'
+            echo 'No web visual-capable source files changed; unrelated screenshot parity not claimed.'
           fi
       - name: Always retain real source/visual evidence
         if: always()
