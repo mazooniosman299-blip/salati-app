@@ -48,7 +48,7 @@ assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governan
 const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
 const prod={...more,release_mode:'production'};
-assert.throws(()=>validateScope([...permitted,'dist/index.html'],prod),/original-key/);
+assert.throws(()=>validateScope([...permitted,'dist/index.html'],prod,{releaseVerifier:()=>{throw new Error('independent signed proof unavailable')}}),/independent signed proof unavailable/,'Production runtime modification must not pass without independent original-key verification');
 let proofCalled=false;
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],{...prod,original_key_signing_verified:true,website_apk_fingerprint_verified:true},{releaseVerifier:()=>{proofCalled=true;throw new Error('independent original-key proof unavailable')}}),/independent original-key proof unavailable/,'Editable JSON booleans cannot bypass independent signer inspection');
 assert(proofCalled,'Signer proof verifier was bypassed');
