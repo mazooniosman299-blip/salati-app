@@ -20,5 +20,6 @@
   ],
   "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
-  "status": "in_progress"
+  "status": "in_progress",
+  "release_mode": "governance"
 }

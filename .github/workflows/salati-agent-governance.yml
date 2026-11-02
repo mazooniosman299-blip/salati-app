@@ -1,0 +1,26 @@
+name: Salati request interpretation and diff scope (NO DEPLOY)
+on:
+  pull_request:
+    branches: [production]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  request-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify signed version reference, 20 risk inventory and AI source-of-truth contract
+        run: node tests/agent-governance-contract.cjs
+      - name: Require exact per-request file scope, based on actual PR diff
+        run: |
+          git fetch --no-tags origin production:refs/remotes/origin/production
+          node scripts/verify-change-scope.cjs origin/production
+      - name: Explicitly mark limited validation
+        run: echo "Source/scope contract only; NOT runtime browser visual reference, Android hardware, original-key signing, or production publication proof."
