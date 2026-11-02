@@ -25,6 +25,9 @@ function validate(html, css, worker, current, signed) {
   for (const marker of ['nav-icon-button.active', '#prayers', '#mushafPlayerSlot']) {
     assert(css.includes(marker), 'Approved dark UI component missing: ' + marker);
   }
+  for (const id of ['qVerses', 'mushafPlayerSlot']) {
+    assert(html.includes('id="' + id + '"'), 'Quran reader component missing: ' + id);
+  }
   const frameStart = html.indexOf('id="qSheet"');
   const frameEnd = html.indexOf('</article>', frameStart);
   const frame = frameStart >= 0 && frameEnd > frameStart ? html.slice(frameStart, frameEnd) : '';
@@ -32,9 +35,6 @@ function validate(html, css, worker, current, signed) {
     'Original mushaf frame must contain BOTH the scrollable Quran and the player');
   assert(frame.indexOf('id="qVerses"') < frame.indexOf('id="mushafPlayerSlot"'),
     'Player must follow Quran scrollport, not cover Quran verses');
-  for (const id of ['qVerses', 'mushafPlayerSlot']) {
-    assert(html.includes('id="' + id + '"'), 'Quran reader component missing: ' + id);
-  }
   assert(worker.includes("'./salati-ui.css'"), 'Offline cache excludes the canonical stylesheet');
   assert.equal(signed.version, current.version, 'Website and APK release versions differ');
   assert.equal(signed.filename, 'salati-' + current.version + '.apk', 'Wrong signed APK filename');
