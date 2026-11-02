@@ -35,7 +35,9 @@ assert(read('docs/requests/SALATI-20261103-ROOT-CONTROL.md').includes(manifest.o
 assert.equal(manifest.release_mode,'governance','This no-UI-change PR must declare governance mode');
 assert.equal(manifest.visual_change,false,'Governance PR must not claim UI change');
 assert.equal(manifest.android_release,false,'Governance PR must not claim Android release');
-const {validateScope}=require('../scripts/verify-change-scope.cjs');
+const {validateScope,requiresWebVisualDiff}=require('../scripts/verify-change-scope.cjs');
+assert(requiresWebVisualDiff(['glass-navigation.js','choice-picker.js','dist/salati-ui.css']),'Imported UI modules must not bypass runtime visual comparison');
+assert(!requiresWebVisualDiff(['AGENTS.md','docs/ACTUAL_SOURCE_MAP.md']),'Governance-only documentation should not trigger UI diff');
 const permitted=['AGENTS.md','README.md','docs/requests/ACTIVE_CHANGE.json','docs/ROOT_CAUSE_AUDIT_20261103.md','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','.github/workflows/salati-agent-governance.yml'];
 assert.equal(validateScope(permitted,manifest),permitted.length);
 for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/main/java/com/salati/prayer/MainActivity.java','quran-controller.js','other-file.txt']){
@@ -55,6 +57,8 @@ assert(proofCalled,'Signer proof verifier was bypassed');
 assert.equal(validateScope([...permitted,'dist/index.html'],prod,{releaseVerifier:()=>{}}),permitted.length+1,'Only externally verified callback can certify release');
 const build={...manifest,allowed_paths:[...manifest.allowed_paths,'scripts/release-guard.cjs']};
 assert.throws(()=>validateScope([...permitted,'scripts/release-guard.cjs'],build),/Governance changes cannot mutate/,'Build/sign guard is runtime critical');
+const uiAllowed={...manifest,allowed_paths:[...manifest.allowed_paths,'glass-navigation.js']};
+assert.throws(()=>validateScope([...permitted,'glass-navigation.js'],uiAllowed),/Governance changes cannot mutate/,'Additional imported UI sources must not be allowed by governance mode');
 const manifestReference=JSON.parse(read('design-references/APPROVED_REFERENCE_REGISTRY.json'));
 assert(manifestReference.references.some(x=>x.id==='mosque-original'&&x.status==='verified-user-asset'));
 assert(manifestReference.references.some(x=>x.id==='printed-mushaf-final'&&x.status==='unresolved'));
