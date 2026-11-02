@@ -46,10 +46,10 @@ try:
     page.clock.set_fixed_time(datetime(2026,11,3,10,15,tzinfo=timezone.utc))
     errors=[]
     page.on("pageerror",lambda e:errors.append(str(e)))
-    page.add_init_script("""(language) => localStorage.setItem('salati',JSON.stringify({
-      lang:language,lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',
-      method:'Oman',locationSet:true,locationMode:'manual',dark:true
-    }))""",language)
+    page.add_init_script("localStorage.setItem('salati', JSON.stringify({"
+      + "lang:" + json.dumps(language) + ",lat:23.588,lon:58.3829,zone:'Asia/Muscat',"
+      + "name:'مسقط',method:'Oman',locationSet:true,locationMode:'manual',dark:true"
+      + "}));")
     resp=page.goto(f"http://127.0.0.1:{SERVER.server_port}/",wait_until="domcontentloaded",timeout=35000)
     assert resp and resp.ok,(language,width,"browser homepage failed")
     page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6",timeout=20000)
