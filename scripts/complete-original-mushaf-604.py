@@ -23,13 +23,13 @@ def convert(n,input_folder,out):
  if not src.exists():raise RuntimeError('Incomplete original Quran source PDF page '+str(n))
  with Image.open(src) as im:
   im.load()
-  trimmed,bounds=proof.trim_white_horizontal(im)
+  trimmed,bounds=proof.trim_white_exterior(im)
   target=out/f'page-{n-3:04d}.webp'
   trimmed.save(target,'WEBP',lossless=True,method=4)
   return {'quranPage':n-3,'pdfPage':n,'filename':target.name,
     'sha256':sha(target),'bytes':target.stat().st_size,
     'width':trimmed.width,'height':trimmed.height,
-    'whiteMarginTrimOnly':{'left':bounds[0],'right':im.width-bounds[1]}}
+    'whiteMarginTrimOnly':bounds}
 
 def main(pdf,raw,out):
  if pdf.stat().st_size!=243520529 or sha(pdf)!=SOURCE_SHA:
@@ -46,7 +46,7 @@ def main(pdf,raw,out):
  manifest={'version':1,'edition':'KFGQPC Hafs standard39-2 green PDF',
    'riwaya':'Hafs','publisher':'King Fahd Glorious Quran Printing Complex',
    'sourceSha256':SOURCE_SHA,'pageCount':604,'pages':pages,
-   'integrity':'Full original PDF SHA-256, 604 indexed pages, pixel-safe exterior white margin removal',
+   'integrity':'Full original PDF SHA-256, 604 indexed pages, pixel-safe exterior white margin removal on all four sides',
    'status':'Complete 604 original source artwork; separate online assets, offline text fallback'}
  (out/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
  total=sum(p['bytes'] for p in pages)
