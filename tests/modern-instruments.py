@@ -31,8 +31,9 @@ with sync_playwright() as p:
  errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
  page.goto(f'http://127.0.0.1:{server.server_port}',wait_until='domcontentloaded')
  assert page.locator('#fajrAnnouncementToggle,#previewFajrPhrase').count()==0, 'Retired Fajr controls must be absent'
- page.wait_for_selector('.nav-selection',state='visible')
- marker=page.locator('.nav-selection');start=marker.bounding_box()['x']
+ page.wait_for_selector('header>.site-nav button.active',state='visible')
+ marker=page.locator('.nav-selection')
+ assert marker.count()==1 and marker.evaluate("e=>getComputedStyle(e).opacity")=='0', 'Legacy selection overlay must stay inactive'
  page.click('[data-tab=settings]');page.wait_for_timeout(50)
  assert page.locator('[data-tab=settings]').evaluate("e=>getComputedStyle(e).backgroundColor")=='rgb(29, 78, 216)'
  page.wait_for_timeout(300)
