@@ -1,27 +1,34 @@
 {
-  "request_id": "SALATI-20261103-FULLSCREEN-MUSHAF-WAVEFORM",
-  "original_request": "«نفذ» موافقة على الأمر التنفيذي النهائي: المصحف بملء الشاشة مثل صورة المرجع، مخفي فيه هيدر صلاتي وشريط التبويبات أثناء القراءة؛ المشغل بالتصميم المرجعي والموجة عمودية متفاوتة الارتفاع، بنفس ألوان صلاتي، بلا تعديل لبقية التطبيق أو النص.",
+  "request_id": "SALATI-20261103-MADANI-WORD-LINE-TYPESETTER",
+  "original_request": "«صلح المشكله»: fix the root cause in the Quran renderer itself, as explained in prior diagnosis, with full printed word line mapping, original Unicode Quran marks, correct Basmala, real waveform seek, preserve reading position; Quran tab only, never change other tabs or production.",
   "base_branch": "production",
   "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
   "visual_change": true,
   "android_release": false,
   "release_mode": "preview",
   "allowed_paths": [
+    ".github/workflows/salati-quran-only-trial-apk.yml",
+    ".github/workflows/salati-verified-mushaf-layout.yml",
     "dist/index.html",
-    "dist/salati-ui.css",
+    "dist/quran-mushaf-markers-20261101.js",
     "dist/quran-visual-trial.js",
+    "dist/quran/SOURCES.txt",
+    "dist/quran/line-layout.json",
+    "dist/salati-ui.css",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/SALATI-20261103-QURAN-ONLY-TRIAL.md",
-    "tests/quran-visual-trial-browser.py",
-    ".github/workflows/salati-quran-only-trial-apk.yml"
+    "quran-controller.js",
+    "scripts/generate-mushaf-line-layout.py",
+    "tests/mushaf-line-map-contract.cjs",
+    "tests/quran-visual-trial-browser.py"
   ],
   "visual_allowed_regions": [
     {
       "tab": "mushaf",
       "language": "both",
       "selector": "#qSheet",
-      "before": "Full Quran interactive text rendered within a bounded small tab card under the global Salati header and six-tab navigation; only 49dvh high.",
-      "after": "When entering Mushaf only, hide the Salati header and bottom navigation, fill Android WebView with Quran page reader; top back/title/Juz/menu controls; original 604-page Quran DOM stays accessible and can scroll through all verses; bundled original gold surah/ayah decorations, cream parchment frame. Back exits and restores original tabs.",
+      "before": "QuranReader.makeReadingPage concatenated whole verse paragraphs with browser-determined line wraps, forcing arbitrary printed rows. Renderer removed U+06DD/U+06DE/U+06DF/U+06E0 and enterAtSurahStart reset user position.",
+      "after": "Word-line renderer binds 838827-byte locally bundled CC-BY-SA 4.0 pinned 604-page line-position data to EXACT original Tanzil verse words, separately handles Bismala and original medallions, keeps original Quran orthographic marks and reading position; responds to screen width without clipping. Explicitly records 5 non-15-line upstream pages rather than falsely claiming exact printed parity.",
       "preserve": [
         "Original immutable 604-page / 6236 ayah canonical JSON, existing fonts, reciters/audio and bookmarks",
         "All six original tab contents and original globally approved dark theme",
@@ -33,7 +40,7 @@
       "language": "both",
       "selector": "#mushafPlayerSlot",
       "before": "Previous review uses uniform repeated CSS gradient bars across seek timeline, and a dark player below the bounded Quran card.",
-      "after": "Rounded charcoal #18191D audio drawer docked to fullscreen reader without obscuring text; center #2563EB button. 63 variable-height seek bars as visual waveform with real qSeek input overlay and progress color; stop/previous/play/next/repeat wired to live app controls. A header toggle collapses and expands player without losing position.",
+      "after": "Keep actual charcoal #18191D audio player and original blue #2563EB controls with working qSeek + 63 varied wave bars. Do not call visual bars actual decoded audio analysis. Preserve original reciter state and page/verse audio.",
       "preserve": [
         "qTransport/qSeek/qStop and original recitation state; bar heights illustrative, not acoustic amplitude data",
         "User's original charcoal/blue; real progress and seek interactions",
@@ -41,9 +48,9 @@
       ]
     }
   ],
-  "acceptance": "Actual Chromium screenshots at 390x844 and 430x932 show full screen Quran reader, no Salati header/navigation, in bounds audio controls, 63 variable wave bars with seek interaction and collapsible panel. Tests navigate to page 604 and back, return to home tabs. Npm regression, immutable Quran SHA, Android debug signing and separate APK; no production merge. No false QCF printed pixel parity claims.",
+  "acceptance": "All 6236 canonical verses and every Quran word address verified across 604 local pages; no photos/AI-generated script. Page 564 is 15 genuine sourced rows; 5 upstream non-15-line exceptions documented, no pixel-exact certification. Real browser screenshots on 390/430, no Unicode marking deletion, preserve tab reading position, pass original regression npm suite, signed separate APK and no official deploy/merge.",
   "status": "in_progress",
-  "reference_status": "User screenshot /mnt/data/102822.jpg shows fullscreen cream/gold ornament printed Quran; additional player reference 2026-11-03 shows waveform bars in a rounded bottom sheet. Original existing Quran data and MadinahHafsClassic font provide complete Quran content but NOT proven pixel-perfect 15-line QCF printed pagination. CSS ornaments are bundled source, not generated pictures.",
+  "reference_status": "Printed user screenshot page 564 and player image; authorized line metadata pinned 507eada48f3ffe26a600acf5792a18ba86d6851e under CC BY-SA 4.0. Quran textual data remains immutable source from Tanzil. Five pages 208,586,587,590,591 have unverified exact 15-line parity but all their words map correctly.",
   "release_target": "New independent prerelease salati-fullscreen-quran-waveform-20261103, debug package com.salati.prayer.preview, production unchanged.",
   "source": "Actual user install screenshots 102936.jpg and 102937.jpg proving the photo overlay and overflowing play control; browser research Quran Foundation font rendering/page layout, local Quran state already 604 pages."
 }
