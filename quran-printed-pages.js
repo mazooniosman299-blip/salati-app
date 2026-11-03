@@ -73,65 +73,152 @@ function asMarkup(source, pageNumber, originalVerses) {
  * playback, page/surah navigation, bookmarks and reciter state remain intact.
  * On any failure, the original text page stays readable.
  */
-export async function mountPrintedMushaf(pageElement, pageNumber, originalVerses) {
+
+/**
+ * Reader engine lifecycle, deliberately independent of the visual theme.
+ * Mount only leaves near the scrolling viewport, and release SVG path trees
+ * after they leave it. Restore ORIGINAL trusted Quran text when released.
+ * All page geometry is derived from the actual publisher artwork.
+ */
+const leaves = new WeakMap();
+
+function originalInkFit(svg, pageNumber) {
+  if (!svg.isConnected) return false;
+  try {
+    const b = svg.getBBox();
+    const v = svg.viewBox.baseVal;
+    if (![b.x,b.y,b.width,b.height].every(Number.isFinite) ||
+        b.width < 40 || b.height < 60 || !v.width || !v.height) return false;
+    // Do not stretch/clip glyphs. The external viewBox may contain unused area.
+    const margin = Math.max(b.width,b.height) * (pageNumber <= 2 ? .035 : .015);
+    const rect = [b.x-margin,b.y-margin,b.width+2*margin,b.height+2*margin];
+    if (rect[2] <= 0 || rect[3] <= 0 || rect[2] > 700 || rect[3] > 1000) return false;
+    svg.setAttribute('viewBox',rect.join(' '));
+    svg.setAttribute('preserveAspectRatio','xMidYMin meet');
+    return true;
+  } catch {
+    return false; // Android SVG implementations may lack getBBox.
+  }
+}
+
+function releasePlate(state) {
+  if (!state.plate || !state.page.isConnected) return;
+  const box = state.page.getBoundingClientRect();
+  // Preserve scroll height while this page is outside the reader viewport.
+  if (box.height > 100 && box.height < 2200)
+    state.page.style.minHeight = Math.ceil(box.height) + 'px';
+  state.inkObserver?.disconnect();
+  state.inkObserver = null;
+  state.page.replaceChildren(...state.fallback.childNodes,state.footer);
+  state.fallback = null;
+  state.plate = null;
+  state.page.classList.remove('salati-printed-page');
+  delete state.page.dataset.plateEdition;
+}
+
+async function loadPlate(state) {
+  if (state.busy || state.plate || !state.near || state.disposed) return false;
+  const page = state.page;
+  const token = ++state.generation;
+  const controller = new AbortController();
+  state.abort = controller;
+  state.busy = true;
+  const limit = setTimeout(() => controller.abort(), 12000);
+  try {
+    const url = PRINTED_MUSHAF.base + String(state.pageNumber).padStart(3,'0') + '.svg';
+    const response = await fetch(url,{signal:controller.signal,mode:'cors',credentials:'omit',cache:'force-cache'});
+    if (!response.ok) throw new Error('Publisher page unavailable');
+    const source = await response.text();
+    const svg = asMarkup(source,state.pageNumber,state.verses);
+    if (state.disposed || !state.near || state.generation !== token ||
+        !page.isConnected || page.dataset.readingPage !== String(state.pageNumber)) return false;
+    // Save all authored fallback nodes (and the original verse click targets).
+    const fallback = document.createDocumentFragment();
+    for (const node of Array.from(page.childNodes)) if (node !== state.footer) fallback.appendChild(node);
+    page.replaceChildren(svg,state.footer);
+    state.fallback = fallback;
+    state.plate = svg;
+    state.page.style.minHeight = '';
+    page.classList.add('salati-printed-page');
+    page.dataset.plateEdition = PRINTED_MUSHAF.edition;
+    delete page.dataset.plateUnavailable;
+    // getBBox() is only dependable when this leaf becomes visible.
+    if (typeof IntersectionObserver === 'function') {
+      state.inkObserver = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) {
+          if (originalInkFit(svg,state.pageNumber)) state.inkObserver?.disconnect();
+        }
+      },{root:document.getElementById('qVerses'),rootMargin:'0px'});
+      state.inkObserver.observe(svg);
+    }
+    requestAnimationFrame(() => {
+      if (svg.isConnected && svg.getBoundingClientRect().height > 1)
+        originalInkFit(svg,state.pageNumber);
+    });
+    return true;
+  } catch (error) {
+    if (!state.disposed && state.near) {
+      state.page.dataset.plateUnavailable = 'true';
+      console.warn('Salati: authentic Mushaf plate unavailable; retaining verified text page.',state.pageNumber,error?.message);
+    }
+    return false;
+  } finally {
+    clearTimeout(limit);
+    state.busy = false;
+    state.abort = null;
+  }
+}
+
+export function disposePrintedMushaf(pageElement) {
+  const state = leaves.get(pageElement);
+  if (!state) return;
+  state.disposed = true;
+  ++state.generation;
+  state.abort?.abort();
+  state.nearObserver?.disconnect();
+  state.inkObserver?.disconnect();
+  // Container is about to be cleared, so releasing the SVG is not needed.
+  state.fallback = null;
+  leaves.delete(pageElement);
+}
+
+export function mountPrintedMushaf(pageElement,pageNumber,originalVerses) {
   if (!pageElement || pageNumber < 1 || pageNumber > PRINTED_MUSHAF.pages || !originalVerses?.length) return false;
-  // Node unit-test DOMs and offline sessions use the trusted text reader;
-  // do not start irrelevant network timeouts in synthetic test environments.
-  if (typeof DOMParser !== 'function' || typeof document === 'undefined' || typeof document.importNode !== 'function' ||
+  // Never start network fetches in minimal test DOMs or offline sessions.
+  if (typeof DOMParser !== 'function' || typeof document === 'undefined' ||
+      typeof document.importNode !== 'function' ||
       (typeof navigator !== 'undefined' && navigator.onLine === false)) return false;
-  if (pending.has(pageElement)) return pending.get(pageElement);
-  const job = (async () => {
-    const controller = new AbortController();
-    const cancel = setTimeout(() => controller.abort(), 12000);
-    try {
-      const url = PRINTED_MUSHAF.base + String(pageNumber).padStart(3,'0') + '.svg';
-      const response = await fetch(url, {signal:controller.signal, mode:'cors', credentials:'omit', cache:'force-cache'});
-      if (!response.ok) throw new Error('Publisher page unavailable');
-      const source = await response.text();
-      const svg = asMarkup(source, pageNumber, originalVerses);
-      if (!pageElement.isConnected || pageElement.dataset.readingPage !== String(pageNumber)) return false;
-      const footer = pageElement.querySelector('.reading-page-number');
-      if (!footer) return false;
-      pageElement.replaceChildren(svg,footer);
-      pageElement.classList.add('salati-printed-page');
-      pageElement.dataset.plateEdition = PRINTED_MUSHAF.edition;
-      // Artwork must be measured only while that exact leaf is actually laid
-      // out: offscreen pages use content-visibility:auto and have no real box.
-      const fit = () => {
-        if (!svg.isConnected) return;
-        try {
-          const box = svg.getBBox();
-          const original = svg.viewBox.baseVal;
-          if (![box.x,box.y,box.width,box.height].every(Number.isFinite) ||
-              box.width < 40 || box.height < 60 || !original.width || !original.height) return;
-          const margin = Math.max(box.width,box.height) * (pageNumber <= 2 ? .035 : .015);
-          const bounds = [box.x-margin,box.y-margin,box.width+2*margin,box.height+2*margin];
-          if (bounds[2] <= 0 || bounds[3] <= 0 || bounds[2] > 700 || bounds[3] > 1000) return;
-          svg.setAttribute('viewBox',bounds.join(' '));
-          svg.setAttribute('preserveAspectRatio','xMidYMin meet');
-        } catch { /* keep publisher viewBox if geometry is unavailable */ }
-      };
-      requestAnimationFrame(fit);
-      // Repeat when a prefetched leaf enters the vertically scrolling window.
-      // This eliminates the empty viewBox area even on distant later pages.
-      if (typeof IntersectionObserver === 'function') {
-        const scroller = document.getElementById('qVerses');
-        const visible = new IntersectionObserver(entries => {
-          if (entries.some(entry => entry.isIntersecting)) {
-            visible.disconnect();
-            requestAnimationFrame(fit);
-          }
-        }, {root: scroller || null,rootMargin:'100px 0px'});
-        visible.observe(svg);
-      }
-      return true;
-    } catch (error) {
-      // No generated substitute, no empty rectangle, and no mutated ayat.
-      pageElement.dataset.plateUnavailable = 'true';
-      console.warn('Salati: authentic Mushaf plate unavailable; retaining verified text page.', pageNumber, error?.message);
-      return false;
-    } finally { clearTimeout(cancel); }
-  })();
-  pending.set(pageElement,job);
-  return job;
+  if (leaves.has(pageElement)) return true;
+  const state = {
+    page:pageElement,pageNumber,verses:originalVerses,
+    footer:pageElement.querySelector('.reading-page-number'),
+    fallback:null,plate:null,busy:false,abort:null,near:false,
+    nearObserver:null,inkObserver:null,generation:0,disposed:false
+  };
+  if (!state.footer) return false;
+  leaves.set(pageElement,state);
+  if (typeof IntersectionObserver !== 'function') {
+    state.near = true;
+    void loadPlate(state);
+    return true;
+  }
+  // Near viewport = network/mount; away = restore text and discard heavy paths.
+  // This prevents hundreds of 200-600KB SVG DOM trees building up on phones.
+  state.nearObserver = new IntersectionObserver(entries => {
+    if (state.disposed || !pageElement.isConnected) {
+      disposePrintedMushaf(pageElement);
+      return;
+    }
+    if (entries.some(e=>e.isIntersecting)) {
+      state.near=true;
+      void loadPlate(state);
+    } else {
+      state.near=false;
+      ++state.generation;
+      state.abort?.abort();
+      releasePlate(state);
+    }
+  },{root:document.getElementById('qVerses'),rootMargin:'900px 0px'});
+  state.nearObserver.observe(pageElement);
+  return true;
 }
