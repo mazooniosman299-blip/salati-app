@@ -74,6 +74,8 @@ def main():
     ap.add_argument("--expected-sha256", required=True)
     ap.add_argument("--first-pdf-page", type=int, required=True,
                     help="1-based PDF page showing the PRINTED Quran page 1")
+    ap.add_argument("--confirm-bottom-folio", action="store_true",
+                    help="CONFIRM after inspecting printed folio BELOW content for Quran pages 1,2,3,17,604")
     ap.add_argument("--confirm-page-map", action="store_true",
                     help="Explicitly confirm physical Quran pages 1,2,3,17,604 were inspected")
     ap.add_argument("--output", default="dist/quran-blue-pages", type=Path)
@@ -81,6 +83,8 @@ def main():
     args = ap.parse_args()
     if not args.confirm_page_map:
         ap.error("STOP: physically inspect pages 1, 2, 3, 17, 604 and use --confirm-page-map")
+    if not args.confirm_bottom_folio:
+        ap.error("STOP: visually inspect and confirm printed page number at the BOTTOM of the original pages 1,2,3,17,604 via --confirm-bottom-folio")
     pin = args.expected_sha256.lower()
     if not re.fullmatch(r"[a-f0-9]{64}", pin):
         ap.error("expected sha256 must be exactly 64 lowercase hexadecimal characters")
@@ -140,6 +144,9 @@ def main():
             "riwaya": "Hafs",
             "firstPdfPage": args.first_pdf_page,
             "pageCount": COUNT,
+            "folioPlacement": "bottom",
+            "folioAuditPages": [1, 2, 3, 17, 604],
+            "folioAuditMethod": "manual visual confirmation of original PDF printed footer, no added page-number overlay",
             "pages": output_pages,
             "status": "local-generation-only; requires visual Quran + Android QA and separate hosting",
         }
