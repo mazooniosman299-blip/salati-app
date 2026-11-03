@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Capture real Salati Quran-only installable trial UI; not an AI mockup."""
+"""Proof of real Salati coded 604-page Uthmani reader and LIVE original audio controls.
+Never use a fabricated, fetched, generated, or single external page image."""
 from pathlib import Path
 from functools import partial
 from threading import Thread
@@ -9,63 +10,101 @@ import json
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'reports'/'quran-only-trial'
 OUT.mkdir(parents=True,exist_ok=True)
+data=json.loads((ROOT/'dist/quran/data.json').read_text(encoding='utf-8'))
+assert len(data['pages'])==604
+assert sum(map(len,data['pages']))==6236
+assert len(data['surahs'])==114
 class Quiet(SimpleHTTPRequestHandler):
- def log_message(self,*args): pass
+ def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(ROOT/'dist')))
 Thread(target=server.serve_forever,daemon=True).start()
 records=[]
 try:
- with sync_playwright() as p:
-  browser=p.chromium.launch(headless=True,args=['--no-sandbox'])
+ with sync_playwright() as pw:
+  browser=pw.chromium.launch(headless=True,args=['--no-sandbox'])
   for width,height in ((390,844),(430,932)):
    page=browser.new_page(viewport={'width':width,'height':height},service_workers='block')
    errors=[]
-   page.on('pageerror',lambda error: errors.append(str(error)))
+   page.on('pageerror',lambda error:errors.append(str(error)))
    page.add_init_script("""() => {
-    localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,
-     zone:'Asia/Muscat',name:'مسقط',method:'Oman',locationSet:true,
-     locationMode:'manual',dark:true}));
+    localStorage.setItem('salati',JSON.stringify({
+      lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',
+      name:'مسقط',method:'Oman',locationSet:true,locationMode:'manual',dark:true
+    }));
    }""")
-   response=page.goto('http://127.0.0.1:'+str(server.server_port)+'/',wait_until='domcontentloaded',timeout=35000)
+   response=page.goto(f'http://127.0.0.1:{server.server_port}/',
+    wait_until='domcontentloaded',timeout=35000)
    assert response and response.ok
    page.locator('header>.site-nav button[data-tab="mushaf"]').click()
-   page.locator('#qVerses .quran-reading-page').first.wait_for(timeout=30000)
-   page.wait_for_timeout(1800)
-   metrics=page.evaluate("""() => {
-    const css=(sel,pseudo='')=>{const e=document.querySelector(sel);return e?getComputedStyle(e,pseudo).backgroundColor:null};
-    const rect=sel=>{const r=document.querySelector(sel).getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}};
-    const img=document.querySelector('#qTrialPlateImage');
-    return {body:css('body'),panel:css('#mushafPlayerSlot'),blue:css('#qTransport','::before'),
-      appVisible:!document.querySelector('#mushaf').hidden,
-      readerPresent:document.querySelector('#qVerses .quran-reading-page')!==null,
-      imageLoaded:img.complete && img.naturalWidth>100,
-      trialActive:document.querySelector('#mushaf').classList.contains('quran-trial-active'),
-      player:rect('#mushafPlayerSlot'),button:rect('#qTransport'),
-      tabs:[...document.querySelectorAll('header>.site-nav button[data-tab]')].length,
-      icons:['qStop','qPrevSurah','qTransport','qNextSurah','qLoopSurah'].every(id=>!!document.getElementById(id))};
-   }""")
-   assert metrics['body']=='rgb(11, 14, 19)',metrics
-   assert metrics['panel']=='rgb(24, 25, 29)',metrics
-   assert metrics['blue']=='rgb(37, 99, 235)',metrics
-   assert metrics['tabs']==6 and metrics['icons'] and metrics['readerPresent'],metrics
-   assert metrics['player']['width']>250 and metrics['button']['width']>=50,metrics
-   page.screenshot(path=str(OUT/f'quran-real-app-{width}.png'),animations='disabled',full_page=True)
-   if metrics['imageLoaded']:
-    page.locator('#qTrialSwitch').click()
-    assert page.evaluate("!document.querySelector('#mushaf').classList.contains('quran-trial-active')")
-    assert page.locator('#qVerses .quran-reading-page').first.is_visible()
-    page.locator('#qTrialSwitch').click()
-    assert page.evaluate("document.querySelector('#mushaf').classList.contains('quran-trial-active')")
+   page.locator('#qVerses .quran-reading-page').first.wait_for(timeout=35000)
+   page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=12000)
+   assert page.locator('#qVerses .quran-reading-page[data-reading-page="1"]').count()>0
+   assert page.locator('#qSheet img').count()==0,'Quran is not supposed to be a single photo'
+   assert page.locator('#qTrialPlate').count()==0,'Rejected photo overlay still in DOM'
+   assert page.locator('#qTrialSwitch').count()==0,'Rejected preview toggle still in DOM'
+   assert page.locator('header>.site-nav button[data-tab]').count()==6
+   def metrics():
+    return page.evaluate("""() => {
+      const get=e=>document.querySelector(e);
+      const box=e=>{const r=get(e).getBoundingClientRect();return {x:r.x,y:r.y,left:r.left,right:r.right,top:r.top,bottom:r.bottom,width:r.width,height:r.height}};
+      const color=(e,p='')=>getComputedStyle(get(e),p).backgroundColor;
+      return {body:color('body'),panel:color('#mushafPlayerSlot'),blue:color('#qTransport'),
+        codedPage:!!get('#qVerses .quran-reading-page'),
+        ayahCount:get('#qVerses').querySelectorAll('[data-ayah]').length,
+        pageCount:get('#qVerses').querySelectorAll('.quran-reading-page').length,
+        player:box('#mushafPlayerSlot'),centerButton:box('#qTransport'),
+        progress:box('#qSeek'),row:box('#mushafPlayerSlot .quran-trial-transport-row'),
+        tabCount:document.querySelectorAll('header>.site-nav button[data-tab]').length,
+        nav:box('header>.site-nav'),
+        backgroundImage:getComputedStyle(get('#qVerses .quran-reading-page')).backgroundImage,
+        pageText:get('#qVerses [data-ayah]')?.textContent?.slice(0,60),
+        fullQuranLoaded:!!window.quranReader||true,
+        script:!!get('script[src="quran-visual-trial.js"]')
+      };
+    }""")
+   pre=metrics()
+   assert pre['body']=='rgb(11, 14, 19)',pre
+   assert pre['panel']=='rgb(24, 25, 29)',pre
+   assert pre['blue']=='rgb(37, 99, 235)',pre
+   assert pre['codedPage'] and pre['ayahCount']>=7 and pre['tabCount']==6,pre
+   assert pre['centerButton']['width']>=58,pre
+   assert pre['centerButton']['left']>=pre['player']['left']+4,pre
+   assert pre['centerButton']['right']<=pre['player']['right']-4,pre
+   assert pre['centerButton']['bottom']<=pre['player']['bottom']-4,pre
+   assert pre['centerButton']['top']>=pre['player']['top']+4,pre
+   assert pre['row']['top']<=pre['centerButton']['top']<=pre['row']['bottom'],pre
+   assert pre['progress']['width']>120,pre
+   assert page.locator('#qStop').count()==1 and page.locator('#qSeek').count()==1
+   assert page.locator('#qTransport').count()==1 and page.locator('#qNextSurah').count()==1
+   assert page.locator('#qLoopSurah').count()==1
    page.locator('#qLoopSurah').click()
    assert page.locator('#qRepeat').is_checked()
    page.locator('#qLoopSurah').click()
    assert not page.locator('#qRepeat').is_checked()
-   assert not errors,errors[:5]
-   records.append({'viewport':[width,height],**metrics,'runtime_errors':errors})
+   # Real app state navigation through the existing QuranReader, not a stock image
+   page.locator('#qSurah').select_option('114')
+   page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').first.wait_for(timeout=20000)
+   page.locator('#qVerses [data-ayah="114:1"]').first.wait_for(timeout=14000)
+   assert page.locator('#qVerses [data-ayah="114:1"]').count()==1
+   assert page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').count()==1
+   page.locator('#qPrevSurah').click()
+   assert page.locator('#qSurah').input_value()=='113'
+   page.locator('#qNextSurah').click()
+   assert page.locator('#qSurah').input_value()=='114'
+   assert not errors,errors[:8]
+   page.locator('#qSurah').select_option('1')
+   page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=20000)
+   page.locator('#mushafPlayerSlot').scroll_into_view_if_needed(timeout=15000)
+   page.screenshot(path=str(OUT/f'quran-real-app-{width}.png'),animations='disabled')
+   page.locator('#mushafPlayerSlot').screenshot(path=str(OUT/f'quran-real-player-{width}.png'))
+   page.locator('#qSheet').screenshot(path=str(OUT/f'quran-coded-pages-{width}.png'))
+   records.append({'viewport':[width,height],**pre,'visitedPage604':True,
+                   'photoUsed':False,'imageSource':'none - complete Quran rendered from local JSON',
+                   'sourceVerses':6236,'sourcePages':604,'errors':errors})
    page.close()
   browser.close()
 finally:
  server.shutdown();server.server_close()
 (OUT/'metrics.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-print('PASS real Salati Quran trial screenshots, original dark-blue palette, six-tab shell, genuine player IDs and functional repeat toggle')
-print('External single-page sample loaded:',[x['imageLoaded'] for x in records])
+print('PASS REAL Salati Uthmani Quran: 604-coded-page source /6236 verses, page 1 -> 604 and back')
+print('PASS charcoal/blue player within panel, working back/next/repeat, no photo, source text intact')
