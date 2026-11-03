@@ -134,7 +134,7 @@ async function loadPlate(state) {
   const controller = new AbortController();
   state.abort = controller;
   state.busy = true;
-  const limit = setTimeout(() => controller.abort(), 12000);
+  const limit = setTimeout(() => controller.abort(), 18000);
   try {
     const filename = String(state.pageNumber).padStart(3,'0') + '.svg';
     // The publisher's pinned CDN and a pinned source-code mirror are
@@ -142,11 +142,17 @@ async function loadPlate(state) {
     // A valid response must ALSO match every verse on this exact page.
     let svg = null;
     let lastError = null;
-    for (const base of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror]) {
+    for (const [i,base] of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror].entries()) {
       if (controller.signal.aborted) break;
+      // A stalled first origin may NEVER consume the whole page deadline.
+      // Otherwise a working fallback would remain unreachable on Android.
+      const origin = new AbortController();
+      const cancel = () => origin.abort();
+      controller.signal.addEventListener('abort',cancel,{once:true});
+      const originLimit = setTimeout(() => origin.abort(), i===0 ? 5000 : 9500);
       try {
         const response = await fetch(base+filename,{
-          signal:controller.signal,mode:'cors',credentials:'omit',cache:'force-cache'
+          signal:origin.signal,mode:'cors',credentials:'omit',cache:'force-cache'
         });
         if (!response.ok) throw new Error('HTTP '+response.status);
         svg = asMarkup(await response.text(),state.pageNumber,state.verses);
@@ -154,6 +160,9 @@ async function loadPlate(state) {
       } catch (error) {
         lastError = error;
         if (controller.signal.aborted) break;
+      } finally {
+        clearTimeout(originLimit);
+        controller.signal.removeEventListener('abort',cancel);
       }
     }
     if (!svg) throw lastError || new Error('Publisher page unavailable');
