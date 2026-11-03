@@ -33,7 +33,7 @@ Check `git diff --name-status` and relevant affected CSS/JS selectors after ever
 - Keep backups, old CSS, release chunks, Quran datasets and original mosque files intact unless independently approved for removal.
 
 ## 5. Quran, media and visual references
-Never edit Quranic verse content or diacritics to fit design. Keep all original reader/reciter/audio/offline/settings features; no clipped verses or overlapping player. Exact printed Mushaf artwork or portrait comparisons require verified original bytes, usage rights and true visual comparison. `PR #35` and `PR #36` are separate UNMERGED experiments; audit overlapping changes instead of merging blindly.
+Never edit Quranic verse content or diacritics to fit design. Keep all original reader/reciter/audio/offline/settings features; no clipped verses or overlapping player. Exact printed Mushaf artwork or portrait comparisons require verified original bytes, usage rights and true visual comparison. `PR #35` and `PR #36` are historical closed, unmerged experiments; do not use them as a design reference or merge them blindly.
 Dark-only production is baseline. Do not restore a light mode or introduce unsolicited colors. Use `design-references/` and `docs/design/` only after validating whether a file is original, approved, a historical illustration or an actual test screenshot.
 
 ## 6. Tests and evidence
@@ -52,3 +52,18 @@ Update the request record, `docs/requests/ACTIVE_CHANGE.json` path allowlist, vi
 
 ## 10. Verbatim user requirements and truth-in-reporting
 Read `docs/requests/ORIGINAL_FULL_PROMPT_20261103.md` in full before implementing Salati requests. The original twenty per-risk acceptance criteria override condensed summaries. Use `docs/requests/ACCEPTANCE_STATUS.json` to distinguish stages; never mark a missing visual reference, physical Android test, or future user acceptance as PASS. Do not treat documentation work as proof of actual AI instruction compliance.
+
+## 11. Immutable Quran reader architecture — applies to EVERY future design change
+The user's approved Quran concept is identified in `docs/requests/SALATI-20261103-IMMERSIVE-MADINAH.md` by the visual-reference SHA-256. The concept image is not an authorised Quran source or a real runtime screenshot; original page text/artwork and its licensing must be verified separately.
+
+**Never reintroduce any of these previously rejected failures:**
+- Blank space created by page-one height calculations, forced fixed leaf heights, `--salati-quran-window-height`, or an oversized SVG `viewBox`. Measure actual publisher ink safely, do not stretch or crop verses.
+- A card-sized Quran page inside the ordinary home layout. `#mushaf` is an immersive `100vw/100dvh` Quran-only panel; `#qVerses` vertically scrolls, with consecutive printed leaves and bottom-only folio numbers. No arrow-driven page switching or floating page-number badge above the leaf.
+- Toolbar, player, footer, or bottom navigation covering the text. Existing genuine Salati home and `dist/icons/navigation.svg` are immutable unless separately requested.
+- An unsafe memory leak from mounting all 604 vector pages. `quran-printed-pages.js` loads SVGs near the viewport, aborts stale requests, restores the verified original text when out of range, and disposes observers on page-window reset.
+
+**Future colour/frame/player appearance changes:** edit ONLY the Quran-scoped paint tokens (`--mushaf-paper`, `--mushaf-ink`, `--mushaf-folio`, `--mushaf-player`, `--mushaf-play`, `--mushaf-ornament`, `--mushaf-frame`) in the single canonical `dist/salati-ui.css`. Do not edit `quran-controller.js`, scrollport dimensions, viewport boundaries or source Qur'an data merely to change the skin. Keep the approved blue play token `#2563EB` unless the user explicitly changes it.
+
+**Blocking proof:** run `node tests/quran-immersive-contract.cjs` and `python3 tests/quran-immersive-browser.py`, plus the core build, native WebView, baseline visual comparison and scoped diff. The browser test changes theme tokens dynamically and rejects any geometry change. A passing source check is not equivalent to verified pixel parity; never merge/publish the Quran update without source-edition and real visual approval.
+
+Printed KFGQPC Hafs V4 1441H SVG is a verified distinct edition from the approved conceptual 1429H blue look. Do NOT label the former visually identical to the latter. Do not ship provisional noncommercial third-party ornaments or fabricate Quranic verses to match the illustration.
