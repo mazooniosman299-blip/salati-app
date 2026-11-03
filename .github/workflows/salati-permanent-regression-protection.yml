@@ -82,6 +82,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tests/mushaf1441-browser.py
+          python3 tests/mushaf-opening-whitespace.py
           python3 tests/square-prayer-fajr-20261101.py
           node tests/printed-mushaf-integrity.cjs
           node tests/quran-direct-ayah.cjs
@@ -93,6 +94,7 @@ jobs:
         with:
           name: salati-permanent-browser-screenshots
           path: |
+            reports/mushaf-opening-whitespace/
             reports/mushaf1441/
             reports/active-production-browser-20261102/
             reports/mobile-layout-contract/

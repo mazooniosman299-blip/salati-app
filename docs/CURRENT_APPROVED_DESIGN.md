@@ -39,3 +39,6 @@ Latest explicit user request for a *specific element* takes precedence only for 
 
 ## Superseding scoped approval — Mushaf1441, 2026-11-03
 The user selected option3 in the independent 604-page Madinah1441 preview, then expressly requested direct ayah-to-surah-end playback, no action dialog, and the actual surah name in white instead of static/full-surah wording. This supersedes older illustrated frames, middle-placement ambiguity and popup assertions ONLY for the Quran reader. Integrate on production@0576bb3; preserve all other tabs and original app capabilities. See requests/SALATI-20261103-MUSHAF1441.md.
+
+## Opening transparent-margin correction —4Nov2026 Asia/Dubai
+The user identified an almost empty Fatiha viewport in a short/wide browser. Verified original PNGs1/2 have494/480 transparent rows above ink. Keep original bytes and complete ink; display-only vertical viewport removes unused transparent rows with24px source safety padding and moves the unchanged SVG hit layer with the image. Only opening pages1/2 use these bounds; the other602 plates are unchanged. This supersedes preserving the opening files' blank canvas as visible layout space, not the original printed artwork. Evidence: requests/SALATI-20261104-OPENING-SPACE.md and reports/mushaf-opening-whitespace/.

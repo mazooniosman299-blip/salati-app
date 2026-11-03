@@ -12,7 +12,8 @@
     "scripts/verify-publish-ci.cjs",
     "tests/mushaf1441-browser.py",
     "tests/quran-direct-ayah.cjs",
-    "tests/printed-mushaf-integrity.cjs"
+    "tests/printed-mushaf-integrity.cjs",
+    "tests/mushaf-opening-whitespace.py"
   ],
   "new_evidence_tests": [
     "tests/current-design-visual-proof.py",
@@ -51,8 +52,8 @@
     "reason": "Old assertions require reflowed text geometry, exposed toolbar, per-ayah reciter popup or source equality to v123 CSS. Original files retained. Replace with direct-ayah/printed hash/browser tests and 48 actual production-vs-candidate scoped screenshots; all core/security/signature tests remain blocking."
   },
   "current_css_fixture": {
-    "file": "tests/fixtures/salati-v124-approved-ui.css",
-    "approval": "User-selected option3; actual48-shot production/candidate scoped comparison and personally inspected captures before adding fixture; v123 retained",
+    "file": "tests/fixtures/salati-v125-approved-ui.css",
+    "approval": "User-selected option3 plus user-reported opening whitespace; actual ten-case opening captures reviewed, all ink retained, original124 fixture preserved",
     "test": "tests/css-cascade-equivalence.py"
   }
 }

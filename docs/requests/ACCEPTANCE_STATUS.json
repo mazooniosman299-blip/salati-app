@@ -24,7 +24,7 @@
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "reports/mushaf1441/result.json; /workspace/reports/salati-mushaf1441/candidate/visual-scope-diff.json:48 comparisons with no unrelated changed pixels"
+      "evidence": "reports/mushaf-opening-whitespace/result.json:10 actual original-opening cases with ink-safe bounds and aligned hit tests; other reader features previously verified in reports/mushaf1441/result.json; CI rechecks current build."
     },
     "screenshot_user_reference": {
       "status": "pass",
@@ -32,7 +32,7 @@
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Current candidate verification pending; prior results do not certify this release."
+      "reason": "New125 transparent-margin correction requires current signed upgrade/emulator verification. Prior124 debug emulator passed; its signed upgrade UI readiness failed and was not counted as success."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,7 +40,7 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "apk-release-parts/v1.0.124/manifest.json; independently verified original certificate, APK SHA, exact web fingerprint and989 staged/native assets locally. Signed install-over-install remains separate pending CI."
+      "evidence": "apk-release-parts/v1.0.125/manifest.json; original-key signed candidate with unchanged image pixels, original applicationId and matching new web fingerprint. Official publication and signed upgrade remain pending."
     },
     "production_publication": {
       "status": "not_run",

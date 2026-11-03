@@ -17,6 +17,16 @@ export async function enhancePrintedPage(page,index,verses){
   for(const region of regions.verses){const verse=canonical.get(region.key),path=document.createElementNS(NS,'path');path.classList.add('printed-ayah');path.dataset.ayah=region.key;path.setAttribute('d',region.path);path.setAttribute('tabindex','0');path.setAttribute('role','button');path.setAttribute('aria-pressed','false');path.setAttribute('aria-label',verse.t+'، الآية '+verse.a);group.append(path);}
   svg.append(group);image.className='printed-page-image';image.alt='صفحة '+number+' من مصحف المدينة، طبعة ١٤٤١هـ';image.width=regions.width;image.height=regions.height;image.draggable=false;
   const artwork=document.createElement('div');artwork.className='printed-page-artwork';artwork.append(image,svg);
+  if(number<=2&&regions.displayViewport){
+   const [x,y,w,h]=regions.displayViewport;
+   if(x!==0||w!==regions.width||![y,h].every(Number.isFinite)||y<0||h<=0||y+h>regions.height)throw Error('viewport');
+   // Original opening plates have large transparent margins. Shift BOTH the
+   // untouched image and its exact hit layer inside one ink-safe display frame.
+   artwork.classList.add('opening-printed-artwork');
+   artwork.style.setProperty('--opening-ratio',w+' / '+h);
+   artwork.style.setProperty('--opening-offset',(-y/h*100)+'%');
+   artwork.style.setProperty('--opening-full-height',(regions.height/h*100)+'%');
+  }
   // Retain the unchanged text as the offline/error fallback. Only one active
   // set of ayah targets is present, so following/focusing never finds hidden text.
   for(const node of page.querySelectorAll('[data-ayah]')){node.removeAttribute('data-ayah');node.removeAttribute('tabindex');}
