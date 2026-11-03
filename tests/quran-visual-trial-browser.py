@@ -112,9 +112,14 @@ try:
    page.locator('#qSheet').screenshot(path=str(OUT/f'quran-coded-pages-{width}.png'))
    # A real seek event must update the progress visualization and remain
    # the same existing input consumed by the audio engine.
-   page.locator('#qSeek').evaluate("(e) => {e.disabled=false;e.value='52';e.dispatchEvent(new Event('input',{bubbles:true}));}")
+   # QuranReader's timeupdate handler writes slider.value AND CSS --seek.
+   # Simulate that exact programmatic update, not a seek on an unloaded audio
+   # which correctly resets to zero because no recording duration exists.
+   page.locator('#qSeek').evaluate("(e) => {e.value='52';e.style.setProperty('--seek','52%');}")
+   page.wait_for_function("document.querySelectorAll('#qWaveBars .is-played').length>=30",timeout=3000)
    assert page.locator('#qWaveBars .is-played').count()>=30
-   page.locator('#qSeek').evaluate("(e) => {e.value='0';e.dispatchEvent(new Event('input',{bubbles:true}));}")
+   page.locator('#qSeek').evaluate("(e) => {e.value='0';e.style.setProperty('--seek','0%');}")
+   page.wait_for_function("document.querySelectorAll('#qWaveBars .is-played').length===0",timeout=3000)
    # Hiding the player gives the entire remaining screen to the printed reader.
    initial=page.locator('#qSheet').bounding_box()
    page.locator('#qFullPlayerToggle').click()
