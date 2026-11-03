@@ -15,7 +15,8 @@ export const PRINTED_MUSHAF = Object.freeze({
   version: 'v1.1.1',
   pages: 604,
   publisher: 'King Fahd Glorious Quran Printing Complex',
-  base: 'https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/'
+  base: 'https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/',
+  mirror: 'https://raw.githubusercontent.com/quran-ws/quran-svg/9fc0c87/mushafs/hafs/kfqc/svg/'
 });
 const svgNS = 'http://www.w3.org/2000/svg';
 const allowedElements = new Set(['svg','g','path','defs','clipPath','rect','circle','ellipse','line','polygon','polyline','title','desc']);
@@ -125,11 +126,27 @@ async function loadPlate(state) {
   state.busy = true;
   const limit = setTimeout(() => controller.abort(), 12000);
   try {
-    const url = PRINTED_MUSHAF.base + String(state.pageNumber).padStart(3,'0') + '.svg';
-    const response = await fetch(url,{signal:controller.signal,mode:'cors',credentials:'omit',cache:'force-cache'});
-    if (!response.ok) throw new Error('Publisher page unavailable');
-    const source = await response.text();
-    const svg = asMarkup(source,state.pageNumber,state.verses);
+    const filename = String(state.pageNumber).padStart(3,'0') + '.svg';
+    // The publisher's pinned CDN and a pinned source-code mirror are
+    // independent; never accept unpinned "latest" or invented Quran content.
+    // A valid response must ALSO match every verse on this exact page.
+    let svg = null;
+    let lastError = null;
+    for (const base of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror]) {
+      if (controller.signal.aborted) break;
+      try {
+        const response = await fetch(base+filename,{
+          signal:controller.signal,mode:'cors',credentials:'omit',cache:'force-cache'
+        });
+        if (!response.ok) throw new Error('HTTP '+response.status);
+        svg = asMarkup(await response.text(),state.pageNumber,state.verses);
+        break;
+      } catch (error) {
+        lastError = error;
+        if (controller.signal.aborted) break;
+      }
+    }
+    if (!svg) throw lastError || new Error('Publisher page unavailable');
     if (state.disposed || !state.near || state.generation !== token ||
         !page.isConnected || page.dataset.readingPage !== String(state.pageNumber)) return false;
     // Save all authored fallback nodes (and the original verse click targets).
