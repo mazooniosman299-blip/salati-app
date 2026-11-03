@@ -32,7 +32,10 @@ assert(!controller.includes('--salati-quran-window-height'),'Forbidden page-1-he
 assert(controller.includes('disposePrintedMushaf(leaf)'), 'Reset must release SVG observers');
 assert(plates.includes("rootMargin:'900px 0px'"), 'Mount only near-viewport heavy publisher SVG');
 assert(plates.includes("mirror: 'https://raw.githubusercontent.com/quran-ws/quran-svg/9fc0c87/"),'Publisher fallback must use pinned repository commit, never latest');
-assert(plates.includes('for (const base of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror])'),'If publisher CDN is blocked, try pinned original art backup');
+assert(plates.includes('for (const [i,base] of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror].entries())'),'If CDN fails or stalls, iterate pinned publisher backup');
+assert(plates.includes('i===0 ? 5000 : 9500'),'Each publisher origin must have its OWN timeout; the first cannot starve the mirror');
+assert(plates.includes("controller.signal.addEventListener('abort',cancel"),'Leaving reader must abort the current origin');
+assert(plates.includes("controller.signal.removeEventListener('abort',cancel"),'Per-origin cancellation handlers must be removed');
 assert(plates.includes('asMarkup(await response.text(),state.pageNumber,state.verses)'),'Every mirror must pass full Quran ayah verification');
 assert(plates.includes("state.page.style.minHeight = '';"),'When source is offline, remove stale sheet placeholder to avoid white gaps');
 assert(plates.includes('const inkBounds = new Map()'),'Cache measured publisher art bounds per edition/page');
