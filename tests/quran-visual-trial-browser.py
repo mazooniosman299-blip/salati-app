@@ -40,6 +40,13 @@ try:
    page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=12000)
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="1"]').count()>0
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"]').count()==1, 'Line-based Mushaf renderer not active'
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"]').count()==1, 'Independent MIT-derived MushafBook view was not mounted'
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-grid>.mushaf-book-row').count()==8
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-frame-outer').count()==1
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-corner').count()==4
+   assert page.locator('link[href="mushaf-book.css"]').count()==1
+   assert page.locator('script[src="mushaf-book.js"]').count()==1
+   assert page.evaluate("document.querySelector('#qVerses .mushaf-book-page').dataset.layoutOrigin")=="mushaf-companion-mit-port"
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-madinah-line').count()==7
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-fixed-heading').count()==1
    assert page.locator('#qSheet img').count()==0,'Quran is not supposed to be a single photo'
@@ -117,6 +124,9 @@ try:
    }""")
    assert all(max(x['leftOverflow'],x['rightOverflow'])<5 for x in glyph_metrics),('Quran word clipped',glyph_metrics)
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-madinah-line').count()==13
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="564"] .mushaf-book-grid>.mushaf-book-row').count()==15
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="564"] .mushaf-book-top').count()==1
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="564"] .mushaf-book-footer').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-fixed-heading').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-basmala-line').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"]').get_attribute('data-line-count')=='15'
@@ -132,6 +142,7 @@ try:
    assert page.locator('#qVerses [data-ayah="114:1"]').count()==1
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="604"]').count()==1
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="604"] .mushaf-book-grid>.mushaf-book-row').count()==15
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="604"]').get_attribute('data-line-count')=='15'
    page.locator('#qPrevSurah').click()
    assert page.locator('#qSurah').input_value()=='113'
@@ -183,4 +194,4 @@ finally:
  server.shutdown();server.server_close()
 (OUT/'metrics.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print('PASS REAL Salati Uthmani Quran: 604-coded-page source /6236 verses, page 1 -> 604 and back')
-print('PASS FULLSCREEN Quran 390/430, varied linked waveform bars, collapsible player, Quran-only scope and restored navigation')
+print('PASS independent MIT-derived MushafBook page structure with real 8/15 row grid + FULLSCREEN Quran 390/430, live seek visualization and restored navigation')
