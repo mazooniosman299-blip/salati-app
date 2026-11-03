@@ -82,9 +82,17 @@ function asMarkup(source, pageNumber, originalVerses) {
  * All page geometry is derived from the actual publisher artwork.
  */
 const leaves = new WeakMap();
+// Immutable published edition: a measured ink box is stable for this page.
+const inkBounds = new Map();
 
 function originalInkFit(svg, pageNumber) {
   if (!svg.isConnected) return false;
+  const stored = inkBounds.get(pageNumber);
+  if (stored) {
+    svg.setAttribute('viewBox',stored);
+    svg.setAttribute('preserveAspectRatio','xMidYMin meet');
+    return true;
+  }
   try {
     const b = svg.getBBox();
     const v = svg.viewBox.baseVal;
@@ -94,8 +102,10 @@ function originalInkFit(svg, pageNumber) {
     const margin = Math.max(b.width,b.height) * (pageNumber <= 2 ? .035 : .015);
     const rect = [b.x-margin,b.y-margin,b.width+2*margin,b.height+2*margin];
     if (rect[2] <= 0 || rect[3] <= 0 || rect[2] > 700 || rect[3] > 1000) return false;
-    svg.setAttribute('viewBox',rect.join(' '));
+    const view = rect.join(' ');
+    svg.setAttribute('viewBox',view);
     svg.setAttribute('preserveAspectRatio','xMidYMin meet');
+    inkBounds.set(pageNumber,view);
     return true;
   } catch {
     return false; // Android SVG implementations may lack getBBox.
@@ -152,6 +162,13 @@ async function loadPlate(state) {
     // Save all authored fallback nodes (and the original verse click targets).
     const fallback = document.createDocumentFragment();
     for (const node of Array.from(page.childNodes)) if (node !== state.footer) fallback.appendChild(node);
+    // Revisited pages reuse their exact ink-fit BEFORE entering the DOM:
+    // no temporary wide viewBox, flash of white, or repeated heavy getBBox.
+    const cachedView = inkBounds.get(state.pageNumber);
+    if (cachedView) {
+      svg.setAttribute('viewBox',cachedView);
+      svg.setAttribute('preserveAspectRatio','xMidYMin meet');
+    }
     page.replaceChildren(svg,state.footer);
     state.fallback = fallback;
     state.plate = svg;
