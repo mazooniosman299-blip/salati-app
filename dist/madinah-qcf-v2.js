@@ -62,7 +62,7 @@
     for(const [location,glyph,isMarker] of row[1]){
      const [s,a,w]=location.split(":").map(Number);
      if(!reader.surahVerses?.[s-1]?.[a-1])throw Error("Missing immutable Quran verse "+location);
-     if(!glyph||![...glyph].every(ch=>ch.codePointAt(0)>=0xE000))
+     if(!glyph||![...glyph].every(ch=>/\s/u.test(ch)||ch.codePointAt(0)>=0xE000))
       throw Error("Unexpected QCF glyph address "+location);
      const newKey=s+":"+a;
      if(key!==newKey){
