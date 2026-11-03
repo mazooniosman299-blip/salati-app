@@ -4,6 +4,7 @@ on:
     branches: [feature/salati-mushaf-v2-modern-20261103]
     paths:
       - dist/mushaf-book.css
+      - scripts/prepare-android.py
       - tests/quran-visual-trial-browser.py
       - docs/requests/ACTIVE_CHANGE.json
       - docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md
@@ -35,7 +36,7 @@ jobs:
           git diff --name-only origin/feature/salati-mushaf-book-rebuild-20261103 HEAD > /tmp/review-changes.txt
           while IFS= read -r file; do
             case "$file" in
-              dist/mushaf-book.css|tests/quran-visual-trial-browser.py|docs/requests/ACTIVE_CHANGE.json|docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md|.github/workflows/salati-mushaf-v2-preview.yml) ;;
+              dist/mushaf-book.css|scripts/prepare-android.py|tests/quran-visual-trial-browser.py|docs/requests/ACTIVE_CHANGE.json|docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md|.github/workflows/salati-mushaf-v2-preview.yml) ;;
               *) echo "UNAUTHORIZED EDIT: $file"; exit 1 ;;
             esac
           done < /tmp/review-changes.txt
