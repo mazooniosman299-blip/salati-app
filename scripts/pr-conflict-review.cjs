@@ -27,9 +27,9 @@ function request(endpoint){
 }
 async function filesFor(pr){
  let all=[];
- for(let page=1;page<=10;page++){
+ for(let page=1;page<=30;page++){
   const data=await request('/pulls/'+pr+'/files?per_page=100&page='+page);
-  all.push(...data.map(x=>x.filename));if(data.length<100)break;
+  all.push(...data.map(x=>x.filename));if(data.length<100)break;if(page===30)throw Error('PR file list exceeded GitHub complete-diff limit; cannot certify scope');
  }
  return all;
 }

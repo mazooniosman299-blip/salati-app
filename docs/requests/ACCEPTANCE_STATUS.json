@@ -1,57 +1,54 @@
 {
-  "request_id": "SALATI-20261103-ROOT-CONTROL",
-  "source_reference": "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md",
-  "producer_branch": "fix/salati-instruction-truth-20261103",
-  "code_runtime_changed": false,
+  "request_id": "SALATI-20261103-MUSHAF1441",
+  "source_reference": "docs/requests/SALATI-20261103-MUSHAF1441.md",
+  "producer_branch": "mushaf1441-official",
+  "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md"
+      "evidence": "docs/requests/SALATI-20261103-MUSHAF1441.md"
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "https://github.com/mazooniosman299-blip/salati-app/pull/37"
+      "evidence": "docs/ACTUAL_SOURCE_MAP.md"
     },
     "source_build": {
       "status": "pass",
-      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
-      "note": "Prior commit builds; newest validation must be checked separately"
+      "evidence": "npm run build: local successful source build; full release fingerprint pending"
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
-      "note": "Previous source CI only"
+      "evidence": "npm test + tests/quran-direct-ayah.cjs + tests/printed-mushaf-integrity.cjs; local logs referenced in request record"
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268",
-      "note": "Previous browser CI; new 48-shot evidence pending"
+      "evidence": "reports/mushaf1441/result.json; /workspace/reports/salati-mushaf1441/candidate/visual-scope-diff.json:48 comparisons with no unrelated changed pixels"
     },
     "screenshot_user_reference": {
-      "status": "blocked",
-      "reason": "Exact latest approved printed Mushaf asset and user image pixel parity not verified"
+      "status": "pass",
+      "evidence": "Original 604 image hashes in dist/quran/printed-1441/manifest.json; selected option3 remains unchanged; genuine mobile/desktop captures reviewed. Whole-app pixel parity with arbitrary external screenshots is not asserted."
     },
     "android_emulator": {
-      "status": "pass",
-      "evidence": "https://github.com/mazooniosman299-blip/salati-app/actions/runs/41539592268"
+      "status": "not_run",
+      "reason": "Current candidate verification pending; prior results do not certify this release."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "Physical Android phone not available to CI"
+      "reason": "No physical phone available. User explicitly said «اختبارات الهاتف الحقيقي ليست شرطًا لإكمال تعديلات الويب، لكن لا تدّعِ تنفيذها». Hardware-accelerated emulator and signed update checks remain required before publication; no phone claim."
     },
     "signed_release": {
-      "status": "not_applicable",
-      "reason": "No signed Android/web runtime files changed in governance PR"
+      "status": "pass",
+      "evidence": "apk-release-parts/v1.0.124/manifest.json; independently verified original certificate, APK SHA, exact web fingerprint and989 staged/native assets locally. Signed install-over-install remains separate pending CI."
     },
     "production_publication": {
-      "status": "not_applicable",
-      "reason": "Draft change not released; production SHA remains unchanged"
+      "status": "not_run",
+      "reason": "Current candidate verification pending; prior results do not certify this release."
     },
     "latest_user_acceptance": {
       "status": "blocked",
-      "reason": "Future user edit requests and reference matching not yet certified"
+      "reason": "User approved option3 and specified direct ayah action/title. Final integrated build has not received post-release user acceptance."
     }
   }
 }

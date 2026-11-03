@@ -50,17 +50,17 @@ for y in range(int(h*.12),int(h*.82)):
         cream_rows.append(y)
 assert len(cream_rows)>50,("No substantial reader parchment visible",len(cream_rows))
 start=cream_rows[0]
-# Brown/gold ornamental ink inside the top 110px of the cream Quran frame.
-ornament=0
-for y in range(start,min(int(h*.84),start+110)):
+# The selected original edition has no reconstructed top ornamental frame.
+# Require visible Quran ink inside real parchment, including opening pages.
+ink=0
+for y in range(start,min(int(h*.84),cream_rows[-1]+1)):
     for x in range(int(w*.09),int(w*.91)):
         r,g,bl=reader.getpixel((x,y))
-        if 65<r<206 and 55<g<191 and 40<bl<172:
-            ornament+=1
-assert ornament>=120,("Native Quran ornamental frame missing",ornament,start,w,h)
+        if 15<r<125 and 15<g<125 and 15<bl<125 and max(r,g,bl)-min(r,g,bl)<45:ink+=1
+assert ink>=300,("Native Quran original page ink missing",ink,start,w,h)
 result={"screen":[w,h],"blue_times":at,"blue_mushaf":am,
         "parchment_times":home,"parchment_initial":initial,
-        "parchment_scrolled":scrolled,"surah_ornament_pixels":ornament,
+        "parchment_scrolled":scrolled,"original_page_ink_pixels":ink,
         "parchment_start_y":start}
 (folder/"result.json").write_text(json.dumps(result,indent=2))
 print("PASS NATIVE ANDROID SYSTEM WEBVIEW",json.dumps(result))

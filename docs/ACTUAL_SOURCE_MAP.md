@@ -30,3 +30,5 @@ PRODUCTION browser: `tests/active-production-browser-20261102.py`, `tests/mobile
 CSS audit: `tests/css-component-owner-audit.py`, `tests/canonical-css-maintainability.py`.
 PREVIEW-HISTORICAL: old preview-only scripts testing separate CSS files or alternate player placement. Run only under their specified preview branch/asset condition.
 ANDROID: `tests/android-webview-pixel-qa-20261102.py`, `scripts/android-webview-smoke.sh`, native tests. No physical-device claim from emulator.
+
+Mushaf1441 integration source: `quran-printed-pages.js` enhances QuranReader pages with original local images and calibrated SVG hit regions under `dist/quran/printed-1441/`. `quran-controller.js` owns direct ayah selection and dynamic `#qTrackTitle`; `quran-page-audio.js` owns full-file initial cue playback. Canonical text remains the fallback. No standalone preview app replaces production.

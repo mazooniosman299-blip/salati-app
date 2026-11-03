@@ -7,7 +7,15 @@ source=root/'dist';target=root/'android/app/src/main/assets/www'
 assert 'preview-sample-location-20261101.js' not in (source/'index.html').read_text(), 'Preview location setter imported by native homepage'
 assert not (source/'preview-sample-location-20261101.js').exists(), 'Preview location setter still in shipped distribution'
 if target.exists():shutil.rmtree(target)
-shutil.copytree(source,target,ignore=shutil.ignore_patterns('downloads','sw.js'))
+def packaged_files(directory,names):
+    ignored=shutil.ignore_patterns('downloads','sw.js')(directory,names)
+    # Pages serves files <=25MiB, including the downloadable signed APK.
+    # Keep the complete canonical offline Quran and exact opening plates;
+    # other original plates load from first-party hosting with text fallback.
+    if Path(directory)==source/'quran/printed-1441/pages':
+        ignored.update(name for name in names if name not in ('1.png','2.png'))
+    return ignored
+shutil.copytree(source,target,ignore=packaged_files)
 # Android loads the versioned entry from index.html. Omit its unreferenced compatibility copy.
 entry=re.search(r'src="(app-v[\d.]+\.js)', (target/'index.html').read_text())
 if entry:

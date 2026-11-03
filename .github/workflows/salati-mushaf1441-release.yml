@@ -1,0 +1,70 @@
+name: Salati Mushaf1441 signed update proof (NO DEPLOY)
+on:
+  pull_request:
+    branches: [production]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-update-and-reader:
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'mushaf1441-official'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact rebuilt web source and reconstruct immutable original-key APKs
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          npm ci
+          npm run build
+          node scripts/release-guard.cjs
+          python3 scripts/prepare-android.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          for version,destination in [('1.0.123','/tmp/salati-previous-123.apk'),('1.0.124','/tmp/salati-candidate-124.apk')]:
+              directory=Path('apk-release-parts/v'+version)
+              meta=json.loads((directory/'manifest.json').read_text())
+              body=b''.join((directory/f'part{i:02d}.bin').read_bytes() for i in range(meta['partCount']))
+              assert len(body)==meta['size'] and hashlib.sha256(body).hexdigest()==meta['sha256']
+              Path(destination).write_bytes(body)
+          PY
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs /tmp/salati-candidate-124.apk | tee /tmp/salati-signature-proof.txt
+          grep -F '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/salati-signature-proof.txt
+          python3 scripts/verify-native-web-assets.py /tmp/salati-candidate-124.apk
+          python3 -m pip install --quiet pillow
+      - name: Require hardware accelerated emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+      - name: Install genuine signed update over current official APK and open reader
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: bash scripts/android-mushaf124-upgrade.sh
+      - name: Retain real signed-upgrade evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushaf1441-original-key-upgrade
+          path: reports/mushaf1441-signed-upgrade/
+          if-no-files-found: warn

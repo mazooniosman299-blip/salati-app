@@ -5,7 +5,10 @@ const fs=require('node:fs');
 const path=require('node:path');
 const root=path.resolve(__dirname,'..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
-const manifest=JSON.parse(read('docs/requests/ACTIVE_CHANGE.json'));
+const activeRequest=JSON.parse(read('docs/requests/ACTIVE_CHANGE.json'));
+// Negative cases use the historical no-runtime-change fixture, never the active visual request.
+const manifest=JSON.parse(read('tests/fixtures/governance-request-20261103.json'));
+assert(activeRequest.request_record&&read(activeRequest.request_record).includes(activeRequest.original_verbatim_excerpt),'Active request must quote the actual latest user wording');
 const current=JSON.parse(read('apk-release-parts/current.json'));
 const release=JSON.parse(read('apk-release-parts/v'+current.version+'/manifest.json'));
 const html=read('dist/index.html');

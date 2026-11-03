@@ -37,6 +37,7 @@ try:
    assert page.locator('header>.site-nav button[data-tab]').count()==6
    page.wait_for_function("() => document.querySelectorAll('#prayers .prayer').length===6",timeout=15000)
    for tab in ('times','mushaf','qibla','dhikr','tasbih','settings'):
+    if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
     page.locator(f'header>.site-nav button[data-tab="{tab}"]').click()
     page.wait_for_function("(tab)=>document.querySelector('header>.site-nav button.active')?.dataset.tab===tab",arg=tab)
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,tab,'horizontal overflow')

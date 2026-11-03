@@ -7,7 +7,7 @@ prepare-android.py's staged contents, with no hidden legacy asset overrides.
 Signing certificate and final APK hash are verified by the release workflow.
 """
 from pathlib import Path
-import base64, hashlib, sys, zipfile
+import base64, hashlib, sys, zipfile, json
 
 ROOT = Path(__file__).resolve().parents[1]
 WEB = ROOT / "dist"
@@ -70,9 +70,10 @@ with zipfile.ZipFile(apk) as archive:
         checked += 1
     index = archive.read("assets/www/index.html").decode("utf-8")
     check('href="salati-ui.css"' in index, "native UI not loading canonical CSS")
-    check('href="/downloads/salati-1.0.123.apk"' in (WEB/"index.html").read_text(encoding="utf-8"),
+    version=json.loads((ROOT/'apk-release-parts/current.json').read_text())['version']
+    check(('href="/downloads/salati-'+version+'.apk"') in (WEB/"index.html").read_text(encoding="utf-8"),
           "website points to another APK version")
-    check('v1.0.123' in (WEB/"index.html").read_text(encoding="utf-8"),
+    check(('v'+version) in (WEB/"index.html").read_text(encoding="utf-8"),
           "website footer has stale version")
     for old in ("style-v1.0.", "design-restoration-v1.0.", "active-reference-nav-20261101.css"):
         check(not any(x.startswith("assets/www/" + old) for x in names),
