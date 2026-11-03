@@ -107,6 +107,9 @@ try:
        chapter:getComputedStyle(chapter).color,
        frame:getComputedStyle(frame).borderTopColor,
        medallion:getComputedStyle(marker).backgroundColor,
+       rosettePosition:getComputedStyle(marker).position,
+       rosetteWidth:marker.getBoundingClientRect().width,
+       rosettePseudoWidth:parseFloat(getComputedStyle(marker,'::before').width),
        blackRoundCount:blackCircles.length,
        playerHeight:document.querySelector('#mushafPlayerSlot').getBoundingClientRect().height,
        headerHeight:document.querySelector('#qFullHeader').getBoundingClientRect().height
@@ -115,6 +118,8 @@ try:
    assert v2['paper']=='rgb(255, 253, 249)',v2
    assert v2['chapter']=='rgb(35, 95, 137)',v2
    assert v2['blackRoundCount']==0,v2
+   assert v2['rosettePosition']=='relative',('Rosette pseudo element must be contained',v2)
+   assert v2['rosetteWidth']<=32 and v2['rosettePseudoWidth']<=30,('No diagonal decoration over Quran text',v2)
    assert v2['playerHeight']<=160,('Player outer frame must be visibly slimmer than prior 170px',v2)
    assert v2['headerHeight']<=53,v2
    assert pre['codedPage'] and pre['ayahCount']>=7 and pre['tabCount']==6,pre
