@@ -247,7 +247,9 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   background:#0B0E13;
   color:#fff;
  }
- body.dark.salati-quran-immersive #mushaf .mushaf-heading {
+ body.dark.salati-quran-immersive #mushaf .mushaf-heading,
+ body.dark.salati-quran-immersive #mushaf > .mushaf-pagination,
+ body.dark.salati-quran-immersive #mushaf > .mushaf-credit {
   display:none;
  }
  body.dark.salati-quran-immersive #mushaf .mushaf-toolbar.quran-player {
