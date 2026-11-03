@@ -30,6 +30,10 @@ jobs:
           npm ci
           npm run build
           node scripts/release-guard.cjs
+          # Match the immutable public-page snapshots actually packaged into
+          # this signed APK; do not compare a new day forecast to old signed bytes.
+          # The main app bundle/CSS/604 Quran plates remain freshly rebuilt above.
+          git restore -- dist/ar dist/en
           python3 scripts/prepare-android.py
           python3 - <<'PY'
           from pathlib import Path

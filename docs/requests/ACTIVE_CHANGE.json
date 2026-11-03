@@ -10,6 +10,9 @@
   "release_mode": "production",
   "status": "verified_local_pending_ci",
   "allowed_paths": [
+    ".github/workflows/approved-ui-v115-qa.yml",
+    ".github/workflows/eight-mobile-root-qa-20261101.yml",
+    ".github/workflows/four-ui-screenshot-qa.yml",
     ".github/workflows/salati-mushaf1441-release.yml",
     ".github/workflows/salati-permanent-regression-protection.yml",
     ".github/workflows/salati-readiness-v117-qa.yml",
