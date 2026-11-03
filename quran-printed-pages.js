@@ -35,7 +35,8 @@ function asMarkup(source, pageNumber, originalVerses) {
   for (const el of [svg, ...svg.querySelectorAll('*')]) {
     if (!allowedElements.has(el.localName)) throw new Error('Unrecognised Quran SVG element');
     for (const attr of el.attributes) {
-      if (!safeNames.test(attr.name) || /(?:javascript:|https?:|data:|expression\s*\()/i.test(attr.value)) {
+      const namespace = attr.name === 'xmlns' || attr.name === 'xmlns:ayah';
+      if (!safeNames.test(attr.name) || (namespace ? !['http://www.w3.org/2000/svg','https://quranpedia.net'].includes(attr.value) : /(?:javascript:|https?:|data:|expression\s*\()/i.test(attr.value))) {
         throw new Error('Unsafe Quran SVG attribute');
       }
     }
