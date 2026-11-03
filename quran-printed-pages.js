@@ -51,15 +51,17 @@ function asMarkup(source, pageNumber, originalVerses) {
   svg.classList.add('salati-publisher-plate');
   svg.removeAttribute('width');
   svg.removeAttribute('height');
-  svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', 'صفحة ' + pageNumber + ' من مصحف المدينة النبوية');
+  // Group rather than role=img: nested verse buttons stay accessible.
+  const arabic = document.documentElement.lang !== 'en';
+  svg.setAttribute('role', 'group');
+  svg.setAttribute('aria-label', arabic ? 'صفحة ' + pageNumber + ' من مصحف المدينة النبوية' : 'Madinah Mushaf, page ' + pageNumber);
   for (const el of svg.querySelectorAll('#content,#ayah_markers')) el.style.pointerEvents = 'none';
   for (const el of polygons) {
     const key = el.getAttribute('surah') + ':' + el.getAttribute('ayah');
     el.setAttribute('data-ayah', key); // Same event contract as Salati text view.
     el.setAttribute('tabindex','0');
     el.setAttribute('role','button');
-    el.setAttribute('aria-label','الآية ' + el.getAttribute('ayah') + '، استماع');
+    el.setAttribute('aria-label',arabic ? 'الآية ' + el.getAttribute('ayah') + '، استماع' : 'Verse ' + el.getAttribute('ayah') + ', listen');
     el.style.pointerEvents = 'all';
     el.style.cursor = 'pointer';
   }
@@ -73,6 +75,10 @@ function asMarkup(source, pageNumber, originalVerses) {
  */
 export async function mountPrintedMushaf(pageElement, pageNumber, originalVerses) {
   if (!pageElement || pageNumber < 1 || pageNumber > PRINTED_MUSHAF.pages || !originalVerses?.length) return false;
+  // Node unit-test DOMs and offline sessions use the trusted text reader;
+  // do not start irrelevant network timeouts in synthetic test environments.
+  if (typeof DOMParser !== 'function' || typeof document?.importNode !== 'function' ||
+      (typeof navigator !== 'undefined' && navigator.onLine === false)) return false;
   if (pending.has(pageElement)) return pending.get(pageElement);
   const job = (async () => {
     const controller = new AbortController();
