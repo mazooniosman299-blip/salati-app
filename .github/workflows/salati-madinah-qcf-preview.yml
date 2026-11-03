@@ -1,0 +1,145 @@
+name: Salati REAL Madinah QCF V2 glyph trial (NO MERGE / NO RELEASE)
+on:
+  push:
+    branches: [fix/salati-madinah-qcf-player-title-20261103]
+    paths:
+      - dist/index.html
+      - dist/mushaf-book.js
+      - dist/mushaf-book.css
+      - dist/madinah-qcf-v2.js
+      - scripts/stage-madinah-qcf-v2.py
+      - dist/quran/SOURCES.txt
+      - docs/requests/ACTIVE_CHANGE.json
+      - docs/requests/SALATI-20261103-QCF-FIX.md
+      - tests/quran-visual-trial-browser.py
+      - .github/workflows/salati-madinah-qcf-preview.yml
+permissions:
+  contents: read
+concurrency:
+  group: salati-madinah-qcf-trial-20261103
+  cancel-in-progress: true
+jobs:
+  stage-all-604-qcf-pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Retrieve all 604 authentic QCF V2 pages and their matching fonts, verify all original 6236 verse markers
+        run: |
+          python3 scripts/stage-madinah-qcf-v2.py
+          test "$(find dist/quran/qcf-v2 -name 'page-*.json' | wc -l)" -eq 604
+          test "$(find dist/fonts/qcf-v2 -name 'p*.woff2' | wc -l)" -eq 604
+      - name: Keep reproducible licensed review assets only for downstream checks
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-qcf-v2-604-local-preview-assets
+          path: |
+            dist/quran/qcf-v2/
+            dist/fonts/qcf-v2/
+            reports/madinah-qcf-v2/validation.json
+          retention-days: 7
+          if-no-files-found: error
+  visual-and-source-proof:
+    needs: stage-all-604-qcf-pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: salati-qcf-v2-604-local-preview-assets
+          path: .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare approved Quran-only scope against last draft
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin feature/salati-mushaf-v2-modern-20261103
+          git diff --name-only origin/feature/salati-mushaf-v2-modern-20261103 HEAD > /tmp/allowed.txt
+          while IFS= read -r file; do
+            case "$file" in
+              dist/index.html|dist/mushaf-book.js|dist/mushaf-book.css|dist/madinah-qcf-v2.js|scripts/stage-madinah-qcf-v2.py|dist/quran/SOURCES.txt|docs/requests/ACTIVE_CHANGE.json|docs/requests/SALATI-20261103-QCF-FIX.md|tests/quran-visual-trial-browser.py|.github/workflows/salati-madinah-qcf-preview.yml) ;;
+              *) echo "STOP unrelated file: $file"; exit 1 ;;
+            esac
+          done < /tmp/allowed.txt
+      - name: Original Quran integrity + full regression test suite
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/quran-source-integrity.cjs
+          node tests/mushaf-line-map-contract.cjs
+      - name: Run real mobile Chromium and capture page 1 and 564 plus recitation panel
+        run: |
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+          python3 tests/quran-visual-trial-browser.py
+      - name: Save genuine Quran and player screenshots (NEVER generated artwork)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-genuine-madinah-qcf-v2-real-screenshots
+          path: reports/quran-only-trial/
+          if-no-files-found: warn
+          retention-days: 14
+  unsigned-production-protected-android-trial:
+    needs: stage-all-604-qcf-pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: salati-qcf-v2-604-local-preview-assets
+          path: .
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build independent review app ID only, never production
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Validate all 604 QCF page fonts and scripts actually shipped in APK, package+signature
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'madinah-qcf-v2.js'
+          unzip -p "$APK" assets/www/quran/qcf-v2/page-564.json | grep -F '"page":564'
+          unzip -p "$APK" assets/www/fonts/qcf-v2/p564.woff2 | head -c 4 | grep -F 'wOF2'
+          test "$(unzip -Z1 "$APK" | grep -Ec '^assets/www/quran/qcf-v2/page-[0-9]{3}.json$')" -eq 604
+          test "$(unzip -Z1 "$APK" | grep -Ec '^assets/www/fonts/qcf-v2/p[0-9]+.woff2$')" -eq 604
+          unzip -p "$APK" assets/www/quran/data.json | sha256sum | grep -F cb2be527751f8671b89595a0d81cc059c3db894c213772200bcf9a01dc5096e5
+          mkdir -p reports/madinah-qcf-v2
+          cp "$APK" reports/madinah-qcf-v2/salati-qcf-v2-review.apk
+          sha256sum "$APK" > reports/madinah-qcf-v2/apk-sha256.txt
+      - name: Upload user-review APK ONLY; no GitHub Release and no production merge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-genuine-madinah-qcf-v2-review-apk
+          path: reports/madinah-qcf-v2/
+          if-no-files-found: warn
+          retention-days: 14
