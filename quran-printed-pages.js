@@ -166,6 +166,10 @@ async function loadPlate(state) {
     clearTimeout(limit);
     state.busy = false;
     state.abort = null;
+    // Rapid scrolling can abort a prefetch and re-enter before its promise
+    // settles. Retry the CURRENT viewport generation, never a stale page.
+    if (state.near && !state.plate && !state.disposed && state.generation !== token)
+      queueMicrotask(() => { if (state.near && !state.busy) void loadPlate(state); });
   }
 }
 
