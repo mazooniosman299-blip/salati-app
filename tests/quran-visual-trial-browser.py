@@ -103,6 +103,19 @@ try:
    page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"]').wait_for(timeout=15000)
    page.evaluate("document.fonts.ready")
    page.wait_for_timeout(250)
+   # Arabic ink may protrude on the RIGHT without increasing scrollWidth.
+   # Measure actual DOM Range glyph rectangles, not box scrollWidth alone.
+   glyph_metrics=page.evaluate("""() => {
+     const pg=document.querySelector('#qVerses .quran-fixed-lines[data-reading-page="564"]');
+     return [...pg.querySelectorAll('.quran-madinah-line')].map(row=>{
+       const box=row.getBoundingClientRect(),r=document.createRange();
+       r.selectNodeContents(row);const ink=r.getBoundingClientRect();
+       return {leftOverflow:Math.max(0,box.left-ink.left),
+               rightOverflow:Math.max(0,ink.right-box.right),
+               width:box.width};
+     });
+   }""")
+   assert all(max(x['leftOverflow'],x['rightOverflow'])<5 for x in glyph_metrics),('Quran word clipped',glyph_metrics)
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-madinah-line').count()==13
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-fixed-heading').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-basmala-line').count()==1
