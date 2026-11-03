@@ -126,10 +126,97 @@ export class QuranReader{
  }
  go(page,surah,autoplay=false){if(!this.data||!this.validPage(page))return;const ids=this.data.pages[page-1].map(v=>v.s);const selected=ids.includes(surah)?surah:ids[0];const targetVerse=this.data.pages[page-1].find(v=>v.s===selected);const resume=autoplay||!this.player.paused;const keep=this.surahMode()&&selected===this.activeSurah&&this.pageAudio.active&&!this.player.paused&&this.pageAudio.surahKey===this.reciter.id+':'+selected;if(!keep)this.stop();this.page=page;this.activeSurah=selected;this.save();this.refresh();(this.continuousReading()?document.querySelector('[data-ayah="'+selected+':'+targetVerse.a+'"]'):$('qSheet'))?.scrollIntoView({behavior:'smooth',block:'start'});if(resume&&!keep)this.play()}
  resize(delta){this.size=Math.max(22,Math.min(36,this.size+delta));this.save();this.refresh()}
+
+ displayWords(v){
+  // Verse text ALWAYS comes from immutable Tanzil; move a chapter's original
+  // basmala to the heading row without modifying the source value.
+  let words=v.t.trim().split(/\s+/u);
+  if(v.a===1&&v.s!==1&&v.s!==9&&words.length>=5){
+   const norm=w=>w.replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/gu,'').replace(/ٱ/gu,'ا');
+   if(['بسم','الله','الرحمن','الرحيم'].every((item,i)=>norm(words[i])===item))
+    words=words.slice(4);
+  }
+  // The layout publisher joins two canonical words at these four addresses.
+  // Keep BOTH original strings, just put them in one line-layout slot.
+  const mergedAt={'2:181':2,'8:6':3,'13:37':7,'37:130':2}[v.s+':'+v.a];
+  if(mergedAt!==undefined&&mergedAt<words.length-1)
+   words=[...words.slice(0,mergedAt),words[mergedAt]+' '+words[mergedAt+1],...words.slice(mergedAt+2)];
+  return words;
+ }
  makeReadingPage(index){
+  const lines=this.lineLayout?.pages?.[index];
+  if(!Array.isArray(lines)||!lines.length)return this.makeFallbackReadingPage(index);
+  try{
+   const page=document.createElement('section');
+   page.className='quran-reading-page quran-fixed-lines';
+   page.dataset.readingPage=String(index+1);
+   page.dataset.lineCount=String(lines.length);
+   page.setAttribute('aria-label',this.tr('صفحة المصحف ','Mushaf page ')+(index+1));
+   const cache=new Map(),number=new Intl.NumberFormat('ar');
+   const get=(surah,ayah)=>{
+    const key=surah+':'+ayah;
+    if(!cache.has(key)){
+     const verse=this.surahVerses?.[surah-1]?.[ayah-1];
+     if(!verse||verse.s!==surah||verse.a!==ayah)throw Error('Unknown original verse '+key);
+     cache.set(key,this.displayWords(verse));
+    }
+    return cache.get(key);
+   };
+   for(const [rowIndex,row] of lines.entries()){
+    if(!Array.isArray(row)||!row.length)throw Error('Bad line layout row');
+    if(row[0]==='h'){
+     const name=this.data.surahs?.[row[1]-1]?.name;
+     if(!name)throw Error('Missing chapter heading '+row[1]);
+     const h=document.createElement('h3');
+     h.className='quran-surah-title quran-fixed-heading';
+     h.textContent='سورة '+name;
+     page.append(h);continue;
+    }
+    if(row[0]==='b'){
+     const surah=row[1],verse=this.surahVerses?.[surah-1]?.[0];
+     if(!verse||surah===1||surah===9)throw Error('Invalid basmala heading');
+     const h=document.createElement('div');h.className='quran-basmala-line';
+     // Original verse prefix, including its exact Quranic vowel marks.
+     h.textContent=verse.t.trim().split(/\s+/u).slice(0,4).join(' ');
+     page.append(h);continue;
+    }
+    if(row[0]!=='t'||row.length<2)throw Error('Invalid Quran text line');
+    const line=document.createElement('div');
+    line.className='quran-madinah-line';line.dataset.lineIndex=String(rowIndex+1);
+    let fragment=null,lastVerse=null;
+    for(const entry of row.slice(1)){
+     if(!Array.isArray(entry)||entry.length!==3)throw Error('Bad word position');
+     const [surah,ayah,position]=entry,key=surah+':'+ayah,words=get(surah,ayah);
+     if(!Number.isInteger(position)||position<0||position>=words.length)
+      throw Error('Word missing from original Quran '+key+'#'+position);
+     if(key!==lastVerse){
+      fragment=document.createElement('span');fragment.className='quran-ayah-fragment';
+      fragment.dataset.ayah=key;fragment.tabIndex=0;
+      fragment.setAttribute('aria-label','الآية '+ayah+'، استماع');
+      line.append(fragment);lastVerse=key;
+     }
+     fragment.append(document.createTextNode(words[position]+' '));
+     if(position===words.length-1){
+      const marker=document.createElement('span');marker.className='ayah-number';
+      marker.textContent=number.format(ayah);
+      marker.setAttribute('aria-label','الآية '+ayah);
+      fragment.append(marker);
+     }
+    }
+    page.append(line);
+   }
+   const footer=document.createElement('div');footer.className='reading-page-number';
+   footer.textContent=number.format(index+1);page.append(footer);
+   return page;
+  }catch(err){
+   console.error('Mushaf line layout validation failed on page '+(index+1)+'; preserving original verse display',err);
+   return this.makeFallbackReadingPage(index);
+  }
+ }
+ makeFallbackReadingPage(index){
   // Remove only font-dependent decorative round-zero / verse-circle marks from
   // rendered display; the canonical licensed JSON remains byte-for-byte intact.
-  const printable=text=>text.replace(/[\u06DD\u06DE\u06DF\u06E0]/gu,'');
+  const printable=text=>text;
  const verses=this.data.pages[index],page=document.createElement('section');page.className='quran-reading-page';page.dataset.readingPage=index+1;
  
  const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}page.append(fragment);const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
