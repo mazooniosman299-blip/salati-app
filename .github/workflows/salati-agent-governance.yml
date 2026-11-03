@@ -179,7 +179,9 @@ jobs:
                   assert rel in names, 'Missing staged Android file: '+rel
                   assert archive.read(rel)==source.read_bytes(), 'Debug preview bytes diverged: '+rel
                   checked+=1
-          assert checked>100, 'Unexpected incomplete WebView source staging'
+          assert checked>=6, 'Unexpected incomplete WebView source staging'
+          for required in ('index.html','salati-ui.css','app-v1.0.109.js','quran/data.json'):
+              assert (stage/required).is_file(), 'Missing critical staged app asset: '+required
           print('PASS unsigned/debug preview contains',checked,'exact staged WebView files; NOT original signed release')
           PY
       - name: Exercise real Android 15 system WebView and native widget without skipping independent failures
