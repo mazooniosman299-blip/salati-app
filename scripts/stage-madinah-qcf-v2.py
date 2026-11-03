@@ -45,7 +45,7 @@ def get_page(n):
                 loc=w.get("location");code=w.get("qpcV2")
                 if not loc or not re.fullmatch(r"\d{1,3}:\d{1,3}:\d{1,3}",loc):
                     raise ValueError(f"bad word address {n}: {loc}")
-                if not code or any(ord(c)<0xE000 for c in code):
+                if not code or any((not c.isspace()) and ord(c)<0xE000 for c in code):
                     raise ValueError(f"invalid private-use word glyph {n} {loc}: {code!r}")
                 kind=w.get("kind")
                 if kind not in ("marker","word"):raise ValueError("unrecognized verse glyph kind")
