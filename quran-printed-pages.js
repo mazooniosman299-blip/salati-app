@@ -95,23 +95,35 @@ export async function mountPrintedMushaf(pageElement, pageNumber, originalVerses
       pageElement.replaceChildren(svg,footer);
       pageElement.classList.add('salati-printed-page');
       pageElement.dataset.plateEdition = PRINTED_MUSHAF.edition;
-      // Fit the WHOLE publisher drawing, not the declared empty SVG canvas.
-      // On opening leaves the original viewBox has large vacant margins.
-      // getBBox measures all original ink and polygons; no art is cut or warped.
-      requestAnimationFrame(() => {
+      // Artwork must be measured only while that exact leaf is actually laid
+      // out: offscreen pages use content-visibility:auto and have no real box.
+      const fit = () => {
         if (!svg.isConnected) return;
         try {
-          const b = svg.getBBox();
+          const box = svg.getBBox();
           const original = svg.viewBox.baseVal;
-          if (![b.x,b.y,b.width,b.height].every(Number.isFinite) ||
-              b.width < 40 || b.height < 60 || !original.width || !original.height) return;
-          const padding = Math.max(b.width,b.height) * (pageNumber <= 2 ? .035 : .015);
-          const bounds = [b.x-padding,b.y-padding,b.width+2*padding,b.height+2*padding];
-          if (bounds[2] > 700 || bounds[3] > 1000 || bounds[2] <= 0 || bounds[3] <= 0) return;
+          if (![box.x,box.y,box.width,box.height].every(Number.isFinite) ||
+              box.width < 40 || box.height < 60 || !original.width || !original.height) return;
+          const margin = Math.max(box.width,box.height) * (pageNumber <= 2 ? .035 : .015);
+          const bounds = [box.x-margin,box.y-margin,box.width+2*margin,box.height+2*margin];
+          if (bounds[2] <= 0 || bounds[3] <= 0 || bounds[2] > 700 || bounds[3] > 1000) return;
           svg.setAttribute('viewBox',bounds.join(' '));
           svg.setAttribute('preserveAspectRatio','xMidYMin meet');
-        } catch { /* keep publisher viewBox if SVG geometry unsupported */ }
-      });
+        } catch { /* keep publisher viewBox if geometry is unavailable */ }
+      };
+      requestAnimationFrame(fit);
+      // Repeat when a prefetched leaf enters the vertically scrolling window.
+      // This eliminates the empty viewBox area even on distant later pages.
+      if (typeof IntersectionObserver === 'function') {
+        const scroller = document.getElementById('qVerses');
+        const visible = new IntersectionObserver(entries => {
+          if (entries.some(entry => entry.isIntersecting)) {
+            visible.disconnect();
+            requestAnimationFrame(fit);
+          }
+        }, {root: scroller || null,rootMargin:'100px 0px'});
+        visible.observe(svg);
+      }
       return true;
     } catch (error) {
       // No generated substitute, no empty rectangle, and no mutated ayat.
