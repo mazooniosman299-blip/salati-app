@@ -453,3 +453,26 @@ body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot #qAudioStatus:not(:e
 body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player::before{
  content:none;display:none;
 }
+
+
+/* Madinah opening spread (Al-Fatihah and Al-Baqarah): the printed QCF source
+   has eight occupied slots and seven intentional blanks. Center the occupied
+   rows as a book page, rather than leaving the whole text stuck at the top. */
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="1"] .qcf-madinah-grid,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="2"] .qcf-madinah-grid {
+ display:flex;flex-direction:column;justify-content:center;
+ align-items:stretch;gap:5px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="1"] .qcf-madinah-grid .qcf-madinah-slot,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="2"] .qcf-madinah-grid .qcf-madinah-slot {
+ box-sizing:border-box;display:flex;flex:0 0 auto;height:auto;min-height:32px;
+ align-items:center;justify-content:center;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="1"] .qcf-madinah-grid .qcf-madinah-slot:empty,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="2"] .qcf-madinah-grid .qcf-madinah-slot:empty {
+ display:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="1"] .qcf-madinah-line,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"][data-reading-page="2"] .qcf-madinah-line{
+ text-align:center;text-align-last:center;
+}
