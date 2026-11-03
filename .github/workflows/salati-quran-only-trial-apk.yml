@@ -12,6 +12,7 @@ on:
       - dist/quran/SOURCES.txt
       - scripts/generate-mushaf-line-layout.py
       - tests/mushaf-line-map-contract.cjs
+      - tests/quran-follow.cjs
       - .github/workflows/salati-verified-mushaf-layout.yml
       - docs/requests/ACTIVE_CHANGE.json
       - docs/requests/SALATI-20261103-QURAN-ONLY-TRIAL.md
