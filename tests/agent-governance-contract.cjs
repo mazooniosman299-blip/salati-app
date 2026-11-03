@@ -63,7 +63,7 @@ const missingTarget={...manifest,visual_change:true,allowed_paths:[...manifest.a
 assert.throws(()=>validateScope([...permitted,'dist/salati-ui.css'],missingTarget),/before\/after\/preserve/,'Vague visual selector must be rejected');
 const specificTarget={...missingTarget,visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both',before:'charcoal button',after:'blue button',preserve:['size','position','Quran text','navigation']}]};
 assert.equal(validateScope([...permitted,'dist/salati-ui.css'],specificTarget),permitted.length+1,'Fully specified preview request should be permitted, but never published');
-const infraSmoke={...manifest,release_mode:'infrastructure',visual_change:false,android_release:false,allowed_paths:[...manifest.allowed_paths,'scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs']};
+const infraSmoke={...manifest,release_mode:'infrastructure',visual_change:false,android_release:false,allowed_paths:[...new Set([...manifest.allowed_paths,'scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs'])]};
 const infraFiles=['scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs','docs/requests/ACTIVE_CHANGE.json'];
 assert.equal(validateScope(infraFiles,infraSmoke),infraFiles.length,'CI scheduling can be repaired without modifying signed app');
 assert.throws(()=>validateScope([...infraFiles,'dist/index.html'],{...infraSmoke,allowed_paths:[...infraSmoke.allowed_paths,'dist/index.html']}),/Infrastructure request cannot edit app/);
