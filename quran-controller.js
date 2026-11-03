@@ -144,74 +144,13 @@ export class QuranReader{
   return words;
  }
  makeReadingPage(index){
-  const lines=this.lineLayout?.pages?.[index];
-  if(!Array.isArray(lines)||!lines.length)return this.makeFallbackReadingPage(index);
-  try{
-   const page=document.createElement('section');
-   page.className='quran-reading-page quran-fixed-lines';
-   page.dataset.readingPage=String(index+1);
-   page.dataset.lineCount=String(lines.length);
-   page.setAttribute('aria-label',this.tr('صفحة المصحف ','Mushaf page ')+(index+1));
-   const cache=new Map(),number=new Intl.NumberFormat('ar');
-   const get=(surah,ayah)=>{
-    const key=surah+':'+ayah;
-    if(!cache.has(key)){
-     const verse=this.surahVerses?.[surah-1]?.[ayah-1];
-     if(!verse||verse.s!==surah||verse.a!==ayah)throw Error('Unknown original verse '+key);
-     cache.set(key,this.displayWords(verse));
-    }
-    return cache.get(key);
-   };
-   for(const [rowIndex,row] of lines.entries()){
-    if(!Array.isArray(row)||!row.length)throw Error('Bad line layout row');
-    if(row[0]==='h'){
-     const name=this.data.surahs?.[row[1]-1]?.name;
-     if(!name)throw Error('Missing chapter heading '+row[1]);
-     const h=document.createElement('h3');
-     h.className='quran-surah-title quran-fixed-heading';
-     h.textContent='سورة '+name;
-     page.append(h);continue;
-    }
-    if(row[0]==='b'){
-     const surah=row[1],verse=this.surahVerses?.[surah-1]?.[0];
-     if(!verse||surah===1||surah===9)throw Error('Invalid basmala heading');
-     const h=document.createElement('div');h.className='quran-basmala-line';
-     // Original verse prefix, including its exact Quranic vowel marks.
-     h.textContent=verse.t.trim().split(/\s+/u).slice(0,4).join(' ');
-     page.append(h);continue;
-    }
-    if(row[0]!=='t'||row.length<2)throw Error('Invalid Quran text line');
-    const line=document.createElement('div');
-    line.className='quran-madinah-line';line.dataset.lineIndex=String(rowIndex+1);
-    let fragment=null,lastVerse=null;
-    for(const entry of row.slice(1)){
-     if(!Array.isArray(entry)||entry.length!==3)throw Error('Bad word position');
-     const [surah,ayah,position]=entry,key=surah+':'+ayah,words=get(surah,ayah);
-     if(!Number.isInteger(position)||position<0||position>=words.length)
-      throw Error('Word missing from original Quran '+key+'#'+position);
-     if(key!==lastVerse){
-      fragment=document.createElement('span');fragment.className='quran-ayah-fragment';
-      fragment.dataset.ayah=key;fragment.tabIndex=0;
-      fragment.setAttribute('aria-label','الآية '+ayah+'، استماع');
-      line.append(fragment);lastVerse=key;
-     }
-     fragment.append(document.createTextNode(words[position]+' '));
-     if(position===words.length-1){
-      const marker=document.createElement('span');marker.className='ayah-number';
-      marker.textContent=number.format(ayah);
-      marker.setAttribute('aria-label','الآية '+ayah);
-      fragment.append(marker);
-     }
-    }
-    page.append(line);
-   }
-   const footer=document.createElement('div');footer.className='reading-page-number';
-   footer.textContent=number.format(index+1);page.append(footer);
-   return page;
-  }catch(err){
-   console.error('Mushaf line layout validation failed on page '+(index+1)+'; preserving original verse display',err);
-   return this.makeFallbackReadingPage(index);
-  }
+  // A dedicated MIT-derived MushafBook page component owns all page DOM and
+  // geometry; this class owns only trusted Quran data, page state and audio.
+  // The original renderer remains a safe offline fallback on any failure.
+  const book=typeof window==='undefined'?null:window.SalatiMushafBook;
+  if(this.lineLayout?.pages?.[index]&&book?.render)
+   return book.render(this,index);
+  return this.makeFallbackReadingPage(index);
  }
  makeFallbackReadingPage(index){
   // Remove only font-dependent decorative round-zero / verse-circle marks from
