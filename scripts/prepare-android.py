@@ -21,7 +21,7 @@ stylesheet_references='\n'.join(page.read_text() for page in target.rglob('*.htm
 # single canonical Salati stylesheet. This preserves the original one-link
 # security/design invariant and excludes unreferenced legacy CSS patches.
 canonical=(target/'salati-ui.css').read_text(encoding='utf-8')
-quran_imported=bool(re.search(r'^@import\s+url\([\'\"]mushaf-book\.css[\'\"]\);',canonical))
+quran_imported=bool(re.search(r'(?m)^@import\s+url\([\'\"]mushaf-book\.css[\'\"]\);',canonical))
 if quran_imported:
     assert (target/'mushaf-book.css').is_file(), 'Missing referenced MushafBook stylesheet'
 
