@@ -24,6 +24,7 @@
     "docs/requests/SALATI-20261103-WEB-MUSHAF-REBUILD.md",
     "quran-controller.js",
     "scripts/generate-mushaf-line-layout.py",
+    "scripts/prepare-android.py",
     "tests/eight-mobile-invariants.cjs",
     "tests/mushaf-line-map-contract.cjs",
     "tests/quran-follow.cjs",
@@ -35,7 +36,7 @@
       "language": "both",
       "selector": "#qSheet",
       "before": "Legacy 2026 trial Quran display is an inline function in quran-controller.js with 25k+ bytes of accumulated CSS changes to canonical salati-ui.css, not a real independent web-derived Mushaf page component.",
-      "after": "Replace ALL inline page DOM construction with independent dist/mushaf-book.js component, adapted from Mushaf Companion (MIT), full-screen 345x550 proportional paper with outer/inner frames, four ornate corners, side ornaments, part/Surah top rail, true 8/15 printed grid rows and page number; no static photos. Distinct dist/mushaf-book.css stylesheet replaces 25,939 bytes of accumulated trial CSS (removed from canonical). Every text word still from unchanged local Tanzil JSON with CC BY-SA verified word line metadata; preserve verse interaction.",
+      "after": "Replace ALL inline page DOM construction with independent dist/mushaf-book.js component, adapted from Mushaf Companion (MIT), full-screen 345x550 proportional paper with outer/inner frames, four ornate corners, side ornaments, part/Surah top rail, true 8/15 printed grid rows and page number; no static photos. A single canonical linked stylesheet imports the separately authored dist/mushaf-book.css, with native packager preserving only that referenced file. This replaces 25,939 bytes of accumulated trial CSS (removed from canonical). Every text word still from unchanged local Tanzil JSON with CC BY-SA verified word line metadata; preserve verse interaction.",
       "preserve": [
         "All immutable original 6236 verses, every QCF layout token and orthographic mark; 604 pages, 114 surahs; source licensing",
         "Original reciters/audio, progress, bookmarks and position",
