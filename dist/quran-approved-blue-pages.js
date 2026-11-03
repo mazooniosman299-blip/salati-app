@@ -24,6 +24,7 @@ async function install(){
   if(!response.ok)throw Error('No 604-page source asset manifest');
   m=await response.json();if(!valid(m))throw Error('Incomplete or mismatched blue-printed Quran edition');
  }catch(e){console.warn('Original Salati Quran retained:',e.message);return}
+ const style=document.createElement('link');style.rel='stylesheet';style.href='quran-approved-blue-pages.css';document.head.append(style);
  const figure=document.createElement('figure');figure.id='qApprovedOriginalPage';figure.hidden=true;
  figure.setAttribute('aria-label','مصحف المدينة الأزرق برواية حفص، صفحات أصلية');
  const first=new Image();first.id='qApprovedOriginalImage';first.alt='مصحف المدينة الأزرق، الصفحة الأصلية';
@@ -88,6 +89,7 @@ async function install(){
   reciter.addEventListener('change',update);update();
   button.addEventListener('click',()=>{settings.click();reciter.focus({preventScroll:true})});
   header.append(button);
+  $('qApprovedReaderMenu')?.addEventListener('click',()=>document.body.classList.toggle('q-blue-reader-menu-open'));
  }
  const start=Math.min(604,Math.max(1,Number(params.get('page')||pageField.value||2)));
  let tries=0;
