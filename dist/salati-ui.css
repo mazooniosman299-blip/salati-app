@@ -618,7 +618,7 @@ body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bars{
 body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bar{
  box-sizing:border-box;display:block;flex:1 1 2px;
  width:2px;max-width:4px;min-width:1.5px;
- background:#6C7380;border-radius:2px;opacity:.72;
+ background:#7896C3;border-radius:2px;opacity:.82;
  transition:background-color .12s linear,opacity .12s linear;
 }
 body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bar.is-played{
