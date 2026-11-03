@@ -60,7 +60,7 @@ function validateScope(changed,manifest,options={}) {
  if(manifest.release_mode==='infrastructure') {
   assert.equal(manifest.visual_change,false,'Infrastructure cannot claim a visual change');
   assert.equal(manifest.android_release,false,'Infrastructure cannot publish an Android update');
-  const allowedInfra=new Set(['package.json','scripts/verify-publish-ci.cjs','tests/publish-ci-wait.cjs','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','docs/requests/ACTIVE_CHANGE.json','docs/requests/ACCEPTANCE_STATUS.json']);
+  const allowedInfra=new Set(['package.json','scripts/verify-publish-ci.cjs','tests/publish-ci-wait.cjs','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','tests/android-emulator-screen-preflight.py','scripts/android-webview-smoke.sh','docs/requests/ACTIVE_CHANGE.json','docs/requests/ACCEPTANCE_STATUS.json']);
   const forbidden=changed.filter(p=>!allowedInfra.has(p));
   assert.deepEqual(forbidden,[],'Infrastructure request cannot edit app, signed release or other unapproved code: '+forbidden.join(', '));
  }

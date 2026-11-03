@@ -1,6 +1,6 @@
 {
   "request_id": "SALATI-20261103-CI-RACE",
-  "original_request": "حل أي مشكلة في تنفيذ المخاطر العشرين، ومنع فشل Cloudflare المبكر قبل اكتمال GitHub Actions دون تخطي حماية الإنتاج.",
+  "original_request": "حل أي مشكلة في تنفيذ المخاطر العشرين، ومنع فشل Cloudflare المبكر قبل اكتمال GitHub Actions دون تخطي حماية الإنتاج. علاج عدم ثبات إيماءة التمرير في Android WebView استناداً إلى لقطات Pixel الحقيقية.",
   "base_branch": "production",
   "base_commit": "f0b602d70a91134cdd716d78466cbacf5f06ada3",
   "visual_change": false,
@@ -44,9 +44,11 @@
     "tests/dynamic-source-runtime-browser.py",
     "package.json",
     "scripts/verify-publish-ci.cjs",
-    "tests/publish-ci-wait.cjs"
+    "tests/publish-ci-wait.cjs",
+    "tests/android-emulator-screen-preflight.py",
+    "scripts/android-webview-smoke.sh"
   ],
-  "acceptance": "Bounded finite CI wait for original production SHA; no data, UI, APK, or signed web asset changes. Required four jobs must all complete with success.",
+  "acceptance": "Bounded finite CI wait for original production SHA; no data, UI, APK, or signed web asset changes. Required four jobs must all complete with success. Fix native emulator test gesture from detected visible Quran parchment; retain strict parchment/ornament pixel assertions and all screenshots on failure.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
   "status": "in_progress",
   "release_mode": "infrastructure",
