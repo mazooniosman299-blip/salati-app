@@ -74,6 +74,25 @@ try:
      page.screenshot(path=str(OUT/name),animations="disabled")
      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],
        "image":name,"computed":capture_metrics(page),"page_errors":list(errors)})
+     if tab=="mushaf":
+      # Capture a SECOND genuine state after scrolling the actual independent Quran reader.
+      # A static top-of-page screenshot alone cannot prove text below the fold is reachable.
+      scroll=page.locator("#qVerses").evaluate("""e => {
+        const maximum=e.scrollHeight-e.clientHeight;
+        e.scrollTop=Math.floor(maximum/2);
+        return {maximum,actual:e.scrollTop};
+      }""")
+      assert scroll["maximum"]>5 and scroll["actual"]>0,(language,width,"Quran cannot scroll",scroll)
+      page.wait_for_timeout(130)
+      actual=page.locator("#qVerses").evaluate("e=>e.scrollTop")
+      assert actual>0,(language,width,"Quran scroll unexpectedly reset")
+      assert page.locator("#qTransport").count()==1 and page.locator("#qSeek").count()==1
+      scroll_name=f"{language}-mushaf-scrolled-{width}.png"
+      page.screenshot(path=str(OUT/scroll_name),animations="disabled")
+      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],
+       "image":scroll_name,"scroll_state":"real-qVerses-middle","computed":capture_metrics(page),
+       "page_errors":list(errors)})
+      page.locator("#qVerses").evaluate("e=>e.scrollTop=0")
     assert not errors,(language,width,"JS exceptions",errors[:6])
     if width==390:
      page.locator("#lang").click()
@@ -90,5 +109,5 @@ finally:
 (OUT/"metrics.json").write_text(json.dumps({"source":"real local Chromium; production app assets",
  "matched_external_reference":False,"reference_status":"unverified until exact original image is available",
  "screenshots":EVIDENCE},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-assert len(EVIDENCE)==len(TABS)*len(SIZES)*2
-print("PASS actual Salati Chromium: "+str(len(EVIDENCE))+" actual screenshots, 6 tabs, 2 languages, 4 viewport sizes, language persistence; NO pixel-match claim")
+assert len(EVIDENCE)==(len(TABS)+1)*len(SIZES)*2
+print("PASS actual Salati Chromium: "+str(len(EVIDENCE))+" actual screenshots including scrolled Quran on 6 tabs, 2 languages, 4 viewports; NO pixel-match claim")
