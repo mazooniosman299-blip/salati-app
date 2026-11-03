@@ -226,16 +226,33 @@ export class QuranReader{
   if(!page?.classList?.contains('quran-fixed-lines')||page.clientWidth<170)return;
   const rows=[...page.querySelectorAll('.quran-madinah-line')];
   if(!rows.length)return;
-  const base=Math.min(25,Math.max(17,Number(this.size)*.83||21));
-  let size=base;
-  for(let i=0;i<7;i++){
+  let size=Math.min(25,Math.max(17,Number(this.size)*.83||21));
+  const measure=()=>{
+   let worst=1;
+   for(const row of rows){
+    const slot=row.getBoundingClientRect();
+    if(slot.width<=1)continue;
+    // RTL ink can exceed the *right* edge without increasing scrollWidth.
+    // A DOM Range of the actual glyph boxes catches both left/right overflow.
+    const range=document.createRange();
+    range.selectNodeContents(row);
+    const glyph=range.getBoundingClientRect();
+    const width=Math.max(glyph.right,slot.right)-Math.min(glyph.left,slot.left);
+    worst=Math.max(worst,width/slot.width);
+   }
+   return worst;
+  };
+  for(let pass=0;pass<9;pass++){
    page.style.setProperty('--mushaf-word-size',size.toFixed(2)+'px');
-   const ratio=Math.max(1,...rows.map(row=>row.clientWidth>1?row.scrollWidth/row.clientWidth:1));
-   if(ratio<=1.01)break;
-   size=Math.max(11,Math.floor(size/ratio*.97*10)/10);
+   const ratio=measure();
+   if(ratio<=1.006)break;
+   const smaller=Math.max(10.5,Math.floor((size/ratio*.965)*10)/10);
+   if(size-smaller<.04)break;
+   size=smaller;
   }
-  page.dataset.fitVerified=String(rows.every(row=>row.scrollWidth<=row.clientWidth+3));
-  if(page.dataset.fitVerified!=='true')console.warn('Quran text line needs more width on page '+page.dataset.readingPage);
+  page.dataset.fitVerified=String(measure()<=1.015);
+  if(page.dataset.fitVerified!=='true')
+   console.warn('Mushaf Arabic glyphs exceed fixed line at page '+page.dataset.readingPage);
  }
  renderReadingPages(){
  if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
