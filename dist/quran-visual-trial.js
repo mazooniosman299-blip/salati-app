@@ -1,51 +1,36 @@
-/* Salati 2026-11-03: installable review-only visual trial.
-   The original interactive 604-page reader remains the fallback; no Quran JSON,
-   audio engine, prayer UI, or saved preferences are rewritten.
-   One third-party reference photograph is linked for visual evaluation only:
-   it must NOT be treated as a page-mapped, rights-cleared Mushaf release. */
+/* Real Salati 604-page Quran reader: independent control wiring only.
+   The scripture source is dist/quran/data.json (6236 ayahs, 604 pages).
+   No photo, remote image, fake buttons, altered Quran text or alternate player. */
 (() => {
  'use strict';
- const $=id=>document.getElementById(id);
- document.addEventListener('DOMContentLoaded',()=>{
-  const mushaf=$('mushaf'),plate=$('qTrialPlate'),img=$('qTrialPlateImage'),toggle=$('qTrialSwitch');
+ const $ = id => document.getElementById(id);
+ document.addEventListener('DOMContentLoaded', () => {
   const previous=$('qPrevSurah'),next=$('qNextSurah'),loop=$('qLoopSurah');
-  const source=$('qSurah'),repeat=$('qRepeat');
-  if(!mushaf||!plate||!img||!toggle||!source||!repeat||!previous||!next||!loop)return;
-  const textMode=()=>{
-   mushaf.classList.remove('quran-trial-active');
-   plate.hidden=true;
-   toggle.textContent='معاينة شكل المصحف';
-   toggle.setAttribute('aria-pressed','false');
-   $('qVerses')?.removeAttribute('aria-hidden');
+  const source=$('qSurah'),repeat=$('qRepeat'),verses=$('qVerses');
+  if(!previous||!next||!loop||!source||!repeat||!verses) return;
+  const move=step=>{
+    const current=Number(source.value);
+    if(source.disabled||!Number.isInteger(current)||current<1||current>114)return;
+    const target=Math.max(1,Math.min(114,current+step));
+    if(target===current)return;
+    source.value=String(target);
+    source.dispatchEvent(new Event('change',{bubbles:true}));
   };
-  const plateMode=()=>{
-   if(!img.complete||img.naturalWidth<100)return;
-   mushaf.classList.add('quran-trial-active');
-   plate.hidden=false;
-   toggle.hidden=false;
-   toggle.textContent='القراءة التفاعلية للآيات';
-   toggle.setAttribute('aria-pressed','true');
-   $('qVerses')?.setAttribute('aria-hidden','true');
+  previous.addEventListener('click',()=>move(-1));
+  next.addEventListener('click',()=>move(1));
+  const sync=()=>{
+    const enabled=!!repeat.checked;
+    loop.setAttribute('aria-pressed',String(enabled));
+    loop.setAttribute('title',enabled?'إلغاء التكرار / Disable repeat':'تكرار السورة / Repeat Surah');
   };
-  img.addEventListener('load',plateMode,{once:true});
-  img.addEventListener('error',()=>{textMode();toggle.hidden=true},{once:true});
-  if(img.complete && img.naturalWidth>100)plateMode();
-  toggle.onclick=()=>mushaf.classList.contains('quran-trial-active')?textMode():plateMode();
-  const goSurah=delta=>{
-   if(source.disabled||!source.options?.length)return;
-   const current=Number(source.value),id=Math.max(1,Math.min(114,current+delta));
-   if(id===current)return;
-   textMode();source.value=String(id);
-   source.dispatchEvent(new Event('change',{bubbles:true}));
-  };
-  previous.onclick=()=>goSurah(-1);
-  next.onclick=()=>goSurah(1);
-  const sync=()=>{const checked=!!repeat.checked;loop.setAttribute('aria-pressed',String(checked));};
-  loop.onclick=()=>{repeat.checked=!repeat.checked;repeat.dispatchEvent(new Event('change',{bubbles:true}));sync()};
-  repeat.addEventListener('change',sync);
-  sync();
-  // The trial image is a single design reference, not all 604 numbered pages.
-  // When user selects another Surah/Juz, show the faithful interactive text.
-  ['qSurah','qJuz'].forEach(id=>$(id)?.addEventListener('change',textMode));
+  loop.addEventListener('click',()=>{
+    repeat.checked=!repeat.checked;
+    repeat.dispatchEvent(new Event('change',{bubbles:true}));
+    sync();
+  });
+  repeat.addEventListener('change',sync);sync();
+  // Keep all original verse interaction and audio listeners on #qVerses.
+  // On each page navigation the existing QuranReader renders real DOM verses.
+  // No duplicated or hardcoded user-facing Quranic text is introduced here.
  });
 })();
