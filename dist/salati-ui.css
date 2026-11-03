@@ -652,3 +652,71 @@ body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player .q
   padding-left:10px;padding-right:10px;
  }
 }
+
+
+/* SALATI verified 604-page Quran line typesetter, sourced from immutable
+   Tanzil words plus pinned CC-BY-SA layout metadata. Quran tab ONLY. */
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page.quran-fixed-lines{
+ display:flex;flex-direction:column;align-items:stretch;
+ justify-content:space-between;gap:0;box-sizing:border-box;
+ padding:14px clamp(14px,4vw,28px) 15px;
+ min-height:100%;height:auto;overflow:visible;
+ background:#FFF9F0;color:#211A15;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-madinah-line{
+ box-sizing:border-box;display:block;flex:0 0 auto;
+ direction:rtl;unicode-bidi:plaintext;width:100%;min-width:0;
+ min-height:1.8em;margin:0;padding:0;
+ border:0;background:transparent;color:#19130F;
+ text-align:justify;text-align-last:justify;
+ white-space:nowrap;overflow:visible;
+ font-family:SalatiMadinahClassic,AmiriQuran,serif;
+ font-size:var(--mushaf-word-size,clamp(16px,4.6vw,25px));
+ font-weight:400;line-height:1.8;letter-spacing:0;word-spacing:0;
+ font-kerning:normal;font-synthesis:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-ayah-fragment{
+ display:inline;direction:rtl;unicode-bidi:isolate;
+ white-space:inherit;color:inherit;background:transparent;
+ outline-offset:2px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-ayah-fragment:focus-visible{
+ outline:2px solid #2563EB;border-radius:3px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-ayah-fragment .ayah-number{
+ display:inline-flex;vertical-align:middle;align-items:center;justify-content:center;
+ width:1.72em;height:1.72em;min-width:1.72em;min-height:1.72em;
+ margin:0 2px;padding:0;line-height:1;font-size:.7em;font-weight:600;
+ color:#6C503A;-webkit-text-fill-color:#6C503A;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-fixed-heading{
+ display:flex;flex:0 0 auto;align-items:center;justify-content:center;
+ width:100%;max-width:100%;height:52px;min-height:52px;
+ margin:1px 0 7px;padding:7px 19%;
+ font-family:SalatiCairo,sans-serif;
+ font-size:clamp(14px,4vw,18px);line-height:1.3;
+ color:#634A37;white-space:nowrap;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-basmala-line{
+ display:flex;flex:0 0 auto;align-items:center;justify-content:center;
+ direction:rtl;white-space:nowrap;text-align:center;
+ width:100%;min-height:32px;margin:0 0 5px;padding:0;
+ color:#29221D;
+ font-family:SalatiMadinahClassic,AmiriQuran,serif;
+ font-size:clamp(17px,4.7vw,25px);font-weight:400;line-height:1.7;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .reading-page-number{
+ flex:0 0 auto;margin-top:4px;min-height:31px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines[data-reading-page="1"],
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines[data-reading-page="2"]{
+ justify-content:space-evenly;
+}
+@media(max-width:440px){
+ body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page.quran-fixed-lines{
+  padding:10px 12px 12px;
+ }
+ body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-fixed-lines .quran-madinah-line{
+  font-size:var(--mushaf-word-size,20px);line-height:1.7;
+ }
+}
