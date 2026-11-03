@@ -100,8 +100,8 @@ def main():
     # Preflight two very different Quran leaves; never silently substitute black SVG pages.
     for quran_page in (3, 17):
         src_page = doc.load_page(args.first_pdf_page + quran_page - 2)
-        proof = Image.frombytes("RGB", [int(src_page.rect.width), int(src_page.rect.height)],
-                                src_page.get_pixmap(alpha=False).samples)
+        pix = src_page.get_pixmap(colorspace=fitz.csRGB, alpha=False)
+        proof = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
         if blue_ink_fraction(proof) < .0002:
             raise SystemExit("STOP: source appears to lack a blue printed heading on Quran page " + str(quran_page))
     dest.mkdir(parents=True, exist_ok=True)
