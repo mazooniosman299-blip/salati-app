@@ -8,13 +8,15 @@ const app=read('app-source.js');
 assert(html.includes('href="salati-ui.css"'),'Mobile design must use active canonical stylesheet');
 assert(css.includes('@layer salati-priority'),'Current live layer missing');
 assert(/overflow-y:\s*auto\s*;/.test(css),'Mobile overflow handling missing from loaded CSS');
-for(const ch of ['06DD','06DE','06DF','06E0']){
- assert(quran.includes('\\u'+ch),'Reader must sanitize '+ch);
- assert(clean.includes('\\u'+ch),'Cache must sanitize '+ch);
-}
+// Quranic Unicode stop/orthographic marks must NEVER be stripped from the
+// reader. Legacy assertions demanded the opposite and were unsafe.
+assert(!clean.includes('node.nodeValue.replace('),'Quranic verse letters/marks must not be deleted');
+assert(quran.includes("makeReadingPage(index)"),'Live reader must remain present');
+assert(quran.includes("quran/line-layout.json"),'Verified local Madani line map must remain attached');
+assert(quran.includes("quran-madinah-line"),'Rendering should use verified line boundaries');
 assert(!html.includes('id="headingValue"')&&!app.includes('headingValue'),'Retired heading must remain absent');
 assert(html.includes('<div class="compass-actions"><button id="compassEnable"'),'Qibla button must remain live');
-assert(quran.includes('async enterAtSurahStart()')&&quran.includes('this.readingStart=0'),'Quran should retain beginning reset');
+assert(quran.includes('async enterAtSurahStart()')&&!quran.includes('this.readingStart=0;this.readingNext=0;'),'Reopening Quran must retain saved reading position');
 assert(app.includes('mushaf.enterAtSurahStart()'),'Navigation retains Quran reset');
 assert(css.includes('--mobile-nav-height') && css.includes('header>.site-nav'),'Live mobile navigation layout tokens must remain; spatial nonoverlap is validated in real Chromium');
 assert(css.includes('border-radius:24px'),'Active selected prayer capsule must remain rounded');
