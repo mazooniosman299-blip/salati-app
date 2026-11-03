@@ -1,0 +1,108 @@
+name: Salati Quran V2 visual APPROVAL preview (NO RELEASE/DEPLOY)
+on:
+  push:
+    branches: [feature/salati-mushaf-v2-modern-20261103]
+    paths:
+      - dist/mushaf-book.css
+      - tests/quran-visual-trial-browser.py
+      - docs/requests/ACTIVE_CHANGE.json
+      - docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md
+      - .github/workflows/salati-mushaf-v2-preview.yml
+permissions:
+  contents: read
+concurrency:
+  group: salati-mushaf-v2-review-only
+  cancel-in-progress: true
+jobs:
+  browser-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify strictly Quran-only changes against existing draft branch
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin feature/salati-mushaf-book-rebuild-20261103
+          git diff --name-only origin/feature/salati-mushaf-book-rebuild-20261103 HEAD > /tmp/review-changes.txt
+          while IFS= read -r file; do
+            case "$file" in
+              dist/mushaf-book.css|tests/quran-visual-trial-browser.py|docs/requests/ACTIVE_CHANGE.json|docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md|.github/workflows/salati-mushaf-v2-preview.yml) ;;
+              *) echo "UNAUTHORIZED EDIT: $file"; exit 1 ;;
+            esac
+          done < /tmp/review-changes.txt
+          cat /tmp/review-changes.txt
+      - name: Original Quran source, build and complete regression tests
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/quran-source-integrity.cjs
+          node tests/mushaf-line-map-contract.cjs
+      - name: Install real Chromium
+        run: |
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+      - name: Capture actual Salati screens, no black circles, reduced player frame
+        run: python3 tests/quran-visual-trial-browser.py
+      - name: Upload visual review screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushaf-v2-real-screenshots
+          path: reports/quran-only-trial/
+          if-no-files-found: warn
+          retention-days: 14
+  independent-android-review-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build independent trial, not an official Salati upgrade
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          node tests/quran-source-integrity.cjs
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify preview only, no artifacts from production
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs "$APK"
+          unzip -p "$APK" assets/www/mushaf-book.css | grep -F 'Salati MushafBook V2'
+          unzip -p "$APK" assets/www/quran/data.json | sha256sum | grep -F cb2be527751f8671b89595a0d81cc059c3db894c213772200bcf9a01dc5096e5
+          mkdir -p reports/quran-v2-review
+          cp "$APK" reports/quran-v2-review/salati-mushaf-v2-review.apk
+          sha256sum reports/quran-v2-review/salati-mushaf-v2-review.apk > reports/quran-v2-review/sha256.txt
+      - name: Upload unmerged unpublicized APK for user review only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushaf-v2-independent-android-preview
+          path: reports/quran-v2-review/
+          if-no-files-found: warn
+          retention-days: 14
