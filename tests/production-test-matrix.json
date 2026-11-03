@@ -49,5 +49,10 @@
       "tests/modern-instruments.py"
     ],
     "reason": "Old assertions require reflowed text geometry, exposed toolbar, per-ayah reciter popup or source equality to v123 CSS. Original files retained. Replace with direct-ayah/printed hash/browser tests and 48 actual production-vs-candidate scoped screenshots; all core/security/signature tests remain blocking."
+  },
+  "current_css_fixture": {
+    "file": "tests/fixtures/salati-v124-approved-ui.css",
+    "approval": "User-selected option3; actual48-shot production/candidate scoped comparison and personally inspected captures before adding fixture; v123 retained",
+    "test": "tests/css-cascade-equivalence.py"
   }
 }

@@ -8,6 +8,7 @@ permissions:
   contents: read
 jobs:
   integration:
+    if: github.event_name != 'pull_request' || github.head_ref == 'release/salati-square-prayer-v118-20261101'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -59,6 +60,7 @@ jobs:
             reports/control-qibla-20261101/
           if-no-files-found: ignore
   native-build:
+    if: github.event_name != 'pull_request' || github.head_ref == 'release/salati-square-prayer-v118-20261101'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:

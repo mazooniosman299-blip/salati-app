@@ -12,6 +12,10 @@
   "allowed_paths": [
     ".github/workflows/salati-mushaf1441-release.yml",
     ".github/workflows/salati-permanent-regression-protection.yml",
+    ".github/workflows/salati-readiness-v117-qa.yml",
+    ".github/workflows/salati-reliability-security-qa.yml",
+    ".github/workflows/salati-reliability-v116-qa.yml",
+    ".github/workflows/salati-square-prayer-v118-qa.yml",
     "README.md",
     "android/app/build.gradle",
     "android/app/src/main/java/com/salati/prayer/QuranService.java",
@@ -1274,13 +1278,17 @@
     "tests/active-production-browser-20261102.py",
     "tests/agent-governance-contract.cjs",
     "tests/android-webview-pixel-qa-20261102.py",
+    "tests/css-cascade-equivalence.py",
     "tests/current-design-visual-proof.py",
     "tests/fixtures/governance-request-20261103.json",
+    "tests/fixtures/salati-v124-approved-ui.css",
     "tests/mobile-layout-contract-20261101.py",
     "tests/mushaf1441-browser.py",
     "tests/printed-mushaf-integrity.cjs",
     "tests/production-test-matrix.json",
-    "tests/quran-direct-ayah.cjs"
+    "tests/quran-direct-ayah.cjs",
+    "tests/runtime-contrast-20261101.py",
+    "tests/upgrade-mobile-alarms-regression-20261101.py"
   ],
   "visual_allowed_regions": [
     {

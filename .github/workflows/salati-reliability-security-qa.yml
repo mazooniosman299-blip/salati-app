@@ -44,9 +44,9 @@ jobs:
         run: python3 tests/upgrade-mobile-alarms-regression-20261101.py
       - name: Retest other UI and Quran selections for regressions
         run: |
-          python3 tests/four-ui-screenshot-regressions-20261101.py
-          python3 tests/modern-instruments.py
-          python3 tests/control-qibla-20261101.py
+          python3 tests/mushaf1441-browser.py
+          python3 tests/active-production-browser-20261102.py
+          python3 tests/mobile-layout-contract-20261101.py
           python3 tests/offline-navigation.py
           python3 tests/runtime-contrast-20261101.py
       - name: Archive visual and migration proof
@@ -56,7 +56,8 @@ jobs:
           name: salati-mobile-scheduler-migration-evidence
           path: |
             reports/upgrade-mobile-20261101/
-            reports/four-screenshot-regressions/
+            reports/mushaf1441/
+            reports/active-production-browser-20261102/
             reports/ui-modern/
             reports/control-qibla-20261101/
             reports/runtime-contrast-20261101/
