@@ -132,6 +132,10 @@
       const footer=elt("footer","mushaf-book-footer reading-page-number");
       footer.append(elt("span","mushaf-book-number",AR_NUMBER.format(pageNumber)));
       page.append(footer);
+      // Upgrade to the actual Medina QCF V2 page only after matching local
+      // glyph codepoints and page font have both loaded. The original 604-page
+      // reader remains present on any error or offline asset mismatch.
+      window.SalatiMadinahQCFV2?.enhance(reader,page,index);
       return page;
     }catch(e){
       console.error("Salati MushafBook: verified page "+(index+1)+" cannot be rendered; original Quran view used",e);
