@@ -1,0 +1,131 @@
+name: Salati request interpretation and diff scope (NO DEPLOY)
+on:
+  pull_request:
+    branches: [production]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  request-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify signed version reference, 20 risk inventory and AI source-of-truth contract
+        run: node tests/agent-governance-contract.cjs
+      - name: Require exact per-request file scope, based on actual PR diff
+        run: |
+          git fetch --no-tags origin production:refs/remotes/origin/production
+          node scripts/verify-change-scope.cjs origin/production
+      - name: Validate original 20-risk mandate and every acceptance stage
+        run: node scripts/verify-request-status.cjs
+      - name: Verify unchanged, original 604-page Quran data
+        run: node tests/quran-source-integrity.cjs
+      - name: Generate actual runtime source/import graph
+        run: node scripts/inventory-current-sources.cjs
+      - name: Self-test PR conflict classifier
+        run: node scripts/pr-conflict-review.cjs --self-test
+      - name: Reject overlapping live source files across open PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/pr-conflict-review.cjs
+      - name: Preserve live overlap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-pr-source-overlap-evidence
+          path: |
+            reports/pr-overlap-latest.json
+            reports/active-source-map.json
+          if-no-files-found: warn
+      - name: Explicitly mark limited validation
+        run: echo "Source/scope contract only; NOT runtime browser visual reference, Android hardware, original-key signing, or production publication proof."
+
+  real-browser-design-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build existing real source without publishing
+        run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Prove JS bundle survives regeneration from real upstream source
+        run: node tests/source-lifecycle-contract.cjs
+      - name: Verify immutable user-provided mosque reference bytes
+        run: node tests/reference-provenance.cjs
+      - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
+        run: python3 tests/current-design-visual-proof.py
+      - name: Verify dynamic DOM is owned by upstream source across tab, language and reload
+        run: python3 tests/dynamic-source-runtime-browser.py
+      - name: Self-test visual diff rejecting unauthorized pixels
+        run: python3 tests/visual-scope-diff.py --self-test
+      - name: Compare original production runtime with candidate ONLY for approved visual change
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin production:refs/remotes/origin/production
+          RUNTIME_DIFF="$(node -e 'const x=require("./scripts/verify-change-scope.cjs");process.stdout.write(x.requiresWebVisualDiff(x.changedPaths("origin/production"))?"yes":"no")')"
+          if [[ "$RUNTIME_DIFF" == "yes" ]]; then
+            export SALATI_BASELINE_DIR="$RUNNER_TEMP/salati-production-shots"
+            git worktree add --detach "$RUNNER_TEMP/salati-production-reference" origin/production
+            (
+              cd "$RUNNER_TEMP/salati-production-reference"
+              npm ci
+              npm run build
+              SALATI_PROJECT_ROOT="$PWD" SALATI_VISUAL_OUT="$SALATI_BASELINE_DIR" python3 "$GITHUB_WORKSPACE/tests/current-design-visual-proof.py"
+            )
+            python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
+          else
+            echo 'No web visual-capable source files changed; unrelated screenshot parity not claimed.'
+          fi
+      - name: Always retain real source/visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-current-48-real-screenshots-and-computed-styles
+          path: reports/current-design-visual-proof/
+          if-no-files-found: warn
+
+  isolated-pr-preview-artifact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build real application for review without official release build
+        run: |
+          npm ci
+          npm run build
+      - name: Mark standalone nonindexed preview and validate production isolation
+        run: |
+          node scripts/create-isolated-preview.cjs
+          node tests/isolated-preview-contract.cjs
+      - name: Publish downloadable review artifact, NOT Cloudflare production
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-ui-review-only-static-no-apk-no-deploy
+          retention-days: 14
+          if-no-files-found: error
+          path: reports/isolated-pr-preview/
