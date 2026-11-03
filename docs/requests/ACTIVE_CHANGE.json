@@ -1,59 +1,90 @@
 {
-  "request_id": "SALATI-20261103-PARENT-TIMEOUT",
-  "original_request": "صلح كل مشكلة تواجهك: Cloudflare build launcher stops exact production CI wait after 30s (ETIMEDOUT) though the safety verifier correctly awaits full CI. Keep original APK/web signature protection.",
+  "request_id": "SALATI-20261103-IMMERSIVE-MADINAH",
+  "original_request": "المصحف مابظهر بملئ الشاشه زي التطبيقات العالميه وشكل المصحف الظاهر ليس من المصاحف العالميه. حل معاك المشكلتين ديل في التحديث بحيث لمن اجي اعدل مره اخرى مايحصل نفس المشكله",
+  "original_verbatim_excerpt": "النتيجة التي أريدها: عندما أقول لـChatGPT «غيّر هذا العنصر بهذا الشكل»، ينفّذ ذلك على واجهة صلاتي الحقيقية، دون تخمين أو تغيير عناصر أخرى، ويُثبت لي أن النتيجة مطابقة لما طلبته.",
   "base_branch": "production",
-  "base_commit": "fb722e70b2eb93c7f5d84551013cb910c187ff26",
-  "visual_change": false,
+  "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
+  "visual_change": true,
+  "visual_allowed_regions": [
+    {
+      "selector": "#mushaf",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Quran section boxed inside normal main scroll layout",
+      "after": "Full screen width and viewport-height Quran panel, without modifying other tabs",
+      "preserve": [
+        "all prayer dashboard and original mosque pixels",
+        "official six navigation buttons and their icons",
+        "audio/playback state and saved reciter"
+      ]
+    },
+    {
+      "selector": "#qVerses",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Text reflow in a container whose height was calculated from first printed leaf",
+      "after": "Native vertical scrollport uses available viewport height with full-size publisher plate geometry",
+      "preserve": [
+        "canonical Quran text and diacritics",
+        "page order 1..604",
+        "verse tap and follow behavior",
+        "offline fallback"
+      ]
+    },
+    {
+      "selector": ".quran-reading-page",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "HTML paragraphs and CSS ornament imitate a print page",
+      "after": "SVG publisher engraving with original ayah polygons and page number at bottom; validated text fallback on network failure",
+      "preserve": [
+        "Hafs Quran verse and page mapping",
+        "original Salati audio actions",
+        "bookmarks and reciters"
+      ]
+    },
+    {
+      "selector": "#mushafPlayerSlot",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Below print card in normal document flow",
+      "after": "Compact charcoal player outside scrollport, directly above original fixed nav",
+      "preserve": [
+        "play stop seek original elements",
+        "recitation queue and progress",
+        "no verse overlap"
+      ]
+    },
+    {
+      "selector": "#qTransport",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Background may depend on general media theme",
+      "after": "Approved blue #2563EB in Quran mode",
+      "preserve": [
+        "button size and placement",
+        "actual play/pause behavior",
+        "white control icon"
+      ]
+    }
+  ],
   "android_release": false,
   "allowed_paths": [
-    "AGENTS.md",
-    "README.md",
-    "docs/CURRENT_APPROVED_DESIGN.md",
-    "docs/ACTUAL_SOURCE_MAP.md",
-    "docs/INSTRUCTION_CONFLICTS.md",
-    "docs/requests/TEMPLATE.md",
-    "docs/requests/ACTIVE_CHANGE.json",
-    "docs/ROOT_CAUSE_AUDIT_20261103.md",
-    "scripts/verify-change-scope.cjs",
+    "app-source.js",
+    "quran-controller.js",
+    "quran-printed-pages.js",
+    "dist/salati-ui.css",
+    "package.json",
+    "tests/quran-immersive-contract.cjs",
+    "tests/quran-immersive-browser.py",
     "tests/agent-governance-contract.cjs",
     ".github/workflows/salati-agent-governance.yml",
-    "docs/requests/SALATI-20261103-ROOT-CONTROL.md",
-    "design-references/APPROVED_REFERENCE_REGISTRY.json",
-    "tests/reference-provenance.cjs",
-    "docs/REFERENCE_EVIDENCE_20261103.md",
-    "tests/current-design-visual-proof.py",
-    "tests/production-test-matrix.json",
-    "docs/TEST_CLASSIFICATION_20261103.md",
-    "tests/visual-scope-diff.py",
-    "scripts/pr-conflict-review.cjs",
-    "docs/PR_COLLISION_AUDIT_20261103.md",
-    "scripts/inventory-current-sources.cjs",
-    "docs/archive/README-LEGACY-20261101.md",
-    "docs/source-README.md",
-    "design-qa.md",
-    "docs/VISUAL_SCOPE_GATE_20261103.md",
-    "tests/quran-source-integrity.cjs",
-    "docs/requests/ORIGINAL_FULL_PROMPT_20261103.md",
-    "docs/requests/ACCEPTANCE_STATUS.json",
-    "scripts/verify-request-status.cjs",
-    "tests/source-lifecycle-contract.cjs",
-    "tests/design-restoration-contract.cjs",
-    "docs/github-source.json",
-    "scripts/create-isolated-preview.cjs",
-    "tests/isolated-preview-contract.cjs",
-    "tests/dynamic-source-runtime-browser.py",
-    "package.json",
-    "scripts/verify-publish-ci.cjs",
-    "tests/publish-ci-wait.cjs",
-    "tests/android-emulator-screen-preflight.py",
-    "scripts/android-webview-smoke.sh",
-    "scripts/build-cloudflare-pages.cjs",
-    "tests/cloudflare-ci-timeout.cjs"
+    "docs/requests/ACTIVE_CHANGE.json",
+    "docs/requests/SALATI-20261103-IMMERSIVE-MADINAH.md"
   ],
-  "acceptance": "Parent waits >= child MAX_WAIT_MS + 60s; exact SHA CI must still pass and signed release guard must remain unmodified; no user runtime/app/Android/APK assets changed.",
-  "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
+  "acceptance": "Real publisher 604-page artwork; fullscreen 100vw scrollport height from viewport not page1; bottom folio; blue compact player; six original nav buttons, no prayer page changes; browser passes 360/390px AR/EN and offline; no production publish without original APK signature and Android testing.",
+  "reference_status": "Authentic KFGQPC V4 1441H Hafs SVG fixed release v1.1.1; visual match to earlier AI concept/1429 blue is NOT proven.",
   "status": "in_progress",
-  "release_mode": "infrastructure",
-  "source": "Actual Cloudflare production deploy 94979cc5-39cf-48c7-a93a-db5cfb104ed4 history/logs: WAIT PRODUCTION CI -> spawnSync ... ETIMEDOUT 30 seconds",
-  "original_verbatim_excerpt": "النتيجة التي أريدها: عندما أقول لـChatGPT «غيّر هذا العنصر بهذا الشكل»، ينفّذ ذلك على واجهة صلاتي الحقيقية، دون تخمين أو تغيير عناصر أخرى، ويُثبت لي أن النتيجة مطابقة لما طلبته."
+  "release_mode": "preview",
+  "source": "User's 2026-11-03 request and directly inspected production quran-controller.js and dist/salati-ui.css"
 }
