@@ -17,11 +17,21 @@ if entry:
 # Keep only the current app styles and referenced mosque asset in the APK.
 index=(target/'index.html').read_text()
 stylesheet_references='\n'.join(page.read_text() for page in target.rglob('*.html'))
+# Keep a scoped Quran stylesheet only when it is actually imported by the
+# single canonical Salati stylesheet. This preserves the original one-link
+# security/design invariant and excludes unreferenced legacy CSS patches.
+canonical=(target/'salati-ui.css').read_text(encoding='utf-8')
+quran_imported=bool(re.search(r'^@import\s+url\([\'\"]mushaf-book\.css[\'\"]\);',canonical))
+if quran_imported:
+    assert (target/'mushaf-book.css').is_file(), 'Missing referenced MushafBook stylesheet'
+
 for style in target.glob('*.css'):
     # Canonical UI and the two separately authored public-page surfaces are
     # the ONLY stylesheet assets shipped. Old design patches are historical
     # test fixtures, never Android runtime inputs.
     if style.name in ('salati-ui.css','city-pages.css','public-pages.css'):
+        continue
+    if style.name=='mushaf-book.css' and quran_imported:
         continue
     if re.search(r'href="[^"]*'+re.escape(style.name)+r'"',stylesheet_references):
         continue
