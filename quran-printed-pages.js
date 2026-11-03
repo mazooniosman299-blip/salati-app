@@ -77,7 +77,7 @@ export async function mountPrintedMushaf(pageElement, pageNumber, originalVerses
   if (!pageElement || pageNumber < 1 || pageNumber > PRINTED_MUSHAF.pages || !originalVerses?.length) return false;
   // Node unit-test DOMs and offline sessions use the trusted text reader;
   // do not start irrelevant network timeouts in synthetic test environments.
-  if (typeof DOMParser !== 'function' || typeof document?.importNode !== 'function' ||
+  if (typeof DOMParser !== 'function' || typeof document === 'undefined' || typeof document.importNode !== 'function' ||
       (typeof navigator !== 'undefined' && navigator.onLine === false)) return false;
   if (pending.has(pageElement)) return pending.get(pageElement);
   const job = (async () => {
