@@ -66,7 +66,7 @@ function revealTabControls(tab){
 }
 // The ORIGINAL Salati tabs remain the only navigation. Fullscreen belongs
 // to the Quran section, never to the prayer home or other sections.
-const quranPanel=$('mushaf'),quranToolbar=quranPanel?.querySelector('.mushaf-toolbar');
+const quranPanel=$('mushaf'),quranToolbar=quranPanel?.querySelector?.('.mushaf-toolbar');
 if(quranPanel&&quranToolbar){
  const options=document.createElement('button');options.id='qReadingOptions';
  options.type='button';options.textContent='الأدوات';options.setAttribute('aria-label','إظهار أو إخفاء أدوات المصحف');
