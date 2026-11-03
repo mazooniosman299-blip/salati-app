@@ -11,7 +11,10 @@ const EDITION='KFGQPC Hafs 1429H standard blue, printed original',$=id=>document
 const hash=async bytes=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),x=>x.toString(16).padStart(2,'0')).join('');
 const valid=m=>m?.version===1&&m.edition===EDITION&&m.sourceUrl===URL_PDF&&m.riwaya==='Hafs'&&
   Number.isInteger(m.firstPdfPage)&&m.firstPdfPage>0&&/^[a-f0-9]{64}$/i.test(m.sourceSha256)&&
-  m.pageCount===604&&Array.isArray(m.pages)&&m.pages.length===604&&m.pages.every((p,i)=>
+  m.pageCount===604&&m.folioPlacement==='bottom'&&
+  Array.isArray(m.folioAuditPages)&&
+  [1,2,3,17,604].every((n,i)=>m.folioAuditPages[i]===n)&&
+  Array.isArray(m.pages)&&m.pages.length===604&&m.pages.every((p,i)=>
    p.quranPage===i+1&&p.pdfPage===m.firstPdfPage+i&&
    p.filename==='page-'+String(i+1).padStart(4,'0')+'.webp'&&
    /^[a-f0-9]{64}$/i.test(p.sha256)&&p.bytes>1000&&p.width>300&&p.height>500);
@@ -25,6 +28,8 @@ async function install(){
   m=await response.json();if(!valid(m))throw Error('Incomplete or mismatched blue-printed Quran edition');
  }catch(e){console.warn('Original Salati Quran retained:',e.message);return}
  const style=document.createElement('link');style.rel='stylesheet';style.href='quran-approved-blue-pages.css';document.head.append(style);
+ // The actual scanned leaf owns its printed folio at the BOTTOM.
+ // Do not generate any page-number badge/header or reflow source pixels.
  const figure=document.createElement('figure');figure.id='qApprovedOriginalPage';figure.hidden=true;
  figure.setAttribute('aria-label','مصحف المدينة الأزرق برواية حفص، صفحات أصلية');
  const first=new Image();first.id='qApprovedOriginalImage';first.alt='مصحف المدينة الأزرق، الصفحة الأصلية';
