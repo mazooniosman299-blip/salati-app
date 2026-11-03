@@ -1,8 +1,8 @@
 {
-  "request_id": "SALATI-20261103-CI-RACE",
-  "original_request": "حل أي مشكلة في تنفيذ المخاطر العشرين، ومنع فشل Cloudflare المبكر قبل اكتمال GitHub Actions دون تخطي حماية الإنتاج. علاج عدم ثبات إيماءة التمرير في Android WebView استناداً إلى لقطات Pixel الحقيقية.",
+  "request_id": "SALATI-20261103-PARENT-TIMEOUT",
+  "original_request": "صلح كل مشكلة تواجهك: Cloudflare build launcher stops exact production CI wait after 30s (ETIMEDOUT) though the safety verifier correctly awaits full CI. Keep original APK/web signature protection.",
   "base_branch": "production",
-  "base_commit": "f0b602d70a91134cdd716d78466cbacf5f06ada3",
+  "base_commit": "fb722e70b2eb93c7f5d84551013cb910c187ff26",
   "visual_change": false,
   "android_release": false,
   "allowed_paths": [
@@ -46,12 +46,14 @@
     "scripts/verify-publish-ci.cjs",
     "tests/publish-ci-wait.cjs",
     "tests/android-emulator-screen-preflight.py",
-    "scripts/android-webview-smoke.sh"
+    "scripts/android-webview-smoke.sh",
+    "scripts/build-cloudflare-pages.cjs",
+    "tests/cloudflare-ci-timeout.cjs"
   ],
-  "acceptance": "Bounded finite CI wait for original production SHA; no data, UI, APK, or signed web asset changes. Required four jobs must all complete with success. Fix native emulator test gesture from detected visible Quran parchment; retain strict parchment/ornament pixel assertions and all screenshots on failure.",
+  "acceptance": "Parent waits >= child MAX_WAIT_MS + 60s; exact SHA CI must still pass and signed release guard must remain unmodified; no user runtime/app/Android/APK assets changed.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
   "status": "in_progress",
   "release_mode": "infrastructure",
-  "source": "Cloudflare Pages deploy 0db04c52-f6fe-4012-9e08-8424b5895ccb logs: BLOCK PRODUCTION: CI still running; user request: نفذ كامل اي مشكله تواجهكك حلها",
+  "source": "Actual Cloudflare production deploy 94979cc5-39cf-48c7-a93a-db5cfb104ed4 history/logs: WAIT PRODUCTION CI -> spawnSync ... ETIMEDOUT 30 seconds",
   "original_verbatim_excerpt": "النتيجة التي أريدها: عندما أقول لـChatGPT «غيّر هذا العنصر بهذا الشكل»، ينفّذ ذلك على واجهة صلاتي الحقيقية، دون تخمين أو تغيير عناصر أخرى، ويُثبت لي أن النتيجة مطابقة لما طلبته."
 }
