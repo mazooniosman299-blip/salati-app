@@ -28,7 +28,8 @@ assert(plates.includes("retaining verified text page."),'Network error must pres
 assert(controller.includes("import {mountPrintedMushaf} from './quran-printed-pages.js'"));
 assert(controller.includes("void mountPrintedMushaf(page,sourceIndex+1,this.data.pages[sourceIndex])"));
 assert(!controller.includes("firstPage.getBoundingClientRect().height"),'Forbidden return of page-1-height viewport sizing');
-assert(!controller.includes("container.style.setProperty('--salati-quran-window-height'"),'Forbidden page-1-height CSS variable');
+assert(!controller.includes('--salati-quran-window-height'),'Forbidden page-1-height CSS variable');
+assert(!css.includes('--salati-quran-window-height'),'Legacy first-page CSS height variable must be eradicated');
 assert(app.includes("classList.toggle('salati-quran-immersive',active)"),'Fullscreen mode must be on Quran tab only');
 assert(app.includes("new MutationObserver(sync).observe(quranPanel"),'Fullscreen state must survive tab transitions');
 assert(app.includes("options.setAttribute('aria-expanded',String(open))"),'Reader options must remain accessible');
