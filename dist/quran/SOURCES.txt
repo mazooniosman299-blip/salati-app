@@ -21,3 +21,12 @@ Only the reading typeface changed in 1.0.79; Quran text, font-size preferences, 
 Additional full-Quran reciters in 1.0.79: Abdul Rahman Al-Sudais (https://www.mp3quran.net/ar/sds/downloads) and Mishary Al-Afasy (https://www.mp3quran.net/ar/afs/downloads), all 114 surahs. Individual ayah playback uses EveryAyah directories Abdurrahmaan_As-Sudais_192kbps and Alafasy_128kbps. Provider catalogues and both directory listings were checked on 24 October 2026. Audio is streamed on request, not bundled or automatically downloaded.
 
 Sudais replacement recording (1.0.80), shown once as عبدالرحمن السديس: 114 complete-surah MP3 links from the published studio collection at https://archive.org/details/a0s0261002ddddddddddd . Listing and attribution: https://alkabbah.com/recitations/playlist/803492/nskh-astodyo-114-sor-kaml-mshf-alsdys-128-k-b-asdar-gdyd-aabd-alrhmn-alsdys . Official existence of a studio release: https://www.spa.gov.sa/N2563619 . The exact mirror-to-official-video match and subjective sound quality were not independently auditioned. Durations differ from the legacy set; no matching ayah timestamps were supplied. It streams complete surahs without an estimated ayah cursor. The previous Sudais verse and surah sources are no longer used; the other four readers retain individual ayah playback. Old saved files are never substituted for the studio URLs. No recording is bundled or automatically downloaded.
+
+
+Mushaf line metadata (2026-11-03 trial): CC BY-SA 4.0, publisher ouryhamdalaye/madinah-mushaf-json:
+https://github.com/ouryhamdalaye/madinah-mushaf-json
+Pinned upstream source commit: 507eada48f3ffe26a600acf5792a18ba86d6851e
+License: https://creativecommons.org/licenses/by-sa/4.0/
+Adaptation: only word-position/heading/bismillah slots, canonical text supplied by the existing untouched Salati Tanzil source.
+Validation: all 6,236 source verses and every word locator are checked against the immutable local source. The four joined word slots preserve both original words; variant bismillah forms remain exact.
+Not claimed: pixel-perfect 15-line print typography on five pages (208, 586, 587, 590, 591). They remain complete/readable, but line count differs from the reference printing. All 604 pages remain locally available without photographs.
