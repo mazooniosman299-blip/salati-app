@@ -63,6 +63,18 @@ try:
       };
     }""")
    pre=metrics()
+   # The Quran tab owns the ENTIRE WebView; real app header and bottom nav
+   # are hidden only while reading, never on the other five tabs.
+   assert page.evaluate("document.body.classList.contains('salati-quran-fullscreen')")
+   assert page.locator('#qFullHeader').is_visible()
+   assert not page.locator('body>header').is_visible()
+   assert page.evaluate("getComputedStyle(document.querySelector('#mushaf')).position")=='fixed'
+   assert page.evaluate("Math.abs(document.querySelector('#mushaf').getBoundingClientRect().height-innerHeight)<2")
+   assert page.locator('#qWaveBars .q-wave-bar').count()==63
+   heights=page.locator('#qWaveBars .q-wave-bar').evaluate_all(
+     "(els) => els.map(e => Math.round(e.getBoundingClientRect().height))")
+   assert len(set(heights))>=10,('Waveform must vary heights',heights)
+   assert page.evaluate("getComputedStyle(document.querySelector('#qWaveBars .q-wave-bar')).backgroundColor")!='rgba(0, 0, 0, 0)'
    assert pre['body']=='rgb(11, 14, 19)',pre
    assert pre['panel']=='rgb(24, 25, 29)',pre
    assert pre['blue']=='rgb(37, 99, 235)',pre
@@ -98,8 +110,32 @@ try:
    page.screenshot(path=str(OUT/f'quran-real-app-{width}.png'),animations='disabled')
    page.locator('#mushafPlayerSlot').screenshot(path=str(OUT/f'quran-real-player-{width}.png'))
    page.locator('#qSheet').screenshot(path=str(OUT/f'quran-coded-pages-{width}.png'))
+   # A real seek event must update the progress visualization and remain
+   # the same existing input consumed by the audio engine.
+   page.locator('#qSeek').evaluate("(e) => {e.disabled=false;e.value='52';e.dispatchEvent(new Event('input',{bubbles:true}));}")
+   assert page.locator('#qWaveBars .is-played').count()>=30
+   page.locator('#qSeek').evaluate("(e) => {e.value='0';e.dispatchEvent(new Event('input',{bubbles:true}));}")
+   # Hiding the player gives the entire remaining screen to the printed reader.
+   initial=page.locator('#qSheet').bounding_box()
+   page.locator('#qFullPlayerToggle').click()
+   assert not page.locator('#mushafPlayerSlot').is_visible()
+   expanded=page.locator('#qSheet').bounding_box()
+   assert expanded['height']>initial['height']+80,(initial,expanded)
+   page.screenshot(path=str(OUT/f'quran-fullscreen-reading-{width}.png'),animations='disabled')
+   page.locator('#qFullPlayerToggle').click()
+   assert page.locator('#mushafPlayerSlot').is_visible()
+   # The original app navigation is still reachable after leaving Quran mode.
+   page.locator('#qFullBack').click()
+   assert page.locator('header>.site-nav').is_visible()
+   assert not page.evaluate("document.body.classList.contains('salati-quran-fullscreen')")
+   page.locator('header>.site-nav button[data-tab="mushaf"]').click()
+   page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=25000)
+   assert page.evaluate("document.body.classList.contains('salati-quran-fullscreen')")
+   assert not errors,errors[:8]
    records.append({'viewport':[width,height],**pre,'visitedPage604':True,
                    'photoUsed':False,'imageSource':'none - complete Quran rendered from local JSON',
+                   'fullscreen':True,'waveBars':63,'variableBarHeights':len(set(heights)),
+                   'playerCollapsesWithoutCoveringText':True,'exitRestoresTabs':True,
                    'sourceVerses':6236,'sourcePages':604,'errors':errors})
    page.close()
   browser.close()
@@ -107,4 +143,4 @@ finally:
  server.shutdown();server.server_close()
 (OUT/'metrics.json').write_text(json.dumps(records,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print('PASS REAL Salati Uthmani Quran: 604-coded-page source /6236 verses, page 1 -> 604 and back')
-print('PASS charcoal/blue player within panel, working back/next/repeat, no photo, source text intact')
+print('PASS FULLSCREEN Quran 390/430, varied linked waveform bars, collapsible player, Quran-only scope and restored navigation')
