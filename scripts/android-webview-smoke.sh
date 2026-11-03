@@ -41,20 +41,53 @@ adb exec-out screencap -p > reports/android-webview-20261102/times.png
 read -r quran_x quran_y < <(python3 tests/android-emulator-screen-preflight.py quran-tap reports/android-webview-20261102/times.png)
 test -n "$quran_x" && test -n "$quran_y"
 adb shell input tap "$quran_x" "$quran_y"
-sleep 7
+# Android System WebView may create/select Quran controls before the async
+# local 604-page source has finished loading. A fixed 7s sleep captured
+# "جار فتح المصحف..." with NO cream reading page and falsely failed QA.
+QURAN_READY=0
+for attempt in $(seq 1 45); do
+  sleep 2
+  adb exec-out screencap -p > /tmp/salati-quran-ready.png
+  if python3 tests/android-emulator-screen-preflight.py quran-ready /tmp/salati-quran-ready.png; then
+    QURAN_READY=1
+    break
+  fi
+  echo "Waiting for real rendered Quran parchment: $attempt/45" >&2
+done
+if [ "$QURAN_READY" -ne 1 ]; then
+  cp /tmp/salati-quran-ready.png reports/android-webview-20261102/mushaf.png
+  adb logcat -d -t 2500 > reports/android-webview-20261102/logcat.txt || true
+  echo 'FAIL: real Quran parchment never appeared before 90-second deadline' >&2
+  exit 1
+fi
 adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
-# Reader sits below the header/selection controls on compact displays.
-# Swipe the real Android WebView and capture a separate parchment screenshot.
-# Swipe INSIDE the visible Quran parchment (image evidence: y=137..620 at
-# 432x960), not from the voice/player controls at y=630..760.
-# The old start at y=755 hit the reciter-picker and created a false
-# "parchment missing after scroll" failure, while the original screenshot
-# clearly contained the cream reader with the full Surah Al-Fatihah.
-adb shell input swipe 216 520 216 280 580
-sleep 3
-adb exec-out screencap -p > reports/android-webview-20261102/mushaf-reader.png
+# Read the visible parchment region from the ACTUAL screenshot. The hard-coded
+# swipe at y=520 tapped a reciter picker on 432x960 and produced a false
+# reading-panel absence. Never substitute a passed mock or disable real QA.
+READER_OK=0
+for attempt in 1 2 3; do
+  adb exec-out screencap -p > /tmp/salati-reader-before.png
+  if ! read -r sx sy ey < <(python3 tests/android-emulator-screen-preflight.py reader-swipe /tmp/salati-reader-before.png); then
+    echo "No safe parchment swipe detected, attempt $attempt" >&2
+    break
+  fi
+  adb shell input swipe "$sx" "$sy" "$sx" "$ey" 650
+  sleep 2
+  adb exec-out screencap -p > reports/android-webview-20261102/mushaf-reader.png
+  if python3 tests/android-webview-pixel-qa-20261102.py; then
+    READER_OK=1
+    break
+  fi
+  cp reports/android-webview-20261102/mushaf-reader.png "reports/android-webview-20261102/mushaf-reader-attempt-$attempt.png"
+  echo "Reader remained obscured after swipe $attempt; dismissing possible overlay and rechecking real Quran parchment" >&2
+  adb shell input keyevent 4
+  sleep 1
+done
 adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
-python3 tests/android-webview-pixel-qa-20261102.py
+if [ "$READER_OK" -ne 1 ]; then
+  echo "FAIL: Quran reading parchment not visible after three real Android gestures" >&2
+  exit 1
+fi
 if grep -E 'FATAL EXCEPTION.*com.salati.prayer.preview|Process: com.salati.prayer.preview.*FATAL EXCEPTION' reports/android-webview-20261102/logcat.txt; then
   echo 'Android application crash found in logcat' >&2
   exit 1

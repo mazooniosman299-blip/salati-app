@@ -1,8 +1,8 @@
 {
-  "request_id": "SALATI-20261103-ROOT-CONTROL",
-  "original_request": "إصلاح جذري لنظام فهم ChatGPT لتعديلات مشروع صلاتي، ومراجعة المخاطر العشرين دون إعادة تصميم أو نشر",
+  "request_id": "SALATI-20261103-CI-RACE",
+  "original_request": "حل أي مشكلة في تنفيذ المخاطر العشرين، ومنع فشل Cloudflare المبكر قبل اكتمال GitHub Actions دون تخطي حماية الإنتاج. علاج عدم ثبات إيماءة التمرير في Android WebView استناداً إلى لقطات Pixel الحقيقية.",
   "base_branch": "production",
-  "base_commit": "f47ca69e37e5cdbdad38909761a9583a0f70ed49",
+  "base_commit": "f0b602d70a91134cdd716d78466cbacf5f06ada3",
   "visual_change": false,
   "android_release": false,
   "allowed_paths": [
@@ -41,12 +41,17 @@
     "docs/github-source.json",
     "scripts/create-isolated-preview.cjs",
     "tests/isolated-preview-contract.cjs",
-    "tests/dynamic-source-runtime-browser.py"
+    "tests/dynamic-source-runtime-browser.py",
+    "package.json",
+    "scripts/verify-publish-ci.cjs",
+    "tests/publish-ci-wait.cjs",
+    "tests/android-emulator-screen-preflight.py",
+    "scripts/android-webview-smoke.sh"
   ],
-  "acceptance": "No runtime UI/Android/APK/production change; audit documents identify actual sources and unresolved conflicts; governance contract and diff scope pass; draft PR only.",
+  "acceptance": "Bounded finite CI wait for original production SHA; no data, UI, APK, or signed web asset changes. Required four jobs must all complete with success. Fix native emulator test gesture from detected visible Quran parchment; retain strict parchment/ornament pixel assertions and all screenshots on failure.",
   "reference_status": "Original latest player and Mushaf reference bytes not fully present; no exact pixel match asserted.",
   "status": "in_progress",
-  "release_mode": "governance",
-  "source": "طلب المستخدم المرفق Pasted text(9).txt بتاريخ 2026-11-03؛ يحتوي على 20 مشكلة واشتراطات تنفيذ مفصلة",
+  "release_mode": "infrastructure",
+  "source": "Cloudflare Pages deploy 0db04c52-f6fe-4012-9e08-8424b5895ccb logs: BLOCK PRODUCTION: CI still running; user request: نفذ كامل اي مشكله تواجهكك حلها",
   "original_verbatim_excerpt": "النتيجة التي أريدها: عندما أقول لـChatGPT «غيّر هذا العنصر بهذا الشكل»، ينفّذ ذلك على واجهة صلاتي الحقيقية، دون تخمين أو تغيير عناصر أخرى، ويُثبت لي أن النتيجة مطابقة لما طلبته."
 }

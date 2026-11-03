@@ -5,7 +5,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),crypto=require('node:crypto'),os=require('node:os'),path=require('node:path');
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
-const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|[^/]+\.js$|[^/]+\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
+const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|[^/]+\.js$|[^/]+\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|verify-publish-ci|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
 const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/(?:index\.html|.*\.(?:css|js|svg|png|webp|ttf|json))|[^/]+\.(?:js|css))$/.test(p));
 const releaseCriticalPath=p=>runtimePath(p)||/^scripts\/(?:build-|release-|sign-|prepare-android)/.test(p);
 function independentReleaseVerification() {
@@ -37,7 +37,7 @@ function independentReleaseVerification() {
 function validateScope(changed,manifest,options={}) {
  assert(manifest && /^SALATI-\d{8}-[A-Z0-9-]+$/.test(manifest.request_id||''),'Missing valid per-request ID');
  assert.equal(manifest.base_branch,'production','Salati work must start from production');
- assert(['governance','preview','production'].includes(manifest.release_mode),'Declare release_mode');
+ assert(['governance','preview','production','infrastructure'].includes(manifest.release_mode),'Declare release_mode');
  assert(Array.isArray(manifest.allowed_paths)&&manifest.allowed_paths.length>0,'Empty scope allowlist');
  assert.equal(new Set(manifest.allowed_paths).size,manifest.allowed_paths.length,'Duplicate paths');
  assert(manifest.allowed_paths.every(p=>typeof p==='string'&&p.length>0&&!p.startsWith('/')&&!p.includes('..')&&!p.includes('*')),'Only exact repository-relative paths allowed');
@@ -56,6 +56,13 @@ function validateScope(changed,manifest,options={}) {
  if(manifest.release_mode==='governance') {
   const execution=changed.filter(runtimePath);
   assert.deepEqual(execution,[],'Governance changes cannot mutate web/native/build/signing: '+execution.join(', '));
+ }
+ if(manifest.release_mode==='infrastructure') {
+  assert.equal(manifest.visual_change,false,'Infrastructure cannot claim a visual change');
+  assert.equal(manifest.android_release,false,'Infrastructure cannot publish an Android update');
+  const allowedInfra=new Set(['package.json','scripts/verify-publish-ci.cjs','tests/publish-ci-wait.cjs','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','tests/android-emulator-screen-preflight.py','scripts/android-webview-smoke.sh','docs/requests/ACTIVE_CHANGE.json','docs/requests/ACCEPTANCE_STATUS.json']);
+  const forbidden=changed.filter(p=>!allowedInfra.has(p));
+  assert.deepEqual(forbidden,[],'Infrastructure request cannot edit app, signed release or other unapproved code: '+forbidden.join(', '));
  }
  if(manifest.release_mode==='preview') {
   assert.equal(manifest.android_release,false,'Preview must not publish Android release');
