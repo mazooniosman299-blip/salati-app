@@ -55,10 +55,14 @@ try:
      # Pull upward in the actual scrollport: the NEXT printed page must follow
      # in the same vertical reader, not appear behind arrow controls.
      page.locator('#qVerses .salati-printed-page[data-reading-page="2"]').wait_for(timeout=20000)
-     page.locator('#qVerses').evaluate('e => { e.scrollTop=e.scrollHeight; e.dispatchEvent(new Event("scroll")); }')
-     page.wait_for_function("document.querySelector('#qVerses').scrollTop>0",timeout=10000)
      assert page.locator('#qVerses .salati-printed-page[data-reading-page="1"]').count()==1
      assert page.locator('#qVerses .salati-printed-page[data-reading-page="2"]').count()==1
+     page.locator('#qVerses').evaluate('e => { e.scrollTop=Math.min(e.scrollHeight-e.clientHeight,e.clientHeight*.7); e.dispatchEvent(new Event("scroll")); }')
+     page.wait_for_function("document.querySelector('#qVerses').scrollTop>0",timeout=10000)
+     # Virtualisation may unload an SVG once it is far offscreen. The ordered
+     # Quran pages and printed bottom folios must still stay in the DOM.
+     assert page.locator('#qVerses .quran-reading-page[data-reading-page="1"]').count()==1
+     assert page.locator('#qVerses .quran-reading-page[data-reading-page="2"]').count()==1
      assert page.locator('#mushaf > .mushaf-pagination').is_hidden(),'Detached page counter shown outside Mushaf paper'
     else:
      page.wait_for_function("document.querySelector('#qVerses .quran-reading-page')?.dataset.plateUnavailable==='true'",timeout=20000)
@@ -106,6 +110,29 @@ try:
     assert metrics['q']['y']>0 and metrics['player']['top']>=metrics['q']['y']+metrics['q']['h']-2,(width,metrics)
     assert metrics['nav']['top']>=metrics['player']['bottom']-3,(width,'Player covers original nav',metrics)
     assert metrics['label']==0,(width,'Duplicate top page number',metrics)
+    if variant=='printed':
+     # Future theme edits are allowed to change paint, never the
+     # geometry, scroll direction, original nav, or player placement.
+     baseline=page.evaluate("""() => {
+      const r=document.querySelector('#qVerses').getBoundingClientRect();
+      return {w:r.width,h:r.height,y:r.y,top:document.querySelector('#mushafPlayerSlot').getBoundingClientRect().top,
+       total:document.querySelector('#qVerses').scrollHeight};
+     }""")
+     page.evaluate("""() => {
+      const root=document.querySelector('#mushaf');
+      root.style.setProperty('--mushaf-paper','#FFF8E8');
+      root.style.setProperty('--mushaf-player','#17202C');
+      root.style.setProperty('--mushaf-play','#2563EB');
+     }""")
+     themed=page.evaluate("""() => {
+      const r=document.querySelector('#qVerses').getBoundingClientRect();
+      return {w:r.width,h:r.height,y:r.y,top:document.querySelector('#mushafPlayerSlot').getBoundingClientRect().top,
+       total:document.querySelector('#qVerses').scrollHeight,
+       paper:getComputedStyle(document.querySelector('#qVerses')).backgroundColor,
+       play:getComputedStyle(document.querySelector('#qTransport')).backgroundColor};
+     }""")
+     assert all(abs(themed[k]-baseline[k])<2 for k in ('w','h','y','top')),(width,'theme change mutated Quran geometry',baseline,themed)
+     assert themed['paper']=='rgb(255, 248, 232)' and themed['play']=='rgb(37, 99, 235)',(width,'isolated theme tokens not respected',themed)
     page.screenshot(path=str(OUTPUT/f'{variant}-{width}.png'),animations='disabled')
     if variant=='printed':
      page.locator('header>.site-nav button[data-tab="times"]').click()
