@@ -125,4 +125,37 @@ body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerS
  overflow:auto!important;padding:12px!important;background:#191d27!important;color:#fff!important;
  border-radius:16px!important;border:1px solid #49546a!important;box-shadow:0 8px 26px #0008!important;
 }
+/* Printed-page contract: publisher folio stays inside the BOTTOM of the
+ * original full-page bitmap, never as a synthetic top medallion or header. */
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+  :is(#qPageLabel,.mushaf-page-number,.reading-page-number,.mushaf-book-footer,
+      .q-approved-duplicate-folio) {
+ display:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+  :is(#qApprovedOriginalPage,#qApprovedOriginalImage,#qApprovedFollowingPages)
+  :is(.top-page-number,.page-number-badge) {
+ display:none!important;
+}
+/* Keep the genuine player blue during tap, keyboard focus, loading,
+ * playback and Android WebView states; never inherit system/theme gray. */
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport,
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport:hover,
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport:active,
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport:focus-visible {
+ background:#2563EB!important;background-image:none!important;
+ color:#fff!important;-webkit-text-fill-color:#fff!important;
+ box-shadow:none!important;border-color:transparent!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport svg,
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf
+ #mushafPlayerSlot.q-approved-player #qApprovedActions #qTransport svg path {
+ fill:#fff!important;color:#fff!important;
+}
+
 }
