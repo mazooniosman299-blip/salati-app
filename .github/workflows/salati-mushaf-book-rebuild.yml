@@ -21,6 +21,7 @@ on:
       - docs/requests/ACTIVE_CHANGE.json
       - docs/requests/SALATI-20261103-WEB-MUSHAF-REBUILD.md
       - tests/quran-visual-trial-browser.py
+      - scripts/prepare-android.py
       - .github/workflows/salati-mushaf-book-rebuild.yml
 permissions:
   contents: write
@@ -81,6 +82,7 @@ jobs:
           unzip -p "$APK" assets/www/index.html | grep -F 'mushaf-book.css'
           unzip -p "$APK" assets/www/mushaf-book.js | grep -F 'Mushaf Companion'
           unzip -p "$APK" assets/www/mushaf-book.css | grep -F 'Salati MushafBook 2026'
+          unzip -p "$APK" assets/www/salati-ui.css | head -c 40 | grep -F 'mushaf-book.css'
           unzip -p "$APK" assets/www/quran/MUSHAF_BOOK_MIT_LICENSE.txt | grep -F 'MIT License'
           unzip -p "$APK" assets/www/quran/line-layout.json | head -c 1 | grep -F '{'
           unzip -p "$APK" assets/www/quran/SOURCES.txt | grep -F 'Mushaf line metadata (2026-11-03 trial)'
