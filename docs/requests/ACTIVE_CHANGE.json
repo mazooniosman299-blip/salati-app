@@ -20,6 +20,7 @@
     "quran-controller.js",
     "scripts/generate-mushaf-line-layout.py",
     "tests/mushaf-line-map-contract.cjs",
+    "tests/quran-follow.cjs",
     "tests/quran-visual-trial-browser.py"
   ],
   "visual_allowed_regions": [
