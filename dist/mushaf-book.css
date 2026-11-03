@@ -344,3 +344,112 @@ body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot button:focus-visible
   padding-left:9px;padding-right:9px;
  }
 }
+
+/* SALATI MADINAH QCF V2 — true page glyphs, NOT a photographed Quran leaf.
+   The KFGQPC page font shapes Quranic orthographic zeros/waqf symbols as
+   correct glyphs, replacing the obsolete .09 Unicode-font round black forms.
+   Site's immutable Tanzil Quran data and original player remain untouched. */
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page {
+ background:#FFF9F0;
+ color:#231A13;
+ --book-madinah-gold:#B99776;
+ --book-madinah-light:#D9C3AB;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-frame-outer {
+ border:2px solid #B99776;border-radius:0;inset:7px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-frame-inner {
+ border:1px solid #DDC9B0;border-radius:0;inset:14px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-corner {
+ background:transparent;border:0;width:26px;height:26px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-corner::before {
+ box-sizing:border-box;content:"";position:absolute;inset:4px;
+ border:2px solid #B59574;border-radius:0;transform:rotate(45deg);
+ background:#F9EFE2;box-shadow:0 0 0 2px #E7D8C5;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-side{
+ width:8px;background:repeating-linear-gradient(180deg,#C4A784 0 4px,#F0E1CE 4px 8px,#B99776 8px 12px);
+ border:0;opacity:.75;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-top{
+ background:transparent;color:#674B36;border-color:#CBB195;
+ font:600 clamp(10px,2.7cqw,13px)/1.3 SalatiCairo,sans-serif;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-chapter{
+ border:2px double #C0A080;border-radius:0;
+ background:linear-gradient(90deg,#F2E6D5 0%,#FFF9F0 25%,#FFF9F0 75%,#F2E6D5 100%);
+ color:#714F37;box-shadow:inset 0 0 0 3px #FFF9F0;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-footer {
+ color:#775438;border-color:#C4A785;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-footer::before,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page .mushaf-book-footer::after {
+ color:#B99671;
+}
+/* Unicode fallback must use the bundled Amiri Quran mark-positioning font.
+   KFGQPC .09 maps U+06DF to a 1442-unit wide black circle; Amiri uses a
+   zero-advance raised mark. No orthographic sign is stripped from the text. */
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page:not([data-qcf-ready="true"]) .mushaf-book-line,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page:not([data-qcf-ready="true"]) .mushaf-book-basmala {
+ font-family:AmiriQuran,SalatiMadinahClassic,serif;
+ font-weight:400;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"] .qcf-madinah-grid{
+ grid-template-rows:repeat(15,minmax(0,1fr));
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-qcf-ready="true"] .qcf-madinah-line {
+ white-space:nowrap;direction:rtl;
+ font-size:var(--mushaf-word-size,5.3cqw);
+ line-height:1.66;letter-spacing:0;
+ font-weight:400;font-synthesis:none;
+ color:#211B16;text-align:justify;text-align-last:justify;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .qcf-madinah-verse {
+ display:inline;direction:rtl;unicode-bidi:isolate;
+ white-space:inherit;color:#211B16;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .qcf-madinah-ayah-end {
+ display:inline;position:static;vertical-align:baseline;
+ background:transparent;border:0;box-shadow:none;
+ border-radius:0;opacity:1;color:inherit;
+ font:inherit;white-space:nowrap;
+}
+/* The original recitation metadata remains in DOM for the audio code but
+   is not a second, garbled subtitle underneath the player heading. */
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot .recitation-player.reference-player .recitation-caption {
+ box-sizing:border-box;display:flex;position:relative;
+ flex:0 0 auto;flex-direction:column;align-items:center;
+ justify-content:center;gap:0;
+ width:100%;max-width:100%;height:auto;min-height:26px;
+ overflow:visible;white-space:normal;
+ margin:0;padding:0;transform:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot .recitation-player.reference-player .recitation-caption strong {
+ display:block;position:relative;flex:none;
+ width:max-content;max-width:100%;min-width:0;height:auto;max-height:none;
+ margin:0;padding:0;overflow:visible;
+ white-space:nowrap;text-overflow:clip;letter-spacing:normal;
+ color:#FFF;-webkit-text-fill-color:#FFF;
+ font-family:SalatiCairo,Tahoma,sans-serif;
+ font-size:16px;font-weight:800;line-height:1.65;
+ text-align:center;transform:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot .recitation-player.reference-player #qTrack {
+ display:none;visibility:hidden;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot #qAudioStatus:empty {
+ display:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot #qAudioStatus:not(:empty){
+ order:4;position:relative;display:block;
+ margin:3px auto 0;padding:2px 6px;max-width:100%;
+ min-height:0;white-space:normal;
+ font:500 10px/1.3 SalatiCairo,sans-serif;color:#D3DFED;
+ text-align:center;overflow-wrap:anywhere;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player::before{
+ content:none;display:none;
+}
