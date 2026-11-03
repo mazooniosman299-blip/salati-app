@@ -5,7 +5,7 @@ import {createPopover} from './popover-menu.js';
 import {QuranOffline} from './quran-offline.js';
 import {QuranFollow} from './quran-follow.js';
 import {PageRecitation} from './quran-page-audio.js';
-import {mountPrintedMushaf} from './quran-printed-pages.js';
+import {mountPrintedMushaf,disposePrintedMushaf} from './quran-printed-pages.js';
 const allSurahs=Array.from({length:114},(_,i)=>i+1);
 export const QURAN_RECITERS=[
  {id:'shatri',ar:'أبو بكر الشاطري',en:'Abu Bakr Al-Shatri',catalogId:4,server:'https://server11.mp3quran.net/shatri/',surahs:allSurahs},
@@ -141,8 +141,8 @@ export class QuranReader{
  const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);page.append(number);return page;
  }
  renderReadingPages(){
- if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
- const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const sourceIndex=this.readingNext++;const page=this.makeReadingPage(sourceIndex);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';
+ if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');for (const leaf of Array.from(container.children||[])) disposePrintedMushaf(leaf);container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
+ const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const sourceIndex=this.readingNext++;const page=this.makeReadingPage(sourceIndex);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 640px';
    // Only replace the visual layer after the actual publisher page and ayah
    // mapping have been checked; all original reader/audio state survives.
    void mountPrintedMushaf(page,sourceIndex+1,this.data.pages[sourceIndex]);};
