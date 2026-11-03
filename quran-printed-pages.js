@@ -95,17 +95,22 @@ export async function mountPrintedMushaf(pageElement, pageNumber, originalVerses
       pageElement.replaceChildren(svg,footer);
       pageElement.classList.add('salati-printed-page');
       pageElement.dataset.plateEdition = PRINTED_MUSHAF.edition;
-      // Opening spread viewBoxes are NOT tight. Fit the printed ink only for
-      // 1 & 2: otherwise the viewer shows a huge white/blank space.
-      if (pageNumber <= 2) requestAnimationFrame(() => {
+      // Fit the WHOLE publisher drawing, not the declared empty SVG canvas.
+      // On opening leaves the original viewBox has large vacant margins.
+      // getBBox measures all original ink and polygons; no art is cut or warped.
+      requestAnimationFrame(() => {
         if (!svg.isConnected) return;
         try {
-          const rect = svg.getBBox();
-          if (rect.width > 0 && rect.height > 0) {
-            const pad = Math.max(rect.width,rect.height) * .035;
-            svg.setAttribute('viewBox', [rect.x-pad,rect.y-pad,rect.width+2*pad,rect.height+2*pad].join(' '));
-          }
-        } catch { /* retain publisher viewBox rather than crop manually */ }
+          const b = svg.getBBox();
+          const original = svg.viewBox.baseVal;
+          if (![b.x,b.y,b.width,b.height].every(Number.isFinite) ||
+              b.width < 40 || b.height < 60 || !original.width || !original.height) return;
+          const padding = Math.max(b.width,b.height) * (pageNumber <= 2 ? .035 : .015);
+          const bounds = [b.x-padding,b.y-padding,b.width+2*padding,b.height+2*padding];
+          if (bounds[2] > 700 || bounds[3] > 1000 || bounds[2] <= 0 || bounds[3] <= 0) return;
+          svg.setAttribute('viewBox',bounds.join(' '));
+          svg.setAttribute('preserveAspectRatio','xMidYMin meet');
+        } catch { /* keep publisher viewBox if SVG geometry unsupported */ }
       });
       return true;
     } catch (error) {
