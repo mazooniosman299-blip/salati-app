@@ -118,7 +118,7 @@ try:
    assert v2['playerHeight']<=160,('Player outer frame must be visibly slimmer than prior 170px',v2)
    assert v2['headerHeight']<=53,v2
    assert pre['codedPage'] and pre['ayahCount']>=7 and pre['tabCount']==6,pre
-   assert pre['centerButton']['width']>=58,pre
+   assert 50<=pre['centerButton']['width']<=56,('V2 smaller centered blue play button',pre)
    assert pre['centerButton']['left']>=pre['player']['left']+4,pre
    assert pre['centerButton']['right']<=pre['player']['right']-4,pre
    assert pre['centerButton']['bottom']<=pre['player']['bottom']-4,pre
