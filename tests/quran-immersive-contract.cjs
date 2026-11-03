@@ -36,6 +36,17 @@ assert(app.includes("options.setAttribute('aria-expanded',String(open))"),'Reade
 assert(css.includes('SALATI IMMERSIVE MUSHAF V1'));
 assert(css.includes('body.dark.salati-quran-immersive #mushaf:not([hidden])'));
 assert(css.includes('height:100dvh;'), 'Reader should occupy viewport height');
+assert(plates.includes("svg.getBBox()"),'Print engraving requires ink-aware artwork fit');
+assert(plates.includes("svg.setAttribute('preserveAspectRatio','xMidYMin meet')"),'No stretching of Holy Quran characters');
+assert(plates.includes('requestAnimationFrame(() => {'),'Measure SVG only once it enters the DOM');
+assert(css.includes('body.dark.salati-quran-immersive #mushaf.salati-quran-options-open .mushaf-toolbar.quran-player'),'Tools must be a sliding overlay when requested');
+assert(css.includes('height:0;'),'Collapsed toolbar must take zero reading height');
+assert(css.includes('#mushaf #qVerses > .salati-printed-page + .salati-printed-page'),'Page-to-page scroll must have no artificial white spacer');
+assert(css.includes('line-height:0;'),'Block SVG engraving must not inherit inline linebox whitespace');
+assert(css.includes('pointer-events:none;'),'Closed floating tools container must not steal page gestures');
+assert(css.includes('pointer-events:auto;'),'Menu control must remain accessible');
+assert(!css.includes('scroll-snap-type:x'),'Arrow/horizontal paging must not displace vertical scroll');
+
 assert(css.includes('width:100vw;'),'Reader should occupy viewport width');
 assert(css.includes('#qSheet #qVerses.mushaf-verses'));
 assert(css.includes('overflow-y:auto;'),'Quran reading must scroll vertically');
