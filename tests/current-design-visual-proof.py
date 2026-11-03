@@ -74,6 +74,36 @@ try:
      page.screenshot(path=str(OUT/name),animations="disabled")
      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],
        "image":name,"computed":capture_metrics(page),"page_errors":list(errors)})
+     if tab=="mushaf":
+      # Capture a SECOND genuine state after scrolling the ACTUAL scrollable Quran container.
+      # A static top-of-page screenshot alone cannot prove text below the fold is reachable.
+      scroll=page.evaluate("""() => {
+        const q=document.querySelector('#qVerses');
+        const elements=[];
+        for(let e=q;e;e=e.parentElement)elements.push(e);
+        if(document.scrollingElement&&!elements.includes(document.scrollingElement))
+          elements.push(document.scrollingElement);
+        const hasTravel=e=>e.scrollHeight-e.clientHeight>8;
+        const scrollMode=e=>['auto','scroll'].includes(getComputedStyle(e).overflowY);
+        let target=elements.find(e=>hasTravel(e)&&scrollMode(e));
+        if(!target)target=elements.find(e=>hasTravel(e));
+        if(!target)return {maximum:0,actual:0,target:'none'};
+        const maximum=target.scrollHeight-target.clientHeight;
+        target.scrollTop=Math.max(1,Math.floor(maximum/2));
+        window.__salatiQaActualScrollTarget=target;
+        return {maximum,actual:target.scrollTop,target:target.id||target.className||target.tagName};
+      }""")
+      assert scroll["maximum"]>8 and scroll["actual"]>0,(language,width,"Quran page is not scrollable",scroll)
+      page.wait_for_timeout(130)
+      actual=page.evaluate("() => window.__salatiQaActualScrollTarget?.scrollTop || 0")
+      assert actual>0,(language,width,"Actual Quran scroll unexpectedly reset",scroll)
+      assert page.locator("#qTransport").count()==1 and page.locator("#qSeek").count()==1
+      scroll_name=f"{language}-mushaf-scrolled-{width}.png"
+      page.screenshot(path=str(OUT/scroll_name),animations="disabled")
+      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],
+       "image":scroll_name,"scroll_state":"real-active-scroll-container-middle","scroll_target":scroll["target"],"computed":capture_metrics(page),
+       "page_errors":list(errors)})
+      page.evaluate("() => {if(window.__salatiQaActualScrollTarget)window.__salatiQaActualScrollTarget.scrollTop=0}")
     assert not errors,(language,width,"JS exceptions",errors[:6])
     if width==390:
      page.locator("#lang").click()
@@ -90,5 +120,5 @@ finally:
 (OUT/"metrics.json").write_text(json.dumps({"source":"real local Chromium; production app assets",
  "matched_external_reference":False,"reference_status":"unverified until exact original image is available",
  "screenshots":EVIDENCE},ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-assert len(EVIDENCE)==len(TABS)*len(SIZES)*2
-print("PASS actual Salati Chromium: "+str(len(EVIDENCE))+" actual screenshots, 6 tabs, 2 languages, 4 viewport sizes, language persistence; NO pixel-match claim")
+assert len(EVIDENCE)==(len(TABS)+1)*len(SIZES)*2
+print("PASS actual Salati Chromium: "+str(len(EVIDENCE))+" actual screenshots including scrolled Quran on 6 tabs, 2 languages, 4 viewports; NO pixel-match claim")

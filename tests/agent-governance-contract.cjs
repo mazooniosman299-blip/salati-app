@@ -38,14 +38,16 @@ assert.equal(manifest.android_release,false,'Governance PR must not claim Androi
 const {validateScope,requiresWebVisualDiff}=require('../scripts/verify-change-scope.cjs');
 assert(requiresWebVisualDiff(['glass-navigation.js','choice-picker.js','dist/salati-ui.css']),'Imported UI modules must not bypass runtime visual comparison');
 assert(!requiresWebVisualDiff(['AGENTS.md','docs/ACTUAL_SOURCE_MAP.md']),'Governance-only documentation should not trigger UI diff');
+assert(requiresWebVisualDiff(['dist/images/new-reference.jpeg','dist/fonts/reader.woff2','dist/reader.html','dist/quran/page.avif']),'Images, web fonts and HTML under dist must trigger a real visual diff');
 const permitted=['AGENTS.md','README.md','docs/requests/ACTIVE_CHANGE.json','docs/ROOT_CAUSE_AUDIT_20261103.md','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','.github/workflows/salati-agent-governance.yml'];
-assert.equal(validateScope(permitted,{...manifest,release_mode:'governance'}),permitted.length);
+const fixture={...manifest,release_mode:'governance',allowed_paths:[...new Set([...manifest.allowed_paths,...permitted])]};
+assert.equal(validateScope(permitted,fixture),permitted.length);
 for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/main/java/com/salati/prayer/MainActivity.java','quran-controller.js','other-file.txt']){
- assert.throws(()=>validateScope([...permitted,forbidden],manifest),/OUT-OF-SCOPE/,'Unexpected change slipped through: '+forbidden);
+ assert.throws(()=>validateScope([...permitted,forbidden],fixture),/OUT-OF-SCOPE/,'Unexpected change slipped through: '+forbidden);
 }
 assert.throws(()=>validateScope(permitted,{...manifest,base_branch:'main'}),/production/);
 assert.throws(()=>validateScope(permitted,{...manifest,allowed_paths:[]}),/Empty/);
-const more={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'dist/index.html']};
+const more={...fixture,allowed_paths:[...fixture.allowed_paths,'dist/index.html']};
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance changes|Infrastructure request/);
 const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
@@ -55,14 +57,15 @@ let proofCalled=false;
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],{...prod,original_key_signing_verified:true,website_apk_fingerprint_verified:true},{releaseVerifier:()=>{proofCalled=true;throw new Error('independent original-key proof unavailable')}}),/independent original-key proof unavailable/,'Editable JSON booleans cannot bypass independent signer inspection');
 assert(proofCalled,'Signer proof verifier was bypassed');
 assert.equal(validateScope([...permitted,'dist/index.html'],prod,{releaseVerifier:()=>{}}),permitted.length+1,'Only externally verified callback can certify release');
-const build={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'scripts/release-guard.cjs']};
+const build={...fixture,allowed_paths:[...fixture.allowed_paths,'scripts/release-guard.cjs']};
 assert.throws(()=>validateScope([...permitted,'scripts/release-guard.cjs'],build),/Governance changes cannot mutate/,'Build/sign guard is runtime critical');
-const uiAllowed={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'glass-navigation.js']};
+const uiAllowed={...fixture,allowed_paths:[...fixture.allowed_paths,'glass-navigation.js']};
 assert.throws(()=>validateScope([...permitted,'glass-navigation.js'],uiAllowed),/Governance changes cannot mutate/,'Additional imported UI sources must not be allowed by governance mode');
-const missingTarget={...manifest,visual_change:true,allowed_paths:[...manifest.allowed_paths,'dist/salati-ui.css'],visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both'}],release_mode:'preview'};
+const missingTarget={...fixture,visual_change:true,allowed_paths:[...fixture.allowed_paths,'dist/salati-ui.css'],visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both'}],release_mode:'preview'};
 assert.throws(()=>validateScope([...permitted,'dist/salati-ui.css'],missingTarget),/before\/after\/preserve/,'Vague visual selector must be rejected');
 const specificTarget={...missingTarget,visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both',before:'charcoal button',after:'blue button',preserve:['size','position','Quran text','navigation']}]};
 assert.equal(validateScope([...permitted,'dist/salati-ui.css'],specificTarget),permitted.length+1,'Fully specified preview request should be permitted, but never published');
+assert.throws(()=>validateScope(permitted,{...specificTarget,allowed_paths:fixture.allowed_paths}),/no visual-capable/, 'Visual completion cannot be claimed from documentation-only modifications');
 const infraSmoke={...manifest,release_mode:'infrastructure',visual_change:false,android_release:false,allowed_paths:[...new Set([...manifest.allowed_paths,'scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs'])]};
 const infraFiles=['scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs','docs/requests/ACTIVE_CHANGE.json'];
 assert.equal(validateScope(infraFiles,infraSmoke),infraFiles.length,'CI scheduling can be repaired without modifying signed app');

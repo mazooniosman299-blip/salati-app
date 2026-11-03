@@ -65,15 +65,20 @@ jobs:
         run: |
           npm ci
           npm run build
-          python3 -m pip install --quiet playwright pillow
+          python3 -m pip install --quiet playwright pillow tinycss2
           python3 -m playwright install --with-deps chromium
           BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
           sudo ln -sf "$BROWSER" /usr/bin/chromium
+      - name: Audit the live CSS selectors, layer collisions, baseline parity and forbidden priorities
+        run: |
+          python3 tests/css-component-owner-audit.py
+          python3 tests/canonical-css-maintainability.py
+          python3 tests/css-cascade-equivalence.py
       - name: Prove JS bundle survives regeneration from real upstream source
         run: node tests/source-lifecycle-contract.cjs
       - name: Verify immutable user-provided mosque reference bytes
         run: node tests/reference-provenance.cjs
-      - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
+      - name: Screenshot the ACTUAL Salati six-tab app plus scrolled Quran, both languages, four viewports
         run: python3 tests/current-design-visual-proof.py
       - name: Verify dynamic DOM is owned by upstream source across tab, language and reload
         run: python3 tests/dynamic-source-runtime-browser.py
@@ -101,7 +106,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: salati-current-48-real-screenshots-and-computed-styles
+          name: salati-current-56-real-screenshots-and-computed-styles
           path: reports/current-design-visual-proof/
           if-no-files-found: warn
 
@@ -129,3 +134,83 @@ jobs:
           retention-days: 14
           if-no-files-found: error
           path: reports/isolated-pr-preview/
+
+  android-debug-and-native-widget-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exact repository source, verify regressions, prepare isolated debug Android
+        run: |
+          npm ci
+          npm run build
+          npm test
+          python3 -m pip install --quiet pillow
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+          cd ..
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
+          # Debug preview is not the Cloudflare production release; keep release-size/signature gates untouched.
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging android/app/build/outputs/apk/debug/app-debug.apk | grep -F "com.salati.prayer.preview"
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          stage=Path('android/app/src/main/assets/www')
+          apk=Path('android/app/build/outputs/apk/debug/app-debug.apk')
+          assert stage.is_dir() and apk.is_file()
+          with ZipFile(apk) as archive:
+              names=set(archive.namelist())
+              checked=0
+              for source in stage.rglob('*'):
+                  if not source.is_file():continue
+                  rel='assets/www/'+source.relative_to(stage).as_posix()
+                  assert rel in names, 'Missing staged Android file: '+rel
+                  assert archive.read(rel)==source.read_bytes(), 'Debug preview bytes diverged: '+rel
+                  checked+=1
+          assert checked>=6, 'Unexpected incomplete WebView source staging'
+          for required in ('index.html','salati-ui.css','app-v1.0.109.js','quran/data.json'):
+              assert (stage/required).is_file(), 'Missing critical staged app asset: '+required
+          print('PASS unsigned/debug preview contains',checked,'exact staged WebView files; NOT original signed release')
+          PY
+      - name: Exercise real Android 15 system WebView and native widget without skipping independent failures
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          emulator-boot-timeout: 600
+          disable-animations: true
+          script: |
+            set +e
+            bash scripts/android-webview-smoke.sh
+            WEBVIEW_RESULT=$?
+            bash scripts/capture-widget-emulator.sh
+            WIDGET_RESULT=$?
+            echo "WebView emulator code: $WEBVIEW_RESULT"
+            echo "Native widget emulator code: $WIDGET_RESULT"
+            test "$WEBVIEW_RESULT" -eq 0 && test "$WIDGET_RESULT" -eq 0
+      - name: Preserve genuine emulator screenshot evidence even on partial failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-five-issues-real-android-webview-widget-preview-not-signed
+          path: |
+            reports/android-webview-20261102/
+            reports/native-widget-preview/
+          if-no-files-found: warn
+      - name: Delineate untested install-over-production and physical phone
+        if: always()
+        run: echo "Debug preview is not original-key signed. Physical device and install-over-original are NOT verified, and no production deployment is permitted."

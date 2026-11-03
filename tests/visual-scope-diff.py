@@ -19,6 +19,33 @@ def visible_rectangle(case,selector):
  if not e or not e.get('visible'):raise AssertionError('Missing/hidden approved selector '+case['image']+' '+selector)
  return [e['x'],e['y'],e['right'],e['bottom']]
 
+STYLE_PROPERTIES=('color','background','font','fontSize','display','position','overflowX','overflowY','marginTop','paddingBottom')
+GEOMETRY_PROPERTIES=('x','y','width','height','right','bottom')
+
+def check_unchanged_components(before,after,allowed_selectors,image):
+ """Protect measured style AND placement, including subtle differences below screenshot tolerance.
+ An approved parent rectangle does not silently approve changing its child selectors.
+ """
+ old=before.get('computed',{})
+ new=after.get('computed',{})
+ if set(old)!=set(new):
+  raise AssertionError((image,'computed-selector-inventory-changed'))
+ for selector,a in old.items():
+  if selector in allowed_selectors:
+   continue
+  b=new[selector]
+  for flag in ('exists','visible'):
+   if a.get(flag)!=b.get(flag):
+    raise AssertionError((image,selector,flag,'unrequested visibility/DOM change'))
+  if not a.get('visible'):
+   continue
+  for prop in STYLE_PROPERTIES:
+   if a.get(prop)!=b.get(prop):
+    raise AssertionError((image,selector,prop,'unrequested computed-style change',a.get(prop),b.get(prop)))
+  for prop in GEOMETRY_PROPERTIES:
+   if abs(float(a.get(prop,0))-float(b.get(prop,0)))>1.0:
+    raise AssertionError((image,selector,prop,'unrequested geometry shift',a.get(prop),b.get(prop)))
+
 def compare(baseline,candidate,policy):
  approved=policy.get('visual_allowed_regions',[])
  if policy.get('visual_change') is True:
@@ -33,6 +60,7 @@ def compare(baseline,candidate,policy):
  for key,case in sorted(new.items()):
   baseline_case=old[key]
   rules=[r for r in approved if r['tab']==case['tab'] and r['language'] in ('both',case['language'])]
+  check_unchanged_components(baseline_case,case,{r['selector'] for r in rules},key)
   boxes=[]
   for rule in rules:
    p=visible_rectangle(baseline_case,rule['selector'])
@@ -41,7 +69,7 @@ def compare(baseline,candidate,policy):
     min(case['viewport'][0],max(p[2],q[2])+6),min(case['viewport'][1],max(p[3],q[3])+6)])
   with Image.open(baseline/key) as x,Image.open(candidate/key) as y:
    count,outside,bbox=pixel_scope(x,y,boxes)
-   assert outside<=int(x.width*x.height*.0005),(key,'unrequested visual change',outside,bbox)
+   assert outside==0,(key,'unrequested visual change (zero-pixel tolerance)',outside,bbox)
   if rules:changed_authorized+=count
   results.append({'image':key,'changed_pixels':count,'outside_approved_regions':outside,'allowed_boxes':boxes})
  if policy.get('visual_change') is True:
@@ -55,7 +83,21 @@ def self_test():
  assert pixel_scope(x,y,[[1,1,6,6]])[:2]==(16,0)
  z=x.copy();ImageDraw.Draw(z).rectangle((21,21,23,23),fill='white')
  assert pixel_scope(x,z,[[1,1,6,6]])[1]==9
- print('PASS pixel boundary negative tests: authorized accepted, unrelated rejected')
+ a={'computed':{'#prayers':{'exists':True,'visible':True,'color':'rgb(255,255,255)','x':0,'y':0,'width':30,'height':10,'right':30,'bottom':10}}}
+ b={'computed':{'#prayers':{**a['computed']['#prayers'],'color':'rgb(255,255,254)'}}}
+ try:
+  check_unchanged_components(a,b,{'#qTransport'},'negative.png')
+  raise AssertionError('A 1-channel unauthorized CSS color change was accepted')
+ except AssertionError as ex:
+  if 'unauthorized' in str(ex):raise
+ check_unchanged_components(a,b,{'#prayers'},'authorized.png')
+ c={'computed':{'#prayers':{**a['computed']['#prayers'],'x':4}}}
+ try:
+  check_unchanged_components(a,c,set(),'negative-geometry.png')
+  raise AssertionError('An unauthorized geometry shift was accepted')
+ except AssertionError as ex:
+  if 'accepted' in str(ex):raise
+ print('PASS visual negative tests: outside pixels, tiny CSS color and geometry differences rejected')
 
 def main():
  p=argparse.ArgumentParser()
