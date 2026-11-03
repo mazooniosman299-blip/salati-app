@@ -1,64 +1,47 @@
 {
-  "request_id": "SALATI-20261103-WEB-SOURCED-MUSHAF-REBUILD",
-  "original_request": "«حل لي المشكله دي من جزورها»: Replace the actual Quran viewer design with a legitimate independent open-source web reader component, not screenshot overlay, CSS patches or a picture of one page. Keep full screen/real 604 pages, original audio player colors (#18191D, #2563EB), all other tabs unchanged, evidence screenshots and separate installable APK only, never merge/deploy.",
+  "request_id": "SALATI-20261103-MUSHAF-V2-VISUAL-REDESIGN-REVIEW",
+  "original_request": "Change the complete Mushaf visual design, ensure no black circular UI decoration, slightly reduce the charcoal-blue player frame; respond with real screenshots and interactive approve/reject. Only Quran UI; do not merge or publish.",
   "base_branch": "production",
   "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
   "visual_change": true,
   "android_release": false,
   "release_mode": "preview",
   "allowed_paths": [
-    ".github/workflows/salati-mushaf-book-rebuild.yml",
-    ".github/workflows/salati-quran-only-trial-apk.yml",
-    ".github/workflows/salati-verified-mushaf-layout.yml",
-    "dist/index.html",
     "dist/mushaf-book.css",
-    "dist/mushaf-book.js",
-    "dist/quran-mushaf-markers-20261101.js",
-    "dist/quran-visual-trial.js",
-    "dist/quran/MUSHAF_BOOK_MIT_LICENSE.txt",
-    "dist/quran/SOURCES.txt",
-    "dist/quran/line-layout.json",
-    "dist/salati-ui.css",
+    "tests/quran-visual-trial-browser.py",
     "docs/requests/ACTIVE_CHANGE.json",
-    "docs/requests/SALATI-20261103-QURAN-ONLY-TRIAL.md",
-    "docs/requests/SALATI-20261103-WEB-MUSHAF-REBUILD.md",
-    "quran-controller.js",
-    "scripts/generate-mushaf-line-layout.py",
-    "scripts/prepare-android.py",
-    "tests/eight-mobile-invariants.cjs",
-    "tests/mushaf-line-map-contract.cjs",
-    "tests/quran-follow.cjs",
-    "tests/quran-visual-trial-browser.py"
+    ".github/workflows/salati-mushaf-v2-preview.yml",
+    "docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md"
   ],
   "visual_allowed_regions": [
     {
       "tab": "mushaf",
       "language": "both",
-      "selector": "#qSheet",
-      "before": "Legacy 2026 trial Quran display is an inline function in quran-controller.js with 25k+ bytes of accumulated CSS changes to canonical salati-ui.css, not a real independent web-derived Mushaf page component.",
-      "after": "Replace ALL inline page DOM construction with independent dist/mushaf-book.js component, adapted from Mushaf Companion (MIT), full-screen 345x550 proportional paper with outer/inner frames, four ornate corners, side ornaments, part/Surah top rail, true 8/15 printed grid rows and page number; no static photos. A single canonical linked stylesheet imports the separately authored dist/mushaf-book.css, with native packager preserving only that referenced file. This replaces 25,939 bytes of accumulated trial CSS (removed from canonical). Every text word still from unchanged local Tanzil JSON with CC BY-SA verified word line metadata; preserve verse interaction.",
+      "selector": "#qSheet .mushaf-book-page",
+      "before": "Dense cream/gold printed frame with gold ornamental chapter and rosette decorations",
+      "after": "Completely new ivory and royal-blue manuscript page with double hairline border, diamond corners, blue chapter header and pale diamond rosettes, with no black filled circular UI",
       "preserve": [
-        "All immutable original 6236 verses, every QCF layout token and orthographic mark; 604 pages, 114 surahs; source licensing",
-        "Original reciters/audio, progress, bookmarks and position",
-        "All prayer time/widget/home/dhikr/qibla/tasbih/settings UI unchanged"
+        "All 604 pages and 6236 original verses",
+        "Real coded source and verified line map; no page JPEG",
+        "Unrelated Salati pages unchanged"
       ]
     },
     {
       "tab": "mushaf",
       "language": "both",
       "selector": "#mushafPlayerSlot",
-      "before": "Previous review uses uniform repeated CSS gradient bars across seek timeline, and a dark player below the bounded Quran card.",
-      "after": "Keep existing qAudio/qTransport/qSeek DOM and handlers with user-color #18191D charcoal, blue #2563EB, adaptive centered button, 63 varied ornamental volume bars that follow actual media progress; not claim audio amplitude analysis. Drawer stays below page, and is collapsible.",
+      "before": "Charcoal audio drawer with roughly 170px height and 60px play button",
+      "after": "Subtly slimmed charcoal #18191D drawer, 54px existing blue #2563EB play button and 32px functional waveform",
       "preserve": [
-        "qTransport/qSeek/qStop and original recitation state; bar heights illustrative, not acoustic amplitude data",
-        "User's original charcoal/blue; real progress and seek interactions",
-        "Prayer widget and other tabs unchanged"
+        "Original transport/seek/audio handlers",
+        "Reciters and state unchanged",
+        "All other tabs unchanged"
       ]
     }
   ],
-  "acceptance": "Genuine open-source MIT reader architecture in independent component (not only CSS); source and full MIT license in APK. Remove the old patch CSS, prove all 604/6236 canonical words and line slots, page 564 and page 604, browser viewports 390x844 and 430x932 with real screenshots; non-Quran content unchanged; run npm regressions, native APK build and signing. No merge/deploy. No false pixel-perfect printed page or acoustic waveform claim.",
+  "acceptance": "Real Chromium mobile screenshots 390x844 and 430x932 for pages 1 and 564. Check #FFFDF9 page, blue chapter, no black UI circles and <=160px player. Keep immutable source, tests, and independent debug APK artifact only. No merge, production deploy or prerelease publication.",
   "status": "in_progress",
   "reference_status": "User's real 102822 image: cream/gold full-height printed Madani Mushaf page 564, 15 rows including chapter/basmala, ornate left/right rails and header. Web design source: https://github.com/abda-dc/mushaf-companion (MIT) app/page.tsx and app/globals.css, full text of LICENSE bundled. Word map CC BY-SA 4.0 pinned from ouryhamdalaye repo; no official Quran Foundation licensed QCF V2 font files incorporated.",
-  "release_target": "Salati separate trial APK prerelease salati-mushafbook-from-web-20261103, appID com.salati.prayer.preview; existing official APK production unchanged.",
+  "release_target": "Review-only GitHub Actions artifacts, not an official release.",
   "source": "Actual user install screenshots 102936.jpg and 102937.jpg proving the photo overlay and overflowing play control; browser research Quran Foundation font rendering/page layout, local Quran state already 604 pages."
 }
