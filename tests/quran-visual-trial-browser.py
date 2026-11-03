@@ -39,6 +39,9 @@ try:
    page.locator('#qVerses .quran-reading-page').first.wait_for(timeout=35000)
    page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=12000)
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="1"]').count()>0
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"]').count()==1, 'Line-based Mushaf renderer not active'
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-madinah-line').count()==7
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-fixed-heading').count()==1
    assert page.locator('#qSheet img').count()==0,'Quran is not supposed to be a single photo'
    assert page.locator('#qTrialPlate').count()==0,'Rejected photo overlay still in DOM'
    assert page.locator('#qTrialSwitch').count()==0,'Rejected preview toggle still in DOM'
@@ -93,12 +96,30 @@ try:
    assert page.locator('#qRepeat').is_checked()
    page.locator('#qLoopSurah').click()
    assert not page.locator('#qRepeat').is_checked()
+   # User screenshot reference is Madinah page 564: it must be 15 genuine
+   # coded word lines with surah header + canonical basmala, not a PNG.
+   page.locator('#qPageNumber').evaluate("(e)=>{e.value='564';}")
+   page.locator('#qPageForm').evaluate("(e)=>{e.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}));}")
+   page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"]').wait_for(timeout=15000)
+   page.evaluate("document.fonts.ready")
+   page.wait_for_timeout(250)
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-madinah-line').count()==13
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-fixed-heading').count()==1
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"] .quran-basmala-line').count()==1
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"]').get_attribute('data-line-count')=='15'
+   assert page.locator('#qVerses [data-ayah="67:27"]').count()>0
+   assert page.locator('#qVerses [data-ayah="68:1"]').count()>0
+   page.locator('#qFullPlayerToggle').click()
+   page.locator('#qSheet').screenshot(path=str(OUT/f'madinah-page-564-reader-{width}.png'))
+   page.locator('#qFullPlayerToggle').click()
    # Real app state navigation through the existing QuranReader, not a stock image
    page.locator('#qSurah').evaluate("(e,id)=>{e.value=String(id);e.dispatchEvent(new Event('change',{bubbles:true}));}",114)
    page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').first.wait_for(timeout=20000)
    page.locator('#qVerses [data-ayah="114:1"]').first.wait_for(timeout=14000)
    assert page.locator('#qVerses [data-ayah="114:1"]').count()==1
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').count()==1
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="604"]').count()==1
+   assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="604"]').get_attribute('data-line-count')=='15'
    page.locator('#qPrevSurah').click()
    assert page.locator('#qSurah').input_value()=='113'
    page.locator('#qNextSurah').click()
@@ -137,9 +158,10 @@ try:
    page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=25000)
    assert page.evaluate("document.body.classList.contains('salati-quran-fullscreen')")
    assert not errors,errors[:8]
+   assert page.locator('#qVerses .quran-fixed-lines').count()>0
    records.append({'viewport':[width,height],**pre,'visitedPage604':True,
                    'photoUsed':False,'imageSource':'none - complete Quran rendered from local JSON',
-                   'fullscreen':True,'waveBars':63,'variableBarHeights':len(set(heights)),
+                   'fullscreen':True,'real_604_page_line_layout':True,'verified_reference_page_564':True,'waveBars':63,'variableBarHeights':len(set(heights)),
                    'playerCollapsesWithoutCoveringText':True,'exitRestoresTabs':True,
                    'sourceVerses':6236,'sourcePages':604,'errors':errors})
    page.close()
