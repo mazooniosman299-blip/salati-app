@@ -1,4 +1,4 @@
-name: Salati Quran-only USER INSTALL trial APK (NO PRODUCTION)
+name: Salati FULLSCREEN Quran + interactive waveform review APK (NO PRODUCTION)
 on:
   push:
     branches: [feature/salati-official-svg-mushaf-only-20261103]
@@ -67,15 +67,15 @@ jobs:
           unzip -p "$APK" assets/www/salati-ui.css | grep -F 'SALATI 2026-11-03'
           unzip -p "$APK" assets/www/quran/data.json | sha256sum | grep -F cb2be527751f8671b89595a0d81cc059c3db894c213772200bcf9a01dc5096e5
           mkdir -p reports/quran-only-trial
-          cp "$APK" reports/quran-only-trial/salati-quran-full-604-pages-trial.apk
-          sha256sum reports/quran-only-trial/salati-quran-full-604-pages-trial.apk > reports/quran-only-trial/apk-sha256.txt
+          cp "$APK" reports/quran-only-trial/salati-fullscreen-quran-waveform-trial.apk
+          sha256sum reports/quran-only-trial/salati-fullscreen-quran-waveform-trial.apk > reports/quran-only-trial/apk-sha256.txt
       - name: Upload independent installable APK for immediate review
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: salati-quran-only-independent-installable-debug-apk
           path: |
-            reports/quran-only-trial/salati-quran-full-604-pages-trial.apk
+            reports/quran-only-trial/salati-fullscreen-quran-waveform-trial.apk
             reports/quran-only-trial/apk-sha256.txt
           if-no-files-found: warn
           retention-days: 14
@@ -84,8 +84,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TAG=salati-quran-full-code-trial-20261103
-          FILE=reports/quran-only-trial/salati-quran-full-604-pages-trial.apk
+          TAG=salati-fullscreen-quran-waveform-20261103
+          FILE=reports/quran-only-trial/salati-fullscreen-quran-waveform-trial.apk
           test -s "$FILE"
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" --clobber
@@ -94,12 +94,12 @@ jobs:
               --target "$GITHUB_SHA" \
               --title "صلاتي - معاينة شكل المصحف والمشغل فقط (APK تجريبي)" \
               --prerelease \
-              --notes "Review-only actual Salati app. Actual 604 Quran pages / 6236 original verses rendered by local QuranReader and existing licensed Uthmani font, NEVER a linked JPG. Blue HTML/CSS page border and unclipped original charcoal/blue live audio player. Not QCF V2 15-line pixel-exact layout. Package com.salati.prayer.preview signed with debug identity; separate from official original-key com.salati.prayer. No official site deploy or signed APK update."
+              --notes "Review-only actual Salati app. Actual 604 Quran pages / 6236 original verses rendered by local QuranReader and existing licensed Uthmani font, NEVER a linked JPG. FULLSCREEN golden/cream coded Mushaf reader, 63 varied waveform bars linked to real audio seek, original charcoal/blue player dock, adjustable player size, native tabs restored on exit. Not QCF V2 15-line pixel-exact layout. Package com.salati.prayer.preview signed with debug identity; separate from official original-key com.salati.prayer. No official site deploy or signed APK update."
           fi
           gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,isPrerelease,url > reports/quran-only-trial/release.json
           python3 - <<'PY'
           import json,os
-          file='reports/quran-only-trial/salati-quran-full-604-pages-trial.apk'
+          file='reports/quran-only-trial/salati-fullscreen-quran-waveform-trial.apk'
           result=json.load(open('reports/quran-only-trial/release.json'))
           assert result['isPrerelease'] is True
           assert any(x['name']==os.path.basename(file) and x['size']==os.stat(file).st_size for x in result['assets'])
