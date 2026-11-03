@@ -30,24 +30,27 @@ try:
  with sync_playwright() as p:
   browser=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
   for width,height in ((360,780),(390,844)):
-   for variant in ('printed','fallback'):
+   for variant in ('printed','mirror','fallback'):
     page=browser.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce')
     errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual',dark:true}));")
     def route_svg(route):
-     if variant=='printed' and route.request.url.endswith(('/001.svg','/002.svg')):
+     is_cdn='cdn.quran.ws' in route.request.url
+     allow=(variant=='printed' and is_cdn) or (variant=='mirror' and not is_cdn)
+     if allow and route.request.url.endswith(('/001.svg','/002.svg')):
       original=fixture if route.request.url.endswith('/001.svg') else fixture2
       route.fulfill(status=200,body=original,headers={'Content-Type':'image/svg+xml','Access-Control-Allow-Origin':'*'})
      else: route.fulfill(status=503,body='test-only unavailable')
     page.route('https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/**',route_svg)
+    page.route('https://raw.githubusercontent.com/quran-ws/quran-svg/9fc0c87/mushafs/hafs/kfqc/svg/**',route_svg)
     page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded',timeout=35000)
     before=page.locator('header>.site-nav button[data-tab]').all_text_contents()
     assert len(before)==6,(width,'official six tabs missing',before)
     page.locator('header>.site-nav button[data-tab="mushaf"]').click()
     page.wait_for_function("document.body.classList.contains('salati-quran-immersive')",timeout=15000)
     page.locator('#qVerses .quran-reading-page').first.wait_for(timeout=25000)
-    if variant=='printed':
+    if variant in ('printed','mirror'):
      page.locator('#qVerses .salati-printed-page').first.wait_for(timeout=18000)
      assert page.locator('#qVerses .salati-publisher-plate [data-ayah="1:1"]').count()>=1
      page.locator('#qVerses .salati-publisher-plate [data-ayah="1:1"]').first.click(force=True)
@@ -67,7 +70,7 @@ try:
     else:
      page.wait_for_function("document.querySelector('#qVerses .quran-reading-page')?.dataset.plateUnavailable==='true'",timeout=20000)
      assert page.locator('#qVerses .quran-reading-page .quran-text').count()>0,'Network error blanked Quran text'
-    if variant=='printed':
+    if variant in ('printed','mirror'):
      # Real print surfaces occupy the reading viewport from its top edge,
      # and two adjacent printed leaves must NOT have white separator cards.
      seamless=page.evaluate("""() => {
@@ -110,7 +113,7 @@ try:
     assert metrics['q']['y']>0 and metrics['player']['top']>=metrics['q']['y']+metrics['q']['h']-2,(width,metrics)
     assert metrics['nav']['top']>=metrics['player']['bottom']-3,(width,'Player covers original nav',metrics)
     assert metrics['label']==0,(width,'Duplicate top page number',metrics)
-    if variant=='printed':
+    if variant in ('printed','mirror'):
      # Future theme edits are allowed to change paint, never the
      # geometry, scroll direction, original nav, or player placement.
      baseline=page.evaluate("""() => {
@@ -134,7 +137,7 @@ try:
      assert all(abs(themed[k]-baseline[k])<2 for k in ('w','h','y','top')),(width,'theme change mutated Quran geometry',baseline,themed)
      assert themed['paper']=='rgb(255, 248, 232)' and themed['play']=='rgb(37, 99, 235)',(width,'isolated theme tokens not respected',themed)
     page.screenshot(path=str(OUTPUT/f'{variant}-{width}.png'),animations='disabled')
-    if variant=='printed':
+    if variant in ('printed','mirror'):
      page.locator('header>.site-nav button[data-tab="times"]').click()
      page.wait_for_function("!document.body.classList.contains('salati-quran-immersive')")
      assert page.locator('#times .hero-picture img').count()==1
@@ -147,5 +150,5 @@ finally:
  server.shutdown()
  server.server_close()
 (OUTPUT/'checks.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2),encoding='utf-8')
-assert len(checks)==4
-print('PASS: print ink starts at screen edge; two leaves contiguous without white gap; fullscreen 360/390; collapsible real controls; blue play; real nav preserved; source fallback. Publisher visual equality not certified.')
+assert len(checks)==6
+print('PASS: 2 mobile sizes x primary/mirror/offline; two continuous printed pages; blue player; fullscreen geometry; original nav untouched. Print-image pixel parity not certified.')
