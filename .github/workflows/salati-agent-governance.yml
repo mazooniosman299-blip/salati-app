@@ -75,6 +75,10 @@ jobs:
         run: node tests/reference-provenance.cjs
       - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
         run: python3 tests/current-design-visual-proof.py
+      - name: Verify fullscreen Quran, true scrollport, original nav, blue player and verified fallback
+        run: |
+          node tests/quran-immersive-contract.cjs
+          python3 tests/quran-immersive-browser.py
       - name: Verify dynamic DOM is owned by upstream source across tab, language and reload
         run: python3 tests/dynamic-source-runtime-browser.py
       - name: Self-test visual diff rejecting unauthorized pixels
@@ -102,7 +106,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: salati-current-48-real-screenshots-and-computed-styles
-          path: reports/current-design-visual-proof/
+          path: |
+            reports/current-design-visual-proof/
+            reports/quran-immersive-browser/
           if-no-files-found: warn
 
   isolated-pr-preview-artifact:
