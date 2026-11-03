@@ -31,6 +31,14 @@ assert(!controller.includes("firstPage.getBoundingClientRect().height"),'Forbidd
 assert(!controller.includes('--salati-quran-window-height'),'Forbidden page-1-height CSS variable');
 assert(controller.includes('disposePrintedMushaf(leaf)'), 'Reset must release SVG observers');
 assert(plates.includes("rootMargin:'900px 0px'"), 'Mount only near-viewport heavy publisher SVG');
+assert(plates.includes("mirror: 'https://raw.githubusercontent.com/quran-ws/quran-svg/9fc0c87/"),'Publisher fallback must use pinned repository commit, never latest');
+assert(plates.includes('for (const base of [PRINTED_MUSHAF.base,PRINTED_MUSHAF.mirror])'),'If publisher CDN is blocked, try pinned original art backup');
+assert(plates.includes('asMarkup(await response.text(),state.pageNumber,state.verses)'),'Every mirror must pass full Quran ayah verification');
+assert(plates.includes("state.page.style.minHeight = '';"),'When source is offline, remove stale sheet placeholder to avoid white gaps');
+assert(plates.includes('const inkBounds = new Map()'),'Cache measured publisher art bounds per edition/page');
+assert(plates.includes('inkBounds.set(pageNumber,view)'),'Remember correct ink geometry and avoid costly repeated getBBox');
+assert(plates.includes('const cachedView = inkBounds.get(state.pageNumber)'),'Restore art geometry before inserting visited pages');
+assert(controller.includes("root:container,rootMargin:'700px 0px'"),'Page loader must observe Quran own scrollport not outer page');
 assert(plates.includes('function releasePlate(state)'), 'Distant heavy plates must be unloaded');
 assert(plates.includes('state.page.replaceChildren(...state.fallback.childNodes,state.footer)'), 'Original Quran text and bottom folio must survive unload');
 assert(plates.includes('state.abort?.abort()'), 'Request cancellation must occur when offscreen');
