@@ -254,6 +254,8 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  }
  body.dark.salati-quran-immersive #mushaf .mushaf-toolbar.quran-player {
   position:absolute;
+  top:0;
+  inset-inline:0;
   z-index:20;
   flex:none;
   display:block;
@@ -446,6 +448,7 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   background:#faf6ee;
   font-family:SalatiCairo,Tahoma,Arial,sans-serif;
   font-size:14px;
+  line-height:1.4;
   font-weight:700;
  }
  body.dark.salati-quran-immersive #mushaf #mushafPlayerSlot {
