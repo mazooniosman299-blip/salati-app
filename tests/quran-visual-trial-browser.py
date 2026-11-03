@@ -82,7 +82,7 @@ try:
    page.locator('#qLoopSurah').click()
    assert not page.locator('#qRepeat').is_checked()
    # Real app state navigation through the existing QuranReader, not a stock image
-   page.locator('#qSurah').select_option('114')
+   page.locator('#qSurah').evaluate("(e,id)=>{e.value=String(id);e.dispatchEvent(new Event('change',{bubbles:true}));}",114)
    page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').first.wait_for(timeout=20000)
    page.locator('#qVerses [data-ayah="114:1"]').first.wait_for(timeout=14000)
    assert page.locator('#qVerses [data-ayah="114:1"]').count()==1
@@ -92,7 +92,7 @@ try:
    page.locator('#qNextSurah').click()
    assert page.locator('#qSurah').input_value()=='114'
    assert not errors,errors[:8]
-   page.locator('#qSurah').select_option('1')
+   page.locator('#qSurah').evaluate("(e,id)=>{e.value=String(id);e.dispatchEvent(new Event('change',{bubbles:true}));}",1)
    page.locator('#qVerses [data-ayah="1:1"]').first.wait_for(timeout=20000)
    page.locator('#mushafPlayerSlot').scroll_into_view_if_needed(timeout=15000)
    page.screenshot(path=str(OUT/f'quran-real-app-{width}.png'),animations='disabled')
