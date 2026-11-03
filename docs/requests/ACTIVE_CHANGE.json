@@ -1,48 +1,52 @@
 {
-  "request_id": "SALATI-20261103-MUSHAF-V2-VISUAL-REDESIGN-REVIEW",
-  "original_request": "Change the complete Mushaf visual design, ensure no black circular UI decoration, slightly reduce the charcoal-blue player frame; respond with real screenshots and interactive approve/reject. Only Quran UI; do not merge or publish.",
+  "request_id": "SALATI-20261103-REAL-MADINAH-QCF-AND-PLAYER-TITLE",
+  "original_request": "«الدوائر مازالت موجوده انا عاوز نفس الشكل بتاع المدينه شوف الويب وغير الكود والمشغل كلمة المصحف الشريف ماظاهره كامله وتاني شي في شي تحت كلمة المصحف الشريف خاربه الشكل دقق شديد وافهم طلبي». Fix outdated Quran font which maps U+06DF as oversized black circle; use documented authentic 604-page QCF V2 glyph-page rendering, preserve original full Quran state, show full untruncated title and remove malformed metadata subtitle from player. No merge or production deploy.",
   "base_branch": "production",
   "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
   "visual_change": true,
   "android_release": false,
   "release_mode": "preview",
   "allowed_paths": [
-    ".github/workflows/salati-mushaf-v2-preview.yml",
+    ".github/workflows/salati-madinah-qcf-preview.yml",
+    "dist/index.html",
+    "dist/madinah-qcf-v2.js",
     "dist/mushaf-book.css",
+    "dist/mushaf-book.js",
+    "dist/quran/SOURCES.txt",
     "docs/requests/ACTIVE_CHANGE.json",
-    "docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md",
-    "scripts/prepare-android.py",
+    "docs/requests/SALATI-20261103-QCF-FIX.md",
+    "scripts/stage-madinah-qcf-v2.py",
     "tests/quran-visual-trial-browser.py"
   ],
   "visual_allowed_regions": [
     {
       "tab": "mushaf",
       "language": "both",
-      "selector": "#qSheet .mushaf-book-page",
-      "before": "Dense cream/gold printed frame with gold ornamental chapter and rosette decorations",
-      "after": "Completely new ivory and royal-blue manuscript page with double hairline border, diamond corners, blue chapter header and pale diamond rosettes, with no black filled circular UI",
+      "selector": "#qVerses .mushaf-book-page",
+      "before": "Unicode text shaped with obsolete KFGQPC Hafs 0.09, U+06DF has 1442 advance units and huge black circular zero; geometric 2026 page remains unlike printed Medina.",
+      "after": "Actual Medina QCF V2 text glyphs are loaded from all 604 per-page fonts and pinned 604 per-page glyph/line documents, validated against 6236 immutable original verse markers. Full screen with traditional cream/gold book frame; Amiri Quran zero-width mark fallback when optional QCF unavailable. No Quran text sign deletion.",
       "preserve": [
-        "All 604 pages and 6236 original verses",
-        "Real coded source and verified line map; no page JPEG",
-        "Unrelated Salati pages unchanged"
+        "Original immutable 6236 verses, 604 pages, all original timing/audio",
+        "No JPG/PNG single-page replacements or generated Quran words",
+        "Other five tabs and native widget unchanged"
       ]
     },
     {
       "tab": "mushaf",
       "language": "both",
       "selector": "#mushafPlayerSlot",
-      "before": "Charcoal audio drawer with roughly 170px height and 60px play button",
-      "after": "Subtly slimmed charcoal #18191D drawer, 54px existing blue #2563EB play button and 32px functional waveform",
+      "before": "User screenshot clipped 'المصحف الشري...' and a tiny garbled second line below text; inherited old CSS overrode small caption, qTrack metadata visible.",
+      "after": "Show complete one-line 'المصحف الشريف' at 16px with no overflow/truncation; hide qTrack visually while keeping its content for audio logic, no decorative handle; status messages appear after controls when needed; keep original charcoal/blue wave/player controls.",
       "preserve": [
-        "Original transport/seek/audio handlers",
-        "Reciters and state unchanged",
-        "All other tabs unchanged"
+        "Actual qTrack/qAudioStatus JS state",
+        "qSeek, qTransport/stop and reciter handlers",
+        "No changes to the home or official release"
       ]
     }
   ],
-  "acceptance": "Real Chromium mobile screenshots 390x844 and 430x932 for pages 1 and 564. Check #FFFDF9 page, blue chapter, no black UI circles and <=160px player. Keep immutable source, tests, and independent debug APK artifact only. No merge, production deploy or prerelease publication.",
+  "acceptance": "Build authentic 604 QCF per-page offline font and glyph assets; all 6236 marker counts matched to canonical Quran; page 1/page 564/page 604 QCFReady, no malformed black zeros; 390×844,430×932 screenshots; title exact 'المصحف الشريف' and not clipped, no second line of qTrack; audio remains functional; signed separate review package ID only, no public release/merge/deploy.",
   "status": "in_progress",
-  "reference_status": "User's real 102822 image: cream/gold full-height printed Madani Mushaf page 564, 15 rows including chapter/basmala, ornate left/right rails and header. Web design source: https://github.com/abda-dc/mushaf-companion (MIT) app/page.tsx and app/globals.css, full text of LICENSE bundled. Word map CC BY-SA 4.0 pinned from ouryhamdalaye repo; no official Quran Foundation licensed QCF V2 font files incorporated.",
-  "release_target": "Review-only GitHub Actions artifacts, not an official release.",
+  "reference_status": "Publisher https://dm.qurancomplex.gov.sa/rights/ digital Mushaf software usage; QCF font-page documentation https://api-docs.quran.foundation/docs/tutorials/fonts/font-rendering/; pinned page glyph metadata https://github.com/manaf/KFGQPC-Madinah-Mushaf commit dad9cf67588ab66c914c155924d8a3699704a03d. KFGQPC own copyrights reserved; original local Quran text unchanged. Genuine Medina page rendering needs per-page font parity, not legacy Unicode circles.",
+  "release_target": "GitHub Actions screenshot and independent preview APK artifacts only. User must review before official release.",
   "source": "Actual user install screenshots 102936.jpg and 102937.jpg proving the photo overlay and overflowing play control; browser research Quran Foundation font rendering/page layout, local Quran state already 604 pages."
 }
