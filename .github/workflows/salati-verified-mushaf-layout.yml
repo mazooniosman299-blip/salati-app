@@ -1,0 +1,44 @@
+name: Salati verified Madani 604-page line data (NO DEPLOY)
+on:
+  push:
+    branches: [feature/salati-official-svg-mushaf-only-20261103]
+    paths:
+      - scripts/generate-mushaf-line-layout.py
+      - .github/workflows/salati-verified-mushaf-layout.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: salati-generate-verified-mushaf-layout
+  cancel-in-progress: false
+jobs:
+  fetch-verify-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download pinned licensed word lines and compare with immutable Tanzil
+        run: python3 scripts/generate-mushaf-line-layout.py
+      - name: Publish full validation report (including on mismatch)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-madani-604-line-map-source-validation
+          path: reports/quran-line-layout/validation.json
+          if-no-files-found: warn
+          retention-days: 15
+      - name: Commit only proven 604-page metadata to review branch (never production)
+        run: |
+          set -euo pipefail
+          git add dist/quran/line-layout.json
+          if git diff --cached --quiet; then
+            echo 'Verified word-line map already committed'
+          else
+            git -c user.name='salati-review-bot' -c user.email='salati-review-bot@users.noreply.github.com' commit -m 'data(mushaf): validated 604-page word-position layout (Quran source unchanged)'
+            git push origin HEAD:feature/salati-official-svg-mushaf-only-20261103
+          fi
