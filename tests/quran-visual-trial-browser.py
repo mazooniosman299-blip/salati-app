@@ -44,7 +44,9 @@ try:
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-grid>.mushaf-book-row').count()==8
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-frame-outer').count()==1
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-corner').count()==4
-   assert page.locator('link[href="mushaf-book.css"]').count()==1
+   assert page.locator('link[href="salati-ui.css"]').count()==1
+   assert page.locator('link[href="mushaf-book.css"]').count()==0, 'Salati homepage must keep exactly one canonical CSS link'
+   assert (ROOT/'dist/salati-ui.css').read_text().startswith('@import url("mushaf-book.css");')
    assert page.locator('script[src="mushaf-book.js"]').count()==1
    assert page.evaluate("document.querySelector('#qVerses .mushaf-book-page').dataset.layoutOrigin")=="mushaf-companion-mit-port"
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-madinah-line').count()==7
