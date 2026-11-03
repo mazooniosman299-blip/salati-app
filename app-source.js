@@ -64,6 +64,26 @@ function revealTabControls(tab){
   if(needed>0)(document.querySelector('main')||window).scrollBy({top:needed,behavior:'instant'});
  }));
 }
+// The ORIGINAL Salati tabs remain the only navigation. Fullscreen belongs
+// to the Quran section, never to the prayer home or other sections.
+const quranPanel=$('mushaf'),quranToolbar=quranPanel?.querySelector('.mushaf-toolbar');
+if(quranPanel&&quranToolbar){
+ const options=document.createElement('button');options.id='qReadingOptions';
+ options.type='button';options.textContent='الأدوات';options.setAttribute('aria-label','إظهار أو إخفاء أدوات المصحف');
+ options.setAttribute('aria-expanded','false');
+ options.addEventListener('click',()=>{
+  const open=quranPanel.classList.toggle('salati-quran-options-open');
+  options.setAttribute('aria-expanded',String(open));
+ });
+ quranToolbar.prepend(options);
+ const sync=()=>{
+  const active=!quranPanel.hidden;
+  document.body.classList.toggle('salati-quran-immersive',active);
+  if(!active){quranPanel.classList.remove('salati-quran-options-open');options.setAttribute('aria-expanded','false');}
+ };
+ new MutationObserver(sync).observe(quranPanel,{attributes:true,attributeFilter:['hidden']});
+ sync();
+}
 const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{
  if(b.classList.contains('active'))return;
  const panels=[...document.querySelectorAll('.tab')],previous=panels.find(t=>!t.hidden);
