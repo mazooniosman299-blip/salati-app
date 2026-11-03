@@ -30,3 +30,13 @@ License: https://creativecommons.org/licenses/by-sa/4.0/
 Adaptation: only word-position/heading/bismillah slots, canonical text supplied by the existing untouched Salati Tanzil source.
 Validation: all 6,236 source verses and every word locator are checked against the immutable local source. The four joined word slots preserve both original words; variant bismillah forms remain exact.
 Not claimed: pixel-perfect 15-line print typography on five pages (208, 586, 587, 590, 591). They remain complete/readable, but line count differs from the reference printing. All 604 pages remain locally available without photographs.
+
+
+MushafBook 2026 web-sourced renderer — independent design rebuild:
+Original MIT source: https://github.com/abda-dc/mushaf-companion
+Ported component architecture: fixed slot/page-grid, dual ornament borders, corners, chapter header, page footer, and accessible verse interaction. The source code has been adapted for Salati and is not a claim of trademark affiliation or identical source UI.
+The exact MIT license is bundled unmodified at quran/MUSHAF_BOOK_MIT_LICENSE.txt and is part of the APK assets.
+All 604 line descriptors remain the independently licensed Madani map described above (CC BY-SA 4.0), and ALL actual displayed Quran words remain Salati's immutable Tanzil source text (CC BY 3.0).
+No QCF V2/third-party font package or image of a full printed page has been copied.
+The existing Salati licensed Quran font and its existing surah/ayah ornaments are used for this preview.
+Do not claim visual identity to every line of King Fahd printed pages without verified licensed QCF glyphs and full device comparison.
