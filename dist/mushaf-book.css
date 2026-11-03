@@ -172,13 +172,15 @@ body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-rosette{
  box-sizing:border-box;display:inline-flex;vertical-align:middle;
  align-items:center;justify-content:center;
  width:1.65em;height:1.65em;min-width:1.65em;min-height:1.65em;
- margin:0 .09em;padding:0;border:1px solid #78A8C6;border-radius:3px;
- background:#EAF4F9;color:#225C87;-webkit-text-fill-color:#225C87;
+ margin:0 .12em;padding:0;border:0;border-radius:0;
+ background:transparent;color:#225C87;-webkit-text-fill-color:#225C87;
  font:700 .61em/1.15 SalatiCairo,sans-serif;
- transform:rotate(45deg);
+ isolation:isolate;
 }
-body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-rosette::first-letter{
- transform:rotate(-45deg);
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-rosette::before{
+ content:"";position:absolute;inset:0;z-index:-1;
+ border:1px solid #75A7C6;border-radius:2px;
+ transform:rotate(45deg);background:#EAF4F9;
 }
 body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-chapter{
  box-sizing:border-box;display:flex;align-items:center;justify-content:center;
