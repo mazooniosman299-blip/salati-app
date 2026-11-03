@@ -240,7 +240,6 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   border:0;
   width:100vw;
   max-width:none;
-  height:100vh;
   height:100dvh;
   max-height:100dvh;
   min-height:0;
