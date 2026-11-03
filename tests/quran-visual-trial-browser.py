@@ -41,14 +41,17 @@ try:
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="1"]').count()>0
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"]').count()==1, 'Line-based Mushaf renderer not active'
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"]').count()==1, 'Independent MIT-derived MushafBook view was not mounted'
-   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-grid>.mushaf-book-row').count()==8
+   page.locator('#qVerses .mushaf-book-page[data-reading-page="1"][data-qcf-ready="true"]').wait_for(timeout=25000)
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-grid>.mushaf-book-row').count()==15
+   assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .qcf-madinah-ayah-end').count()>=7
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-frame-outer').count()==1
    assert page.locator('#qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-corner').count()==4
    assert page.locator('link[href="salati-ui.css"]').count()==1
    assert page.locator('link[href="mushaf-book.css"]').count()==0, 'Salati homepage must keep exactly one canonical CSS link'
    assert (ROOT/'dist/salati-ui.css').read_text().splitlines()[:2]==['@layer salati-base,salati-priority;','@import url("mushaf-book.css");']
    assert page.locator('script[src="mushaf-book.js"]').count()==1
-   assert page.evaluate("document.querySelector('#qVerses .mushaf-book-page').dataset.layoutOrigin")=="mushaf-companion-mit-port"
+   assert page.evaluate("document.querySelector('#qVerses .mushaf-book-page').dataset.layoutOrigin")=="kfgqpc-madinah-qcf-v2"
+   assert page.locator('script[src="madinah-qcf-v2.js"]').count()==1
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-madinah-line').count()==7
    assert page.locator('#qVerses .quran-fixed-lines[data-reading-page="1"] .quran-fixed-heading').count()==1
    assert page.locator('#qSheet img').count()==0,'Quran is not supposed to be a single photo'
@@ -96,7 +99,10 @@ try:
      const shell=document.querySelector('#qVerses .mushaf-book-page');
      const chapter=shell.querySelector('.mushaf-book-chapter');
      const frame=shell.querySelector('.mushaf-book-frame-outer');
-     const marker=shell.querySelector('.mushaf-book-rosette');
+     const marker=shell.querySelector('.qcf-madinah-ayah-end');
+     const heading=document.querySelector('#mushafPlayerSlot .recitation-caption strong');
+     const titleRange=document.createRange();titleRange.selectNodeContents(heading);
+     const ink=titleRange.getBoundingClientRect(),headingBox=heading.getBoundingClientRect();
      const blackCircles=[...shell.querySelectorAll('*')].filter(el=>{
        const cs=getComputedStyle(el),box=el.getBoundingClientRect();
        const bg=cs.backgroundColor;
@@ -106,20 +112,25 @@ try:
      return {paper:getComputedStyle(shell).backgroundColor,
        chapter:getComputedStyle(chapter).color,
        frame:getComputedStyle(frame).borderTopColor,
-       medallion:getComputedStyle(marker).backgroundColor,
-       rosettePosition:getComputedStyle(marker).position,
-       rosetteWidth:marker.getBoundingClientRect().width,
-       rosettePseudoWidth:parseFloat(getComputedStyle(marker,'::before').width),
-       blackRoundCount:blackCircles.length,
+        markerFont:getComputedStyle(marker).fontFamily,
+        qcfMarkers:shell.querySelectorAll('.qcf-madinah-ayah-end').length,
+        blackRoundCount:blackCircles.length,
+        recitationTitle:heading.textContent.trim(),
+        recitationTitleUnclipped:ink.left>=headingBox.left-2 && ink.right<=headingBox.right+2,
+        recitationTitleOverflow:getComputedStyle(heading).textOverflow,
+        qTrackVisible:getComputedStyle(document.querySelector('#qTrack')).display!=='none',
        playerHeight:document.querySelector('#mushafPlayerSlot').getBoundingClientRect().height,
        headerHeight:document.querySelector('#qFullHeader').getBoundingClientRect().height
      };
    }""")
-   assert v2['paper']=='rgb(255, 253, 249)',v2
-   assert v2['chapter']=='rgb(35, 95, 137)',v2
+   assert v2['paper']=='rgb(255, 249, 240)',v2
+   assert v2['chapter']=='rgb(113, 79, 55)',v2
    assert v2['blackRoundCount']==0,v2
-   assert v2['rosettePosition']=='relative',('Rosette pseudo element must be contained',v2)
-   assert v2['rosetteWidth']<=32 and v2['rosettePseudoWidth']<=30,('No diagonal decoration over Quran text',v2)
+   assert v2['qcfMarkers']>=7,('Genuine Quran V2 verse marks must replace old UI medallions',v2)
+   assert v2['recitationTitle']=='المصحف الشريف',v2
+   assert v2['recitationTitleUnclipped'],('Player title still clipped',v2)
+   assert v2['recitationTitleOverflow']=='clip',v2
+   assert not v2['qTrackVisible'],('Unreadable Quran metadata must not show below player title',v2)
    assert v2['playerHeight']<=160,('Player outer frame must be visibly slimmer than prior 170px',v2)
    assert v2['headerHeight']<=53,v2
    assert pre['codedPage'] and pre['ayahCount']>=7 and pre['tabCount']==6,pre
@@ -141,7 +152,7 @@ try:
    # coded word lines with surah header + canonical basmala, not a PNG.
    page.locator('#qPageNumber').evaluate("(e)=>{e.value='564';}")
    page.locator('#qPageForm').evaluate("(e)=>{e.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}));}")
-   page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"]').wait_for(timeout=15000)
+   page.locator('#qVerses .quran-fixed-lines[data-reading-page="564"][data-qcf-ready="true"]').wait_for(timeout=25000)
    page.evaluate("document.fonts.ready")
    page.wait_for_timeout(250)
    # Arabic ink may protrude on the RIGHT without increasing scrollWidth.
@@ -171,7 +182,7 @@ try:
    page.locator('#qFullPlayerToggle').click()
    # Real app state navigation through the existing QuranReader, not a stock image
    page.locator('#qSurah').evaluate("(e,id)=>{e.value=String(id);e.dispatchEvent(new Event('change',{bubbles:true}));}",114)
-   page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').first.wait_for(timeout=20000)
+   page.locator('#qVerses .quran-reading-page[data-reading-page="604"][data-qcf-ready="true"]').first.wait_for(timeout=25000)
    page.locator('#qVerses [data-ayah="114:1"]').first.wait_for(timeout=14000)
    assert page.locator('#qVerses [data-ayah="114:1"]').count()==1
    assert page.locator('#qVerses .quran-reading-page[data-reading-page="604"]').count()==1
