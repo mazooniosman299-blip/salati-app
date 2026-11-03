@@ -39,13 +39,13 @@ const {validateScope,requiresWebVisualDiff}=require('../scripts/verify-change-sc
 assert(requiresWebVisualDiff(['glass-navigation.js','choice-picker.js','dist/salati-ui.css']),'Imported UI modules must not bypass runtime visual comparison');
 assert(!requiresWebVisualDiff(['AGENTS.md','docs/ACTUAL_SOURCE_MAP.md']),'Governance-only documentation should not trigger UI diff');
 const permitted=['AGENTS.md','README.md','docs/requests/ACTIVE_CHANGE.json','docs/ROOT_CAUSE_AUDIT_20261103.md','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','.github/workflows/salati-agent-governance.yml'];
-assert.equal(validateScope(permitted,manifest),permitted.length);
+assert.equal(validateScope(permitted,{...manifest,release_mode:'governance'}),permitted.length);
 for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/main/java/com/salati/prayer/MainActivity.java','quran-controller.js','other-file.txt']){
  assert.throws(()=>validateScope([...permitted,forbidden],manifest),/OUT-OF-SCOPE/,'Unexpected change slipped through: '+forbidden);
 }
 assert.throws(()=>validateScope(permitted,{...manifest,base_branch:'main'}),/production/);
 assert.throws(()=>validateScope(permitted,{...manifest,allowed_paths:[]}),/Empty/);
-const more={...manifest,allowed_paths:[...manifest.allowed_paths,'dist/index.html']};
+const more={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'dist/index.html']};
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance changes|Infrastructure request/);
 const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
@@ -55,9 +55,9 @@ let proofCalled=false;
 assert.throws(()=>validateScope([...permitted,'dist/index.html'],{...prod,original_key_signing_verified:true,website_apk_fingerprint_verified:true},{releaseVerifier:()=>{proofCalled=true;throw new Error('independent original-key proof unavailable')}}),/independent original-key proof unavailable/,'Editable JSON booleans cannot bypass independent signer inspection');
 assert(proofCalled,'Signer proof verifier was bypassed');
 assert.equal(validateScope([...permitted,'dist/index.html'],prod,{releaseVerifier:()=>{}}),permitted.length+1,'Only externally verified callback can certify release');
-const build={...manifest,allowed_paths:[...manifest.allowed_paths,'scripts/release-guard.cjs']};
+const build={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'scripts/release-guard.cjs']};
 assert.throws(()=>validateScope([...permitted,'scripts/release-guard.cjs'],build),/Governance changes cannot mutate/,'Build/sign guard is runtime critical');
-const uiAllowed={...manifest,allowed_paths:[...manifest.allowed_paths,'glass-navigation.js']};
+const uiAllowed={...manifest,release_mode:'governance',allowed_paths:[...manifest.allowed_paths,'glass-navigation.js']};
 assert.throws(()=>validateScope([...permitted,'glass-navigation.js'],uiAllowed),/Governance changes cannot mutate/,'Additional imported UI sources must not be allowed by governance mode');
 const missingTarget={...manifest,visual_change:true,allowed_paths:[...manifest.allowed_paths,'dist/salati-ui.css'],visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both'}],release_mode:'preview'};
 assert.throws(()=>validateScope([...permitted,'dist/salati-ui.css'],missingTarget),/before\/after\/preserve/,'Vague visual selector must be rejected');
