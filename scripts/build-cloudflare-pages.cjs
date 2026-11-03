@@ -28,7 +28,13 @@ if(process.env.CF_PAGES_BRANCH==='production') {
   const sha=process.env.CF_PAGES_COMMIT_SHA||'';
   if(!/^[a-f0-9]{40}$/i.test(sha))throw Error('BLOCK PRODUCTION: missing or invalid Cloudflare Pages commit SHA');
   require('node:child_process').execFileSync(process.execPath,
-    [path.join(root,'scripts/verify-publish-ci.cjs'),sha],{cwd:root,stdio:'inherit',timeout:30000});
+    [path.join(root,'scripts/verify-publish-ci.cjs'),sha],{
+      cwd:root,
+      stdio:'inherit',
+      // The child has an exact-SHA, fail-closed bounded wait. The parent must
+      // outlive that wait; 30s killed valid production builds mid-CI.
+      timeout:require('./verify-publish-ci.cjs').MAX_WAIT_MS+60*1000
+    });
 }
 
 if(process.env.SALATI_WEB_ALREADY_BUILT!=='1')require('./build-web.cjs');
