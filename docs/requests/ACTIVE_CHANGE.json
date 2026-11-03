@@ -1,6 +1,6 @@
 {
-  "request_id": "SALATI-20261103-CODED-604-PAGES-AND-PLAYER",
-  "original_request": "«مانفس التصميم المطلوب انت شكل المصحف دا بتجيبو صوره وليس كود كامل المصحف بكون كاامل ومعاه المشغل ابحث في الويب وحتفهم كلامث»؛ طلب سابق: «كود المصحف فقط الباقي زي ماهو».",
+  "request_id": "SALATI-20261103-FULLSCREEN-MUSHAF-WAVEFORM",
+  "original_request": "«نفذ» موافقة على الأمر التنفيذي النهائي: المصحف بملء الشاشة مثل صورة المرجع، مخفي فيه هيدر صلاتي وشريط التبويبات أثناء القراءة؛ المشغل بالتصميم المرجعي والموجة عمودية متفاوتة الارتفاع، بنفس ألوان صلاتي، بلا تعديل لبقية التطبيق أو النص.",
   "base_branch": "production",
   "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
   "visual_change": true,
@@ -20,30 +20,30 @@
       "tab": "mushaf",
       "language": "both",
       "selector": "#qSheet",
-      "before": "Previous review APK overlaid ONE remotely hosted photo of page 591 over the real Quran renderer, producing an incomplete false Mushaf.",
-      "after": "Remove all static external Mushaf photos and overlay toggles. Display Salati's actual 604 dynamically rendered Quran pages from 6236 locally stored verses, using its licensed existing Uthmani/Madinah font and blue page-frame CSS. Page 1 and page 604 must be reachable by real controls.",
+      "before": "Full Quran interactive text rendered within a bounded small tab card under the global Salati header and six-tab navigation; only 49dvh high.",
+      "after": "When entering Mushaf only, hide the Salati header and bottom navigation, fill Android WebView with Quran page reader; top back/title/Juz/menu controls; original 604-page Quran DOM stays accessible and can scroll through all verses; bundled original gold surah/ayah decorations, cream parchment frame. Back exits and restores original tabs.",
       "preserve": [
-        "Canonical Quran dist/quran/data.json bytes/ayah order; all 604 pages and 6236 ayahs",
-        "Original audio/reciter/state engine, player handlers and Quran verse selection",
-        "Six-tab shell, widget, non-Quran content and official production app"
+        "Original immutable 604-page / 6236 ayah canonical JSON, existing fonts, reciters/audio and bookmarks",
+        "All six original tab contents and original globally approved dark theme",
+        "Non-Quran screens remain identical; no generated Quran photos"
       ]
     },
     {
       "tab": "mushaf",
       "language": "both",
       "selector": "#mushafPlayerSlot",
-      "before": "Existing compact dark charcoal Quran audio dock has blue play control and linear seek, below reading region.",
-      "after": "All transport buttons must be INSIDE the charcoal #18191D drawer and not clipped. Real blue #2563EB center transport, seek waveform, Stop / Previous Surah / Play / Next Surah / Repeat controls retain handlers.",
+      "before": "Previous review uses uniform repeated CSS gradient bars across seek timeline, and a dark player below the bounded Quran card.",
+      "after": "Rounded charcoal #18191D audio drawer docked to fullscreen reader without obscuring text; center #2563EB button. 63 variable-height seek bars as visual waveform with real qSeek input overlay and progress color; stop/previous/play/next/repeat wired to live app controls. A header toggle collapses and expands player without losing position.",
       "preserve": [
-        "Existing qTransport/qSeek/qStop IDs, handlers and audio source",
-        "Unchanged existing recorded reciters, volume, repeat state and preferences",
-        "Original dark app shell, bottom navigation and unrelated UI"
+        "qTransport/qSeek/qStop and original recitation state; bar heights illustrative, not acoustic amplitude data",
+        "User's original charcoal/blue; real progress and seek interactions",
+        "Prayer widget and other tabs unchanged"
       ]
     }
   ],
-  "acceptance": "No downloaded/photo Quran pages; existing 604-page / 6236 ayah offline Quran JSON is the only canonical scripture source, dynamically rendered using existing licensed MadinahHafsClassic font. Player within #mushafPlayerSlot using original charcoal #18191D, blue #2563EB, no clipping, linked previous/next/repeat controls. Independent Android preview APK; browser screenshots, no production merge.",
+  "acceptance": "Actual Chromium screenshots at 390x844 and 430x932 show full screen Quran reader, no Salati header/navigation, in bounds audio controls, 63 variable wave bars with seek interaction and collapsible panel. Tests navigate to page 604 and back, return to home tabs. Npm regression, immutable Quran SHA, Android debug signing and separate APK; no production merge. No false QCF printed pixel parity claims.",
   "status": "in_progress",
-  "reference_status": "Printed photo explicitly rejected; user requests working complete coded Quran and the layout from supplied player image; Quran Foundation documents QCF page-by-page rendering with glyph positions and page fonts, but Salati local text source is NOT claimed QCF pixel-exact 15-line layout; keep original source unchanged.",
-  "release_target": "New prerelease salati-quran-full-code-trial-20261103, independent com.salati.prayer.preview, no official release change.",
+  "reference_status": "User screenshot /mnt/data/102822.jpg shows fullscreen cream/gold ornament printed Quran; additional player reference 2026-11-03 shows waveform bars in a rounded bottom sheet. Original existing Quran data and MadinahHafsClassic font provide complete Quran content but NOT proven pixel-perfect 15-line QCF printed pagination. CSS ornaments are bundled source, not generated pictures.",
+  "release_target": "New independent prerelease salati-fullscreen-quran-waveform-20261103, debug package com.salati.prayer.preview, production unchanged.",
   "source": "Actual user install screenshots 102936.jpg and 102937.jpg proving the photo overlay and overflowing play control; browser research Quran Foundation font rendering/page layout, local Quran state already 604 pages."
 }
