@@ -6,22 +6,22 @@
 <div class="mushaf-tools"><button id="qBookmark" data-ar="حفظ علامة القراءة" data-en="Bookmark page">حفظ علامة القراءة</button><button id="qResume" disabled data-ar="العودة للعلامة" data-en="Go to bookmark">العودة للعلامة</button></div>
 <p id="qCoverage" class="note" hidden></p><div class="audio-buttons legacy-play-action"><button id="qPlay" hidden class="primary" disabled data-ar="تشغيل التلاوة" data-en="Play recitation">تشغيل التلاوة</button></div><audio id="qAudio" preload="none" aria-label="مشغل تلاوة القرآن / Quran audio player"></audio><div class="quran-play-options"><label><input id="qRepeat" type="checkbox" role="switch"><span data-ar="تكرار السورة" data-en="Repeat surah">تكرار السورة</span></label><label><input id="qAutoNext" type="checkbox" role="switch"><span data-ar="السورة التالية تلقائيًا" data-en="Auto-play next surah">السورة التالية تلقائيًا</span></label></div><p id="qLoadStatus" class="note" role="status" aria-live="polite"></p><button id="qRetry" hidden data-ar="إعادة تحميل المصحف" data-en="Retry loading Quran">إعادة تحميل المصحف</button>
 </div>
-<div id="qFollowBar" class="quran-follow-bar" hidden><span id="qCurrentVerse" class="quran-current-verse" role="status" aria-live="polite" aria-atomic="true"></span><label class="quran-follow-toggle"><input id="qFollowToggle" type="checkbox" checked><span data-ar="متابعة الآية" data-en="Follow verse">متابعة الآية</span></label><button id="qFollowTransport" type="button">Ⅱ إيقاف مؤقت</button></div><article id="qSheet" class="mushaf-sheet" dir="rtl" lang="ar" aria-label="صفحة المصحف" aria-busy="true"><div class="mushaf-page-head"><span id="qPageSurah"></span><span id="qPageJuz"></span></div><div id="qTrialPlate" class="quran-trial-plate" hidden aria-label="معاينة صفحة مطبوعة من المصحف">
-<img id="qTrialPlateImage" src="https://www.thequranworld.com/cdn/shop/files/QuranKareem-TheHolyQuraninBlue-594_1024x1024.jpg?v=1766351435" alt="صفحة مصحف حقيقية مزخرفة بالأزرق، معاينة بصرية فقط" referrerpolicy="no-referrer" loading="eager">
-</div>
-<div id="qVerses" class="mushaf-verses" role="region" tabindex="0" aria-label="المصحف — مرّر عمودياً لقراءة الصفحات المتتابعة"></div><button id="qTrialSwitch" type="button" hidden>القراءة التفاعلية للآيات</button><div id="qPageLabel" class="mushaf-page-number"></div></article>
+<div id="qFollowBar" class="quran-follow-bar" hidden><span id="qCurrentVerse" class="quran-current-verse" role="status" aria-live="polite" aria-atomic="true"></span><label class="quran-follow-toggle"><input id="qFollowToggle" type="checkbox" checked><span data-ar="متابعة الآية" data-en="Follow verse">متابعة الآية</span></label><button id="qFollowTransport" type="button">Ⅱ إيقاف مؤقت</button></div><article id="qSheet" class="mushaf-sheet" dir="rtl" lang="ar" aria-label="صفحة المصحف" aria-busy="true"><div class="mushaf-page-head"><span id="qPageSurah"></span><span id="qPageJuz"></span></div><div id="qVerses" class="mushaf-verses" role="region" tabindex="0" aria-label="المصحف — مرّر عمودياً لقراءة الصفحات المتتابعة"></div><div id="qPageLabel" class="mushaf-page-number"></div></article>
 <!-- Quran audio dock: directly below parchment and above bottom navigation; no overlay. -->
-<div id="mushafPlayerSlot"><div class="recitation-player reference-player">
-<div class="recitation-caption"><strong data-ar="المصحف الشريف" data-en="The Holy Quran">المصحف الشريف</strong><p id="qTrack" class="quran-track"></p></div>
-<p id="qAudioStatus" class="note" role="status" aria-live="polite"></p>
-<div class="recitation-timeline"><div class="recitation-wave-line" dir="ltr"><span id="qElapsed">0:00</span><input id="qSeek" type="range" min="0" max="100" value="0" step="0.1" disabled aria-label="موضع التلاوة / Recitation position"><span id="qDuration">0:00</span></div></div>
-<div class="quran-trial-transport-row">
-<button id="qStop" type="button" disabled aria-label="إيقاف التلاوة / Stop recitation" title="إيقاف / Stop"><img src="icons/stop.svg" alt="" width="18" height="18"></button>
-<button id="qPrevSurah" type="button" aria-label="السورة السابقة / Previous surah"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14h-2V5zM16 5 6 12l10 7z"/></svg></button>
-<button id="qTransport" type="button" aria-label="تشغيل / Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="qTransportIcon" d="M8 5v14l11-7z"/></svg></button>
-<button id="qNextSurah" type="button" aria-label="السورة التالية / Next surah"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14h2V5zm3 0 10 7-10 7z"/></svg></button>
-<button id="qLoopSurah" type="button" aria-label="تكرار السورة / Repeat surah" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2 21 6l-4 4V7H6a2 2 0 0 0-2 2v2H2V9a4 4 0 0 1 4-4h11V2zm-10 20-4-4 4-4v3h11a2 2 0 0 0 2-2v-2h2v2a4 4 0 0 1-4 4H7v3z"/></svg></button>
-</div>
+<div id="mushafPlayerSlot" class="quran-live-player">
+<div class="recitation-player reference-player">
+ <div class="recitation-caption"><strong data-ar="المصحف الشريف" data-en="The Holy Quran">المصحف الشريف</strong><p id="qTrack" class="quran-track"></p></div>
+ <p id="qAudioStatus" class="note" role="status" aria-live="polite"></p>
+ <div class="recitation-timeline"><div class="recitation-wave-line" dir="ltr">
+  <span id="qElapsed">0:00</span><input id="qSeek" type="range" min="0" max="100" value="0" step="0.1" disabled aria-label="موضع التلاوة / Recitation position"><span id="qDuration">0:00</span>
+ </div></div>
+ <div class="quran-trial-transport-row">
+  <button id="qStop" type="button" disabled aria-label="إيقاف التلاوة / Stop recitation" title="إيقاف / Stop"><img src="icons/stop.svg" alt="" width="18" height="18"></button>
+  <button id="qPrevSurah" type="button" aria-label="السورة السابقة / Previous surah"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14h-2V5zM16 5 6 12l10 7z"/></svg></button>
+  <button id="qTransport" type="button" aria-label="تشغيل / Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="qTransportIcon" d="M8 5v14l11-7z"/></svg></button>
+  <button id="qNextSurah" type="button" aria-label="السورة التالية / Next surah"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14h2V5zm3 0 10 7-10 7z"/></svg></button>
+  <button id="qLoopSurah" type="button" aria-label="تكرار السورة / Repeat surah" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2 21 6l-4 4V7H6a2 2 0 0 0-2 2v2H2V9a4 4 0 0 1 4-4h11V2zm-10 20-4-4 4-4v3h11a2 2 0 0 0 2-2v-2h2v2a4 4 0 0 1-4 4H7v3z"/></svg></button>
+ </div>
 </div></div>
 
 <div class="mushaf-pagination"><span id="qProgress"></span></div>
