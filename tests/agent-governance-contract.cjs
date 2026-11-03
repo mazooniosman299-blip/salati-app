@@ -32,7 +32,7 @@ for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTranspor
 const rows=report.split('\n').filter(line=>/^\|\s*(?:[1-9]|1\d|20)\s*\|/.test(line));
 assert.equal(rows.length,20,'20-risk audit missing row(s)');
 assert(read('docs/requests/SALATI-20261103-ROOT-CONTROL.md').includes(manifest.original_verbatim_excerpt),'Original user wording must be copied verbatim into acceptance record');
-assert.equal(manifest.release_mode,'governance','This no-UI-change PR must declare governance mode');
+assert(['governance','infrastructure'].includes(manifest.release_mode),'This no-UI-change PR must declare governance/infrastructure mode');
 assert.equal(manifest.visual_change,false,'Governance PR must not claim UI change');
 assert.equal(manifest.android_release,false,'Governance PR must not claim Android release');
 const {validateScope,requiresWebVisualDiff}=require('../scripts/verify-change-scope.cjs');
@@ -46,7 +46,7 @@ for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/
 assert.throws(()=>validateScope(permitted,{...manifest,base_branch:'main'}),/production/);
 assert.throws(()=>validateScope(permitted,{...manifest,allowed_paths:[]}),/Empty/);
 const more={...manifest,allowed_paths:[...manifest.allowed_paths,'dist/index.html']};
-assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance changes/);
+assert.throws(()=>validateScope([...permitted,'dist/index.html'],more),/Governance changes|Infrastructure request/);
 const preview={...more,release_mode:'preview'};
 assert.equal(validateScope([...permitted,'dist/index.html'],preview),permitted.length+1);
 const prod={...more,release_mode:'production'};
@@ -63,6 +63,10 @@ const missingTarget={...manifest,visual_change:true,allowed_paths:[...manifest.a
 assert.throws(()=>validateScope([...permitted,'dist/salati-ui.css'],missingTarget),/before\/after\/preserve/,'Vague visual selector must be rejected');
 const specificTarget={...missingTarget,visual_allowed_regions:[{selector:'#qTransport',tab:'mushaf',language:'both',before:'charcoal button',after:'blue button',preserve:['size','position','Quran text','navigation']}]};
 assert.equal(validateScope([...permitted,'dist/salati-ui.css'],specificTarget),permitted.length+1,'Fully specified preview request should be permitted, but never published');
+const infraSmoke={...manifest,release_mode:'infrastructure',visual_change:false,android_release:false,allowed_paths:[...manifest.allowed_paths,'scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs']};
+const infraFiles=['scripts/verify-publish-ci.cjs','package.json','tests/publish-ci-wait.cjs','docs/requests/ACTIVE_CHANGE.json'];
+assert.equal(validateScope(infraFiles,infraSmoke),infraFiles.length,'CI scheduling can be repaired without modifying signed app');
+assert.throws(()=>validateScope([...infraFiles,'dist/index.html'],{...infraSmoke,allowed_paths:[...infraSmoke.allowed_paths,'dist/index.html']}),/Infrastructure request cannot edit app/);
 const manifestReference=JSON.parse(read('design-references/APPROVED_REFERENCE_REGISTRY.json'));
 assert(manifestReference.references.some(x=>x.id==='mosque-original'&&x.status==='verified-user-asset'));
 assert(manifestReference.references.some(x=>x.id==='printed-mushaf-final'&&x.status==='unresolved'));
