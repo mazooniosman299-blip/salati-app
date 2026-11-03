@@ -222,9 +222,24 @@ export class QuranReader{
  const fragment=document.createDocumentFragment();let paragraph;for(const original of verses){const v={...original,t:printable(original.t)};if(!paragraph||v.a===1){if(v.a===1){const h=document.createElement('h3');h.className='quran-surah-title';h.textContent='سورة '+this.data.surahs[v.s-1].name;fragment.append(h)}paragraph=document.createElement('p');paragraph.className='quran-text';fragment.append(paragraph)}const span=document.createElement('span');span.dataset.ayah=v.s+':'+v.a;span.tabIndex=0;span.setAttribute('aria-label','الآية '+v.a+'، استماع');const basmala=v.t.split(' ').slice(0,4).join(' ');if(v.a===1&&v.s!==9&&v.t.startsWith(basmala)){if(v.s===1){span.classList.add('quran-basmala');span.textContent=v.t+' '}else{const opening=document.createElement('span');opening.className='quran-basmala';opening.textContent=basmala;span.append(opening,document.createTextNode(v.t.slice(basmala.length)+' '))}}else span.textContent=v.t+' ';const mark=document.createElement('span');mark.className='ayah-number';mark.textContent='﴿'+new Intl.NumberFormat('ar').format(v.a)+'﴾';mark.setAttribute('aria-label','الآية '+v.a);span.append(mark,document.createTextNode(' '));paragraph.append(span)}page.append(fragment);const walker=document.createTreeWalker(page,NodeFilter.SHOW_TEXT);const affected=[];while(walker.nextNode())if(/[\u06df\u06e0]/u.test(walker.currentNode.textContent))affected.push(walker.currentNode);for(const node of affected){const replacement=document.createDocumentFragment();for(const token of node.textContent.split(/(\s+)/u)){if(/[\u06df\u06e0]/u.test(token)){const word=document.createElement('span');word.className='quran-compatible-mark';word.textContent=token;replacement.append(word)}else replacement.append(document.createTextNode(token))}node.replaceWith(replacement)}
  const number=document.createElement('div');number.className='reading-page-number';number.textContent=new Intl.NumberFormat('ar').format(index+1);page.append(number);return page;
  }
+ fitMushafPage(page){
+  if(!page?.classList?.contains('quran-fixed-lines')||page.clientWidth<170)return;
+  const rows=[...page.querySelectorAll('.quran-madinah-line')];
+  if(!rows.length)return;
+  const base=Math.min(25,Math.max(17,Number(this.size)*.83||21));
+  let size=base;
+  for(let i=0;i<7;i++){
+   page.style.setProperty('--mushaf-word-size',size.toFixed(2)+'px');
+   const ratio=Math.max(1,...rows.map(row=>row.clientWidth>1?row.scrollWidth/row.clientWidth:1));
+   if(ratio<=1.01)break;
+   size=Math.max(11,Math.floor(size/ratio*.97*10)/10);
+  }
+  page.dataset.fitVerified=String(rows.every(row=>row.scrollWidth<=row.clientWidth+3));
+  if(page.dataset.fitVerified!=='true')console.warn('Quran text line needs more width on page '+page.dataset.readingPage);
+ }
  renderReadingPages(){
  if(this.page>=this.readingStart&&this.page<=this.readingNext)return;this.readingObserver?.disconnect();this.readingHeightObserver?.disconnect?.();const container=$('qVerses');container.style?.removeProperty?.('--salati-quran-window-height');container.replaceChildren();$('qSheet').classList.add('continuous-sheet');this.readingStart=this.page;this.readingNext=this.page-1;const sentinel=document.createElement('div');sentinel.className='reading-page-sentinel';sentinel.setAttribute('aria-hidden','true');
- const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility='auto';page.style.containIntrinsicSize='auto 900px';};
+ const append=this.appendReadingPage=()=>{if(!sentinel.isConnected)return;if(this.readingNext>=604){this.readingObserver?.disconnect();sentinel.remove();return}const page=this.makeReadingPage(this.readingNext++);container.insertBefore(page,sentinel);page.style.contentVisibility=page.classList.contains('quran-fixed-lines')?'visible':'auto';page.style.containIntrinsicSize='auto 900px';if(page.classList.contains('quran-fixed-lines')){const fit=()=>requestAnimationFrame(()=>this.fitMushafPage(page));fit();document.fonts?.ready?.then(fit).catch(()=>{});}};
  container.append(sentinel);append();
   // A full natural Quran page determines its scrollport height. This ensures
   // page 1 is NEVER cropped by arbitrary viewport clamps, while the reader
