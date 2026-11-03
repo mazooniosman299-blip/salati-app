@@ -6,7 +6,7 @@ const fs=require('node:fs'),crypto=require('node:crypto'),os=require('node:os'),
 const {execFileSync}=require('node:child_process');
 const root=path.resolve(__dirname,'..');
 const runtimePath=p=>/^(?:dist\/|android\/|apk-release-parts\/|[^/]+\.js$|[^/]+\.css$|scripts\/(?:build-web|build-cloudflare-pages|release-guard|release-fingerprint|verify-publish-ci|prepare-android|sign-android|reconstruct-verified-apk)\.(?:cjs|py|sh)$)/.test(p);
-const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/(?:index\.html|.*\.(?:css|js|svg|png|webp|ttf|json))|[^/]+\.(?:js|css))$/.test(p));
+const requiresWebVisualDiff=files=>files.some(p=>/^(?:dist\/.*\.(?:html|css|js|mjs|cjs|svg|png|jpe?g|webp|gif|avif|ico|ttf|woff2?|json)|[^/]+\.(?:js|css|mjs))$/i.test(p));
 const releaseCriticalPath=p=>runtimePath(p)||/^scripts\/(?:build-|release-|sign-|prepare-android)/.test(p);
 function independentReleaseVerification() {
  const {verifiedManifest}=require('./release-guard.cjs');
@@ -51,6 +51,9 @@ function validateScope(changed,manifest,options={}) {
   assert(manifest.visual_allowed_regions.every(x=>x.selector.startsWith('#')||x.selector.startsWith('.')),'Visual targets must identify a real DOM id/class, not a vague page description');
  }
  assert(changed.length>0,'No PR file changes');
+ if(manifest.visual_change===true){
+  assert(requiresWebVisualDiff(changed),'Visual change declared but no visual-capable executing source or asset changed');
+ }
  const unexpected=changed.filter(p=>!manifest.allowed_paths.includes(p));
  assert.deepEqual(unexpected,[],'OUT-OF-SCOPE FILES: '+unexpected.join(', '));
  if(manifest.release_mode==='governance') {
