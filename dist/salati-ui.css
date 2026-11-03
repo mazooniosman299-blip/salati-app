@@ -229,6 +229,14 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   pointer-events:auto;
  }
  body.dark.salati-quran-immersive #mushaf:not([hidden]) {
+  /* Theme-only custom properties. Changing these must never affect page geometry. */
+  --mushaf-paper:#FBF7EF;
+  --mushaf-ink:#2B2118;
+  --mushaf-folio:#604B36;
+  --mushaf-player:#181B23;
+  --mushaf-play:#2563EB;
+  --mushaf-ornament:#176DB5;
+  --mushaf-frame:#887C69;
   position:fixed;
   inset:0;
   z-index:550;
@@ -375,7 +383,7 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   border-radius:0;
   box-shadow:none;
   overflow:hidden;
-  background:#faf6ee;
+  background:var(--mushaf-paper);
  }
  body.dark.salati-quran-immersive #mushaf #qSheet > .mushaf-page-head,
  body.dark.salati-quran-immersive #mushaf #qSheet > #qPageLabel {
@@ -399,8 +407,8 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   overscroll-behavior-y:contain;
   -webkit-overflow-scrolling:touch;
   touch-action:pan-y;
-  background:#faf6ee;
-  color:#30251c;
+  background:var(--mushaf-paper);
+  color:var(--mushaf-ink);
  }
  body.dark.salati-quran-immersive #mushaf #qVerses > .quran-reading-page {
   display:block;
@@ -413,8 +421,8 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   border:0;
   border-radius:0;
   box-shadow:none;
-  background:#faf6ee;
-  color:#30251c;
+  background:var(--mushaf-paper);
+  color:var(--mushaf-ink);
  }
  body.dark.salati-quran-immersive #mushaf #qVerses > .quran-reading-page.salati-printed-page {
   padding:0;
@@ -444,8 +452,8 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   padding:0;
   border:0;
   border-radius:0;
-  color:#66513c;
-  background:#faf6ee;
+  color:var(--mushaf-folio);
+  background:var(--mushaf-paper);
   font-family:SalatiCairo,Tahoma,Arial,sans-serif;
   font-size:14px;
   line-height:1.4;
@@ -467,7 +475,7 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   padding:0;
   border:1px solid #414858;
   border-radius:14px;
-  background:#181b23;
+  background:var(--mushaf-player);
   overflow:hidden;
   box-shadow:none;
  }
@@ -488,7 +496,7 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  }
  body.dark.salati-quran-immersive #mushaf #mushafPlayerSlot #qTransport,
  body.dark.salati-quran-immersive #mushaf #mushafPlayerSlot #qTransport:is(:hover,:active,:focus-visible) {
-  background:#2563EB;
+  background:var(--mushaf-play);
   background-image:none;
   color:#fff;
   border-color:transparent;
