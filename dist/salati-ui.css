@@ -201,3 +201,124 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
   body.dark header>.site-nav button.nav-icon-button.active{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-wrap:nowrap;min-width:0;max-width:100%;width:100%;min-height:0;height:100%;margin:0;padding:3px 0 2px;gap:1px;border-radius:19px;white-space:nowrap;overflow:hidden;}body.dark header>.site-nav button.nav-icon-button:not(.active){border:0;}body.dark header>.site-nav button.nav-icon-button.active{border:1px solid #2466D1;}body.dark header>.site-nav button.nav-icon-button>.nav-symbol{display:block;flex:0 0 auto;width:clamp(21px,5.6vw,25px);height:clamp(21px,5.6vw,25px);margin:0;opacity:1;color:#FFFFFF;}body.dark header>.site-nav button.nav-icon-button>span{box-sizing:border-box;display:block;flex:0 0 auto;margin:0;padding:0;font-size:clamp(8.5px,2.35vw,10.5px);line-height:1.3;letter-spacing:-.15px;font-weight:800;color:#FFFFFF;white-space:nowrap;text-align:center;max-width:100%;overflow:hidden;text-overflow:clip;}}@media (min-width:761px){body.dark header>.site-nav{background:#090A0E;border:1px solid #36383D;border-radius:29px;box-shadow:none;backdrop-filter:none;}body.dark header>.site-nav button.nav-icon-button{border-radius:19px;}}}
 /* Quran: continuously scroll pages by touch/wheel, never horizontal swipe or arrow pagination. */
 @layer salati-priority { body.dark #mushaf #qSheet #qVerses.mushaf-verses { touch-action: pan-y; -webkit-overflow-scrolling: touch; scroll-behavior: auto; } }
+
+
+/* SALATI 2026-11-03 — scoped Quran-only installable visual trial.
+   Existing charcoal #0B0E13 / #18191D and original transport blue #2563EB.
+   No styles here address the home page, widget or bottom navigation. */
+body.dark #mushaf #qSheet{position:relative;isolation:isolate;}
+body.dark #mushaf #qTrialPlate.quran-trial-plate{
+ display:none;position:relative;z-index:2;width:100%;max-width:100%;
+ margin:0 auto;padding:12px 9px;background:#111419;border-radius:18px;
+ box-sizing:border-box;box-shadow:none;border:0;
+}
+body.dark #mushaf.quran-trial-active #qTrialPlate.quran-trial-plate:not([hidden]){display:block;}
+body.dark #mushaf #qTrialPlateImage{display:block;width:min(100%,300px);max-width:100%;height:auto;object-fit:contain;margin:auto;background:#F8FAFC;border:0;border-radius:5px;box-shadow:none;}
+body.dark #mushaf.quran-trial-active #qSheet #qVerses{
+ position:absolute;inset:0;z-index:0;box-sizing:border-box;opacity:0;
+ height:430px;max-height:430px;min-height:430px;overflow-y:auto;pointer-events:none;
+}
+body.dark #mushaf #qTrialSwitch{
+ display:block;margin:8px auto 10px;width:auto;max-width:calc(100% - 24px);
+ min-height:35px;padding:6px 14px;background:#20232B;border:1px solid #434650;
+ border-radius:12px;font-size:12px;line-height:1.3;color:#FFFFFF;
+}
+body.dark #mushaf #qTrialSwitch[hidden]{display:none;}
+body.dark #mushaf #mushafPlayerSlot{
+ box-sizing:border-box;position:relative;inset:auto;display:block;
+ background:#18191D;color:#FFFFFF;border:1px solid #414249;
+ border-radius:28px 28px 19px 19px;
+ margin:12px auto 20px;padding:16px 16px 14px;
+ width:calc(100% - 20px);max-width:430px;min-height:182px;height:auto;
+ z-index:3;box-shadow:0 10px 24px rgba(0,0,0,.19);
+}
+body.dark #mushaf #mushafPlayerSlot::before{
+ content:'';display:block;width:36px;height:4px;border-radius:50px;
+ background:#626773;margin:-6px auto 14px;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-player.reference-player{
+ display:flex;flex-direction:column;align-items:stretch;justify-content:center;
+ gap:8px;width:100%;min-height:0;max-height:none;height:auto;box-sizing:border-box;
+ padding:0;margin:0;border:0;background:transparent;box-shadow:none;overflow:visible;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-caption{
+ display:flex;align-items:center;justify-content:center;gap:4px;
+ flex-direction:column;text-align:center;margin:0 0 2px;padding:0;color:#FFFFFF;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-caption strong{
+ font-size:15px;line-height:1.4;font-weight:700;color:#FFFFFF;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-caption #qTrack{
+ margin:0;min-height:0;max-width:100%;font-size:12px;line-height:1.45;
+ color:#BDC4D3;white-space:normal;text-align:center;
+}
+body.dark #mushaf #mushafPlayerSlot #qAudioStatus{
+ margin:0;line-height:1.35;min-height:0;text-align:center;font-size:11px;color:#BDC4D3;
+}
+body.dark #mushaf #mushafPlayerSlot #qAudioStatus:empty{display:none;}
+body.dark #mushaf #mushafPlayerSlot .recitation-timeline{
+ display:block;order:2;width:100%;margin:7px 0 5px;padding:0;min-width:0;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-wave-line{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ width:100%;height:40px;min-height:40px;direction:ltr;
+}
+body.dark #mushaf #mushafPlayerSlot .recitation-wave-line #qElapsed,
+body.dark #mushaf #mushafPlayerSlot .recitation-wave-line #qDuration{
+ display:block;position:static;visibility:visible;flex:0 0 32px;
+ width:32px;height:auto;margin:0;padding:0;text-indent:0;
+ text-align:center;font-size:10px;color:#E1E5EF;clip-path:none;
+}
+body.dark #mushaf #mushafPlayerSlot #qSeek{
+ appearance:none;-webkit-appearance:none;display:block;flex:1;min-width:0;
+ width:100%;height:35px;margin:0;padding:0;border:0;box-shadow:none;
+ background:repeating-linear-gradient(90deg,#2563EB 0px,#2563EB 2px,transparent 2px,transparent 5px) center/100% 26px no-repeat;
+ border-radius:0;opacity:1;cursor:pointer;
+}
+body.dark #mushaf #mushafPlayerSlot #qSeek::-webkit-slider-thumb{
+ -webkit-appearance:none;appearance:none;background:#FFFFFF;border:2px solid #2563EB;
+ height:13px;width:13px;border-radius:50%;box-shadow:none;
+}
+body.dark #mushaf #mushafPlayerSlot #qSeek::-moz-range-thumb{
+ background:#FFFFFF;border:2px solid #2563EB;height:10px;width:10px;border-radius:50%;
+}
+body.dark #mushaf #mushafPlayerSlot #qSeek:disabled{opacity:.58;cursor:default;}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row{
+ order:3;display:grid;grid-template-columns:1fr 1fr 1.25fr 1fr 1fr;
+ align-items:center;justify-items:center;gap:4px;width:100%;height:69px;
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row button{
+ display:flex;align-items:center;justify-content:center;position:relative;
+ width:40px;height:44px;min-width:40px;min-height:44px;padding:7px;border:0;
+ border-radius:50%;background:transparent;color:#DFE6F2;box-shadow:none;
+ cursor:pointer;opacity:1;
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row svg{
+ display:block;width:20px;height:20px;fill:currentColor;stroke:none;
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row #qTransport{
+ box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ width:62px;height:62px;min-width:62px;min-height:62px;max-width:62px;max-height:62px;
+ position:relative;inset:auto;background:transparent;color:#FFFFFF;
+ padding:0;border:0;border-radius:50%;
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row #qTransport::before{
+ content:'';position:absolute;inset:0;border-radius:50%;background:#2563EB;opacity:1;
+}
+body.dark #mushaf #mushafPlayerSlot #qTransport svg{
+ z-index:1;position:relative;width:28px;height:28px;fill:#FFFFFF;
+}
+body.dark #mushaf #mushafPlayerSlot #qLoopSurah[aria-pressed="true"]{
+ color:#8DB0FF;background:rgba(37,99,235,.16);
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row button:disabled{
+ opacity:.40;cursor:not-allowed;
+}
+body.dark #mushaf #mushafPlayerSlot .quran-trial-transport-row button:focus-visible,
+body.dark #mushaf #qTrialSwitch:focus-visible{
+ outline:2px solid #8DB0FF;outline-offset:3px;
+}
+@media(max-width:420px){
+ body.dark #mushaf #qTrialPlate.quran-trial-plate{padding:9px 7px;}
+ body.dark #mushaf #mushafPlayerSlot{padding:13px 12px 12px;}
+}
