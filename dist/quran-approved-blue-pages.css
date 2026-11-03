@@ -1,0 +1,128 @@
+/* User-approved blue printed Quran, mini player and original 6-tab Salati navigation.
+ * Enabled only with q-blue-mushaf-mode after verified image bytes load.
+ */
+@layer salati-priority {
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf:not([hidden]) {
+ background:#0B0E13!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode > header {
+ visibility:hidden!important;pointer-events:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode > header > .site-nav {
+ visibility:visible!important;pointer-events:auto!important;position:fixed!important;z-index:950!important;
+ bottom:max(7px,env(safe-area-inset-bottom))!important;left:8px!important;right:8px!important;
+ margin:0!important;padding:6px 4px!important;width:auto!important;max-width:none!important;
+ min-height:63px!important;height:63px!important;display:grid!important;
+ grid-template-columns:repeat(6,minmax(0,1fr))!important;
+ border:1px solid #343943!important;border-radius:27px!important;background:#181b21!important;
+ box-shadow:0 4px 16px #0005!important;direction:rtl!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode > header > .site-nav .nav-icon-button {
+ visibility:visible!important;pointer-events:auto!important;
+ display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+ width:100%!important;min-width:0!important;height:100%!important;margin:0!important;
+ padding:3px 1px!important;border:0!important;border-radius:17px!important;
+ background:transparent!important;color:#fff!important;box-shadow:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode > header > .site-nav .nav-icon-button.active {
+ background:#2563EB!important;color:#fff!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qSheet.mushaf-sheet {
+ width:100vw!important;height:100dvh!important;max-height:100dvh!important;
+ margin:0!important;padding:0!important;border:0!important;border-radius:0!important;
+ background:#faf6ed!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qApprovedOriginalPage:not([hidden]) {
+ display:block!important;position:relative!important;box-sizing:border-box!important;
+ width:100vw!important;height:100dvh!important;max-height:100dvh!important;
+ margin:0!important;padding:68px 0 172px!important;
+ overflow-y:auto!important;overflow-x:hidden!important;overscroll-behavior:contain!important;
+ background:#f8f5ed!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf :is(#qApprovedOriginalImage,.q-approved-following-image) {
+ display:block!important;width:100%!important;max-width:100%!important;height:auto!important;
+ max-height:none!important;margin:0!important;padding:0!important;
+ border:0!important;border-radius:0!important;object-fit:contain!important;object-position:top center!important;
+ background:#f8f5ed!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qApprovedFollowingPages{
+ display:block!important;width:100%!important;margin:0!important;padding:0!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qApprovedReadingHeader {
+ height:60px!important;min-height:60px!important;max-height:60px!important;
+ padding:7px 9px!important;display:flex!important;gap:7px!important;
+ direction:rtl!important;align-items:center!important;justify-content:space-between!important;
+ background:#0B0E13!important;border-bottom:1px solid #262d38!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qApprovedReadingHeader > label{
+ display:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode.q-blue-reader-menu-open #mushaf #qApprovedReadingHeader > label{
+ display:flex!important;position:fixed!important;z-index:960!important;
+ top:63px!important;width:calc(50vw - 18px)!important;min-height:45px!important;background:#22242A!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode.q-blue-reader-menu-open #mushaf #qApprovedReadingHeader > label:first-of-type{right:9px!important}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode.q-blue-reader-menu-open #mushaf #qApprovedReadingHeader > label:nth-of-type(2){left:9px!important}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #qBlueReciterTrigger{
+ display:block!important;min-width:0!important;flex:1 1 auto!important;
+ height:43px!important;margin:0!important;padding:5px 8px!important;
+ border:1px solid #3b4658!important;border-radius:22px!important;
+ background:#202630!important;color:#fff!important;
+ font:700 12px/1.5 SalatiCairo,sans-serif!important;
+ white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot.q-approved-player:not([hidden]){
+ display:block!important;position:fixed!important;top:auto!important;
+ left:10px!important;right:10px!important;bottom:calc(79px + env(safe-area-inset-bottom))!important;
+ width:auto!important;max-width:none!important;height:76px!important;max-height:76px!important;
+ min-height:0!important;margin:0!important;padding:4px 8px!important;
+ border:1px solid #3b4654!important;border-radius:19px!important;
+ background:#18191D!important;box-shadow:0 5px 15px #0006!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot .q-approved-inner{
+ display:grid!important;grid-template-columns:1fr!important;grid-template-rows:19px 44px!important;
+ gap:0!important;width:100%!important;height:65px!important;min-height:0!important;max-height:65px!important;
+ margin:0!important;padding:0!important;border:0!important;overflow:hidden!important;background:transparent!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedHeader{
+ display:flex!important;justify-content:flex-end!important;align-items:center!important;
+ grid-row:1!important;width:100%!important;min-height:0!important;height:19px!important;
+ gap:0!important;margin:0!important;padding:0!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedHeader :is(#qApprovedClose,#qApprovedSettings){
+ display:none!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot .recitation-caption{
+ display:flex!important;position:static!important;justify-content:flex-end!important;align-items:center!important;
+ gap:3px!important;width:auto!important;min-height:0!important;max-height:19px!important;height:19px!important;
+ margin:0!important;padding:0!important;overflow:hidden!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot .recitation-caption strong{display:none!important}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedSurahTitle{
+ display:block!important;color:#fff!important;font-size:12px!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedActions{
+ display:flex!important;flex-direction:row!important;align-items:center!important;
+ justify-content:space-around!important;grid-row:2!important;gap:2px!important;
+ min-height:0!important;height:44px!important;width:100%!important;margin:0!important;padding:0!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedActions :is(#qApprovedSpeed,#qApprovedRepeat){display:none!important}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedActions button{
+ width:36px!important;min-width:36px!important;height:36px!important;min-height:36px!important;
+ padding:4px!important;border:0!important;background:transparent!important;color:#fff!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qTransport{
+ width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;
+ max-width:42px!important;max-height:42px!important;background:#2563EB!important;border-radius:50%!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qTransport svg{
+ width:22px!important;height:22px!important;fill:#fff!important;
+}
+body.dark.salati-quran-approved-screen.q-blue-mushaf-mode #mushaf #mushafPlayerSlot #qApprovedSettingsPanel:not([hidden]){
+ display:block!important;position:fixed!important;
+ bottom:calc(170px + env(safe-area-inset-bottom))!important;
+ left:10px!important;right:10px!important;width:auto!important;height:auto!important;max-height:48dvh!important;
+ overflow:auto!important;padding:12px!important;background:#191d27!important;color:#fff!important;
+ border-radius:16px!important;border:1px solid #49546a!important;box-shadow:0 8px 26px #0008!important;
+}
+}
