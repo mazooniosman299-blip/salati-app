@@ -19,7 +19,7 @@ export const PRINTED_MUSHAF = Object.freeze({
 });
 const svgNS = 'http://www.w3.org/2000/svg';
 const allowedElements = new Set(['svg','g','path','defs','clipPath','rect','circle','ellipse','line','polygon','polyline','title','desc']);
-const safeNames = /^(?:xmlns(?::[\w-]+)?|version|viewBox|xml:space|transform|id|class|fill|fill-opacity|stroke|stroke-width|stroke-linecap|stroke-linejoin|stroke-dasharray|opacity|clip-path|d|x|y|width|height|cx|cy|r|rx|ry|x1|x2|y1|y2|points|number|surah|ayah)$/;
+const safeNames = /^(?:xmlns(?::[\w-]+)?|version|viewBox|xml:space|transform|id|class|fill|fill-opacity|stroke|stroke-width|stroke-linecap|stroke-linejoin|stroke-dasharray|fill-rule|opacity|clip-path|ayah:x|ayah:y|d|x|y|width|height|cx|cy|r|rx|ry|x1|x2|y1|y2|points|number|surah|ayah)$/;
 const pending = new WeakMap();
 export const PRINTED_MUSHAF_SOURCE = 'https://github.com/quran-ws/quran-svg/tree/9fc0c87/mushafs/hafs/kfqc/svg';
 
