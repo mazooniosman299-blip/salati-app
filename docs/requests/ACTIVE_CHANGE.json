@@ -1,22 +1,27 @@
 {
-  "request_id": "SALATI-20261103-MADANI-WORD-LINE-TYPESETTER",
-  "original_request": "«صلح المشكله»: fix the root cause in the Quran renderer itself, as explained in prior diagnosis, with full printed word line mapping, original Unicode Quran marks, correct Basmala, real waveform seek, preserve reading position; Quran tab only, never change other tabs or production.",
+  "request_id": "SALATI-20261103-WEB-SOURCED-MUSHAF-REBUILD",
+  "original_request": "«حل لي المشكله دي من جزورها»: Replace the actual Quran viewer design with a legitimate independent open-source web reader component, not screenshot overlay, CSS patches or a picture of one page. Keep full screen/real 604 pages, original audio player colors (#18191D, #2563EB), all other tabs unchanged, evidence screenshots and separate installable APK only, never merge/deploy.",
   "base_branch": "production",
   "base_commit": "0576bb3a4524000d69076e2f9597b41715866aba",
   "visual_change": true,
   "android_release": false,
   "release_mode": "preview",
   "allowed_paths": [
+    ".github/workflows/salati-mushaf-book-rebuild.yml",
     ".github/workflows/salati-quran-only-trial-apk.yml",
     ".github/workflows/salati-verified-mushaf-layout.yml",
     "dist/index.html",
+    "dist/mushaf-book.css",
+    "dist/mushaf-book.js",
     "dist/quran-mushaf-markers-20261101.js",
     "dist/quran-visual-trial.js",
+    "dist/quran/MUSHAF_BOOK_MIT_LICENSE.txt",
     "dist/quran/SOURCES.txt",
     "dist/quran/line-layout.json",
     "dist/salati-ui.css",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/SALATI-20261103-QURAN-ONLY-TRIAL.md",
+    "docs/requests/SALATI-20261103-WEB-MUSHAF-REBUILD.md",
     "quran-controller.js",
     "scripts/generate-mushaf-line-layout.py",
     "tests/eight-mobile-invariants.cjs",
@@ -29,12 +34,12 @@
       "tab": "mushaf",
       "language": "both",
       "selector": "#qSheet",
-      "before": "QuranReader.makeReadingPage concatenated whole verse paragraphs with browser-determined line wraps, forcing arbitrary printed rows. Renderer removed U+06DD/U+06DE/U+06DF/U+06E0 and enterAtSurahStart reset user position.",
-      "after": "Word-line renderer binds 838827-byte locally bundled CC-BY-SA 4.0 pinned 604-page line-position data to EXACT original Tanzil verse words, separately handles Bismala and original medallions, keeps original Quran orthographic marks and reading position; responds to screen width without clipping. Explicitly records 5 non-15-line upstream pages rather than falsely claiming exact printed parity.",
+      "before": "Legacy 2026 trial Quran display is an inline function in quran-controller.js with 25k+ bytes of accumulated CSS changes to canonical salati-ui.css, not a real independent web-derived Mushaf page component.",
+      "after": "Replace ALL inline page DOM construction with independent dist/mushaf-book.js component, adapted from Mushaf Companion (MIT), full-screen 345x550 proportional paper with outer/inner frames, four ornate corners, side ornaments, part/Surah top rail, true 8/15 printed grid rows and page number; no static photos. Distinct dist/mushaf-book.css stylesheet replaces 25,939 bytes of accumulated trial CSS (removed from canonical). Every text word still from unchanged local Tanzil JSON with CC BY-SA verified word line metadata; preserve verse interaction.",
       "preserve": [
-        "Original immutable 604-page / 6236 ayah canonical JSON, existing fonts, reciters/audio and bookmarks",
-        "All six original tab contents and original globally approved dark theme",
-        "Non-Quran screens remain identical; no generated Quran photos"
+        "All immutable original 6236 verses, every QCF layout token and orthographic mark; 604 pages, 114 surahs; source licensing",
+        "Original reciters/audio, progress, bookmarks and position",
+        "All prayer time/widget/home/dhikr/qibla/tasbih/settings UI unchanged"
       ]
     },
     {
@@ -42,7 +47,7 @@
       "language": "both",
       "selector": "#mushafPlayerSlot",
       "before": "Previous review uses uniform repeated CSS gradient bars across seek timeline, and a dark player below the bounded Quran card.",
-      "after": "Keep actual charcoal #18191D audio player and original blue #2563EB controls with working qSeek + 63 varied wave bars. Do not call visual bars actual decoded audio analysis. Preserve original reciter state and page/verse audio.",
+      "after": "Keep existing qAudio/qTransport/qSeek DOM and handlers with user-color #18191D charcoal, blue #2563EB, adaptive centered button, 63 varied ornamental volume bars that follow actual media progress; not claim audio amplitude analysis. Drawer stays below page, and is collapsible.",
       "preserve": [
         "qTransport/qSeek/qStop and original recitation state; bar heights illustrative, not acoustic amplitude data",
         "User's original charcoal/blue; real progress and seek interactions",
@@ -50,9 +55,9 @@
       ]
     }
   ],
-  "acceptance": "All 6236 canonical verses and every Quran word address verified across 604 local pages; no photos/AI-generated script. Page 564 is 15 genuine sourced rows; 5 upstream non-15-line exceptions documented, no pixel-exact certification. Real browser screenshots on 390/430, no Unicode marking deletion, preserve tab reading position, pass original regression npm suite, signed separate APK and no official deploy/merge.",
+  "acceptance": "Genuine open-source MIT reader architecture in independent component (not only CSS); source and full MIT license in APK. Remove the old patch CSS, prove all 604/6236 canonical words and line slots, page 564 and page 604, browser viewports 390x844 and 430x932 with real screenshots; non-Quran content unchanged; run npm regressions, native APK build and signing. No merge/deploy. No false pixel-perfect printed page or acoustic waveform claim.",
   "status": "in_progress",
-  "reference_status": "Printed user screenshot page 564 and player image; authorized line metadata pinned 507eada48f3ffe26a600acf5792a18ba86d6851e under CC BY-SA 4.0. Quran textual data remains immutable source from Tanzil. Five pages 208,586,587,590,591 have unverified exact 15-line parity but all their words map correctly.",
-  "release_target": "New independent prerelease salati-fullscreen-quran-waveform-20261103, debug package com.salati.prayer.preview, production unchanged.",
+  "reference_status": "User's real 102822 image: cream/gold full-height printed Madani Mushaf page 564, 15 rows including chapter/basmala, ornate left/right rails and header. Web design source: https://github.com/abda-dc/mushaf-companion (MIT) app/page.tsx and app/globals.css, full text of LICENSE bundled. Word map CC BY-SA 4.0 pinned from ouryhamdalaye repo; no official Quran Foundation licensed QCF V2 font files incorporated.",
+  "release_target": "Salati separate trial APK prerelease salati-mushafbook-from-web-20261103, appID com.salati.prayer.preview; existing official APK production unchanged.",
   "source": "Actual user install screenshots 102936.jpg and 102937.jpg proving the photo overlay and overflowing play control; browser research Quran Foundation font rendering/page layout, local Quran state already 604 pages."
 }
