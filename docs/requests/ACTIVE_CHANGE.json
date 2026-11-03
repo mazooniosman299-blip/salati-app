@@ -81,9 +81,10 @@
     ".github/workflows/salati-agent-governance.yml",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/SALATI-20261103-IMMERSIVE-MADINAH.md",
-    "tests/canonical-css-maintainability.py"
+    "tests/canonical-css-maintainability.py",
+    "AGENTS.md"
   ],
-  "acceptance": "Real publisher 604-page artwork; fullscreen 100vw scrollport height from viewport not page1; bottom folio; blue compact player; six original nav buttons, no prayer page changes; browser passes 360/390px AR/EN and offline; no production publish without original APK signature and Android testing.",
+  "acceptance": "Real publisher 604-page artwork; fullscreen 100vw scrollport height from viewport not page1; bottom folio; blue compact player; six original nav buttons, no prayer page changes; browser passes 360/390px AR/EN and offline; no production publish without original APK signature and Android testing. Also enforce immutability of Quran engine vs paint-only variables in AGENTS.md; no heavy SVG retention while scrolling 604 pages.",
   "reference_status": "Authentic KFGQPC V4 1441H Hafs SVG fixed release v1.1.1; visual match to earlier AI concept/1429 blue is NOT proven.",
   "status": "in_progress",
   "release_mode": "preview",
