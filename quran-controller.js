@@ -149,7 +149,7 @@ export class QuranReader{
  container.append(sentinel);append();
   // The independently scrolling reader is sized from the viewport by the
   // Quran-only CSS layout. Never derive its height from a printed leaf.
-  this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{rootMargin:'600px 0px'});this.readingObserver.observe(sentinel);
+  this.readingObserver=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){append();this.readingObserver.unobserve(sentinel);requestAnimationFrame(()=>{if(sentinel.isConnected)this.readingObserver.observe(sentinel)})}},{root:container,rootMargin:'700px 0px',threshold:0});this.readingObserver.observe(sentinel);
  }
  refresh(){const name=s=>this.getLang()==='ar'?s.name:s.transliteration;const select=(id,options,value)=>{const el=$(id);el.replaceChildren(...options.map(([val,label])=>new Option(label,val)));el.value=String(value)};
  select('qReciter',this.reciters.map(r=>[r.id,r[this.getLang()]]),this.reciter.id);$('qFollowToggle').checked=this.followEnabled&&!this.reciter.fullSurahOnly;$('qFollowToggle').disabled=!!this.reciter.fullSurahOnly;const followLabel=$('qFollowToggle').parentElement?.querySelector('span');if(followLabel)followLabel.textContent=this.reciter.fullSurahOnly?this.tr('هذه النسخة تعمل بالسورة كاملة','This edition plays complete surahs'):this.tr('متابعة الآية','Follow verse');this.refreshBookmarkControls();$('qSmaller').disabled=this.size<=22;$('qLarger').disabled=this.size>=36;$('qVerses').style.fontSize=this.size+'px';
