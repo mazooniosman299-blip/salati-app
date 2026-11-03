@@ -1,0 +1,155 @@
+name: Salati MIT web-sourced MushafBook new UI + Android APK (NO DEPLOY)
+on:
+  push:
+    branches: [feature/salati-mushaf-book-rebuild-20261103]
+    paths:
+      - dist/index.html
+      - dist/salati-ui.css
+      - dist/mushaf-book.css
+      - dist/mushaf-book.js
+      - dist/quran/MUSHAF_BOOK_MIT_LICENSE.txt
+      - dist/quran-visual-trial.js
+      - quran-controller.js
+      - dist/quran-mushaf-markers-20261101.js
+      - dist/quran/line-layout.json
+      - dist/quran/SOURCES.txt
+      - scripts/generate-mushaf-line-layout.py
+      - tests/mushaf-line-map-contract.cjs
+      - tests/quran-follow.cjs
+      - tests/eight-mobile-invariants.cjs
+      - .github/workflows/salati-verified-mushaf-layout.yml
+      - docs/requests/ACTIVE_CHANGE.json
+      - docs/requests/SALATI-20261103-WEB-MUSHAF-REBUILD.md
+      - tests/quran-visual-trial-browser.py
+      - .github/workflows/salati-mushaf-book-rebuild.yml
+permissions:
+  contents: write
+concurrency:
+  group: salati-mushafbook-from-web-independent-review-apk
+  cancel-in-progress: true
+jobs:
+  independent-installable-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Full original JS suite and unchanged immutable Quran text
+        run: |
+          npm ci
+          npm run build
+          npm test
+          node tests/quran-source-integrity.cjs
+          node tests/mushaf-line-map-contract.cjs
+          node tests/design-restoration-contract.cjs
+      - name: Verify scoped visual changes and no production or signing edits
+        run: |
+          git fetch --no-tags origin production:refs/remotes/origin/production
+          node scripts/verify-change-scope.cjs origin/production
+          test ! -e dist/preview-sample-location-20261101.js
+      - name: Package full Salati Android app as separate installation
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare-android.py
+          cd android
+          bash gradlew :app:assembleDebug --no-daemon
+      - name: Verify debug APK package, signing, exact trial assets and unchanged Quran data
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='com.salati.prayer.preview'"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs "$APK"
+          unzip -p "$APK" assets/www/index.html | grep -F 'quran-visual-trial.js'
+          unzip -p "$APK" assets/www/index.html | grep -F 'id="mushafPlayerSlot"'
+          unzip -p "$APK" assets/www/quran-visual-trial.js | grep -F 'Real Salati 604-page Quran reader'
+          ! unzip -p "$APK" assets/www/index.html | grep -F 'qTrialPlate'
+          ! unzip -p "$APK" assets/www/quran-visual-trial.js | grep -F 'thequranworld.com'
+          unzip -p "$APK" assets/www/index.html | grep -F 'mushaf-book.js'
+          unzip -p "$APK" assets/www/index.html | grep -F 'mushaf-book.css'
+          unzip -p "$APK" assets/www/mushaf-book.js | grep -F 'Mushaf Companion'
+          unzip -p "$APK" assets/www/mushaf-book.css | grep -F 'Salati MushafBook 2026'
+          unzip -p "$APK" assets/www/quran/MUSHAF_BOOK_MIT_LICENSE.txt | grep -F 'MIT License'
+          unzip -p "$APK" assets/www/quran/line-layout.json | head -c 1 | grep -F '{'
+          unzip -p "$APK" assets/www/quran/SOURCES.txt | grep -F 'Mushaf line metadata (2026-11-03 trial)'
+          unzip -p "$APK" assets/www/quran/data.json | sha256sum | grep -F cb2be527751f8671b89595a0d81cc059c3db894c213772200bcf9a01dc5096e5
+          mkdir -p reports/quran-only-trial
+          cp "$APK" reports/quran-only-trial/salati-mushafbook-web-preview.apk
+          sha256sum reports/quran-only-trial/salati-mushafbook-web-preview.apk > reports/quran-only-trial/apk-sha256.txt
+      - name: Upload independent installable APK for immediate review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushafbook-web-review-debug-apk
+          path: |
+            reports/quran-only-trial/salati-mushafbook-web-preview.apk
+            reports/quran-only-trial/apk-sha256.txt
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Publish GitHub PRE-RELEASE direct APK (NEVER production)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG=salati-mushafbook-from-web-20261103
+          FILE=reports/quran-only-trial/salati-mushafbook-web-preview.apk
+          test -s "$FILE"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$TAG" "$FILE" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "صلاتي - معاينة شكل المصحف والمشغل فقط (APK تجريبي)" \
+              --prerelease \
+              --notes "Review-only complete new Quran page view adapted from the MIT licensed Mushaf Companion app; frame and 8/15 book grid are independently drawn with HTML and CSS, all original immutable Quran words come from local Tanzil JSON, 604 local pages and all 6236 verses, preserved original Salati audio, charcoal and blue player. No Quran page JPG. Five pages have documented non-standard row counts and this APK does not claim pixel-perfect QCF printing or physical-phone audio approval. Package com.salati.prayer.preview signed with debug identity; separate from official original-key com.salati.prayer. No official site deploy or signed APK update."
+          fi
+          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets,isPrerelease,url > reports/quran-only-trial/release.json
+          python3 - <<'PY'
+          import json,os
+          file='reports/quran-only-trial/salati-mushafbook-web-preview.apk'
+          result=json.load(open('reports/quran-only-trial/release.json'))
+          assert result['isPrerelease'] is True
+          assert any(x['name']==os.path.basename(file) and x['size']==os.stat(file).st_size for x in result['assets'])
+          print('PASS independent downloadable trial APK; official Salati never modified')
+          PY
+
+  real-browser-preview-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build actual app for screenshots, not synthetic mock
+        run: |
+          npm ci
+          npm run build
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+      - name: Capture real browser screenshots and verify exact Salati charcoal/blue
+        run: python3 tests/quran-visual-trial-browser.py
+      - name: Preserve actual screenshot evidence even if an external image fails to load
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-mushafbook-real-android-size-browser-screens
+          path: reports/quran-only-trial/
+          if-no-files-found: warn
+          retention-days: 14
