@@ -19,6 +19,7 @@
     "docs/requests/SALATI-20261103-QURAN-ONLY-TRIAL.md",
     "quran-controller.js",
     "scripts/generate-mushaf-line-layout.py",
+    "tests/eight-mobile-invariants.cjs",
     "tests/mushaf-line-map-contract.cjs",
     "tests/quran-follow.cjs",
     "tests/quran-visual-trial-browser.py"
