@@ -63,6 +63,32 @@ try:
     else:
      page.wait_for_function("document.querySelector('#qVerses .quran-reading-page')?.dataset.plateUnavailable==='true'",timeout=20000)
      assert page.locator('#qVerses .quran-reading-page .quran-text').count()>0,'Network error blanked Quran text'
+    if variant=='printed':
+     # Real print surfaces occupy the reading viewport from its top edge,
+     # and two adjacent printed leaves must NOT have white separator cards.
+     seamless=page.evaluate("""() => {
+      const sc=document.querySelector('#qVerses');
+      sc.scrollTop=0;
+      const one=sc.querySelector('.salati-printed-page[data-reading-page="1"]').getBoundingClientRect();
+      const two=sc.querySelector('.salati-printed-page[data-reading-page="2"]').getBoundingClientRect();
+      const area=sc.getBoundingClientRect();
+      const menu=document.querySelector('.mushaf-toolbar').getBoundingClientRect();
+      const plate=sc.querySelector('.salati-printed-page .salati-publisher-plate').getBoundingClientRect();
+      return {top:one.top-area.top,gap:two.top-one.bottom,menuHeight:menu.height,
+       plateWidth:plate.width,scrollWidth:sc.scrollWidth,clientWidth:sc.clientWidth,
+       contentHeight:sc.scrollHeight,readerHeight:sc.clientHeight};
+     }""")
+     assert abs(seamless['top'])<3,(width,'blank space above first Mushaf leaf',seamless)
+     assert abs(seamless['gap'])<3,(width,'artificial white gap between two Mushaf pages',seamless)
+     assert seamless['menuHeight']<2,(width,'tool panel steals vertical reading space',seamless)
+     assert seamless['plateWidth']>=width-2,(width,'publisher page not screen width',seamless)
+     assert seamless['scrollWidth']<=seamless['clientWidth']+2,(width,'horizontal crop/overflow',seamless)
+     assert seamless['contentHeight']>seamless['readerHeight'],(width,'next leaf inaccessible by vertical scroll',seamless)
+     # The same real Salati options button reveals original selectors only on demand.
+     page.locator('#qReadingOptions').click()
+     assert page.locator('#mushaf .mushaf-selectors').is_visible()
+     page.locator('#qReadingOptions').click()
+     assert page.locator('#mushaf .mushaf-selectors').is_hidden()
     metrics=page.evaluate("""() => {
      const m=document.querySelector('#mushaf').getBoundingClientRect();
      const q=document.querySelector('#qVerses').getBoundingClientRect();
@@ -95,4 +121,4 @@ finally:
  server.server_close()
 (OUTPUT/'checks.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2),encoding='utf-8')
 assert len(checks)==4
-print('PASS 2 mobile sizes, fullscreen exact width, vertical continuous 2-page scroll, no detached page counter, blue play, no overlaps, original nav, printed verse tap and offline fallback. No visual plate pixel match claimed.')
+print('PASS: print ink starts at screen edge; two leaves contiguous without white gap; fullscreen 360/390; collapsible real controls; blue play; real nav preserved; source fallback. Publisher visual equality not certified.')
