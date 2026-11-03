@@ -105,13 +105,22 @@ import base64
 # builds keep the existing salati-ui.css owner unchanged.
 style_path=target/('mushaf-book.css' if quran_imported else 'salati-ui.css')
 native_css=style_path.read_text(encoding='utf-8')
-for ornament in ('quran-surah-ornament.svg','quran-ayah-rosette.svg'):
-    svg_path=target/'images'/ornament
-    assert svg_path.is_file(),('Missing original Quran ornament',ornament)
-    old='url("images/'+ornament+'")'
-    assert native_css.count(old)==1,('Expected one authored ornament CSS declaration',ornament,native_css.count(old))
-    encoded=base64.b64encode(svg_path.read_bytes()).decode('ascii')
-    native_css=native_css.replace(old,'url("data:image/svg+xml;base64,'+encoded+'")')
-assert native_css.count('data:image/svg+xml;base64,')==2
+ornaments=('quran-surah-ornament.svg','quran-ayah-rosette.svg')
+counts=[native_css.count('url("images/'+item+'")') for item in ornaments]
+if quran_imported and 'Salati MushafBook V2' in native_css and counts==[0,0]:
+    # The approved 2026 V2 geometric presentation has NO SVG artwork and
+    # intentionally removes the old medallions. Do not reintroduce unwanted
+    # circular graphics into the Android package or weaken old release checks.
+    assert native_css.count('data:image/svg+xml;base64,')==0
+    print('Native Quran V2 uses genuine CSS-only geometry; no ornament SVGs required')
+else:
+    for ornament,count in zip(ornaments,counts):
+        svg_path=target/'images'/ornament
+        assert svg_path.is_file(),('Missing original Quran ornament',ornament)
+        assert count==1,('Expected one authored ornament CSS declaration',ornament,count)
+        old='url("images/'+ornament+'")'
+        encoded=base64.b64encode(svg_path.read_bytes()).decode('ascii')
+        native_css=native_css.replace(old,'url("data:image/svg+xml;base64,'+encoded+'")')
+    assert native_css.count('data:image/svg+xml;base64,')==2
+    print('Native Quran medallion and surah ornament embedded from original assets')
 style_path.write_text(native_css,encoding='utf-8')
-print('Native Quran medallion and surah ornament embedded from ORIGINAL SVG assets into APK-only CSS')
