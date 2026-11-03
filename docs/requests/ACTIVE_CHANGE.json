@@ -7,11 +7,12 @@
   "android_release": false,
   "release_mode": "preview",
   "allowed_paths": [
-    "dist/mushaf-book.css",
-    "tests/quran-visual-trial-browser.py",
-    "docs/requests/ACTIVE_CHANGE.json",
     ".github/workflows/salati-mushaf-v2-preview.yml",
-    "docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md"
+    "dist/mushaf-book.css",
+    "docs/requests/ACTIVE_CHANGE.json",
+    "docs/requests/SALATI-20261103-MUSHAF-V2-REVIEW.md",
+    "scripts/prepare-android.py",
+    "tests/quran-visual-trial-browser.py"
   ],
   "visual_allowed_regions": [
     {
