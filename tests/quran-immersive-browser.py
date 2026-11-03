@@ -81,14 +81,27 @@ try:
       const area=sc.getBoundingClientRect();
       const menu=document.querySelector('.mushaf-toolbar').getBoundingClientRect();
       const plate=sc.querySelector('.salati-printed-page .salati-publisher-plate').getBoundingClientRect();
+      const sheet=document.querySelector('#qSheet').getBoundingClientRect();
+      const pad=getComputedStyle(sc.querySelector('.salati-printed-page'));
       return {top:one.top-area.top,gap:two.top-one.bottom,menuHeight:menu.height,
-       plateWidth:plate.width,scrollWidth:sc.scrollWidth,clientWidth:sc.clientWidth,
+       plateWidth:plate.width,plateLeft:plate.left,plateRight:plate.right,
+       pageLeft:one.left,pageRight:one.right,
+       sheetLeft:sheet.left,sheetRight:sheet.right,
+       pagePadLeft:parseFloat(pad.paddingLeft),pagePadRight:parseFloat(pad.paddingRight),
+       scrollWidth:sc.scrollWidth,clientWidth:sc.clientWidth,
        contentHeight:sc.scrollHeight,readerHeight:sc.clientHeight};
      }""")
      assert abs(seamless['top'])<3,(width,'blank space above first Mushaf leaf',seamless)
      assert abs(seamless['gap'])<3,(width,'artificial white gap between two Mushaf pages',seamless)
      assert seamless['menuHeight']<2,(width,'tool panel steals vertical reading space',seamless)
      assert seamless['plateWidth']>=width-2,(width,'publisher page not screen width',seamless)
+     # On the LIVE 390px production old card used 13.64px outer margins and
+     # 15px inner padding per side, leaving only ~333px for scripture.
+     # Both margins must now be ZERO in authentic printed-page mode.
+     assert abs(seamless['plateLeft'])<2 and abs(seamless['plateRight']-width)<2,(width,'publisher ink still trapped inside production card margins',seamless)
+     assert abs(seamless['pageLeft'])<2 and abs(seamless['pageRight']-width)<2,(width,'Quran page card still too narrow',seamless)
+     assert abs(seamless['sheetLeft'])<2 and abs(seamless['sheetRight']-width)<2,(width,'qSheet still nested in padded main layout',seamless)
+     assert seamless['pagePadLeft']<2 and seamless['pagePadRight']<2,(width,'old 15px page padding returned',seamless)
      assert seamless['scrollWidth']<=seamless['clientWidth']+2,(width,'horizontal crop/overflow',seamless)
      assert seamless['contentHeight']>seamless['readerHeight'],(width,'next leaf inaccessible by vertical scroll',seamless)
      # The same real Salati options button reveals original selectors only on demand.
