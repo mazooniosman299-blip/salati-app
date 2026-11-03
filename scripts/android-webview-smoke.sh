@@ -41,7 +41,25 @@ adb exec-out screencap -p > reports/android-webview-20261102/times.png
 read -r quran_x quran_y < <(python3 tests/android-emulator-screen-preflight.py quran-tap reports/android-webview-20261102/times.png)
 test -n "$quran_x" && test -n "$quran_y"
 adb shell input tap "$quran_x" "$quran_y"
-sleep 7
+# Android System WebView may create/select Quran controls before the async
+# local 604-page source has finished loading. A fixed 7s sleep captured
+# "جار فتح المصحف..." with NO cream reading page and falsely failed QA.
+QURAN_READY=0
+for attempt in $(seq 1 45); do
+  sleep 2
+  adb exec-out screencap -p > /tmp/salati-quran-ready.png
+  if python3 tests/android-emulator-screen-preflight.py quran-ready /tmp/salati-quran-ready.png; then
+    QURAN_READY=1
+    break
+  fi
+  echo "Waiting for real rendered Quran parchment: $attempt/45" >&2
+done
+if [ "$QURAN_READY" -ne 1 ]; then
+  cp /tmp/salati-quran-ready.png reports/android-webview-20261102/mushaf.png
+  adb logcat -d -t 2500 > reports/android-webview-20261102/logcat.txt || true
+  echo 'FAIL: real Quran parchment never appeared before 90-second deadline' >&2
+  exit 1
+fi
 adb exec-out screencap -p > reports/android-webview-20261102/mushaf.png
 # Read the visible parchment region from the ACTUAL screenshot. The hard-coded
 # swipe at y=520 tapped a reciter picker on 432x960 and produced a false
