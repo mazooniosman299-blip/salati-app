@@ -40,3 +40,15 @@ All 604 line descriptors remain the independently licensed Madani map described 
 No QCF V2/third-party font package or image of a full printed page has been copied.
 The existing Salati licensed Quran font and its existing surah/ayah ornaments are used for this preview.
 Do not claim visual identity to every line of King Fahd printed pages without verified licensed QCF glyphs and full device comparison.
+
+
+Review-only Madinah QCF V2 original page-glyph renderer (2026-11-03):
+The earlier unicode typesetter using KFGQPC Hafs v0.09 could display U+06DF as a huge black circle because its glyph uses a 1442-unit advance rather than the expected combining raised zero. This is a font mismatch, not a Quran word.
+Corrective renderer: dist/madinah-qcf-v2.js. It selects matching QCF V2 page glyph private-use codes and individual font for the current page, only when both are successfully loaded and verified.
+Exact per-page QPC V2 glyph/line data: https://github.com/manaf/KFGQPC-Madinah-Mushaf, source commit dad9cf67588ab66c914c155924d8a3699704a03d, originally from Quranic Universal Library/KFGQPC materials.
+Font pages: https://verses.quran.foundation/fonts/quran/hafs/v2/woff2/ as documented at https://api-docs.quran.foundation/docs/tutorials/fonts/font-rendering/.
+Official digital Mushaf software usage rights: https://dm.qurancomplex.gov.sa/rights/; underlying typesetting, fonts and page-glyph designs are copyright King Fahd Glorious Quran Printing Complex, Al-Madinah Al-Munawwarah. No claim that the fonts are under MIT/OFL.
+Builder: scripts/stage-madinah-qcf-v2.py pins data commit, checks all 604 page documents and confirms exactly one legitimate ayah-end marker for all 6236 canonical original verse IDs, then packages the matching 604 WOFF2 font pages locally for offline Android use. It never rewrites the original dist/quran/data.json or the existing audio.
+Fallback: if any page/font fails, the full original Quran remains available in Unicode with bundled Amiri Quran font to render U+06DF as a tiny raised zero instead of a black circular glyph. This preserves the original sign instead of deleting it.
+Audio player: qTrack metadata is retained in DOM and audio code but hidden as an unreadable second line; the title 'المصحف الشريف' is displayed intact.
+This preview is not authorized for official production merge or launch until the user's visual acceptance and physical-device checks.
