@@ -90,6 +90,33 @@ try:
    assert pre['body']=='rgb(11, 14, 19)',pre
    assert pre['panel']=='rgb(24, 25, 29)',pre
    assert pre['blue']=='rgb(37, 99, 235)',pre
+   # Design V2: authentic page typography and Quran source stay intact while
+   # visual chrome is wholly modern blue/ivory, no unexpected black round UI.
+   v2=page.evaluate("""() => {
+     const shell=document.querySelector('#qVerses .mushaf-book-page');
+     const chapter=shell.querySelector('.mushaf-book-chapter');
+     const frame=shell.querySelector('.mushaf-book-frame-outer');
+     const marker=shell.querySelector('.mushaf-book-rosette');
+     const blackCircles=[...shell.querySelectorAll('*')].filter(el=>{
+       const cs=getComputedStyle(el),box=el.getBoundingClientRect();
+       const bg=cs.backgroundColor;
+       return box.width>=9&&box.height>=9&&(bg==='rgb(0, 0, 0)'||bg==='rgb(12, 12, 12)'||
+         bg==='rgb(24, 25, 29)')&&(cs.borderRadius==='50%'||cs.borderRadius==='9999px');
+     });
+     return {paper:getComputedStyle(shell).backgroundColor,
+       chapter:getComputedStyle(chapter).color,
+       frame:getComputedStyle(frame).borderTopColor,
+       medallion:getComputedStyle(marker).backgroundColor,
+       blackRoundCount:blackCircles.length,
+       playerHeight:document.querySelector('#mushafPlayerSlot').getBoundingClientRect().height,
+       headerHeight:document.querySelector('#qFullHeader').getBoundingClientRect().height
+     };
+   }""")
+   assert v2['paper']=='rgb(255, 253, 249)',v2
+   assert v2['chapter']=='rgb(35, 95, 137)',v2
+   assert v2['blackRoundCount']==0,v2
+   assert v2['playerHeight']<=160,('Player outer frame must be visibly slimmer than prior 170px',v2)
+   assert v2['headerHeight']<=53,v2
    assert pre['codedPage'] and pre['ayahCount']>=7 and pre['tabCount']==6,pre
    assert pre['centerButton']['width']>=58,pre
    assert pre['centerButton']['left']>=pre['player']['left']+4,pre
@@ -189,6 +216,7 @@ try:
                    'photoUsed':False,'imageSource':'none - complete Quran rendered from local JSON',
                    'fullscreen':True,'real_604_page_line_layout':True,'verified_reference_page_564':True,'waveBars':63,'variableBarHeights':len(set(heights)),
                    'playerCollapsesWithoutCoveringText':True,'exitRestoresTabs':True,
+                   'visualRedesignV2':v2,
                    'sourceVerses':6236,'sourcePages':604,'errors':errors})
    page.close()
   browser.close()
