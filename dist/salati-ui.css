@@ -423,3 +423,232 @@ body.dark #mushaf #mushafPlayerSlot.quran-live-player button:focus-visible{
  }
  body.dark #mushaf #mushafPlayerSlot.quran-live-player{padding:11px 11px 14px;}
 }
+
+
+/* SALATI 2026-11-03 — fullscreen Quran reader: original typography and
+   bundled sepia ornaments, never a single page photograph.
+   Entered only while #mushaf is the ACTIVE tab; all other tabs unchanged. */
+body.dark #mushaf #qFullHeader{display:none;}
+body.dark.salati-quran-fullscreen >header{
+ display:none;visibility:hidden;pointer-events:none;
+}
+body.dark.salati-quran-fullscreen main{position:relative;min-height:0;}
+body.dark.salati-quran-fullscreen #mushaf:not([hidden]){
+ box-sizing:border-box;display:flex;position:fixed;z-index:90;
+ inset:0;width:100vw;max-width:none;height:100dvh;min-height:0;
+ padding:0;margin:0;border:0;border-radius:0;background:#FBF5EC;
+ flex-direction:column;align-items:stretch;overflow:hidden;isolation:isolate;
+ color:#251E18;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullHeader{
+ box-sizing:border-box;position:relative;z-index:12;display:flex;
+ direction:ltr;align-items:center;justify-content:space-between;
+ flex:0 0 62px;width:100%;min-height:62px;height:62px;
+ gap:6px;padding:7px max(9px,env(safe-area-inset-right)) 7px max(9px,env(safe-area-inset-left));
+ background:#FBF5EC;border-bottom:1px solid #CDB9A1;
+ box-shadow:0 2px 8px rgba(55,38,22,.06);
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullHeader button{
+ box-sizing:border-box;position:static;display:flex;align-items:center;justify-content:center;
+ width:42px;height:43px;min-width:42px;min-height:43px;max-height:43px;
+ padding:8px;margin:0;flex:0 0 42px;
+ border:1px solid #D7C3AD;border-radius:13px;background:#F1E7DA;
+ color:#3F332B;box-shadow:none;line-height:1;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullHeader button:focus-visible{
+ outline:2px solid #2563EB;outline-offset:2px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullHeader svg{
+ display:block;width:24px;height:24px;fill:none;
+ stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullHeader .q-full-ident{
+ box-sizing:border-box;display:flex;flex:1 1 auto;min-width:0;
+ flex-direction:column;justify-content:center;align-items:center;
+ text-align:center;gap:2px;color:#3A2E24;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullSurah{
+ display:block;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:#30241C;font-family:SalatiCairo,sans-serif;font-size:clamp(15px,4.5vw,20px);
+ font-weight:800;line-height:1.35;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFullJuz{
+ display:block;overflow:hidden;max-width:100%;text-overflow:ellipsis;
+ white-space:nowrap;font-size:11px;line-height:1.25;color:#8F7057;
+ font-family:SalatiCairo,sans-serif;
+}
+body.dark.salati-quran-fullscreen #mushaf .mushaf-heading,
+body.dark.salati-quran-fullscreen #mushaf .mushaf-pagination,
+body.dark.salati-quran-fullscreen #mushaf .mushaf-credit{
+ display:none;
+}
+body.dark.salati-quran-fullscreen #mushaf .mushaf-toolbar{
+ display:none;box-sizing:border-box;position:absolute;z-index:20;
+ top:65px;left:10px;right:10px;max-height:min(64dvh,510px);
+ overflow:auto;overscroll-behavior:contain;width:auto;min-width:0;
+ margin:0;padding:14px;border-radius:17px;border:1px solid #C8B9A4;
+ background:#18191D;color:#FFFFFF;box-shadow:0 12px 42px rgba(0,0,0,.42);
+}
+body.dark.salati-quran-fullscreen #mushaf.q-full-menu-open .mushaf-toolbar{
+ display:block;
+}
+body.dark.salati-quran-fullscreen #mushaf.q-full-menu-open .mushaf-toolbar #qSurah,
+body.dark.salati-quran-fullscreen #mushaf.q-full-menu-open .mushaf-toolbar #qJuz,
+body.dark.salati-quran-fullscreen #mushaf.q-full-menu-open .mushaf-toolbar #qReciter{
+ display:block;max-width:100%;min-height:40px;color:#FFFFFF;
+ background:#242833;border:1px solid #5C606A;border-radius:11px;
+}
+body.dark.salati-quran-fullscreen #mushaf #qFollowBar:not([hidden]){
+ display:flex;position:relative;flex:0 0 auto;z-index:5;
+ margin:0;padding:4px 10px;max-width:100%;
+ background:#FBF5EC;color:#3E3128;
+}
+body.dark.salati-quran-fullscreen #mushaf #qSheet.mushaf-sheet.continuous-sheet{
+ box-sizing:border-box;display:flex;flex:1 1 0;position:relative;
+ flex-direction:column;align-items:stretch;
+ width:100%;max-width:none;min-width:0;height:auto;min-height:0;
+ padding:0;margin:0;border:0;border-radius:0;outline:0;overflow:hidden;
+ background:#FBF5EC;color:#211B16;box-shadow:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qSheet .mushaf-page-head,
+body.dark.salati-quran-fullscreen #mushaf #qSheet #qPageLabel{
+ display:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qSheet #qVerses.mushaf-verses{
+ box-sizing:border-box;display:block;flex:1 1 0;
+ width:100%;max-width:none;height:auto;min-height:0;max-height:none;
+ margin:0;padding:0 3px 0;overflow-x:hidden;overflow-y:auto;
+ scroll-padding:6px;overscroll-behavior:contain;
+ background:#FBF5EC;color:#211B16;
+ -webkit-overflow-scrolling:touch;touch-action:pan-y;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page{
+ box-sizing:border-box;position:relative;display:block;
+ width:100%;max-width:none;min-height:100%;height:auto;
+ margin:0;padding:20px clamp(14px,4.1vw,32px) 24px;
+ border:9px double #C3A88D;border-radius:0;outline:0;
+ background:#FFF9F0;color:#221C18;
+ box-shadow:inset 0 0 0 3px #FFF9F0,inset 0 0 0 5px #D6BBA1;
+ contain:layout style;content-visibility:visible;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page+.quran-reading-page{
+ border-top:9px double #C3A88D;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page .quran-text{
+ box-sizing:border-box;display:block;direction:rtl;text-align:justify;
+ margin:10px 0 20px;padding:6px 2px;
+ border:0;border-radius:0;outline:0;background:transparent;
+ color:#201912;box-shadow:none;
+ font-family:SalatiMadinahClassic,AmiriQuran,serif;
+ font-size:inherit;line-height:2.02;font-weight:400;font-synthesis:none;
+ text-shadow:none;hyphens:none;overflow-wrap:normal;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-text [data-ayah]{
+ color:#201912;background:transparent;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-surah-title,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page .quran-surah-title{
+ box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ width:100%;height:53px;min-height:53px;max-height:53px;
+ margin:8px auto 17px;padding:7px 21%;
+ border:0;border-radius:0;outline:0;overflow:visible;
+ background:#FFF9F0 url("images/quran-surah-ornament.svg") center/100% 100% no-repeat;
+ color:#5C412E;font-family:SalatiCairo,sans-serif;
+ font-size:clamp(13px,4vw,18px);font-weight:800;line-height:1.4;
+ white-space:nowrap;box-shadow:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-text [data-ayah] .ayah-number{
+ box-sizing:border-box;display:inline-flex;vertical-align:middle;
+ width:32px;height:32px;min-width:32px;min-height:32px;
+ margin:0 2px;padding:0;border:0;border-radius:0;
+ background:transparent url("images/quran-ayah-rosette.svg") center/100% 100% no-repeat;
+ color:#69503A;font-family:SalatiCairo,sans-serif;
+ font-size:.53em;line-height:1.2;text-shadow:none;box-shadow:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .reading-page-number{
+ box-sizing:border-box;display:flex;align-items:center;justify-content:center;
+ width:max-content;min-width:68px;max-width:100%;
+ min-height:35px;margin:19px auto 0;padding:6px 12px;
+ border:1px solid #BDA386;border-radius:5px;
+ background:#F4E6D3;color:#644C36;
+ font-size:16px;line-height:1.4;box-shadow:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #qVerses .reading-page-number::before,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .reading-page-number::after{
+ content:"❈";margin:0 7px;font-size:13px;color:#9C7A57;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player{
+ box-sizing:border-box;display:block;position:relative;flex:0 0 auto;
+ inset:auto;z-index:10;width:100%;max-width:none;min-width:0;
+ max-height:min(245px,38dvh);height:auto;min-height:0;
+ margin:0;padding:10px 13px calc(12px + env(safe-area-inset-bottom,0px));
+ border:0;border-top:1px solid #414249;
+ border-radius:27px 27px 0 0;background:#18191D;
+ color:#FFFFFF;box-shadow:0 -6px 22px rgba(0,0,0,.17);
+ overflow:visible;
+}
+body.dark.salati-quran-fullscreen #mushaf.q-full-player-hidden #mushafPlayerSlot.quran-live-player{
+ display:none;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player .recitation-player.reference-player{
+ gap:4px;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player .recitation-caption strong{
+ font-size:15px;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player .recitation-wave-line{
+ gap:7px;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player #qSeek{
+ position:absolute;inset:0;width:100%;height:100%;
+ margin:0;padding:0;background:transparent;border:0;
+ opacity:0;z-index:2;cursor:pointer;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-scrubber{
+ box-sizing:border-box;position:relative;display:flex;flex:1 1 auto;
+ align-items:center;width:100%;height:42px;min-width:0;
+ margin:0;padding:0;overflow:visible;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bars{
+ box-sizing:border-box;position:relative;display:flex;
+ align-items:center;justify-content:space-between;
+ gap:2px;width:100%;min-width:0;height:38px;
+ padding:0 1px;pointer-events:none;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bar{
+ box-sizing:border-box;display:block;flex:1 1 2px;
+ width:2px;max-width:4px;min-width:1.5px;
+ background:#6C7380;border-radius:2px;opacity:.72;
+ transition:background-color .12s linear,opacity .12s linear;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bar.is-played{
+ background:#2563EB;opacity:1;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bars.is-disabled .q-wave-bar{
+ opacity:.68;
+}
+body.dark #mushaf #mushafPlayerSlot.quran-live-player .q-wave-bars.is-disabled .q-wave-bar.is-played{
+ opacity:.95;
+}
+body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player .quran-trial-transport-row{
+ box-sizing:border-box;display:flex;align-items:center;justify-content:space-around;
+ width:100%;height:65px;min-height:65px;max-height:65px;
+ margin:0;padding:0 2px;gap:4px;
+}
+@media(max-width:440px){
+ body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page{
+  padding:14px 13px 22px;
+ }
+ body.dark.salati-quran-fullscreen #mushaf #qVerses .quran-reading-page .quran-text{
+  font-size:clamp(21px,6.1vw,28px);line-height:1.9;
+ }
+ body.dark.salati-quran-fullscreen #mushaf #qFullHeader{
+  height:57px;min-height:57px;flex-basis:57px;
+ }
+ body.dark.salati-quran-fullscreen #mushaf #qFullHeader button{
+  width:39px;height:42px;min-width:39px;flex-basis:39px;
+ }
+ body.dark.salati-quran-fullscreen #mushaf #mushafPlayerSlot.quran-live-player{
+  padding-left:10px;padding-right:10px;
+ }
+}
