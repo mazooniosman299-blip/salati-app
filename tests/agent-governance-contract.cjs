@@ -32,16 +32,18 @@ for(const id of ['times','mushaf','qibla','dhikr','tasbih','settings','qTranspor
 const rows=report.split('\n').filter(line=>/^\|\s*(?:[1-9]|1\d|20)\s*\|/.test(line));
 assert.equal(rows.length,20,'20-risk audit missing row(s)');
 assert(read('docs/requests/SALATI-20261103-ROOT-CONTROL.md').includes(manifest.original_verbatim_excerpt),'Original user wording must be copied verbatim into acceptance record');
-assert(['governance','infrastructure'].includes(manifest.release_mode),'This no-UI-change PR must declare governance/infrastructure mode');
-assert.equal(manifest.visual_change,false,'Governance PR must not claim UI change');
+assert(['governance','infrastructure','preview'].includes(manifest.release_mode),'Salati PR must declare governance/infrastructure/isolated-preview mode');
+if(manifest.release_mode==='preview')assert.equal(manifest.visual_change,true,'Quran UI preview must declare real visual changes');
+else assert.equal(manifest.visual_change,false,'Nonvisual PR must not claim UI change');
 assert.equal(manifest.android_release,false,'Governance PR must not claim Android release');
 const {validateScope,requiresWebVisualDiff}=require('../scripts/verify-change-scope.cjs');
 assert(requiresWebVisualDiff(['glass-navigation.js','choice-picker.js','dist/salati-ui.css']),'Imported UI modules must not bypass runtime visual comparison');
 assert(!requiresWebVisualDiff(['AGENTS.md','docs/ACTUAL_SOURCE_MAP.md']),'Governance-only documentation should not trigger UI diff');
 const permitted=['AGENTS.md','README.md','docs/requests/ACTIVE_CHANGE.json','docs/ROOT_CAUSE_AUDIT_20261103.md','scripts/verify-change-scope.cjs','tests/agent-governance-contract.cjs','.github/workflows/salati-agent-governance.yml'];
 assert.equal(validateScope(permitted,{...manifest,release_mode:'governance'}),permitted.length);
+const restricted={...manifest,release_mode:'governance',visual_change:false,allowed_paths:permitted};
 for(const forbidden of ['dist/index.html','dist/salati-ui.css','android/app/src/main/java/com/salati/prayer/MainActivity.java','quran-controller.js','other-file.txt']){
- assert.throws(()=>validateScope([...permitted,forbidden],manifest),/OUT-OF-SCOPE/,'Unexpected change slipped through: '+forbidden);
+ assert.throws(()=>validateScope([...permitted,forbidden],restricted),/OUT-OF-SCOPE/,'Unexpected change slipped through strict no-UI scope: '+forbidden);
 }
 assert.throws(()=>validateScope(permitted,{...manifest,base_branch:'main'}),/production/);
 assert.throws(()=>validateScope(permitted,{...manifest,allowed_paths:[]}),/Empty/);
