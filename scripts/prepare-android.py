@@ -100,7 +100,10 @@ print('Fixed Android local asset URLs on',changed_pages,'HTML pages; corrected',
 # *only in the packaged native copy*. This preserves exact artwork with no
 # Android resource interceptor / appassets URL dependency. Website unchanged.
 import base64
-style_path=target/'salati-ui.css'
+# The new MushafBook stylesheet is the authored owner of the two SVG
+# references when it is imported by the canonical stylesheet. Older production
+# builds keep the existing salati-ui.css owner unchanged.
+style_path=target/('mushaf-book.css' if quran_imported else 'salati-ui.css')
 native_css=style_path.read_text(encoding='utf-8')
 for ornament in ('quran-surah-ornament.svg','quran-ayah-rosette.svg'):
     svg_path=target/'images'/ornament
