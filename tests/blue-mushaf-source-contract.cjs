@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+'use strict';
+// Source and UI contract only. A full rendering pass still needs 604 real
+// publisher pages plus screenshots and Android WebView QA.
+const fs=require('node:fs');
+const path=require('node:path');
+const assert=require('node:assert/strict');
+const {execFileSync}=require('node:child_process');
+const base=path.resolve(__dirname,'..');
+const read=p=>fs.readFileSync(path.join(base,p),'utf8');
+const script='dist/quran-approved-blue-pages.js';
+const js=read(script),css=read('dist/quran-approved-blue-pages.css');
+const html=read('dist/index.html');
+const approval=read('docs/design/approved-quran-blue-mushaf-and-player-20261103.md');
+const builder=read('scripts/build-approved-blue-mushaf.py');
+execFileSync(process.execPath,['--check',path.join(base,script)]);
+assert.match(html,/src="quran-approved-blue-pages\.js"/);
+assert.match(html,/href="salati-ui\.css"/);
+const linked=[...html.matchAll(/href="([^"]+\.css)"/g)].map(x=>x[1]);
+assert.deepEqual(linked,['salati-ui.css'],'No second stylesheet in canonical Salati HTML');
+assert.match(js,/quran-page-preview/);
+assert.match(js,/official-blue/);
+assert.match(js,/m\.pageCount===604/);
+assert.match(js,/m\.pages\.length===604/);
+assert.match(js,/crypto\.subtle\.digest\('SHA-256'/);
+assert.match(js,/qPageNumber/);
+assert.match(js,/qPageForm/);
+assert.match(js,/qReciter/);
+assert.match(js,/q-blue-mushaf-mode/);
+assert.match(js,/quran-approved-blue-pages\.css/);
+assert.match(css,/#2563EB/i,'Play button must use original blue');
+assert.match(css,/qApprovedOriginalPage/);
+assert.match(css,/overflow-y:auto/);
+assert.match(css,/repeat\(6,minmax\(0,1fr\)\)/);
+assert.match(css,/site-nav/,'Original Salati navigation must be reused');
+assert.doesNotMatch(css,/المزيد/);
+assert.match(builder,/lossless=True/);
+assert.match(builder,/first-pdf-page/);
+assert.match(builder,/confirm-page-map/);
+assert.match(builder,/COUNT = 604/);
+assert.match(approval,/المصدر المقترح الأساسي/);
+console.log('PASS blue Mushaf preview script source, 604-page integrity gate, original nav and compact blue player contracts. Visual publisher match remains gated.');
