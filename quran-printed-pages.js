@@ -175,6 +175,9 @@ async function loadPlate(state) {
     return true;
   } catch (error) {
     if (!state.disposed && state.near) {
+      // A previous offscreen art-height placeholder must NEVER leave a blank
+      // paper block when both printed-page origins are unavailable.
+      state.page.style.minHeight = '';
       state.page.dataset.plateUnavailable = 'true';
       console.warn('Salati: authentic Mushaf plate unavailable; retaining verified text page.',state.pageNumber,error?.message);
     }
