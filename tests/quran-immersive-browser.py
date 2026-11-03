@@ -22,6 +22,9 @@ Thread(target=server.serve_forever,daemon=True).start()
 svg_paths=''.join(f'<path class="ayahPolygon" surah="1" ayah="{n}" number="001{n:03d}" d="M 2 {n*40} L 342 {n*40} L 342 {n*40+36} L 2 {n*40+36} Z" fill-opacity="0"/>' for n in range(1,8))
 # No Arabic verses: this is an explicitly synthetic, non-production test shape.
 fixture='<svg xmlns="http://www.w3.org/2000/svg" viewBox="-53 -198 345 550"><g id="content"><path d="M0 0 L300 0 L300 300 L0 300 Z" fill="#aaa"/></g>'+svg_paths+'</svg>'+' '*12000
+# This geometric next page is deliberately NOT Quran text or production artwork.
+svg_paths2=''.join(f'<path class="ayahPolygon" surah="2" ayah="{n}" number="002{n:03d}" d="M 2 {n*70} L 342 {n*70} L 342 {n*70+60} L 2 {n*70+60} Z" fill-opacity="0"/>' for n in range(1,6))
+fixture2='<svg xmlns="http://www.w3.org/2000/svg" viewBox="-53 -198 345 550"><g id="content"><path d="M0 0 L300 0 L300 300 L0 300 Z" fill="#bbb"/></g>'+svg_paths2+'</svg>'+' '*12000
 checks=[]
 try:
  with sync_playwright() as p:
@@ -33,8 +36,9 @@ try:
     page.on('pageerror',lambda e:errors.append(str(e)))
     page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:'ar',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',locationSet:true,locationMode:'manual',dark:true}));")
     def route_svg(route):
-     if variant=='printed' and route.request.url.endswith('/001.svg'):
-      route.fulfill(status=200,body=fixture,headers={'Content-Type':'image/svg+xml','Access-Control-Allow-Origin':'*'})
+     if variant=='printed' and route.request.url.endswith(('/001.svg','/002.svg')):
+      original=fixture if route.request.url.endswith('/001.svg') else fixture2
+      route.fulfill(status=200,body=original,headers={'Content-Type':'image/svg+xml','Access-Control-Allow-Origin':'*'})
      else: route.fulfill(status=503,body='test-only unavailable')
     page.route('https://cdn.quran.ws/svg/pages/v1.1.1/hafs-kfqc/**',route_svg)
     page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded',timeout=35000)
@@ -48,6 +52,14 @@ try:
      assert page.locator('#qVerses .salati-publisher-plate [data-ayah="1:1"]').count()>=1
      page.locator('#qVerses .salati-publisher-plate [data-ayah="1:1"]').first.click(force=True)
      assert page.locator('#verseReciterMenu').count()>=1,'Original verse-tap audio menu missing'
+     # Pull upward in the actual scrollport: the NEXT printed page must follow
+     # in the same vertical reader, not appear behind arrow controls.
+     page.locator('#qVerses .salati-printed-page[data-reading-page="2"]').wait_for(timeout=20000)
+     page.locator('#qVerses').evaluate('e => { e.scrollTop=e.scrollHeight; e.dispatchEvent(new Event("scroll")); }')
+     page.wait_for_function("document.querySelector('#qVerses').scrollTop>0",timeout=10000)
+     assert page.locator('#qVerses .salati-printed-page[data-reading-page="1"]').count()==1
+     assert page.locator('#qVerses .salati-printed-page[data-reading-page="2"]').count()==1
+     assert page.locator('#mushaf > .mushaf-pagination').is_hidden(),'Detached page counter shown outside Mushaf paper'
     else:
      page.wait_for_function("document.querySelector('#qVerses .quran-reading-page')?.dataset.plateUnavailable==='true'",timeout=20000)
      assert page.locator('#qVerses .quran-reading-page .quran-text').count()>0,'Network error blanked Quran text'
@@ -83,4 +95,4 @@ finally:
  server.server_close()
 (OUTPUT/'checks.json').write_text(json.dumps(checks,ensure_ascii=False,indent=2),encoding='utf-8')
 assert len(checks)==4
-print('PASS 2 mobile sizes, fullscreen exact width, viewport scrollport, blue play, no overlaps, original nav preserved, printed SVG verse tap and offline fallback. NO visual plate pixel match claimed.')
+print('PASS 2 mobile sizes, fullscreen exact width, vertical continuous 2-page scroll, no detached page counter, blue play, no overlaps, original nav, printed verse tap and offline fallback. No visual plate pixel match claimed.')
