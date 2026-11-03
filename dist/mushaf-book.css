@@ -93,16 +93,18 @@ body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page{
  --book-paper:#FFF9F0;
  box-sizing:border-box;display:block;flex:0 0 auto;
  position:relative;isolation:isolate;container-type:inline-size;
- width:min(100%,min(calc((100dvh - 240px)*.627),540px));
- max-width:100%;height:auto;min-height:0;max-height:none;
- aspect-ratio:345/550;overflow:hidden;
+ width:100%;
+ max-width:100%;height:100%;min-height:100%;max-height:100%;
+ aspect-ratio:auto;overflow:hidden;
  margin:0 auto;padding:0;border:0;border-radius:0;outline:0;
  background:#FFF9F0;color:#1C1814;
  box-shadow:none;scroll-snap-align:start;
  font-synthesis:none;
 }
+/* Each Quran leaf owns the complete visible reading viewport, so the next
+ * printed page never peeks out below the current one when audio is hidden. */
 body.dark.salati-quran-fullscreen #mushaf.q-full-player-hidden #qVerses .mushaf-book-page{
- width:min(100%,min(calc((100dvh - 70px)*.627),540px));
+ width:100%;height:100%;min-height:100%;
 }
 body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-frame-outer,
 body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-frame-inner{
@@ -164,6 +166,11 @@ body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-line{
  font-size:var(--mushaf-word-size,5.6cqw);
  font-weight:400;line-height:1.75;letter-spacing:normal;word-spacing:normal;
  text-shadow:none;color:#1C1713;
+}
+/* Opening spread lines are centered, not forcibly spaced to the page edges. */
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-reading-page="1"] .mushaf-book-line,
+body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-page[data-reading-page="2"] .mushaf-book-line{
+ text-align:center;text-align-last:center;
 }
 body.dark.salati-quran-fullscreen #mushaf #qVerses .mushaf-book-verse{
  display:inline;direction:rtl;unicode-bidi:isolate;white-space:inherit;
