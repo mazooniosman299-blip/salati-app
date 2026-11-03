@@ -94,10 +94,10 @@
   const heights=Array.from({length:COUNT},(_,i)=>{
    const x=i/(COUNT-1);
    const envelope=0.3+0.7*Math.pow(Math.sin(Math.PI*(0.07+0.86*x)),0.65);
-   const texture=0.44+0.23*Math.abs(Math.sin(i*1.31))+
-     0.23*Math.abs(Math.sin(i*0.47+1.2))+
-     0.10*Math.abs(Math.sin(i*2.29+0.8));
-   return Math.round(8+28*Math.min(1,envelope*texture));
+   const texture=0.24+0.33*Math.abs(Math.sin(i*1.31))+
+     0.28*Math.abs(Math.sin(i*0.47+1.2))+
+     0.15*Math.abs(Math.sin(i*2.29+0.8));
+   return Math.round(6+31*Math.min(1,envelope*texture));
   });
   const bars=heights.map(height=>{
    const span=document.createElement('span');
