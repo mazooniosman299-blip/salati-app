@@ -162,7 +162,26 @@ jobs:
           bash gradlew :app:assembleDebug --no-daemon
           cd ..
           test -s android/app/build/outputs/apk/debug/app-debug.apk
-          python3 scripts/verify-native-web-assets.py android/app/build/outputs/apk/debug/app-debug.apk
+          # Debug preview is not the Cloudflare production release; keep release-size/signature gates untouched.
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging android/app/build/outputs/apk/debug/app-debug.apk | grep -F "com.salati.prayer.preview"
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          stage=Path('android/app/src/main/assets/www')
+          apk=Path('android/app/build/outputs/apk/debug/app-debug.apk')
+          assert stage.is_dir() and apk.is_file()
+          with ZipFile(apk) as archive:
+              names=set(archive.namelist())
+              checked=0
+              for source in stage.rglob('*'):
+                  if not source.is_file():continue
+                  rel='assets/www/'+source.relative_to(stage).as_posix()
+                  assert rel in names, 'Missing staged Android file: '+rel
+                  assert archive.read(rel)==source.read_bytes(), 'Debug preview bytes diverged: '+rel
+                  checked+=1
+          assert checked>100, 'Unexpected incomplete WebView source staging'
+          print('PASS unsigned/debug preview contains',checked,'exact staged WebView files; NOT original signed release')
+          PY
       - name: Exercise real Android 15 system WebView and native widget without skipping independent failures
         uses: reactivecircus/android-emulator-runner@v2
         with:
