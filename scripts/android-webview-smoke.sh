@@ -57,6 +57,10 @@ done
 if [ "$QURAN_READY" -ne 1 ]; then
   cp /tmp/salati-quran-ready.png reports/android-webview-20261102/mushaf.png
   adb logcat -d -t 2500 > reports/android-webview-20261102/logcat.txt || true
+  adb shell uiautomator dump /sdcard/salati-failed-reader.xml || true
+  adb shell cat /sdcard/salati-failed-reader.xml || true
+  adb shell dumpsys activity activities | tail -35 || true
+  python3 tests/android-emulator-screen-preflight.py evidence /tmp/salati-quran-ready.png
   echo 'FAIL: real Quran parchment never appeared before 90-second deadline' >&2
   exit 1
 fi
@@ -84,6 +88,7 @@ for attempt in 1 2 3; do
   sleep 1
 done
 adb logcat -d -t 1600 > reports/android-webview-20261102/logcat.txt
+python3 tests/android-emulator-screen-preflight.py evidence reports/android-webview-20261102/mushaf.png
 if [ "$READER_OK" -ne 1 ]; then
   echo "FAIL: Quran reading parchment not visible after three real Android gestures" >&2
   exit 1

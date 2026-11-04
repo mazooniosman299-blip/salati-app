@@ -54,5 +54,6 @@ sleep 1
 adb shell input swipe 216 880 216 300 400
 sleep 2
 adb exec-out screencap -p > "$out/launcher-drawer.png"
+python3 tests/android-emulator-screen-preflight.py evidence "$out/launcher-drawer.png"
 adb shell uiautomator dump /sdcard/salati-launcher.xml >/dev/null 2>&1 || true
 adb shell cat /sdcard/salati-launcher.xml > "$out/launcher.xml" || true
