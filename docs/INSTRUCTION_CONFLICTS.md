@@ -38,3 +38,6 @@ Home AM steering: latest explicit user says noص and requests exact right alignm
 
 ##4Nov continuation/action-dock/launcher steering
 Latest ayah action-dock request supersedes previous blanket no-action-dialog assertions only for a nonmodal reserved toolbar; do not restore an opaque modal. Latest requested default continuation requires one-time legacyfalse migration while preserving future explicit opt-out. Fatiha entry/reset and all non-reader/home/widget designs remain. See requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md.
+
+##4Nov latest correction: remove unpublished action dock
+User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this supersedes the earlier contextual-dock clarification. Restore exact production128 reader/player UI, retain only continuation behavior. First displayed crescent/minaret launcher chosen with black background removed; revised transparent artwork must be verified. No extra UI features authorized.

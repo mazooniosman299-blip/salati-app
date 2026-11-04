@@ -1,10 +1,10 @@
-"""Real ended events, migration and nonmodal selected-ayah dock on the actual app."""
+"""Real ended events and user-controlled continuation, with no additional actions."""
 from pathlib import Path
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
 from threading import Thread
 from playwright.sync_api import sync_playwright
-import io,wave,json
+import io,wave,json,time
 root=Path(__file__).resolve().parents[1];out=root/'reports/quran-continuation-actions';out.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*a):pass
@@ -65,7 +65,11 @@ try:
   # A running Android session receives options only: no replay, seek or stop.
   # This tests the actual WebView bridge client, not the Android service itself.
   for policy,expected in [(None,True),(1,False)]:
-   page=b.new_page(viewport={'width':390,'height':844},service_workers='block');errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+   page=b.new_page(viewport={'width':390,'height':844},service_workers='block');errors=[];page.on('pageerror',lambda e:errors.append(e.stack))
+   def delayed_index(route):
+    time.sleep(.85)
+    route.fulfill(status=200,content_type='application/json',body=(root/'dist/quran/printed-1441/index.json').read_bytes())
+   page.route('**/quran/printed-1441/index.json',delayed_index)
    state={'autoNext':False,'reciter':'shatri','bookmark':120}
    if policy is not None:state['autoNextPolicy']=policy
    page.add_init_script('''localStorage.setItem('salati-quran',JSON.stringify(%s));
@@ -76,25 +80,28 @@ try:
    enter(page);assert page.locator('#qAutoNext').is_checked()==expected
    calls=page.evaluate('nativeCalls');assert calls==([['options','existing-android-session',False,True]] if expected else []),calls
    assert page.evaluate('nativeState.position')==12;assert not errors,errors;page.close();results.append({'native_bridge_policy':policy,'options_only':True,'result':'pass'})
+  # Latest correction: existing player only, no new ayah dock or actions.
+  assert (root/'dist/salati-ui.css').read_bytes()==(root/'tests/fixtures/salati-v128-approved-ui.css').read_bytes(),'Reader/UI CSS must remain exactly the approved128 version'
   for width,height,lang in [(320,740,'ar'),(390,844,'ar'),(1440,900,'en'),(935,325,'ar')]:
    page=b.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('https://**/*.mp3',media)
    page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:%s}))"%json.dumps(lang));enter(page)
-   assert page.locator('#qAyahActions').is_hidden();hit(page,'1:2');page.wait_for_selector('#qAyahActions');ready(page)
+   assert page.locator('#qAyahActions,[data-ayah-action],.ayah-action-dock').count()==0,'No unrequested action dock or buttons'
+   controls=page.locator('#mushafPlayerSlot button').evaluate_all('es=>es.map(e=>e.id)');assert sorted(controls)==['qStop','qTransport'],controls
+   hit(page,'1:2');ready(page);page.wait_for_function('document.querySelector("#qAudio").currentTime>2')
    assert page.locator('dialog[open]').count()==0,'Ayah selection must not open a black modal'
-   assert page.locator('#qAyahActions button').count()==4
-   geo=page.evaluate('''()=>{const r=s=>{const e=document.querySelector(s),b=e.getBoundingClientRect();return {top:b.top,bottom:b.bottom,height:b.height,left:b.left,right:b.right}};return{reading:r('#qVerses'),dock:r('#qAyahActions'),player:r('#mushafPlayerSlot')}}''')
-   assert geo['reading']['bottom']<=geo['dock']['top']+1 and geo['dock']['bottom']<=geo['player']['top']+1,(width,geo)
-   assert geo['reading']['height']>=60 and geo['dock']['left']>=0 and geo['dock']['right']<=width,(width,geo)
-   style=page.locator('#qAyahActions [data-ayah-action=play]').evaluate('e=>({bg:getComputedStyle(e).backgroundColor,bgi:getComputedStyle(e).backgroundImage,color:getComputedStyle(e).color})')
-   nav=page.locator('header>.site-nav button.active').evaluate('e=>({bg:getComputedStyle(e).backgroundColor,bgi:getComputedStyle(e).backgroundImage,color:getComputedStyle(e).color})')
-   assert style==nav,(width,'dock active transport must match actual navigation palette',style,nav)
-   page.locator('[data-ayah-action=bookmark]').click();assert page.evaluate("JSON.parse(localStorage.getItem('salati-quran')).bookmark")==1
-   source=page.locator('#qAudio').evaluate('e=>e.currentSrc');position=page.locator('#qAudio').evaluate('e=>e.currentTime');page.locator('[data-ayah-action=close]').click();assert page.locator('#qAyahActions').is_hidden();assert page.locator('#qAudio').evaluate('(e)=>!e.paused&&e.currentSrc===%s&&e.currentTime>=%s'%(json.dumps(source),position)),'Closing actions must not stop/restart audio'
-   hit(page,'1:2');ready(page);page.wait_for_function('document.querySelector("#qAudio").currentTime>2');page.locator('[data-ayah-action=start]').click();page.wait_for_function('document.querySelector("#qAudio").currentTime<2&&!document.querySelector("#qAudio").paused');assert page.locator('#qAyahActions').is_hidden()
-   hit(page,'1:2');ready(page);page.locator('[data-ayah-action=play]').click();page.wait_for_function('document.querySelector("#qAudio").paused');page.locator('[data-ayah-action=play]').click();ready(page)
-   page.locator('[data-ayah-action=close]').focus();page.keyboard.press('Escape');assert page.locator('#qAyahActions').is_hidden();assert page.locator('[data-ayah="1:2"]').evaluate('e=>document.activeElement===e');assert page.locator('#qAudio').evaluate('e=>!e.paused')
-   page.keyboard.press('Enter');page.wait_for_selector('#qAyahActions');ready(page)
-   page.screenshot(path=str(out/f'{width}-{lang}-dock.png'));assert not errors,errors;page.locator('#qStop').click();page.close();results.append({'viewport':[width,height],'lang':lang,'dock':geo,'result':'pass'})
+   assert page.locator('[data-ayah="1:2"]').get_attribute('aria-pressed')=='true'
+   geo=page.evaluate('''()=>{const r=s=>{const b=document.querySelector(s).getBoundingClientRect();return {top:b.top,bottom:b.bottom,height:b.height,left:b.left,right:b.right}};return{reading:r('#qVerses'),player:r('#mushafPlayerSlot')}}''')
+   assert geo['reading']['bottom']<=geo['player']['top']+1 and geo['reading']['height']>=60,(width,geo)
+   source=page.locator('#qAudio').evaluate('e=>e.currentSrc')
+   # User pause near the natural ending must hold the current file, not auto-advance.
+   page.locator('#qAudio').evaluate('e=>e.currentTime=899');page.locator('#qTransport').click();page.wait_for_timeout(1200)
+   assert page.locator('#qAudio').evaluate('(e)=>e.paused&&e.currentSrc===%s'%json.dumps(source)),'User pause must prevent automatic progression'
+   page.locator('#qTransport').click();finish(page,2);ready(page)
+   page.locator('#qAudio').evaluate('e=>e.currentTime=899');page.locator('#qStop').click();page.wait_for_timeout(1200)
+   assert page.locator('#qAudio').evaluate('e=>e.paused&&!e.getAttribute("src")'),'User Stop must cancel progression'
+   page.locator('#qSurah').evaluate("e=>{e.value='1';e.dispatchEvent(new Event('change',{bubbles:true}))}");page.wait_for_selector('[data-reading-page=\"1\"].original-printed-page')
+   hit(page,'1:2');ready(page)
+   page.screenshot(path=str(out/f'{width}-{lang}-existing-player.png'));assert not errors,errors;page.locator('#qStop').click();page.close();results.append({'viewport':[width,height],'lang':lang,'existing_ui':geo,'no_new_controls':True,'user_pause_and_stop':True,'result':'pass'})
   b.close()
 finally:server.shutdown();server.server_close()
-(out/'result.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\n');print('PASS migration/default/explicit-off, real ended progression/repeat/final114, native options-only restore and4 actual dock viewport/keyboard scenarios')
+(out/'result.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\n');print('PASS migration/default/explicit-off, real ended progression/repeat/final114, native options-only restore and4 actual existing-player viewport/pause/stop scenarios; no added actions')

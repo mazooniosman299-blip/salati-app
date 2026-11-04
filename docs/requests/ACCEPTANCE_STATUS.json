@@ -16,39 +16,40 @@
     },
     "source_build": {
       "status": "pass",
-      "evidence": "npm run build; actual canonical entry bundles generated. Scope: continuation/action dock; launcher selection still pending."
+      "evidence": "Canonical web build and Android assembleRelease130 pass after latest correction and atomic native restore fix."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test; direct-ayah source/cue/full-duration; Fatiha-entry9 browser cases; real media-ended next/repeat/final114, persistence and native options-only bridge client. Launcher not implemented."
+      "evidence": "npm test; real ranged900s ended1→2→3, repeat/final114, pause/stop prevention, persistence, delayed native index/options-only restore;9 Fatiha entry cases."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "tests/quran-continuation-actions.py: AR320/390/935short-height and EN1440; genuine ayah hits, four working actions/keyboard, full900s fixture duration and nonoverlapping geometry. 48 default-state screenshots unchanged against production128."
+      "evidence": "Actual AR320/390/short935 and EN1440 existing-player cases, no added toolbar/dialog/buttons, full duration/no overlap;48 production128 scope screenshots and36 CSS parity cases pass."
     },
     "screenshot_user_reference": {
-      "status": "not_run",
-      "reason": "Actual dock reviewed against real nav and equal active computed palette confirmed; launcher icon options/selection pending, so full visual acceptance is incomplete."
+      "status": "pass",
+      "evidence": "First displayed crescent/minaret selected by user. Same mark with no black background; actual alpha-composited browser proof and true-alpha/safe-area tests pass. Existing reader CSS byte-identical128."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
+      "reason": "Original128→129 signed upgrade CI queued next; local fixture is native bridge-client proof only."
     },
     "physical_android": {
       "status": "not_run",
       "reason": "No physical Android device available; native bridge-client fixture is not emulator or physical service proof."
     },
     "signed_release": {
-      "status": "not_run",
-      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
+      "status": "pass",
+      "evidence": "Original-key1.0.129/code130 APK26,187,372B; cert559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e; SHAef0522da613c3999bca4582be7a1c178cccf4ad07ea8d55652b0aae95efbf891; exact native assets and icon bytes inspected."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
+      "reason": "Await PR/original-key upgrade/emulator/exact production gates and actual public verification. Official remains128."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "Launcher choices and actual dock capture to be shown; no claim of final user approval."
+      "reason": "User selected first icon without black background and rejected action dock. Final implemented release has not yet been reviewed by user."
     }
-  }
+  },
+  "latest_user_correction": "Selected first launcher with no black background; rejected all added action controls. Restore128 UI, continuation only."
 }

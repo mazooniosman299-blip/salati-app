@@ -54,3 +54,6 @@ Latest4Nov home reference supersedes home-only widget-style strip: hero above3x2
 
 ##4Nov continuation/action-dock/launcher steering
 Latest user now requests a contextual ayah action dock matching actual nav and default subsequent-surah playback. This supersedes the earlier no-actions popup decision only for a nonmodal dock; full-file direct ayah playback, original art and unobscured player remain. External change is launcher icon only; choice pending. See requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md.
+
+##4Nov latest correction: remove unpublished action dock
+User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this supersedes the earlier contextual-dock clarification. Restore exact production128 reader/player UI, retain only continuation behavior. First displayed crescent/minaret launcher chosen with black background removed; revised transparent artwork must be verified. No extra UI features authorized.
