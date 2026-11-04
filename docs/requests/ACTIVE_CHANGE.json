@@ -42,7 +42,9 @@
     "apk-release-parts/v1.0.130/part11.bin",
     "apk-release-parts/v1.0.130/part12.bin",
     "apk-release-parts/v1.0.130/part13.bin",
-    "apk-release-parts/v1.0.130/part14.bin"
+    "apk-release-parts/v1.0.130/part14.bin",
+    "tests/quran-continuation-actions.py",
+    "tests/fixtures/salati-v130-approved-ui.css"
   ],
   "visual_allowed_regions": [
     {

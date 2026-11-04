@@ -54,6 +54,11 @@ def exercise_state(page,state):
  next_page=target.evaluate('e=>Number(e.closest("[data-reading-page]").dataset.readingPage)+1')
  if next_page<=604:page.locator(f'[data-reading-page="{next_page}"].original-printed-page').wait_for()
  target.evaluate("e=>{const c=document.querySelector('#qVerses'),p=e.closest('[data-reading-page]');c.scrollTo({top:c.scrollTop+p.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
+ # Pointer coordinates from before scrolling can now hover a different ayah.
+ # Compare focus/selection with the pointer over neutral header padding.
+ page.mouse.move(4,4)
+ assert page.locator('.printed-ayah:hover').count()==0
+ assert target.evaluate('e=>document.activeElement===e&&!e.matches(":focus-visible")')
 def capture_metrics(page):
  return page.evaluate("""selectors => Object.fromEntries(selectors.map(selector => {
   const el=document.querySelector(selector);

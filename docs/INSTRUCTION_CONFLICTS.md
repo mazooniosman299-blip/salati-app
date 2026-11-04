@@ -44,3 +44,5 @@ User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this sup
 
 ##5Nov pointer-focus correction
 Latest user points out the black rounded box enclosing a selected ayah. Actual129 reproduction confirms browser UAauto5px outline on:focus without:focus-visible. Fix only.printed-ayah common outline reset; retain the existing brown keyboard path stroke/selection/full-file audio. No extra actions or redesign. Source ownerdist/salati-ui.css printed-reader component; requestSALATI-20261105-AYAH-POINTER-FOCUS.
+
+130 test classification: continuation129 froze every CSS byte to128 to enforce that task's no-visual-change instruction. Latest user now explicitly requests removal of the printed pointer rectangle. Add immutable130 focus-only stylesheet snapshot and keep the same full-byte assertion in the continuation test; preserve128 and the36-case default-style parity gate. All continuation/audio/geometry assertions remain unchanged. Scope capture must compare focus with the pointer on neutral header padding so an unrelated hover on the next leaf is not mistaken for a product change.
