@@ -31,6 +31,11 @@ export async function enhancePrintedPage(page,index,verses){
   // set of ayah targets is present, so following/focusing never finds hidden text.
   for(const node of page.querySelectorAll('[data-ayah]')){node.removeAttribute('data-ayah');node.removeAttribute('tabindex');}
   const fallback=document.createElement('div');fallback.className='printed-text-fallback';fallback.hidden=true;fallback.append(...page.childNodes);page.append(fallback,artwork);
+  if(number<=2){
+   const title=document.createElement('h3');title.className='printed-opening-title';
+   const calligraphy=new Image();calligraphy.src=base+'ornaments/surah-'+number+'.svg';calligraphy.alt=number===1?'سورة الفاتحة':'سورة البقرة';
+   title.append(calligraphy);page.insertBefore(title,artwork);
+  }
   const label=document.createElement('div');label.className='printed-page-index';label.textContent=new Intl.NumberFormat('ar').format(number);page.append(label);page.classList.add('original-printed-page');
   page.dispatchEvent(new CustomEvent('printedpage',{bubbles:true}));
  }catch{

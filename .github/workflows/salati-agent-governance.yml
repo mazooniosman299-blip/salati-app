@@ -74,7 +74,10 @@ jobs:
       - name: Verify immutable user-provided mosque reference bytes
         run: node tests/reference-provenance.cjs
       - name: Screenshot the ACTUAL Salati six-tab app, both languages, four viewports
-        run: python3 tests/current-design-visual-proof.py
+        run: |
+          python3 tests/current-design-visual-proof.py
+          python3 tests/mushaf-ornament-layout.py
+          python3 tests/mushaf-opening-whitespace.py
       - name: Verify dynamic DOM is owned by upstream source across tab, language and reload
         run: python3 tests/dynamic-source-runtime-browser.py
       - name: Self-test visual diff rejecting unauthorized pixels

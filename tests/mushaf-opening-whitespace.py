@@ -22,14 +22,16 @@ try:
     region=json.loads((root/f'dist/quran/printed-1441/regions/{n}.json').read_text());x,y,w,h=region['displayViewport']
     assert x<=bbox[0] and y<=bbox[1] and x+w>=bbox[2] and y+h>=bbox[3],'Display crop must retain every nontransparent Quran pixel'
     ink_top=box['y']+bbox[1]*box['width']/image.width
-    assert reader['y']-1<=ink_top<=reader['y']+32,(width,height,n,'Blank top margin hides Quran text',ink_top,reader)
+    title=page.locator(f'[data-reading-page="{n}"] .printed-opening-title').bounding_box()
+    assert 0<=ink_top-title['y']-title['height']<=32,(width,height,n,'Unused gap after original title',ink_top,title)
+    assert ink_top<dock['y'],(width,height,n,'Quran ink hidden by dock',ink_top,dock)
     assert reader['y']+reader['height']<=dock['y']+1,'Player overlaps reader'
     assert node.evaluate('(e)=>e.naturalWidth')==image.width
     # Image and hit layer must keep the SAME full-image geometry after trimming.
     overlay=page.locator(f'[data-reading-page="{n}"] .printed-ayah-regions').bounding_box()
     assert abs(overlay['y']-box['y'])<1 and abs(overlay['height']-box['height'])<1,(box,overlay)
     targets=page.locator(f'[data-reading-page="{n}"] [data-ayah]');assert targets.count()==7 if n==1 else targets.count()==5
-    target=targets.first;hitbox=target.bounding_box();hit=page.evaluate('([x,y])=>document.elementFromPoint(x,y)?.closest("[data-ayah]")?.dataset.ayah',[hitbox['x']+hitbox['width']/2,hitbox['y']+hitbox['height']/2]);assert hit==target.get_attribute('data-ayah'),'Ayah hit testing drifted after margin trim'
+    target=targets.first;target.scroll_into_view_if_needed();hitbox=target.bounding_box();hit=page.evaluate('([x,y])=>document.elementFromPoint(x,y)?.closest("[data-ayah]")?.dataset.ayah',[hitbox['x']+hitbox['width']/2,hitbox['y']+hitbox['height']/2]);assert hit==target.get_attribute('data-ayah'),'Ayah hit testing drifted after margin trim'
 
     page.screenshot(path=str(out/f'{width}x{height}-p{n}.png'));assert not errors,errors
     cases.append({'viewport':[width,height],'page':n,'first_ink_y':ink_top,'reader_top':reader['y'],'result':'PASS'});page.close()

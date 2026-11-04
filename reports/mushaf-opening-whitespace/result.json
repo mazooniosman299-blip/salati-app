@@ -7,7 +7,7 @@
         325
       ],
       "page": 1,
-      "first_ink_y": 69.32091346153845,
+      "first_ink_y": 213.3681891025641,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -17,7 +17,7 @@
         325
       ],
       "page": 2,
-      "first_ink_y": 69.31675295857985,
+      "first_ink_y": 213.38008505917162,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -27,7 +27,7 @@
         390
       ],
       "page": 1,
-      "first_ink_y": 67.99198717948718,
+      "first_ink_y": 213.3681891025641,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -37,7 +37,7 @@
         390
       ],
       "page": 2,
-      "first_ink_y": 67.97975221893489,
+      "first_ink_y": 213.38008505917162,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -47,7 +47,7 @@
         700
       ],
       "page": 1,
-      "first_ink_y": 69.32091346153845,
+      "first_ink_y": 213.3681891025641,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -57,7 +57,7 @@
         700
       ],
       "page": 2,
-      "first_ink_y": 69.31675295857985,
+      "first_ink_y": 213.38008505917162,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -67,7 +67,7 @@
         844
       ],
       "page": 1,
-      "first_ink_y": 57.25,
+      "first_ink_y": 140.76402243589743,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -77,7 +77,7 @@
         844
       ],
       "page": 2,
-      "first_ink_y": 57.24038461538461,
+      "first_ink_y": 140.7550850591716,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -87,7 +87,7 @@
         740
       ],
       "page": 1,
-      "first_ink_y": 55.584935897435884,
+      "first_ink_y": 127.36458333333334,
       "reader_top": 48,
       "result": "PASS"
     },
@@ -97,7 +97,7 @@
         740
       ],
       "page": 2,
-      "first_ink_y": 55.58866494082841,
+      "first_ink_y": 127.35336538461539,
       "reader_top": 48,
       "result": "PASS"
     }

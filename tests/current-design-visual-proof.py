@@ -56,6 +56,7 @@ try:
     assert page.locator("header>.site-nav button[data-tab]").count()==6
     assert page.locator('link[href="salati-ui.css"]').count()==1
     assert page.evaluate("getComputedStyle(document.body).backgroundColor")=="rgb(11, 14, 19)",(language,width,"dark-only body changed")
+    page.evaluate('()=>document.fonts.ready')
     for tab in TABS:
      if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
      page.locator(f'header>.site-nav button[data-tab="{tab}"]').click()
@@ -72,6 +73,7 @@ try:
       assert page.evaluate("!document.querySelector('#qVerses').contains(document.querySelector('#mushafPlayerSlot'))")
       q=page.locator("#qVerses").evaluate("""e=>({pages:e.querySelectorAll('.quran-reading-page').length,overflow:getComputedStyle(e).overflowY,height:e.clientHeight})""")
       assert q["pages"]>0 and q["height"]>50 and q["overflow"] in ("auto","scroll"),(language,width,q)
+     page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))')
      name=f"{language}-{tab}-{width}.png"
      page.screenshot(path=str(OUT/name),animations="disabled")
      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],

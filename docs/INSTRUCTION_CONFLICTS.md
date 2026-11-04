@@ -22,3 +22,6 @@ The user selected option3 in the independent 604-page Madinah1441 preview, then 
 
 ## Opening transparent-margin correction —4Nov2026 Asia/Dubai
 The user identified an almost empty Fatiha viewport in a short/wide browser. Verified original PNGs1/2 have494/480 transparent rows above ink. Keep original bytes and complete ink; display-only vertical viewport removes unused transparent rows with24px source safety padding and moves the unchanged SVG hit layer with the image. Only opening pages1/2 use these bounds; the other602 plates are unchanged. This supersedes preserving the opening files' blank canvas as visible layout space, not the original printed artwork. Evidence: requests/SALATI-20261104-OPENING-SPACE.md and reports/mushaf-opening-whitespace/.
+
+## Latest rejection and framed-reference search —4Nov2026 Asia/Dubai
+The user rejects candidate125 artwork/desktop gaps and supplies103498.jpg, requiring that original thin-brown-framed edition or a close original edition. This supersedes option3 artwork approval. PR47 remains draft; publication is held. Preserve previous successful audio/selection/top-whitespace fixes. Research exact source and clearly identify any near alternative before adoption; see requests/SALATI-20261104-FRAMED-MUSHAF-RESEARCH.md.

@@ -1,6 +1,6 @@
 {
   "request_id": "SALATI-20261103-MUSHAF1441",
-  "source_reference": "docs/requests/SALATI-20261103-MUSHAF1441.md",
+  "source_reference": "docs/requests/SALATI-20261104-FRAMED-MUSHAF-RESEARCH.md",
   "producer_branch": "mushaf1441-official",
   "code_runtime_changed": true,
   "overall": "in_progress",
@@ -24,15 +24,15 @@
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "reports/mushaf-opening-whitespace/result.json:10 actual original-opening cases with ink-safe bounds and aligned hit tests; other reader features previously verified in reports/mushaf1441/result.json; CI rechecks current build."
+      "evidence": "reports/mushaf-ornaments/result.json:21 actual cases; integrated8 responsive/language functional cases;48 scope comparison captures;10 opening cases. Not a physical phone."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "Original 604 image hashes in dist/quran/printed-1441/manifest.json; selected option3 remains unchanged; genuine mobile/desktop captures reviewed. Whole-app pixel parity with arbitrary external screenshots is not asserted."
+      "evidence": "Near-edition scope expressly allowed by user: actual Fatiha/Baqara/mixed564 captures compared with103498.jpg; thin floral outer frame, cream paper, black original ink and original title/number ornaments present. Exact AlMosaly art identity and post-release user acceptance are NOT asserted."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "New125 transparent-margin correction requires current signed upgrade/emulator verification. Prior124 debug emulator passed; its signed upgrade UI readiness failed and was not counted as success."
+      "reason": "Fresh1.0.126 original-key127 emulator update evidence pending CI. Prior125 CI signed upgrade and WebView passed, not counted for126."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,15 +40,15 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "apk-release-parts/v1.0.125/manifest.json; original-key signed candidate with unchanged image pixels, original applicationId and matching new web fingerprint. Official publication and signed upgrade remain pending."
+      "evidence": "apk-release-parts/v1.0.126/manifest.json; original certificate559dec66..., APK9804ecdf...,1000 exact staged/shared assets; below25MiB."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Current candidate verification pending; prior results do not certify this release."
+      "reason": "Fresh exact-SHA required checks and normal PR merge/deployment pending."
     },
     "latest_user_acceptance": {
-      "status": "blocked",
-      "reason": "User approved option3 and specified direct ayah action/title. Final integrated build has not received post-release user acceptance."
+      "status": "not_run",
+      "reason": "User authorized finished close original edition and official release; no claim of post-release user review."
     }
   }
 }

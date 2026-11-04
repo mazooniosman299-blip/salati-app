@@ -211,10 +211,10 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  body.dark #mushaf.printed-reader .printed-reader-header button{display:grid;place-items:center;width:36px;height:36px;min-height:36px;padding:0;border:1px solid #cdbb9c;border-radius:10px;background:#efe3d0;color:#25211c;box-shadow:none;font:600 22px/1 Cairo,sans-serif;}
  body.dark #mushaf.printed-reader .printed-reader-header .mushaf-page-head{display:flex;justify-content:center;gap:18px;flex:1;min-width:0;margin:0;padding:0;border:0;background:transparent;color:#25211c;font-size:13px;line-height:1.4;}
  body.dark #mushaf.printed-reader #qSheet{grid-row:2;display:block;min-width:0;min-height:0;width:100%;max-width:none;height:100%;margin:0;padding:0;overflow:hidden;border:0;border-radius:0;box-shadow:none;background:#fbf6ed;}
- body.dark #mushaf.printed-reader #qSheet #qVerses{width:100%;max-width:none;height:100%;max-height:100%;min-height:0;margin:0;padding:0;overflow-y:auto;overflow-x:auto;touch-action:pan-x pan-y;background:#fbf6ed;scroll-padding:12px 0;}
- body.dark #mushaf.printed-reader #qSheet #qVerses .original-printed-page{position:relative;box-sizing:border-box;width:calc(100% * var(--printed-scale,1));max-width:calc(900px * var(--printed-scale,1));margin:0 auto;padding:0;border:0;border-radius:0;background:#fbf6ed;box-shadow:none;}
+ body.dark #mushaf.printed-reader #qSheet #qVerses{width:100%;max-width:none;height:100%;max-height:100%;min-height:0;margin:0;padding:0;overflow-y:auto;overflow-x:auto;touch-action:pan-x pan-y;background:#0B0E13;scroll-padding:12px 0;}
+ body.dark #mushaf.printed-reader #qSheet #qVerses .original-printed-page{position:relative;box-sizing:border-box;width:calc(100% * var(--printed-scale,1));max-width:calc(740px * var(--printed-scale,1));margin:0 auto 8px;padding:5px;border:12px solid transparent;border-image:url(quran/printed-1441/ornaments/floral-border.svg) 24 round;border-radius:0;background:#fbf6ed;box-shadow:none;}
  .printed-page-artwork{position:relative;width:100%;line-height:0;}
- .printed-page-image{display:block;width:100%;height:auto;max-width:100%;margin:0;}
+ .printed-page-image{display:block;width:100%;height:auto;max-width:100%;margin:0;filter:grayscale(1) sepia(.22) contrast(1.1);}
  .opening-printed-artwork{aspect-ratio:var(--opening-ratio);overflow:hidden;}
  .opening-printed-artwork>.printed-page-image{position:absolute;top:var(--opening-offset);inset-inline:0;}
  .opening-printed-artwork>.printed-ayah-regions{top:var(--opening-offset);bottom:auto;height:var(--opening-full-height);}
@@ -224,7 +224,9 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  .printed-ayah.is-selected{fill-opacity:.22;}
  .printed-ayah.is-reciting{fill-opacity:.14;}
  .printed-ayah:focus-visible{outline:none;stroke:#8a6632;stroke-width:.8;fill-opacity:.2;}
- .printed-page-index{text-align:center;font:500 13px/1.5 Cairo,sans-serif;padding:9px 0 12px;color:#65543c;direction:rtl;}
+ .printed-opening-title{display:grid;place-items:center;aspect-ratio:5.9681;margin:2px 1px 6px;padding:0;background:url(quran/printed-1441/ornaments/surah-frame.png) center/100% 100% no-repeat;line-height:0;}
+ .printed-opening-title img{display:block;width:30%;height:64%;object-fit:contain;}
+ .printed-page-index{display:grid;place-items:center;margin:4px auto 1px;padding:0;width:76px;aspect-ratio:3.2397;border:0;background:#fbf6ed url(quran/printed-1441/ornaments/page-cartouche.png) center/100% 100% no-repeat;color:#4e391e;font:500 13px/1 Cairo,sans-serif;direction:rtl;}
  body.dark #mushaf.printed-reader #qPageLabel{display:none;}
  body.dark #mushaf.printed-reader #mushafPlayerSlot{grid-row:3;position:relative;inset:auto;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:0;border:1px solid #32383F;border-radius:0;background:#0B0E13;box-shadow:none;}
  body.dark #mushaf.printed-reader #mushafPlayerSlot .recitation-player.reference-player{display:grid;grid-template-columns:36px 36px minmax(0,1fr);grid-template-rows:auto 42px;gap:5px 8px;width:100%;max-width:none;box-sizing:border-box;margin:0;padding:9px 12px;border:0;background:transparent;direction:ltr;}
@@ -242,5 +244,5 @@ body.dark header>.site-nav button.nav-icon-button.active:active{background:#114A
  body.dark #mushaf.printed-reader .printed-reader-options{position:fixed;box-sizing:border-box;width:min(650px,calc(100% - 24px));max-height:85dvh;overflow:auto;padding:16px;border:1px solid #32383F;border-radius:24px;background:#0B0E13;color:#FFFFFF;}
  body.dark #mushaf.printed-reader .printed-reader-options::backdrop{background:#040509cc;}
  body.dark #mushaf.printed-reader .printed-reader-options>.mushaf-toolbar{margin:12px 0;padding:10px;}
- @media(min-width:761px){body.dark #mushaf.printed-reader:not([hidden]){bottom:0;}}
+ @media(min-width:761px){body.dark #mushaf.printed-reader:not([hidden]){bottom:0;}body.dark #mushaf.printed-reader #qSheet #qVerses .original-printed-page{border-width:16px;padding:7px;}.printed-opening-title{margin-bottom:8px;}.printed-page-index{width:90px;font-size:16px;}}
 }

@@ -32,3 +32,5 @@ PREVIEW-HISTORICAL: old preview-only scripts testing separate CSS files or alter
 ANDROID: `tests/android-webview-pixel-qa-20261102.py`, `scripts/android-webview-smoke.sh`, native tests. No physical-device claim from emulator.
 
 Mushaf1441 integration source: `quran-printed-pages.js` enhances QuranReader pages with original local images and calibrated SVG hit regions under `dist/quran/printed-1441/`. `quran-controller.js` owns direct ayah selection and dynamic `#qTrackTitle`; `quran-page-audio.js` owns full-file initial cue playback. Canonical text remains the fallback. No standalone preview app replaces production.
+
+Candidate126 decoration owner: quran-printed-pages.js inserts .printed-opening-title for pages1/2 and the .printed-page-index. dist/salati-ui.css scopes original borders/header/cartouche to #mushaf.printed-reader. Exact sources/licenses/hashes live in dist/quran/printed-1441/ornaments/SOURCES.json and licenses/ORNAMENTS-NOTICE.md. Original image bytes and calibrated regions unchanged. SW183 precaches five decorative assets; canonical native packaging retains them locally.
