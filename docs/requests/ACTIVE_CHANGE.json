@@ -1,22 +1,51 @@
 {
-  "request_id": "SALATI-20261104-PUBLISH-GITHUB-AUTH",
-  "original_request": "ماتنشر الا تتاكد انو مطابق للصوره دي؛ متابعة نشر تعديل الرئيسية المعتمد",
-  "original_verbatim_excerpt": "ماتنشر الا تتاكد انو مطابق للصوره دي",
-  "request_record": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md",
+  "request_id": "SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON",
+  "original_request": "مفروض مثلا لمن اختار سورة الفاتحه وتنتهي مايقيف يمشي طوالي للسوره البعديها تلقائيا مفروض لمن اختار ايه ماتجي بصندوق اسود مفروض تظهر نفس شريط التنقل وعاوز اغير شكل التطبيق الخارجي من بره",
+  "original_verbatim_excerpt": "يمشي طوالي للسوره البعديها تلقائيا",
+  "request_record": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md",
   "base_branch": "production",
-  "base_commit": "35ddc6f33441b02c08101b256d147ca5cd95ca43",
-  "visual_change": false,
-  "android_release": false,
+  "base_commit": "b60a0f4d4356f27fcf5c14c8702737605b9906f9",
+  "visual_change": true,
+  "android_release": true,
   "release_mode": "production",
   "status": "implementation_in_progress",
   "allowed_paths": [
-    "scripts/verify-publish-ci.cjs",
-    "tests/publish-ci-wait.cjs",
+    "quran-controller.js",
+    "dist/app-v1.0.109.js",
+    "dist/app.js",
+    "dist/salati-ui.css",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/ACCEPTANCE_STATUS.json",
-    "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md"
+    "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md",
+    "docs/CURRENT_APPROVED_DESIGN.md",
+    "docs/ACTUAL_SOURCE_MAP.md",
+    "docs/INSTRUCTION_CONFLICTS.md",
+    "tests/quran-continuation-actions.py",
+    "tests/mushaf-fatiha-entry.py",
+    "dist/sw.js",
+    "dist/icons/ayah-play.svg",
+    "dist/icons/ayah-pause.svg",
+    "dist/icons/ayah-surah-start.svg",
+    "dist/icons/ayah-bookmark.svg",
+    "dist/icons/ayah-close.svg"
   ],
-  "visual_allowed_regions": [],
-  "latest_user_instruction": "هذه المحاذاة هي المقصودة؛ نشر النتيجة بعد التحقق",
-  "latest_steering_record": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md"
+  "visual_allowed_regions": [
+    {
+      "selector": "#mushaf",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Direct ayah playback, no integrated action dock; autoNext checkbox defaults false",
+      "after": "Default subsequent-surah playback; nonmodal ayah action dock matching actual nav, reserved below reading area above player",
+      "preserve": [
+        "original Quran plates/text/diacritics/cues",
+        "full-surah source and duration",
+        "Fatiha entry",
+        "bookmarks/reciter/repeat/follow and explicit current-version continuation opt-out",
+        "non-overlapping player/main navigation",
+        "all other tabs and native widget"
+      ]
+    }
+  ],
+  "latest_user_instruction": "شريط إجراءات للآية مثل شريط التنقل؛ أيقونة التطبيق على الهاتف",
+  "latest_steering_record": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md"
 }

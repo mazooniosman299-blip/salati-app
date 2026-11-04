@@ -51,3 +51,6 @@ Latest user explicitly requests that opening the Mushaf starts at Fatiha. This a
 
 ##4Nov2026 home-reference steering
 Latest4Nov home reference supersedes home-only widget-style strip: hero above3x2 rounded dark cards. Existing original mosque explicitly accepted by user «مامشكله استخدم نفس صورة المسجد». Native widget remains unchanged. Juz caption, sacred-house eyebrow and Android install paragraph become white only. Visual acceptance pending actual captures. See requests/SALATI-20261104-HOME-REFERENCE.md.
+
+##4Nov continuation/action-dock/launcher steering
+Latest user now requests a contextual ayah action dock matching actual nav and default subsequent-surah playback. This supersedes the earlier no-actions popup decision only for a nonmodal dock; full-file direct ayah playback, original art and unobscured player remain. External change is launcher icon only; choice pending. See requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md.

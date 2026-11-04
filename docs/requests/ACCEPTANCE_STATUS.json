@@ -1,54 +1,54 @@
 {
-  "request_id": "SALATI-20261104-PUBLISH-GITHUB-AUTH",
-  "source_reference": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md",
-  "producer_branch": "fix/cloudflare-github-check-auth-20261104",
-  "code_runtime_changed": false,
+  "request_id": "SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON",
+  "source_reference": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md",
+  "producer_branch": "fix/quran-continuation-action-dock-20261104",
+  "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md: necessary dependency of authorized home publication, two observed403 failures."
+      "evidence": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md original wording and two explicit clarification answers."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Fixed GitHub Actions read-only endpoint and actual Cloudflare variable names inspected; website/APK untouched."
+      "evidence": "quran-controller/page-audio/Java playlist, actual CSS/nav and Android launcher source traced. Real end-event default-off reproduction recorded."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Node syntax/test execution of build-only script; dist, native source and signed128 APK are byte-identical to35dd."
+      "evidence": "npm run build; actual canonical entry bundles generated. Scope: continuation/action dock; launcher selection still pending."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "tests/publish-ci-wait.cjs new scoped-auth/redaction403 cases and all existing exact-SHA/four-job/timeout/API negative cases; timeout/governance contracts passed."
+      "evidence": "npm test; direct-ayah source/cue/full-duration; Fatiha-entry9 browser cases; real media-ended next/repeat/final114, persistence and native options-only bridge client. Launcher not implemented."
     },
     "real_browser": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "pass",
+      "evidence": "tests/quran-continuation-actions.py: AR320/390/935short-height and EN1440; genuine ayah hits, four working actions/keyboard, full900s fixture duration and nonoverlapping geometry. 48 default-state screenshots unchanged against production128."
     },
     "screenshot_user_reference": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "not_run",
+      "reason": "Actual dock reviewed against real nav and equal active computed palette confirmed; launcher icon options/selection pending, so full visual acceptance is incomplete."
     },
     "android_emulator": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "not_run",
+      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
     },
     "physical_android": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "not_run",
+      "reason": "No physical Android device available; native bridge-client fixture is not emulator or physical service proof."
     },
     "signed_release": {
-      "status": "pass",
-      "evidence": "Unchanged1.0.128 original-key APK independently inspected with apksigner and exact web fingerprint, no new public asset bytes."
+      "status": "not_run",
+      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Build-only publication authentication dependency, not yet implemented or published."
+      "reason": "Pending selected launcher asset and full original-key signed-release gates. Current official remains128."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "Build-only publication authentication dependency, not yet implemented or published."
+      "reason": "Launcher choices and actual dock capture to be shown; no claim of final user approval."
     }
   }
 }

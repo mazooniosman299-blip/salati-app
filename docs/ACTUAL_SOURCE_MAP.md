@@ -39,3 +39,6 @@ Fatiha-entry owner: QuranReader.enterAtSurahStart in quran-controller.js, called
 
 ##4Nov2026 home-reference steering
 Home-reference owner: #times .home-dashboard in index.html and salati-ui.css; app-source.js render/tick own real next-prayer clock, AM/PM and six calculated cards. Native PrayerWidget.java/XML/resources untouched. Requested white text owners: printed-reader #qTrack, #qibla .eyebrow and #androidDownload>p. See requests/SALATI-20261104-HOME-REFERENCE.md.
+
+##4Nov continuation/action-dock/launcher steering
+New continuation/dock owners: QuranReader constructor/save and completion callback, setupVerseActions; scoped printed-reader dock CSS. Native playlist already supports autoNext. Android launcher uses ic_salati adaptive resources; shared uses must be checked before replacing launcher-only art. See requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md.
