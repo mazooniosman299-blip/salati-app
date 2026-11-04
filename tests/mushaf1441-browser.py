@@ -27,6 +27,8 @@ try:
     page.goto(f'http://127.0.0.1:{server.server_port}/');page.evaluate('document.fonts.ready')
     for tab in ['times','qibla','dhikr','tasbih','settings','mushaf']:
      page.locator(f'[data-tab="{tab}"]').click();assert page.locator('#'+tab).is_visible();assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1');page.screenshot(path=str(out/f'{width}-{lang}-{tab}.png'))
+    page.wait_for_selector('[data-reading-page="1"].original-printed-page');assert page.locator('#qSurah').input_value()=='1'
+    page.locator('#qSurah').evaluate("e=>{e.value='68';e.dispatchEvent(new Event('change',{bubbles:true}))}")
     page.wait_for_selector('[data-reading-page="564"].original-printed-page');assert page.locator('#verseActions,#verseReciterMenu').count()==0
     assert page.locator('#qTrackTitle').inner_text()==('سورة القلم' if lang=='ar' else 'Surah Al-Qalam')
     assert page.locator('#qTrackTitle').evaluate('(e)=>getComputedStyle(e).color')=='rgb(255, 255, 255)'
@@ -34,7 +36,18 @@ try:
     if width<=760:assert dock['y']+dock['height']<=page.locator('.site-nav').bounding_box()['y']+1
     # Exact original word location in p564. SVG multi-line bounding-box centers
     # can belong to another ayah, so use this native-image coordinate instead.
-    image=page.locator('[data-reading-page="564"] .printed-page-image');box=image.bounding_box();page.mouse.click(box['x']+box['width']*650/1352,box['y']+box['height']*110/2170)
+    # A deliberate Qalam choice scrolls to its mid-page first verse. Settle
+    # that real animation before scrolling up to Mulk27 for the pointer test.
+    # A no-op scrollTo(0) before the animation starts does not always cancel it.
+    stable='e=>new Promise(resolve=>{let last=NaN,steady=0;const frame=()=>{const y=e.scrollTop;steady=Math.abs(y-last)<.01?steady+1:0;last=y;if(steady>=4)resolve();else requestAnimationFrame(frame)};requestAnimationFrame(frame)})'
+    page.locator('#qVerses').evaluate(stable)
+    page.locator('#qVerses').evaluate("e=>e.scrollTo({top:0,behavior:'instant'})")
+    page.locator('#qVerses').evaluate(stable)
+    image=page.locator('[data-reading-page="564"] .printed-page-image');box=image.bounding_box();x=box['x']+box['width']*650/1352;y=box['y']+box['height']*110/2170
+    hit=page.evaluate('([x,y])=>document.elementFromPoint(x,y)?.closest("[data-ayah]")?.dataset.ayah',[x,y])
+    if hit!='67:27':page.screenshot(path=str(out/f'{width}-{lang}-pointer-failure.png'))
+    assert hit=='67:27',(width,lang,'pointer must reach the verified original Mulk27 coordinates',hit,box)
+    page.mouse.click(x,y)
     page.wait_for_function('document.querySelector("#qAudio").currentSrc.endsWith("/067.mp3")&&!document.querySelector("#qAudio").paused&&document.querySelector("#qAudio").currentTime>=384.234')
     assert page.locator('[data-ayah="67:27"].is-selected').count()==1;assert page.locator('#qDuration').inner_text()=='15:00';assert 'كاملة' not in page.locator('.recitation-caption').inner_text();assert 'المصحف الشريف' not in page.locator('.recitation-caption').inner_text()
     assert page.locator('#qTrackTitle').inner_text()==('سورة الملك' if lang=='ar' else 'Surah Al-Mulk')

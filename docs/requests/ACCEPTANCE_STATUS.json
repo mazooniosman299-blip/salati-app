@@ -1,14 +1,14 @@
 {
-  "request_id": "SALATI-20261103-MUSHAF1441",
-  "source_reference": "docs/requests/SALATI-20261104-FRAMED-MUSHAF-RESEARCH.md",
-  "producer_branch": "mushaf1441-official",
+  "request_id": "SALATI-20261104-FATIHA-ENTRY",
+  "source_reference": "docs/requests/SALATI-20261104-FATIHA-ENTRY.md",
+  "producer_branch": "fix/mushaf-fatiha-entry",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261103-MUSHAF1441.md"
+      "evidence": "docs/requests/SALATI-20261104-FATIHA-ENTRY.md"
     },
     "source_map_and_contract": {
       "status": "pass",
@@ -16,23 +16,23 @@
     },
     "source_build": {
       "status": "pass",
-      "evidence": "npm run build: local successful source build; full release fingerprint pending"
+      "evidence": "npm run build; regenerated linked app-v1.0.109.js from canonical quran-controller.js and app-source.js; CSS/artwork unchanged."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test + tests/quran-direct-ayah.cjs + tests/printed-mushaf-integrity.cjs; local logs referenced in request record"
+      "evidence": "npm test complete passed; native queue, direct ayah/continuous source, storage/bookmark and preferences contracts retained."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "reports/mushaf-ornaments/result.json:21 actual cases; integrated8 responsive/language functional cases;48 scope comparison captures;10 opening cases. Not a physical phone."
+      "evidence": "reports/mushaf-fatiha-entry/result.json:8 saved-state cases plus actual background-cue/resume fixture; updated existing8 reader/10 opening/21 geometry cases pass;48 default-production screenshots unchanged."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "Near-edition scope expressly allowed by user: actual Fatiha/Baqara/mixed564 captures compared with103498.jpg; thin floral outer frame, cream paper, black original ink and original title/number ornaments present. Exact AlMosaly art identity and post-release user acceptance are NOT asserted."
+      "evidence": "No design change requested. dist/salati-ui.css,604 plates/6236 ayah regions and all original ornaments remain byte-identical to production1.0.126; first-Fatiha phone/desktop screenshots personally inspected."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Fresh1.0.126 original-key127 emulator update evidence pending CI. Prior125 CI signed upgrade and WebView passed, not counted for126."
+      "reason": "Fresh1.0.127/code128 signed upgrade over current official1.0.126 awaits exact-SHA GitHub emulator job. Prior126 proof is not counted."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,15 +40,15 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "apk-release-parts/v1.0.126/manifest.json; original certificate559dec66..., APK9804ecdf...,1000 exact staged/shared assets; below25MiB."
+      "evidence": "apk-release-parts/v1.0.127/manifest.json; original certificate/applicationId preserved,1000 native/shared files byte-verified and below25MiB."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Fresh exact-SHA required checks and normal PR merge/deployment pending."
+      "reason": "Normal PR merge and fresh exact-production release gates/deployment verification pending."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "User authorized finished close original edition and official release; no claim of post-release user review."
+      "reason": "No post-fix user acceptance is asserted."
     }
   }
 }

@@ -74,7 +74,8 @@ const tabPositions=new Map();document.querySelectorAll('[data-tab]').forEach(b=>
  panels.forEach(t=>t.hidden=t.id!==b.dataset.tab);
  document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});
  $('status').textContent='';
- // Restore before opening Quran so following the currently playing verse retains priority.
+ // Restore outer tab positions before Quran handles its own Fatiha entry.
+ // Background audio remains independent of the reader opening page.
  scroller.scrollTo({top:b.dataset.tab==='mushaf'?0:(tabPositions.get(b.dataset.tab)||0),behavior:'instant'});
  if(b.dataset.tab==='mushaf'){tabPositions.delete('mushaf');mushaf.enterAtSurahStart();}
  revealTabControls(b.dataset.tab);

@@ -1,0 +1,105 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "ar",
+      "saved": {
+        "page": 2,
+        "activeSurah": 2
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "ar",
+      "saved": {
+        "page": 42,
+        "activeSurah": 2
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "ar",
+      "saved": {
+        "page": 564,
+        "activeSurah": 68
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "ar",
+      "saved": {},
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "en",
+      "saved": {
+        "page": 2,
+        "activeSurah": 2
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "en",
+      "saved": {
+        "page": 42,
+        "activeSurah": 2
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "en",
+      "saved": {
+        "page": 564,
+        "activeSurah": 68
+      },
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "en",
+      "saved": {},
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "background_audio": "same full-surah source/playhead; entry remains Fatiha after next cue",
+      "result": "PASS fixture"
+    }
+  ],
+  "physical_phone": "NOT RUN",
+  "audio_fixture": "900-second silent range-capable WAV; not a human audio audition"
+}

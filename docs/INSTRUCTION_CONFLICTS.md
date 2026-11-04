@@ -25,3 +25,6 @@ The user identified an almost empty Fatiha viewport in a short/wide browser. Ver
 
 ## Latest rejection and framed-reference search —4Nov2026 Asia/Dubai
 The user rejects candidate125 artwork/desktop gaps and supplies103498.jpg, requiring that original thin-brown-framed edition or a close original edition. This supersedes option3 artwork approval. PR47 remains draft; publication is held. Preserve previous successful audio/selection/top-whitespace fixes. Research exact source and clearly identify any near alternative before adoption; see requests/SALATI-20261104-FRAMED-MUSHAF-RESEARCH.md.
+
+##4Nov2026 — explicit Fatiha entry
+Latest user requires Fatiha whenever explicitly opening the Mushaf tab. This supersedes the prior behavior of reopening the start of the saved selected surah. Keep stored explicit bookmark/preferences, deliberate in-reader chapter navigation and background audio. Visibility resume passes the current surah explicitly rather than acting as a new tab entry. Existing tests that need later pages must deliberately select them after entry; do not weaken their geometry/audio assertions. No appearance/artwork modifications authorized.
