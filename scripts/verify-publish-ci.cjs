@@ -10,22 +10,41 @@ const base='https://api.github.com/repos/mazooniosman299-blip/salati-app';
 const mandatory=['behavior-and-release','actual-browser-ui','real-android-webview','negative-publication-tests'];
 const MAX_WAIT_MS=13*60*1000;
 const POLL_MS=30000;
+function requestHeaders(env=process.env){
+ const headers={
+  Accept:'application/vnd.github+json',
+  'User-Agent':'Salati-Required-Production-Checks',
+  'X-GitHub-Api-Version':'2022-11-28'
+ };
+ // Explicit build-only secret. Never implicitly copy a general workspace token,
+ // and never include this value in logs, frontend bundles or error messages.
+ const token=String(env.SALATI_GITHUB_CHECKS_TOKEN||'').trim();
+ assert(!/[\x00-\x20\x7f]/.test(token),'Invalid SALATI_GITHUB_CHECKS_TOKEN characters');
+ if(token)headers.Authorization='Bearer '+token;
+ return headers;
+}
+function githubAPIError(status,headers={}){
+ const digits=value=>/^\d{1,12}$/.test(String(value||''))?String(value):'unknown';
+ const remaining=digits(headers['x-ratelimit-remaining']);
+ const reset=digits(headers['x-ratelimit-reset']);
+ const when=reset==='unknown'?'unknown':new Date(Number(reset)*1000).toISOString();
+ // Response bodies and unvalidated header values may contain secrets; never log them.
+ return Error('GitHub checks API returned '+status+'; rate-limit remaining='+remaining+' reset='+when+
+  (status===401||status===403?'; configure SALATI_GITHUB_CHECKS_TOKEN as an encrypted Cloudflare Production secret with repository Actions read-only access':''));
+}
 function request(uri){
  return new Promise((resolve,reject)=>{
-  const req=https.get(base+uri,{headers:{
-   Accept:'application/vnd.github+json',
-   'User-Agent':'Salati-Required-Production-Checks',
-   'X-GitHub-Api-Version':'2022-11-28'
-  },timeout:12000},res=>{
+  // Fixed HTTPS GitHub host/repository; redirects are rejected, not followed.
+  const req=https.get(base+uri,{headers:requestHeaders(),timeout:12000},res=>{
    let body='';res.setEncoding('utf8');
    res.on('data',part=>{body+=part;if(body.length>2000000)req.destroy(Error('GitHub response too large'))});
    res.on('end',()=>{
-    if(res.statusCode!==200)return reject(Error('GitHub checks API returned '+res.statusCode));
-    try{resolve(JSON.parse(body))}catch(e){reject(e)}
+    if(res.statusCode!==200)return reject(githubAPIError(res.statusCode,res.headers));
+    try{resolve(JSON.parse(body))}catch{reject(Error('GitHub checks API returned invalid JSON'))}
    });
   });
   req.on('timeout',()=>req.destroy(Error('GitHub checks API timeout')));
-  req.on('error',reject);
+  req.on('error',error=>reject(Error(error?.message==='GitHub checks API timeout'?'GitHub checks API timeout':'GitHub checks API network failure')));
  });
 }
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -68,4 +87,4 @@ async function verify(sha,{fetch=request,wait=sleep,clock=Date.now,maxWaitMs=MAX
 if(require.main===module){
  verify(process.argv[2]||'').catch(e=>{console.error('BLOCK PRODUCTION:',e.stack||String(e));process.exitCode=1});
 }
-module.exports={verify,latestCorrectRun,requiredJobsSuccess,MAX_WAIT_MS,POLL_MS};
+module.exports={verify,latestCorrectRun,requiredJobsSuccess,MAX_WAIT_MS,POLL_MS,requestHeaders,githubAPIError};

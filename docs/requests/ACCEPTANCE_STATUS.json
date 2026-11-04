@@ -1,54 +1,54 @@
 {
-  "request_id": "SALATI-20261104-HOME-REFERENCE",
-  "source_reference": "docs/requests/SALATI-20261104-HOME-REFERENCE.md",
-  "producer_branch": "fix/home-reference-20261104",
-  "code_runtime_changed": true,
+  "request_id": "SALATI-20261104-PUBLISH-GITHUB-AUTH",
+  "source_reference": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md",
+  "producer_branch": "fix/cloudflare-github-check-auth-20261104",
+  "code_runtime_changed": false,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261104-HOME-REFERENCE.md including later existing-mosque authorization"
+      "evidence": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md: necessary dependency of authorized home publication, two observed403 failures."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Actual index.html, linked CSS and render/tick inspected; native widget excluded."
+      "evidence": "Fixed GitHub Actions read-only endpoint and actual Cloudflare variable names inspected; website/APK untouched."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "npm run build; canonical source regenerates both actual JS bundles. Original-key Android release build successful."
+      "evidence": "Node syntax/test execution of build-only script; dist, native source and signed128 APK are byte-identical to35dd."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test, active seven-size six-tab suite,9 Fatiha entry/audio scenarios, new10 home/3 unavailable cases and mobile settings/Fajr safety checks passed."
+      "evidence": "tests/publish-ci-wait.cjs new scoped-auth/redaction403 cases and all existing exact-SHA/four-job/timeout/API negative cases; timeout/governance contracts passed."
     },
     "real_browser": {
-      "status": "pass",
-      "evidence": "reports/home-reference/result.json and current48 baseline/candidate captures; actual Chromium, Arabic/English, switching/reload; no page errors."
+      "status": "not_applicable",
+      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
     },
     "screenshot_user_reference": {
-      "status": "pass",
-      "evidence": "design-qa.md: manual revised reference review +455x457 measured geometry, explicit existing-photo authorization, later noص and physical-right alignment confirmation. No automatic pixel-equality claim."
+      "status": "not_applicable",
+      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "New home reference implementation and scoped color request pending verification."
+      "status": "not_applicable",
+      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
     },
     "physical_android": {
-      "status": "not_run",
-      "reason": "No physical phone available; prior explicit user waiver for completing web edits retained. Fresh hardware emulator/install-over-install remains mandatory; no device claim."
+      "status": "not_applicable",
+      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "apk-release-parts/v1.0.128/manifest.json: original cert/app ID,1000 staged/shared files byte-verified,25MiB limit retained."
+      "evidence": "Unchanged1.0.128 original-key APK independently inspected with apksigner and exact web fingerprint, no new public asset bytes."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "New home reference implementation and scoped color request pending verification."
+      "reason": "Build-only publication authentication dependency, not yet implemented or published."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "User explicitly approved corrected right alignment and existing photo. Full post-publication acceptance is separate and not yet claimed."
+      "reason": "Build-only publication authentication dependency, not yet implemented or published."
     }
   }
 }

@@ -1,7 +1,18 @@
 #!/usr/bin/env node
 'use strict';
 const assert=require('node:assert/strict');
-const {verify,latestCorrectRun,requiredJobsSuccess}=require('../scripts/verify-publish-ci.cjs');
+const {verify,latestCorrectRun,requiredJobsSuccess,requestHeaders,githubAPIError}=require('../scripts/verify-publish-ci.cjs');
+// A fixture string, never a real credential. No network in these auth cases.
+const fixtureToken='unit_fixture_token';
+assert.equal(requestHeaders({SALATI_GITHUB_CHECKS_TOKEN:'  '+fixtureToken+'  '}).Authorization,'Bearer '+fixtureToken);
+assert.equal(requestHeaders({GH_TOKEN:fixtureToken,GITHUB_TOKEN:fixtureToken}).Authorization,undefined,'Broad environment credentials must not be exported implicitly');
+assert.equal(requestHeaders({}).Accept,'application/vnd.github+json');
+assert.throws(()=>requestHeaders({SALATI_GITHUB_CHECKS_TOKEN:fixtureToken+'\nInjected'}),e=>!e.message.includes(fixtureToken),'Invalid header must not echo a credential');
+const denied=githubAPIError(403,{'x-ratelimit-remaining':'0','x-ratelimit-reset':'1800000000'});
+assert.match(denied.message,/403.*remaining=0.*reset=2027-01-15T08:00:00.000Z/);
+assert.match(denied.message,/SALATI_GITHUB_CHECKS_TOKEN/);
+assert(!githubAPIError(403,{'x-ratelimit-remaining':fixtureToken,'x-ratelimit-reset':fixtureToken}).message.includes(fixtureToken),'Never echo unvalidated response headers');
+assert.match(githubAPIError(401,{}).message,/401/);
 const sha='a'.repeat(40),wrong='b'.repeat(40);
 const correct={head_sha:sha,head_branch:'production',event:'push',name:'Salati permanent regression protection (NO DEPLOY)',created_at:'2026-11-03T02:00:00Z',id:123,status:'completed',conclusion:'success'};
 const older={...correct,id:122,created_at:'2026-11-02T02:00:00Z',conclusion:'failure'};
