@@ -48,3 +48,6 @@ User requests a light framed edition close to AlMosaly and official release afte
 
 ##4Nov2026 — entry behavior supersedes selected-surah reopening
 Latest user explicitly requests that opening the Mushaf starts at Fatiha. This affects entry/restoration only; original126 artwork, geometry, colors and audio sources stay byte-identical. Explicit in-reader surah/verse/bookmark navigation remains available. Stored bookmarks and reciter/size/repeat/follow preferences remain. Returning from document visibility resumes the current reading context rather than being treated as a fresh tab entry. Source: requests/SALATI-20261104-FATIHA-ENTRY.md.
+
+##4Nov2026 home-reference steering
+Latest4Nov home reference supersedes home-only widget-style strip: hero above3x2 rounded dark cards. Existing original mosque explicitly accepted by user «مامشكله استخدم نفس صورة المسجد». Native widget remains unchanged. Juz caption, sacred-house eyebrow and Android install paragraph become white only. Visual acceptance pending actual captures. See requests/SALATI-20261104-HOME-REFERENCE.md.

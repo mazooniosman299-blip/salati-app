@@ -36,3 +36,6 @@ Mushaf1441 integration source: `quran-printed-pages.js` enhances QuranReader pag
 Candidate126 decoration owner: quran-printed-pages.js inserts .printed-opening-title for pages1/2 and the .printed-page-index. dist/salati-ui.css scopes original borders/header/cartouche to #mushaf.printed-reader. Exact sources/licenses/hashes live in dist/quran/printed-1441/ornaments/SOURCES.json and licenses/ORNAMENTS-NOTICE.md. Original image bytes and calibrated regions unchanged. SW183 precaches five decorative assets; canonical native packaging retains them locally.
 
 Fatiha-entry owner: QuranReader.enterAtSurahStart in quran-controller.js, called without a surah by app-source.js on explicit Mushaf tab entry. Visibility resume passes the current surah. QuranReader.go increments reading-navigation intent so an older pending entry cannot overwrite a newer explicit surah/bookmark choice. No CSS or original Quran data/art changes.
+
+##4Nov2026 home-reference steering
+Home-reference owner: #times .home-dashboard in index.html and salati-ui.css; app-source.js render/tick own real next-prayer clock, AM/PM and six calculated cards. Native PrayerWidget.java/XML/resources untouched. Requested white text owners: printed-reader #qTrack, #qibla .eyebrow and #androidDownload>p. See requests/SALATI-20261104-HOME-REFERENCE.md.

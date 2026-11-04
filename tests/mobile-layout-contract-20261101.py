@@ -25,17 +25,12 @@ try:
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6")
    cells=page.locator('#prayers .prayer').evaluate_all("""es=>es.map(e=>({active:e.classList.contains('active'),x:e.getBoundingClientRect().x,right:e.getBoundingClientRect().right,height:e.getBoundingClientRect().height,bg:getComputedStyle(e).backgroundColor,radius:getComputedStyle(e).borderRadius}))""")
    assert len(cells)==6 and sum(c['active'] for c in cells)==1,(width,cells)
-   # Current production reference is ONE rounded shared six-prayer strip,
-   # with transparent individual cells and underlined active time, NOT six old blue pills.
-   if width<=760:
-    assert all(c['radius']=='0px' and c['bg']=='rgba(0, 0, 0, 0)' for c in cells),(width,'phone strip geometry',cells)
-    strip=page.locator('#prayers').evaluate("e=>({r:getComputedStyle(e).borderRadius,w:e.getBoundingClientRect().width})")
-    assert strip['w']>width*.6,(width,'shared six-prayer strip missing',strip)
-    activeStyle=page.locator('#prayers .prayer.active>strong').evaluate("e=>getComputedStyle(e).textDecorationLine")
-    assert 'underline' in activeStyle,(width,'selected time must be underlined',activeStyle)
-   else:
-    assert all(c['radius']=='24px' for c in cells),(width,'tablet cards reference',cells)
-    assert next(c for c in cells if c['active'])['bg']=='rgb(53, 74, 103)',(width,'tablet selected card',cells)
+   # Superseded home-only reference4Nov:3x2 charcoal cards; native widget stays one strip.
+   assert all(c['radius']=='12px' for c in cells),(width,'reference card corners',cells)
+   assert next(c for c in cells if c['active'])['bg']=='rgb(41, 47, 57)',(width,'charcoal selected card',cells)
+   assert all(c['bg']=='rgb(21, 26, 34)' for c in cells if not c['active']),(width,'charcoal unselected cards',cells)
+   grid=page.locator('#prayers').evaluate("e=>({cols:getComputedStyle(e).gridTemplateColumns.split(' ').length,rows:getComputedStyle(e).gridTemplateRows.split(' ').length})")
+   assert grid=={'cols':3,'rows':2},(width,'reference3x2 grid',grid)
    assert all(c['x']>=0 and c['right']<=width+1 for c in cells),(width,'prayer cells must fit')
    if width<=760:
     assert all(c['height']>=40 and c['height']<=90 for c in cells),(width,'six equal-height shared-strip cells',cells)
@@ -73,10 +68,10 @@ try:
     page.click('[data-tab=times]')
     page.screenshot(path=str(out/f'prayers-{width}.png'))
    assert not errors,(width,'browser exception',errors)
-   stats.append({'viewport':[width,height],'one_shared_prayer_strip':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
+   stats.append({'viewport':[width,height],'reference_3x2_cards':True,'settings_not_clipped':True,'nav_fixed_to_bottom':width<=760,'no_overlap':True,'errors':0})
    page.close()
   browser.close()
 finally:
  server.shutdown()
 (out/'results.json').write_text(json.dumps(stats,ensure_ascii=False,indent=2)+'\n')
-print('PASS: settings/main never clip, single matte strip with underlined active prayer and nav stays at viewport bottom at six responsive sizes')
+print('PASS: settings/main never clip, 3x2 reference cards with charcoal selected prayer and nav stays at viewport bottom at six responsive sizes')

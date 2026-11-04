@@ -56,6 +56,8 @@ jobs:
     timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -78,6 +80,7 @@ jobs:
         run: |
           python3 tests/active-production-browser-20261102.py
           python3 tests/mobile-layout-contract-20261101.py
+          python3 tests/home-reference-browser.py
       - name: Test latest approved printed reader and unchanged prayer/Fajr safety
         run: |
           set -euo pipefail

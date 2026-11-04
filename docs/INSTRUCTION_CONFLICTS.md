@@ -28,3 +28,8 @@ The user rejects candidate125 artwork/desktop gaps and supplies103498.jpg, requi
 
 ##4Nov2026 — explicit Fatiha entry
 Latest user requires Fatiha whenever explicitly opening the Mushaf tab. This supersedes the prior behavior of reopening the start of the saved selected surah. Keep stored explicit bookmark/preferences, deliberate in-reader chapter navigation and background audio. Visibility resume passes the current surah explicitly rather than acting as a new tab entry. Existing tests that need later pages must deliberately select them after entry; do not weaken their geometry/audio assertions. No appearance/artwork modifications authorized.
+
+##4Nov2026 home-reference steering
+Latest4Nov home reference explicitly excludes native widget; earlier home strip/capsule assertions are historical for home only. Replace their home geometry assertions with reference3x2 cards, retain all settings/overflow/ordinary Fajr safeguards. Existing mosque authorized as explicit exception to new screenshot photo; no blanket recolors. See requests/SALATI-20261104-HOME-REFERENCE.md.
+
+Home AM steering: latest explicit user says noص and requests exact right alignment. Remove Arabic AM suffix from home only (not native widget). Preserve existing PMم. RTL flex-end was a real physical-left child alignment bug; enforce common actual text-range right edges.
