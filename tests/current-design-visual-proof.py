@@ -20,7 +20,7 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 SERVER=ThreadingHTTPServer(("127.0.0.1",0),partial(Quiet,directory=str(DIST)))
 Thread(target=SERVER.serve_forever,daemon=True).start()
-SELECTORS=["body","header>.site-nav","#prayers","#times .prayer-overview",
+SELECTORS=["#mushaf","body","header>.site-nav","#prayers","#times .prayer-overview",
  "#mushaf #qSheet","#mushaf #qVerses","#mushafPlayerSlot","#mushaf #qTransport",
  "#qibla",".qibla-reading","#dhikr","#tasbih","#settings"]
 SIZES=[(320,740),(390,844),(768,1024),(1280,850)]
@@ -56,7 +56,9 @@ try:
     assert page.locator("header>.site-nav button[data-tab]").count()==6
     assert page.locator('link[href="salati-ui.css"]').count()==1
     assert page.evaluate("getComputedStyle(document.body).backgroundColor")=="rgb(11, 14, 19)",(language,width,"dark-only body changed")
+    page.evaluate('()=>document.fonts.ready')
     for tab in TABS:
+     if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
      page.locator(f'header>.site-nav button[data-tab="{tab}"]').click()
      page.wait_for_function("(name) => document.querySelector('header>.site-nav button.active')?.dataset.tab===name",arg=tab)
      assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+2"),(language,width,tab,"unexpected horizontal page scroll")
@@ -65,11 +67,13 @@ try:
      if width<=760:assert abs(nav["bottom"]-height)<3,(language,width,tab,"navigation not anchored at bottom",nav)
      if tab=="mushaf":
       page.locator("#qVerses .quran-reading-page").first.wait_for(timeout=25000)
+      if page.locator("#mushaf.printed-reader").count():page.locator(".original-printed-page").first.wait_for(timeout=25000)
       assert page.locator("#mushafPlayerSlot").count()==1,(language,width,"Quran audio dock missing")
       assert page.locator("#qTransport").count()==1 and page.locator("#qSeek").count()==1
       assert page.evaluate("!document.querySelector('#qVerses').contains(document.querySelector('#mushafPlayerSlot'))")
       q=page.locator("#qVerses").evaluate("""e=>({pages:e.querySelectorAll('.quran-reading-page').length,overflow:getComputedStyle(e).overflowY,height:e.clientHeight})""")
       assert q["pages"]>0 and q["height"]>50 and q["overflow"] in ("auto","scroll"),(language,width,q)
+     page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))')
      name=f"{language}-{tab}-{width}.png"
      page.screenshot(path=str(OUT/name),animations="disabled")
      EVIDENCE.append({"language":language,"tab":tab,"viewport":[width,height],

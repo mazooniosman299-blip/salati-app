@@ -1,0 +1,105 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "viewport": [
+        935,
+        325
+      ],
+      "page": 1,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        935,
+        325
+      ],
+      "page": 2,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "page": 1,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "page": 2,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        700
+      ],
+      "page": 1,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        1440,
+        700
+      ],
+      "page": 2,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "page": 1,
+      "first_ink_y": 140.76402243589743,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "page": 2,
+      "first_ink_y": 140.7550850591716,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "page": 1,
+      "first_ink_y": 127.36458333333334,
+      "reader_top": 48,
+      "result": "PASS"
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "page": 2,
+      "first_ink_y": 127.35336538461539,
+      "reader_top": 48,
+      "result": "PASS"
+    }
+  ]
+}

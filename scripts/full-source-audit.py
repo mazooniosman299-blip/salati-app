@@ -28,7 +28,12 @@ def refs(file,html):
    else:stats['resolved_asset_refs']+=1
  LinkCheck().feed(html)
 
-for file in sorted(ROOT.rglob('*')):
+# Git's source inventory includes new nonignored candidate files and excludes
+# Gradle binary lint caches/build outputs, which can carry an .xml suffix.
+# Do not misreport ignored compiler products as broken project source.
+inventory=subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=ROOT).decode('utf-8').split('\0')
+for relative in sorted(set(name for name in inventory if name)):
+ file=ROOT/relative
  if not file.is_file() or any(part in ('.git','node_modules','__pycache__') for part in file.relative_to(ROOT).parts):continue
  rel=file.relative_to(ROOT)
  ext=file.suffix.lower()

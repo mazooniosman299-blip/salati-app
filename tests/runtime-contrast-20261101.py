@@ -50,6 +50,7 @@ try:
    page=browser.new_page(viewport={'width':width,'height':844},service_workers='block')
    page.goto(f'http://127.0.0.1:{server.server_port}/',wait_until='domcontentloaded')
    for tab,selectors in targets.items():
+    if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
     page.click(f'[data-tab={tab}]')
     page.wait_for_timeout(70)
     for selector in selectors:
@@ -62,6 +63,7 @@ try:
    # the nav surface contains gradients, not because a low ratio was proven.
    # Compute the foreground against the rendered dark surface for all states.
    for tab in ('times','mushaf','dhikr','settings'):
+    if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
     page.click(f'[data-tab={tab}]')
     for name in ('mushaf','dhikr','settings'):
      selector=f'header>.site-nav .nav-icon-button[data-tab="{name}"] span'

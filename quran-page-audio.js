@@ -23,7 +23,13 @@ export class PageRecitation{
   const groups=[verses,...(this.player.nativeQuran?options.nextSurahs||[]:[])];
   return groups.map(rows=>{const surah=rows[0].s,entry=edition.surahs[surah-1],allowed=new Set(rows.map(v=>v.a));
    if(!entry?.url||!entry.cues?.length||entry.cues.some(([a,start,end],i)=>!allowed.has(a)||!Number.isFinite(start)||!Number.isFinite(end)||start<0||end<=start||i&&start<entry.cues[i-1][1]))throw Error('timing');
-   return {verse:null,surah,url:entry.url,continuous:true,cues:entry.cues};
+   const segment={verse:null,surah,url:entry.url,continuous:true,cues:entry.cues};
+   if(surah===options.surah&&options.startAyah!==undefined){
+    const cue=entry.cues.find(row=>row[0]===options.startAyah);
+    if(!cue&&options.startAyah!==1)throw Error('unsupported');
+    segment.initialPosition=options.startAyah===1?0:cue[1]/1000;
+   }
+   return segment;
   });
  }
  async play(reciter,verses,options={}){const {surah}=options;this.stop();this.loading=true;const generation=this.generation;try{if(!verses.length||verses.some(v=>!reciter.surahs.includes(v.s))||surah&&verses.some(v=>v.s!==surah))throw Error('unsupported');const queue=surah&&VERSE_FOLDERS[reciter.id]?await this.continuousSegments(reciter,verses,options):await this.segments(reciter,verses);if(generation!==this.generation)return;this.loading=false;this.queue=queue;this.surahKey=surah?reciter.id+':'+surah:'';this.index=0;this.active=true;if(this.player.nativeQuran)this.launchNative(queue,reciter,options);else this.start()}catch(error){if(generation===this.generation){this.loading=false;this.onError(error.message==='unsupported'?'unsupported':'network')}}}
@@ -34,7 +40,7 @@ export class PageRecitation{
   if(segment===this.announced)return;this.announced=segment;this.onVerse(segment.verse,segment);this.preloadNext();}
  clearPreload(){if(this.preloader){this.preloader.pause();this.preloader.removeAttribute('src');this.preloader.load();this.preloader=null;}}
  preloadNext(){this.clearPreload();if(this.player.nativeQuran)return;const next=this.queue[this.index+1];if(!next||next.url===this.queue[this.index]?.url)return;this.preloader=this.createPreloader();if(this.preloader){this.preloader.preload='auto';this.preloader.src=next.url;this.preloader.load();}}
- start(){const segment=this.queue[this.index];if(!segment){this.stop();this.onComplete();return}this.seeking=segment.start!==undefined;const same=this.player.getAttribute('src')===segment.url;this.player.loop=false;if(!same||this.player.error){this.player.src=segment.url;this.player.load()}else this.seek();const generation=this.generation;this.player.play().then(()=>{if(generation===this.generation&&segment===this.queue[this.index])this.announce()}).catch(e=>{if(generation===this.generation&&segment===this.queue[this.index]&&e.name!=='AbortError'&&this.active){this.stop();this.onError('play')}})}
- seek(){if(!this.active||!this.seeking)return;const segment=this.queue[this.index];try{this.player.currentTime=segment.start;this.seeking=false}catch{this.stop();this.onError('timing')}}
+ start(){const segment=this.queue[this.index];if(!segment){this.stop();this.onComplete();return}this.seeking=segment.start!==undefined||segment.initialPosition!==undefined;const same=this.player.getAttribute('src')===segment.url;this.player.loop=false;if(!same||this.player.error){this.player.src=segment.url;this.player.load()}else this.seek();const generation=this.generation;this.player.play().then(()=>{if(generation===this.generation&&segment===this.queue[this.index])this.announce()}).catch(e=>{if(generation===this.generation&&segment===this.queue[this.index]&&e.name!=='AbortError'&&this.active){this.stop();this.onError('play')}})}
+ seek(){if(!this.active||!this.seeking)return;const segment=this.queue[this.index];try{this.player.currentTime=segment.initialPosition??segment.start;this.seeking=false}catch{this.stop();this.onError('timing')}}
  advance(){if(!this.active)return;this.index++;this.start()}
 }

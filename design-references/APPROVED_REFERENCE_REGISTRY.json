@@ -95,6 +95,15 @@
       "source": "User-discussed prior Library illustration, 2026-11-02 20:15 UTC",
       "element": "Charcoal player shape/order/size and blue transport; user explicitly removes timer/lock/chevron/notch and separate reciter selector",
       "rights": "Illustration/context only; not original Quran publisher source and not approved redistribution artwork; no embed or pixel-parity claim."
+    },
+    {
+      "id": "mushaf1441-selected-option3",
+      "status": "verified-selected-edition",
+      "file": "dist/quran/printed-1441/manifest.json",
+      "sha256": "86eb0259b0903232f05914c2f1049448193db5e316a276a0dc69cb402adbfc02",
+      "source": "User approved option3 in independent preview; pinned original hifdziapp/mushaf and QuranWS revisions in manifest",
+      "element": "Mushaf original plate edition; 604 image hashes, not a pixel-parity claim for entire application",
+      "rights": "KFQC publisher usage notice and QuranWS CC-BY4 metadata notices retained in quran/printed-1441/licenses"
     }
   ]
 }

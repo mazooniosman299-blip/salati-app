@@ -15,7 +15,7 @@ root=Path(__file__).resolve().parents[1]
 css=root/'dist'
 # Immutable source-controlled approved production snapshot. This fixture must
 # change only after full visual review; a normal web build cannot erase it.
-baseline=(root/'tests/fixtures/salati-v123-approved-ui.css').read_text()
+baseline=(root/'tests/fixtures/salati-v126-approved-ui.css').read_text()
 optimized=(css/'salati-ui.css').read_text()
 assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # Re-running a cleanup on an already canonical production branch is
@@ -72,11 +72,12 @@ try:
    for tab in ['times','mushaf','qibla','dhikr','tasbih','settings']:
     snapshots=[]
     for p in pages:
+     if tab!='mushaf' and width>760 and p.locator('#qReaderBack').is_visible():p.locator('#qReaderBack').click()
      p.locator(f'header>.site-nav button[data-tab="{tab}"]').click()
      p.wait_for_function("(tab)=>document.querySelector('header>.site-nav button.active')?.dataset.tab===tab",arg=tab)
      if tab=='mushaf':
       p.wait_for_function("document.getElementById('qVerses')?.textContent?.trim()?.length>35",timeout=20000)
-      p.wait_for_function("!!document.getElementById('qVerses').style.getPropertyValue('--salati-quran-window-height')",timeout=15000)
+      p.locator('.original-printed-page').first.wait_for(timeout=25000)
      snapshots.append(snap(p,tab))
     l,r=snapshots
     assert len(l['selected'])==len(r['selected']),(width,tab,'DOM changed between baseline/canonical')

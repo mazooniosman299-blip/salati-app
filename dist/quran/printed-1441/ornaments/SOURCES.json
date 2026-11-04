@@ -1,0 +1,27 @@
+{
+  "scope": "Original ornamental assets; close visual edition, not exact AlMosaly assets",
+  "ornaments": {
+    "outer": {
+      "source": "QuranHub/quran-pages-images@95823e5c5788e150a3f3e89a8536f1bd0c34f2c2/ayat/hafs/564.png",
+      "changes": "Only original corner/edge ornamental slices are repeated in a narrower display border. Quran ink, original top labels and page digits are excluded. Not an exact AlMosaly frame.",
+      "license": "Actual pinned LICENSE is Unlicense; conflicting README GPL3 is retained too."
+    },
+    "heading_and_number_frames": {
+      "source": "NedaaDevs/nedaa@18430f3a7277fa5f032472c119f3bc7ec5232cd0/assets/images/quran-ornaments",
+      "license": "GPL-3.0",
+      "changes": "Original sepia frame/cartouche PNGs unchanged."
+    },
+    "opening_calligraphy": {
+      "source": "mushafdatabase/MushafDatabase-Ligature-Based-SVG@ae5786ab08597f8123575dec4e774f1eca195e0f/SVG V1.01/{001,002}.svg",
+      "license": "Explicit unrestricted use/copy/modify/distribute permission; publisher-derived vectors.",
+      "changes": "Original surah-name group extracted; path data unaltered; viewBox tight to ink."
+    }
+  },
+  "hashes": {
+    "ornaments/surah-2.svg": "bcf49a8b43f2b241ce551779f0a8d01d58aba9aef2a458099e4277c95dff0e81",
+    "ornaments/surah-1.svg": "a2156af5750f41326cce2a62e42deb573547750d4c6c79636df568722c4f0bac",
+    "ornaments/floral-border.svg": "77ecefdcd49521d85e39229d3753e7eb5f361a8abb8e143bf7e4f819a3038c6c",
+    "ornaments/page-cartouche.png": "1c25155b07adf697bec5fbe091ad81fdb5280838e650ece1294216028fff5202",
+    "ornaments/surah-frame.png": "04ffa8a81f2dc8a8e143800d661d15382706cdda9c6304adf50d535124d91e8a"
+  }
+}

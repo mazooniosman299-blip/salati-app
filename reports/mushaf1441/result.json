@@ -1,0 +1,79 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "width": 320,
+      "height": 740,
+      "language": "ar",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "language": "en",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "language": "ar",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "language": "en",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 593,
+      "height": 1000,
+      "language": "ar",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 593,
+      "height": 1000,
+      "language": "en",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "language": "ar",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "language": "en",
+      "result": "PASS",
+      "single_surah_source": "https://server8.mp3quran.net/afs/067.mp3",
+      "duration": "15:00 (fixture)",
+      "physical_device": false
+    }
+  ],
+  "audio_fixture": "900-second silent range-enabled WAV; not a human listening test",
+  "physical_device": "NOT RUN"
+}

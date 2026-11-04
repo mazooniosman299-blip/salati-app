@@ -1,0 +1,239 @@
+{
+  "result": "PASS",
+  "cases": [
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 320,
+      "first_ink_y": 127.36458333333334,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 320,
+      "first_ink_y": 127.35336538461539,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 320,
+      "first_ink_y": 70.5,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 140.76402243589743,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 140.7550850591716,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 71.84615384615384,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        844,
+        390
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 84.34615384615384,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        935,
+        325
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        935,
+        325
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        935,
+        325
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 84.34615384615384,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 84.34615384615384,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.3681891025641,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 213.38008505917162,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 740,
+      "first_ink_y": 84.34615384615384,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        1600
+      ],
+      "page": 1,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 140.76402243589743,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        1600
+      ],
+      "page": 2,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 140.7550850591716,
+      "reader_top": 48
+    },
+    {
+      "viewport": [
+        390,
+        1600
+      ],
+      "page": 564,
+      "result": "PASS",
+      "paper_width": 390,
+      "first_ink_y": 71.84615384615384,
+      "reader_top": 48
+    }
+  ],
+  "reference": "Licensed original ornamental slices, not claimed exact AlMosaly art",
+  "physical_phone": "NOT RUN",
+  "Android": "separate release checks required"
+}

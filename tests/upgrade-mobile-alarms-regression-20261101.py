@@ -52,6 +52,8 @@ try:
    qibla=visible_above_nav('#compassEnable')
    page.locator('#compassEnable').screenshot(path=str(out/f'qibla-action-{width}x{height}.png'))
    page.click('[data-tab=mushaf]')
+   page.locator('.printed-reader-header button').first.click()
+   page.locator('#qAutoNext').scroll_into_view_if_needed()
    page.wait_for_timeout(250)
    surah=visible_above_nav('#mushaf .quran-play-options label:last-child')
    page.locator('#mushaf .quran-play-options').screenshot(path=str(out/f'quran-actions-{width}x{height}.png'))

@@ -40,6 +40,7 @@ try:
    if width<=760:
     assert all(c['height']>=40 and c['height']<=90 for c in cells),(width,'six equal-height shared-strip cells',cells)
    for tab in ['settings','times','mushaf','qibla','dhikr','tasbih','settings']:
+    if tab!='mushaf' and width>760 and page.locator('#qReaderBack').is_visible():page.locator('#qReaderBack').click()
     page.click(f'[data-tab={tab}]')
     assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),(width,tab,'no horizontal page overflow')
     if width<=760:
