@@ -48,7 +48,8 @@
     "apk-release-parts/v1.0.129/part12.bin",
     "apk-release-parts/v1.0.129/part13.bin",
     "apk-release-parts/v1.0.129/part14.bin",
-    "tests/launcher-icon.py"
+    "tests/launcher-icon.py",
+    "README.md"
   ],
   "visual_allowed_regions": [],
   "latest_user_instruction": "الأيقونة الأولى بدون خلفية سوداء؛ حذف جميع أزرار/شريط الإجراءات المضافة؛ فقط انتقال تلقائي للسورة التالية والتحكم بالمشغل الموجود.",
