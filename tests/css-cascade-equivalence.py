@@ -13,9 +13,12 @@ import json
 
 root=Path(__file__).resolve().parents[1]
 css=root/'dist'
-# Immutable source-controlled approved production snapshot. This fixture must
+# Immutable approved128 snapshot after4Nov home reference/white-label review.
+# Historical126 snapshot remains intact; intentional home redesign is separately
+# checked against actual127 in48 scoped screenshots, not forced back to126.
+# This fixture must
 # change only after full visual review; a normal web build cannot erase it.
-baseline=(root/'tests/fixtures/salati-v126-approved-ui.css').read_text()
+baseline=(root/'tests/fixtures/salati-v128-approved-ui.css').read_text()
 optimized=(css/'salati-ui.css').read_text()
 assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # Re-running a cleanup on an already canonical production branch is
@@ -48,7 +51,7 @@ def snap(page,tab):
    const clean=n=>{const cs=getComputedStyle(n);return Object.fromEntries(props.map(k=>[k,cs[k]]))};
    const selected=elements.map((n,i)=>({key:i,tag:n.tagName,id:n.id||'',css:clean(n)}));
    const boxes=['header>.site-nav','header>.site-nav button.active','#qSheet',
-    '#mushafPlayerSlot','#prayers','.prayer-overview']
+    '#mushafPlayerSlot','#prayers','.home-dashboard']
     .map(q=>{const e=document.querySelector(q);if(!e||e.getClientRects().length===0)return {q,hidden:true};
       const r=e.getBoundingClientRect();return {q,x:Math.round(r.x),y:Math.round(r.y),
        w:Math.round(r.width),h:Math.round(r.height)};});

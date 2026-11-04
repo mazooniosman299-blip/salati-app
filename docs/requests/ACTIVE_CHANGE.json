@@ -60,7 +60,10 @@
     "reports/home-reference/390-white-juz.png",
     "reports/home-reference/390-white-qibla.png",
     "reports/home-reference/390-white-android.png",
-    "docs/archive/DESIGN-QA-1.0.109-HISTORICAL.md"
+    "docs/archive/DESIGN-QA-1.0.109-HISTORICAL.md",
+    "tests/fixtures/salati-v128-approved-ui.css",
+    "tests/css-cascade-equivalence.py",
+    "tests/offline-navigation.py"
   ],
   "visual_allowed_regions": [
     {
