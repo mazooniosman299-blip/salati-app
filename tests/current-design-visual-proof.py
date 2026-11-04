@@ -20,7 +20,7 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 SERVER=ThreadingHTTPServer(("127.0.0.1",0),partial(Quiet,directory=str(DIST)))
 Thread(target=SERVER.serve_forever,daemon=True).start()
-SELECTORS=["#mushaf","body","header>.site-nav","#prayers","#times .prayer-overview",
+SELECTORS=["#mushaf","body","header>.site-nav","#prayers","#times .prayer-overview","#times","#mushafPlayerSlot #qTrack","#qibla .eyebrow","#androidDownload>p",
  "#mushaf #qSheet","#mushaf #qVerses","#mushafPlayerSlot","#mushaf #qTransport",
  "#qibla",".qibla-reading","#dhikr","#tasbih","#settings"]
 SIZES=[(320,740),(390,844),(768,1024),(1280,850)]

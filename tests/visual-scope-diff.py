@@ -10,7 +10,11 @@ def pixel_scope(a,b,allowed):
  difference=ImageChops.lighter(ImageChops.lighter(d[0],d[1]),d[2]).point(lambda x:255 if x>12 else 0)
  whitelist=Image.new('L',a.size,0)
  draw=ImageDraw.Draw(whitelist)
- for rect in allowed:draw.rectangle(tuple(map(int,rect)),fill=255)
+ for rect in allowed:
+  x0,y0,x1,y1=map(int,rect)
+  x0=max(0,x0);y0=max(0,y0);x1=min(a.width,x1);y1=min(a.height,y1)
+  # An approved element below the fold grants no visible pixels, not an invalid rectangle.
+  if x1>=x0 and y1>=y0:draw.rectangle((x0,y0,x1,y1),fill=255)
  forbidden=ImageChops.subtract(difference,whitelist)
  return (difference.histogram()[255],forbidden.histogram()[255],forbidden.getbbox())
 
@@ -55,6 +59,7 @@ def self_test():
  assert pixel_scope(x,y,[[1,1,6,6]])[:2]==(16,0)
  z=x.copy();ImageDraw.Draw(z).rectangle((21,21,23,23),fill='white')
  assert pixel_scope(x,z,[[1,1,6,6]])[1]==9
+ assert pixel_scope(x,z,[[2,30,6,24]])[1]==9,'Off-screen allowance must grant zero visible pixels'
  print('PASS pixel boundary negative tests: authorized accepted, unrelated rejected')
 
 def main():

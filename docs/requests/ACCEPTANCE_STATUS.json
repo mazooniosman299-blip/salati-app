@@ -1,54 +1,54 @@
 {
-  "request_id": "SALATI-20261104-FATIHA-ENTRY",
-  "source_reference": "docs/requests/SALATI-20261104-FATIHA-ENTRY.md",
-  "producer_branch": "fix/mushaf-fatiha-entry",
+  "request_id": "SALATI-20261104-HOME-REFERENCE",
+  "source_reference": "docs/requests/SALATI-20261104-HOME-REFERENCE.md",
+  "producer_branch": "fix/home-reference-20261104",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261104-FATIHA-ENTRY.md"
+      "evidence": "docs/requests/SALATI-20261104-HOME-REFERENCE.md including later existing-mosque authorization"
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "docs/ACTUAL_SOURCE_MAP.md"
+      "evidence": "Actual index.html, linked CSS and render/tick inspected; native widget excluded."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "npm run build; regenerated linked app-v1.0.109.js from canonical quran-controller.js and app-source.js; CSS/artwork unchanged."
+      "evidence": "npm run build; canonical source regenerates both actual JS bundles. Original-key Android release build successful."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test complete passed; native queue, direct ayah/continuous source, storage/bookmark and preferences contracts retained."
+      "evidence": "npm test, active seven-size six-tab suite,9 Fatiha entry/audio scenarios, new10 home/3 unavailable cases and mobile settings/Fajr safety checks passed."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "reports/mushaf-fatiha-entry/result.json:8 saved-state cases plus actual background-cue/resume fixture; updated existing8 reader/10 opening/21 geometry cases pass;48 default-production screenshots unchanged."
+      "evidence": "reports/home-reference/result.json and current48 baseline/candidate captures; actual Chromium, Arabic/English, switching/reload; no page errors."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "No design change requested. dist/salati-ui.css,604 plates/6236 ayah regions and all original ornaments remain byte-identical to production1.0.126; first-Fatiha phone/desktop screenshots personally inspected."
+      "evidence": "design-qa.md: manual revised reference review +455x457 measured geometry, explicit existing-photo authorization, later noص and physical-right alignment confirmation. No automatic pixel-equality claim."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Fresh1.0.127/code128 signed upgrade over current official1.0.126 awaits exact-SHA GitHub emulator job. Prior126 proof is not counted."
+      "reason": "New home reference implementation and scoped color request pending verification."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "No physical phone available. User explicitly said «اختبارات الهاتف الحقيقي ليست شرطًا لإكمال تعديلات الويب، لكن لا تدّعِ تنفيذها». Hardware-accelerated emulator and signed update checks remain required before publication; no phone claim."
+      "reason": "No physical phone available; prior explicit user waiver for completing web edits retained. Fresh hardware emulator/install-over-install remains mandatory; no device claim."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "apk-release-parts/v1.0.127/manifest.json; original certificate/applicationId preserved,1000 native/shared files byte-verified and below25MiB."
+      "evidence": "apk-release-parts/v1.0.128/manifest.json: original cert/app ID,1000 staged/shared files byte-verified,25MiB limit retained."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Normal PR merge and fresh exact-production release gates/deployment verification pending."
+      "reason": "New home reference implementation and scoped color request pending verification."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "No post-fix user acceptance is asserted."
+      "reason": "User explicitly approved corrected right alignment and existing photo. Full post-publication acceptance is separate and not yet claimed."
     }
   }
 }

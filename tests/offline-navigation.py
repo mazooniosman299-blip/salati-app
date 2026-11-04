@@ -26,8 +26,8 @@ try:
    page.wait_for_function('document.querySelector(".nav-selection")!==null')
    assert page.url==url,(page.url,'offline fallback must change document base through root redirect')
    assert page.locator('#cityLabel').inner_text()=='الرياض'
-   page.wait_for_function('document.querySelector(".hero-picture img")?.naturalWidth===1120')
-   assert page.locator('.hero-picture img').get_attribute('src')=='images/mosque-reference-original.png'
+   page.wait_for_function('document.querySelector(".home-hero .home-mosque")?.naturalWidth===1120')
+   assert page.locator('.home-hero .home-mosque').get_attribute('src')=='images/mosque-reference-original.png'
    page.click('[data-tab=mushaf]');page.wait_for_function('document.querySelector("#mushaf:not([hidden]) .mushaf-verses")?.textContent.trim().length>0')
    assert page.locator('.mushaf-verses').text_content().strip(),'Bundled Quran data must load offline after nested navigation'
   assert not errors,errors

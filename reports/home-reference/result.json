@@ -1,0 +1,117 @@
+{
+  "cases": [
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "language": "ar",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        320,
+        740
+      ],
+      "language": "en",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "ar",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        390,
+        844
+      ],
+      "language": "en",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        455,
+        900
+      ],
+      "language": "ar",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": true,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        455,
+        900
+      ],
+      "language": "en",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": true,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        768,
+        1024
+      ],
+      "language": "ar",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        768,
+        1024
+      ],
+      "language": "en",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "ar",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "language": "en",
+      "layout": "3x2",
+      "colors": "white",
+      "reference_geometry": false,
+      "result": "pass"
+    }
+  ],
+  "empty_states": 3,
+  "unchanged_widget_files": 17,
+  "pixel_equality_claimed": false
+}

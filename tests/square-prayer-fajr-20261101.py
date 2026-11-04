@@ -29,14 +29,10 @@ try:
    }))""")
    assert len(tiles)==6,(width,tiles)
    assert sum(c['active'] for c in tiles)==1,(width,'one active prayer after valid city and time calculation',tiles)
-   if width<=600:
-    assert all(c['radius']=='0px' for c in tiles),(width,'square mobile prayer strip',tiles)
-    assert all(c['bg']=='rgba(0, 0, 0, 0)' for c in tiles),(width,'transparent mobile prayer strip',tiles)
-    assert all(c['border']=='rgb(255, 255, 255)' for c in tiles),(width,'visible white borders on mobile',tiles)
-   else:
-    assert all(c['radius']=='24px' for c in tiles),(width,'approved rounded desktop prayer cards',tiles)
-    assert all(c['bg']==('rgb(53, 74, 103)' if c['active'] else 'rgb(45, 61, 86)') for c in tiles),(width,'desktop highlight colors',tiles)
-    assert all(c['border']==('rgb(142, 167, 195)' if c['active'] else 'rgb(83, 107, 138)') for c in tiles),(width,'desktop card border colors',tiles)
+   #4Nov home reference supersedes old square strip; widget assertions remain separate.
+   assert all(c['radius']=='12px' for c in tiles),(width,'new home reference corners',tiles)
+   assert all(c['bg']==('rgb(41, 47, 57)' if c['active'] else 'rgb(21, 26, 34)') for c in tiles),(width,'reference charcoal cards',tiles)
+   assert page.locator('#prayers .prayer-icon').evaluate_all("es=>es.every(e=>getComputedStyle(e).display!=='none'&&e.getBoundingClientRect().width===22)"),(width,'six reference icons')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+1'),(width,'prayer strip overflows viewport')
    if width in (390,768):page.locator('#prayers').screenshot(path=str(out/f'prayers-{width}.png'))
    page.click('[data-tab=settings]')
@@ -46,6 +42,6 @@ try:
    assert not errors,(width,errors)
    page.close()
   browser.close()
- print('PASS: five widths, 6 square prayer cells, transparent matte backgrounds and ordinary Fajr adhan, removed old Fajr controls')
+ print('PASS: five widths, 6 rounded reference home cards, charcoal backgrounds and ordinary Fajr adhan, removed old Fajr controls')
 finally:
  server.shutdown()
