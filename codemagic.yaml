@@ -1,0 +1,68 @@
+
+workflows:
+  salati-android:
+    name: Salati signed Android APK
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+
+    environment:
+      groups:
+        - salati_release
+      node: v22.11.0
+      java: 17
+
+    scripts:
+      - name: Restore original signing files
+        script: |
+          set -eu
+          mkdir -p "$HOME/.salati-private"
+          python3 - <<'PY'
+          import os, base64
+          from pathlib import Path
+
+          folder = Path.home() / ".salati-private"
+          key = base64.b64decode(
+              os.environ["SALATI_KEYSTORE_B64"],
+              validate=True
+          )
+          (folder / "signing.keystore").write_bytes(key)
+          (folder / "keystore-password.txt").write_text(
+              os.environ["SALATI_KEYSTORE_PASSWORD"],
+              encoding="utf-8"
+          )
+          PY
+          chmod 700 "$HOME/.salati-private"
+          chmod 600 "$HOME/.salati-private/"*
+
+      - name: Verify, build and sign APK
+        script: |
+          set -eu
+          export SALATI_KEYSTORE="$HOME/.salati-private/signing.keystore"
+          export SALATI_PASSWORD_FILE="$HOME/.salati-private/keystore-password.txt"
+          export ANDROID_BUILD_TOOLS="$ANDROID_SDK_ROOT/build-tools/36.0.0"
+
+          test -n "$SALATI_VERSION_CODE"
+          test -n "$SALATI_VERSION_NAME"
+          test -x "$ANDROID_BUILD_TOOLS/apksigner"
+
+          python3 scripts/sign-android.py --check-key
+
+          npm ci
+          npm run build
+          python3 scripts/prepare-android.py
+
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
+          cd android
+          bash gradlew :app:assembleRelease --no-daemon \
+            -PsalatiVersionCode="$SALATI_VERSION_CODE" \
+            -PsalatiVersionName="$SALATI_VERSION_NAME" \
+            -PsalatiAdsMode=production
+          cd ..
+
+          python3 scripts/sign-android.py \
+            --input android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            --output "dist/downloads/salati-${SALATI_VERSION_NAME}.apk"
+
+    artifacts:
+      - dist/downloads/salati-${SALATI_VERSION_NAME}.apk
