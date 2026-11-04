@@ -26,6 +26,39 @@ SELECTORS=["#mushaf","body","header>.site-nav","#prayers","#times .prayer-overvi
 SIZES=[(320,740),(390,844),(768,1024),(1280,850)]
 TABS=["times","mushaf","qibla","dhikr","tasbih","settings"]
 EVIDENCE=[]
+# The current request owns interaction states even when ROOT points at a
+# detached production baseline. Both captures must exercise the SAME state.
+POLICY=json.loads((Path(__file__).resolve().parents[1]/'docs/requests/ACTIVE_CHANGE.json').read_text())
+CAPTURE_STATES=POLICY.get('visual_capture_states',[])
+assert len({s['tab'] for s in CAPTURE_STATES})==len(CAPTURE_STATES),'One requested state per tab'
+for state in CAPTURE_STATES:
+ assert state['tab']=='mushaf' and state['interaction']=='pointer'
+ assert re.fullmatch(r'\.printed-ayah\[data-ayah=[\"\x27]\d+:\d+[\"\x27]\]',state['selector'])
+ assert isinstance(state['surah'],int) and 1<=state['surah']<=114
+for region in POLICY.get('visual_allowed_regions',[]):
+ if region['selector'] not in SELECTORS:SELECTORS.append(region['selector'])
+def exercise_state(page,state):
+ page.locator('[data-reading-page="1"].original-printed-page').wait_for()
+ page.locator('#qSurah').evaluate("(e,s)=>{e.value=String(s);e.dispatchEvent(new Event('change',{bubbles:true}))}",state['surah'])
+ target=page.locator(state['selector']);target.wait_for();target.scroll_into_view_if_needed()
+ point=target.evaluate('''e=>{const r=e.getBoundingClientRect();for(let y=1;y<8;y++)for(let x=1;x<8;x++){let a=r.x+r.width*x/8,b=r.y+r.height*y/8;if(document.elementFromPoint(a,b)?.closest('[data-ayah]')===e)return{x:a,y:b};}return null}''')
+ assert point,'Requested original ayah has no visible pointer hit'
+ page.mouse.click(point['x'],point['y'])
+ # This is visual-state evidence, not an audio audition. Aborted media must
+ # finish handling before either snapshot; dedicated media suites remain.
+ page.wait_for_function("/تعذر|Could not/.test(document.querySelector('#qAudioStatus').textContent)")
+ assert target.evaluate('e=>document.activeElement===e&&e.classList.contains("is-selected")')
+ # Navigation may still be smoothly scrolling or awaiting the next leaf.
+ # Align the same original page after media handling; never compare two
+ # different reading positions or broaden the permitted visual region.
+ next_page=target.evaluate('e=>Number(e.closest("[data-reading-page]").dataset.readingPage)+1')
+ if next_page<=604:page.locator(f'[data-reading-page="{next_page}"].original-printed-page').wait_for()
+ target.evaluate("e=>{const c=document.querySelector('#qVerses'),p=e.closest('[data-reading-page]');c.scrollTo({top:c.scrollTop+p.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
+ # Pointer coordinates from before scrolling can now hover a different ayah.
+ # Compare focus/selection with the pointer over neutral header padding.
+ page.mouse.move(4,4)
+ assert page.locator('.printed-ayah:hover').count()==0
+ assert target.evaluate('e=>document.activeElement===e&&!e.matches(":focus-visible")')
 def capture_metrics(page):
  return page.evaluate("""selectors => Object.fromEntries(selectors.map(selector => {
   const el=document.querySelector(selector);
@@ -43,6 +76,7 @@ try:
   for language in ["ar","en"]:
    for width,height in SIZES:
     page=browser.new_page(viewport={"width":width,"height":height},service_workers="block",reduced_motion="reduce")
+    if CAPTURE_STATES:page.route('https://**/*.mp3',lambda route:route.abort())
     page.clock.set_fixed_time(datetime(2026,11,3,10,15,tzinfo=timezone.utc))
     errors=[]
     page.on("pageerror",lambda e:errors.append(str(e)))
@@ -73,6 +107,8 @@ try:
       assert page.evaluate("!document.querySelector('#qVerses').contains(document.querySelector('#mushafPlayerSlot'))")
       q=page.locator("#qVerses").evaluate("""e=>({pages:e.querySelectorAll('.quran-reading-page').length,overflow:getComputedStyle(e).overflowY,height:e.clientHeight})""")
       assert q["pages"]>0 and q["height"]>50 and q["overflow"] in ("auto","scroll"),(language,width,q)
+     for state in CAPTURE_STATES:
+      if state['tab']==tab:exercise_state(page,state)
      page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(resolve))))')
      name=f"{language}-{tab}-{width}.png"
      page.screenshot(path=str(OUT/name),animations="disabled")

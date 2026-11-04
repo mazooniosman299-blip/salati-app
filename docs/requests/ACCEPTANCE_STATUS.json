@@ -1,55 +1,54 @@
 {
-  "request_id": "SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON",
-  "source_reference": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md",
-  "producer_branch": "fix/quran-continuation-action-dock-20261104",
+  "request_id": "SALATI-20261105-AYAH-POINTER-FOCUS",
+  "source_reference": "docs/requests/SALATI-20261105-AYAH-POINTER-FOCUS.md",
+  "producer_branch": "fix/ayah-pointer-focus-20261105",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md original wording and two explicit clarification answers."
+      "evidence": "User screenshot and exact current129 reproduction; UAauto5px pointer-focus cause recorded in request."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "quran-controller/page-audio/Java playlist, actual CSS/nav and Android launcher source traced. Real end-event default-off reproduction recorded."
+      "evidence": "User screenshot and exact current129 reproduction; UAauto5px pointer-focus cause recorded in request."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Canonical web build and Android assembleRelease130 pass after latest correction and atomic native restore fix."
+      "evidence": "Canonical npm build and Android assembleRelease131 PASS; executing JS remains7dcea766...; CSS owner reset only, source/native asset parity1000 checks."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test; real ranged900s ended1→2→3, repeat/final114, pause/stop prevention, persistence, delayed native index/options-only restore;9 Fatiha entry cases."
+      "evidence": "npm test PASS; four real pointer/touch/keyboard AR/EN cases preserve full900s media duration, direct selection/playback, autoNext, pause/stop, tab return and reload."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "Actual AR320/390/short935 and EN1440 existing-player cases, no added toolbar/dialog/buttons, full duration/no overlap;48 production128 scope screenshots and36 CSS parity cases pass."
+      "evidence": "Four real interaction scenarios plus48 scope screenshots PASS; only8 Mushaf pointer-state captures change, at most3 raster pixels outside accepted region tolerance.36 default CSS parity cases PASS."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "First displayed crescent/minaret selected by user. Same mark with no black background; actual alpha-composited browser proof and true-alpha/safe-area tests pass. Existing reader CSS byte-identical128."
+      "evidence": "Same selected2:2 defect reproduced with UAauto5px outline; before/after screenshots personally compared. Only the black/white rectangle is removed; original artwork and brown selection/keyboard path preserved."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Original128→129 signed upgrade CI queued next; local fixture is native bridge-client proof only."
+      "reason": "New original-key129→130 upgrade and clean WebView CI pending."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "No physical Android device available; native bridge-client fixture is not emulator or physical service proof."
+      "reason": "No physical Android device available; touch/browser and actual Android emulator checks are separate evidence."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Original-key1.0.129/code130 APK26,187,372B; cert559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e; SHAef0522da613c3999bca4582be7a1c178cccf4ad07ea8d55652b0aae95efbf891; exact native assets and icon bytes inspected."
+      "evidence": "Original-key1.0.130/code131APK26187372bytes; SHA256708e9379874059cda0518396c60ad41cbd4d96e1f16ac2ffc6086d280a4ff3a0; originalcertificate559dec66...; matching native assets and unchanged launcher verified."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Await PR/original-key upgrade/emulator/exact production gates and actual public verification. Official remains128."
+      "reason": "Official129 remains active until all PR/original-key/exact-production gates pass and public130 verified."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "User selected first icon without black background and rejected action dock. Final implemented release has not yet been reviewed by user."
+      "reason": "New pointer-focus correction not yet implemented/verified."
     }
-  },
-  "latest_user_correction": "Selected first launcher with no black background; rejected all added action controls. Restore128 UI, continuation only."
+  }
 }

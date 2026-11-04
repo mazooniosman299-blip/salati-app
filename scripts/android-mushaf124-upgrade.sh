@@ -5,13 +5,13 @@ out=reports/mushaf1441-signed-upgrade
 mkdir -p "$out"
 adb shell wm size 432x960
 adb shell wm density 160
-adb install -r /tmp/salati-previous-128.apk
+adb install -r /tmp/salati-previous-129.apk
 adb shell pm grant com.salati.prayer android.permission.POST_NOTIFICATIONS
 adb shell pm grant com.salati.prayer android.permission.ACCESS_COARSE_LOCATION
 adb shell pm grant com.salati.prayer android.permission.ACCESS_FINE_LOCATION
 adb shell am start -n com.salati.prayer/com.salati.prayer.MainActivity
 sleep 5
-adb install -r /tmp/salati-candidate-129.apk
+adb install -r /tmp/salati-candidate-130.apk
 adb shell am force-stop com.salati.prayer
 adb shell am start -n com.salati.prayer/com.salati.prayer.MainActivity
 ready=0
@@ -33,7 +33,7 @@ if [ "$ready" -ne 1 ]; then
   exit 1
 fi
 adb shell dumpsys package com.salati.prayer > "$out/package.txt"
-grep -E 'versionCode=130\b' "$out/package.txt"
+grep -E 'versionCode=131\b' "$out/package.txt"
 grep -F 'android.permission.POST_NOTIFICATIONS: granted=true' "$out/package.txt"
 read -r x y < <(python3 tests/android-emulator-screen-preflight.py quran-tap "$out/after-upgrade.png")
 adb shell input tap "$x" "$y"
@@ -46,7 +46,7 @@ done
 test "$ready" -eq 1
 adb logcat -d -t 2000 > "$out/logcat.txt"
 if grep -E 'FATAL EXCEPTION.*com.salati.prayer|Process: com.salati.prayer.*FATAL EXCEPTION' "$out/logcat.txt"; then exit 1; fi
-printf '%s\n' 'PASS original-key1.0.129/code130 update over1.0.128/code129, package identity, permission persistence, real System WebView reader; physical phone NOT RUN'
+printf '%s\n' 'PASS original-key1.0.130/code131 update over1.0.129/code130, package identity, permission persistence, real System WebView reader; physical phone NOT RUN'
 
 # Retain actual launcher appearance after upgrade; not a device or pixel-fidelity claim.
 adb shell input keyevent KEYCODE_HOME

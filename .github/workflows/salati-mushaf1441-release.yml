@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   signed-update-and-reader:
-    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'mushaf1441-official' || github.head_ref == 'fix/mushaf-fatiha-entry' || github.head_ref == 'fix/home-reference-20261104' || github.head_ref == 'fix/quran-continuation-action-dock-20261104'
+    if: github.event_name == 'workflow_dispatch' || github.head_ref == 'mushaf1441-official' || github.head_ref == 'fix/mushaf-fatiha-entry' || github.head_ref == 'fix/home-reference-20261104' || github.head_ref == 'fix/quran-continuation-action-dock-20261104' || github.head_ref == 'fix/ayah-pointer-focus-20261105'
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
@@ -38,18 +38,18 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import json,hashlib
-          for version,destination in [('1.0.128','/tmp/salati-previous-128.apk'),('1.0.129','/tmp/salati-candidate-129.apk')]:
+          for version,destination in [('1.0.129','/tmp/salati-previous-129.apk'),('1.0.130','/tmp/salati-candidate-130.apk')]:
               directory=Path('apk-release-parts/v'+version)
               meta=json.loads((directory/'manifest.json').read_text())
               body=b''.join((directory/f'part{i:02d}.bin').read_bytes() for i in range(meta['partCount']))
               assert len(body)==meta['size'] and hashlib.sha256(body).hexdigest()==meta['sha256']
               Path(destination).write_bytes(body)
           PY
-          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs /tmp/salati-candidate-129.apk | tee /tmp/salati-signature-proof.txt
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs /tmp/salati-candidate-130.apk | tee /tmp/salati-signature-proof.txt
           grep -F '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' /tmp/salati-signature-proof.txt
-          python3 scripts/verify-native-web-assets.py /tmp/salati-candidate-129.apk
+          python3 scripts/verify-native-web-assets.py /tmp/salati-candidate-130.apk
           python3 -m pip install --quiet pillow
-          python3 tests/launcher-icon.py /tmp/salati-candidate-129.apk
+          python3 tests/launcher-icon.py /tmp/salati-candidate-130.apk
           # Browser geometry proof runs in the actual-browser job.
       - name: Require hardware accelerated emulator
         run: |
