@@ -45,3 +45,6 @@ New continuation/dock owners: QuranReader constructor/save and completion callba
 
 ##4Nov latest correction: remove unpublished action dock
 User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this supersedes the earlier contextual-dock clarification. Restore exact production128 reader/player UI, retain only continuation behavior. First displayed crescent/minaret launcher chosen with black background removed; revised transparent artwork must be verified. No extra UI features authorized.
+
+##5Nov pointer-focus correction
+Latest user points out the black rounded box enclosing a selected ayah. Actual129 reproduction confirms browser UAauto5px outline on:focus without:focus-visible. Fix only.printed-ayah common outline reset; retain the existing brown keyboard path stroke/selection/full-file audio. No extra actions or redesign. Source ownerdist/salati-ui.css printed-reader component; requestSALATI-20261105-AYAH-POINTER-FOCUS.

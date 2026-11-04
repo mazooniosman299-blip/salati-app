@@ -247,11 +247,11 @@ body.dark #mushaf.printed-reader:not([hidden]){position:fixed;inset:0 0 80px;z-i
  .opening-printed-artwork>.printed-page-image{position:absolute;top:var(--opening-offset);inset-inline:0;}
  .opening-printed-artwork>.printed-ayah-regions{top:var(--opening-offset);bottom:auto;height:var(--opening-full-height);}
  .printed-ayah-regions{position:absolute;inset:0;width:100%;height:100%;overflow:hidden;}
- .printed-ayah{fill:#9b783e;fill-opacity:0;stroke:none;pointer-events:all;cursor:pointer;}
+ .printed-ayah{fill:#9b783e;fill-opacity:0;stroke:none;pointer-events:all;cursor:pointer;outline:0;}
  .printed-ayah:hover{fill-opacity:.1;}
  .printed-ayah.is-selected{fill-opacity:.22;}
  .printed-ayah.is-reciting{fill-opacity:.14;}
- .printed-ayah:focus-visible{outline:none;stroke:#8a6632;stroke-width:.8;fill-opacity:.2;}
+ .printed-ayah:focus-visible{stroke:#8a6632;stroke-width:.8;fill-opacity:.2;}
  .printed-opening-title{display:grid;place-items:center;aspect-ratio:5.9681;margin:2px 1px 6px;padding:0;background:url(quran/printed-1441/ornaments/surah-frame.png) center/100% 100% no-repeat;line-height:0;}
  .printed-opening-title img{display:block;width:30%;height:64%;object-fit:contain;}
  .printed-page-index{display:grid;place-items:center;margin:4px auto 1px;padding:0;width:76px;aspect-ratio:3.2397;border:0;background:#fbf6ed url(quran/printed-1441/ornaments/page-cartouche.png) center/100% 100% no-repeat;color:#4e391e;font:500 13px/1 Cairo,sans-serif;direction:rtl;}
