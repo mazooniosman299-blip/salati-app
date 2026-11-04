@@ -14,7 +14,7 @@ for(const ch of ['06DD','06DE','06DF','06E0']){
 }
 assert(!html.includes('id="headingValue"')&&!app.includes('headingValue'),'Retired heading must remain absent');
 assert(html.includes('<div class="compass-actions"><button id="compassEnable"'),'Qibla button must remain live');
-assert(quran.includes('async enterAtSurahStart()')&&quran.includes('this.readingStart=0'),'Quran should retain beginning reset');
+assert(/async enterAtSurahStart\(/.test(quran)&&quran.includes('this.readingStart=0'),'Quran should retain beginning reset');
 assert(app.includes('mushaf.enterAtSurahStart()'),'Navigation retains Quran reset');
 assert(css.includes('--mobile-nav-height') && css.includes('header>.site-nav'),'Live mobile navigation layout tokens must remain; spatial nonoverlap is validated in real Chromium');
 assert(css.includes('border-radius:24px'),'Active selected prayer capsule must remain rounded');

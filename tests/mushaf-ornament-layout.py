@@ -17,7 +17,14 @@ try:
    for n,s in [(1,1),(2,2),(564,68)]:
     page=b.new_page(viewport={'width':w,'height':h},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.add_init_script("localStorage.setItem('salati-quran',JSON.stringify({activeSurah:%d,page:%d,printedEdition:'1441',follow:false,size:26,layoutVersion:2}))"%(s,n))
-    page.goto(f'http://127.0.0.1:{server.server_port}/');page.locator('[data-tab=mushaf]').click();page.wait_for_selector(f'[data-reading-page="{n}"].original-printed-page');page.wait_for_timeout(200);page.locator('#qVerses').evaluate('(e)=>e.scrollTop=0')
+    page.goto(f'http://127.0.0.1:{server.server_port}/');page.locator('[data-tab=mushaf]').click();page.wait_for_selector('[data-reading-page="1"].original-printed-page')
+    if n!=1:page.locator('#qSurah').evaluate("(e,s)=>{e.value=String(s);e.dispatchEvent(new Event('change',{bubbles:true}))}",s)
+    page.wait_for_selector(f'[data-reading-page="{n}"].original-printed-page')
+    target=page.locator(f'[data-reading-page="{n}"]')
+    target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
+    page.wait_for_function("n=>{const c=document.querySelector('#qVerses'),t=c.querySelector('[data-reading-page=\"'+n+'\"]');return c.scrollHeight-c.clientHeight>=c.scrollTop+t.getBoundingClientRect().top-c.getBoundingClientRect().top-1}",arg=n)
+    target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
+    page.wait_for_timeout(100)
     art=page.locator(f'[data-reading-page="{n}"] .printed-page-image');box=art.bounding_box();leaf=page.locator(f'[data-reading-page="{n}"]').bounding_box();read=page.locator('#qVerses').bounding_box();player=page.locator('#mushafPlayerSlot').bounding_box();svg=page.locator(f'[data-reading-page="{n}"] .printed-ayah-regions').bounding_box()
     assert read['y']+read['height']<=player['y']+1
     assert max(abs(box[k]-svg[k]) for k in ['x','y','width','height'])<1

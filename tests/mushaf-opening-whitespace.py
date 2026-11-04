@@ -17,7 +17,13 @@ try:
    for surah,n in [(1,1),(2,2)]:
     page=browser.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.add_init_script("localStorage.setItem('salati-quran',JSON.stringify({activeSurah:%d,page:%d,printedEdition:'1441',follow:false,size:26,layoutVersion:2}))"%(surah,n))
-    page.goto(f'http://127.0.0.1:{server.server_port}/');page.locator('[data-tab=mushaf]').click();page.wait_for_selector(f'[data-reading-page="{n}"].original-printed-page')
+    page.goto(f'http://127.0.0.1:{server.server_port}/');page.locator('[data-tab=mushaf]').click();page.wait_for_selector('[data-reading-page="1"].original-printed-page')
+    if n!=1:page.locator('#qSurah').evaluate("(e,s)=>{e.value=String(s);e.dispatchEvent(new Event('change',{bubbles:true}))}",surah)
+    page.wait_for_selector(f'[data-reading-page="{n}"].original-printed-page')
+    target=page.locator(f'[data-reading-page="{n}"]')
+    target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
+    page.wait_for_function("n=>{const c=document.querySelector('#qVerses'),t=c.querySelector('[data-reading-page=\"'+n+'\"]');return c.scrollHeight-c.clientHeight>=c.scrollTop+t.getBoundingClientRect().top-c.getBoundingClientRect().top-1}",arg=n)
+    target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
     node=page.locator(f'[data-reading-page="{n}"] .printed-page-image');image=Image.open(root/f'dist/quran/printed-1441/pages/{n}.png').convert('RGBA');bbox=image.getchannel('A').getbbox();box=node.bounding_box();reader=page.locator('#qVerses').bounding_box();dock=page.locator('#mushafPlayerSlot').bounding_box()
     region=json.loads((root/f'dist/quran/printed-1441/regions/{n}.json').read_text());x,y,w,h=region['displayViewport']
     assert x<=bbox[0] and y<=bbox[1] and x+w>=bbox[2] and y+h>=bbox[3],'Display crop must retain every nontransparent Quran pixel'
