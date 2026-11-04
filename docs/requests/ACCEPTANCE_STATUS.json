@@ -1,54 +1,55 @@
 {
-  "request_id": "SALATI-20261104-PUBLISH-GITHUB-AUTH",
-  "source_reference": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md",
-  "producer_branch": "fix/cloudflare-github-check-auth-20261104",
-  "code_runtime_changed": false,
+  "request_id": "SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON",
+  "source_reference": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md",
+  "producer_branch": "fix/quran-continuation-action-dock-20261104",
+  "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "docs/requests/SALATI-20261104-PUBLISH-GITHUB-AUTH.md: necessary dependency of authorized home publication, two observed403 failures."
+      "evidence": "docs/requests/SALATI-20261104-QURAN-CONTINUATION-ACTION-ICON.md original wording and two explicit clarification answers."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Fixed GitHub Actions read-only endpoint and actual Cloudflare variable names inspected; website/APK untouched."
+      "evidence": "quran-controller/page-audio/Java playlist, actual CSS/nav and Android launcher source traced. Real end-event default-off reproduction recorded."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Node syntax/test execution of build-only script; dist, native source and signed128 APK are byte-identical to35dd."
+      "evidence": "Canonical web build and Android assembleRelease130 pass after latest correction and atomic native restore fix."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "tests/publish-ci-wait.cjs new scoped-auth/redaction403 cases and all existing exact-SHA/four-job/timeout/API negative cases; timeout/governance contracts passed."
+      "evidence": "npm test; real ranged900s ended1→2→3, repeat/final114, pause/stop prevention, persistence, delayed native index/options-only restore;9 Fatiha entry cases."
     },
     "real_browser": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "pass",
+      "evidence": "Actual AR320/390/short935 and EN1440 existing-player cases, no added toolbar/dialog/buttons, full duration/no overlap;48 production128 scope screenshots and36 CSS parity cases pass."
     },
     "screenshot_user_reference": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "pass",
+      "evidence": "First displayed crescent/minaret selected by user. Same mark with no black background; actual alpha-composited browser proof and true-alpha/safe-area tests pass. Existing reader CSS byte-identical128."
     },
     "android_emulator": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "not_run",
+      "reason": "Original128→129 signed upgrade CI queued next; local fixture is native bridge-client proof only."
     },
     "physical_android": {
-      "status": "not_applicable",
-      "reason": "Build-only GitHub request authentication; no website/native/widget/Quran payload change. Parent128 browser and emulator proofs retained; no new physical-device claim."
+      "status": "not_run",
+      "reason": "No physical Android device available; native bridge-client fixture is not emulator or physical service proof."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Unchanged1.0.128 original-key APK independently inspected with apksigner and exact web fingerprint, no new public asset bytes."
+      "evidence": "Original-key1.0.129/code130 APK26,187,372B; cert559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e; SHAef0522da613c3999bca4582be7a1c178cccf4ad07ea8d55652b0aae95efbf891; exact native assets and icon bytes inspected."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Build-only publication authentication dependency, not yet implemented or published."
+      "reason": "Await PR/original-key upgrade/emulator/exact production gates and actual public verification. Official remains128."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "Build-only publication authentication dependency, not yet implemented or published."
+      "reason": "User selected first icon without black background and rejected action dock. Final implemented release has not yet been reviewed by user."
     }
-  }
+  },
+  "latest_user_correction": "Selected first launcher with no black background; rejected all added action controls. Restore128 UI, continuation only."
 }

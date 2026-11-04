@@ -17,7 +17,7 @@ try:
   b=p.chromium.launch(executable_path='/usr/bin/chromium',headless=True,args=['--no-sandbox'])
   for width,height,lang in [(390,844,'ar'),(1440,900,'en')]:
    for saved in [{'page':2,'activeSurah':2},{'page':42,'activeSurah':2},{'page':564,'activeSurah':68},{}]:
-    state={**saved,'bookmark':120,'printedEdition':'1441','reciter':'qatami','follow':False,'repeat':True,'autoNext':False,'size':28,'layoutVersion':2}
+    state={**saved,'bookmark':120,'printedEdition':'1441','reciter':'qatami','follow':False,'repeat':True,'autoNext':False,'autoNextPolicy':1,'size':28,'layoutVersion':2}
     page=b.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.add_init_script("if(!sessionStorage.getItem('entry-seeded')){localStorage.setItem('salati-quran',JSON.stringify(%s));localStorage.setItem('salati',JSON.stringify({lang:'%s',lat:23.588,lon:58.3829,zone:'Asia/Muscat',name:'مسقط',method:'Oman',locationSet:true,locationMode:'manual'}));sessionStorage.setItem('entry-seeded','yes')}"%(json.dumps(state),lang))
     page.goto(f'http://127.0.0.1:{server.server_port}/');page.locator('[data-tab=mushaf]').click();page.wait_for_selector('.original-printed-page')

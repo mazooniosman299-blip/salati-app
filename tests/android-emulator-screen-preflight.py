@@ -5,13 +5,19 @@ Mode dialog: success if the system ANR modal is covering the app.
 Mode quran-tap: print x y of Quran tab. Mode reader-swipe: screenshot-derived safe parchment swipe coordinates (no reciter picker taps).
 """
 from PIL import Image
-import sys
+import sys,io,base64
 
 assert len(sys.argv)==3, 'usage: preflight.py dialog|ready|quran-tap|reader-swipe|quran-ready /path/to/screenshot.png'
 mode,path=sys.argv[1:]
 im=Image.open(path).convert('RGB')
 w,h=im.size
 assert w>=320 and h>=650, (w,h)
+if mode=='evidence':
+ # A bounded real screenshot preview in CI logs permits diagnosis even when
+ # the artifact download service is unavailable. This never grants a pass.
+ im.thumbnail((216,480));buffer=io.BytesIO();im.save(buffer,format='PNG')
+ print('SALATI_SCREENSHOT_PNG_BASE64='+base64.b64encode(buffer.getvalue()).decode())
+ raise SystemExit(0)
 if mode=='dialog':
  # The emulator sometimes displays a Pixel Launcher ANR over our app. The
  # translucent white rounded dialog spans the center AND lower-middle, while

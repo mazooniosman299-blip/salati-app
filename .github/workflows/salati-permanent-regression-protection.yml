@@ -84,6 +84,7 @@ jobs:
       - name: Test latest approved printed reader and unchanged prayer/Fajr safety
         run: |
           set -euo pipefail
+          python3 tests/quran-continuation-actions.py
           python3 tests/mushaf-fatiha-entry.py
           python3 tests/mushaf1441-browser.py
           python3 tests/mushaf-opening-whitespace.py
@@ -98,6 +99,7 @@ jobs:
         with:
           name: salati-permanent-browser-screenshots
           path: |
+            reports/quran-continuation-actions/
             reports/mushaf-opening-whitespace/
             reports/mushaf1441/
             reports/active-production-browser-20261102/
