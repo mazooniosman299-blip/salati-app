@@ -51,7 +51,8 @@
     "tests/launcher-icon.py",
     "README.md",
     "scripts/android-webview-smoke.sh",
-    "tests/android-emulator-screen-preflight.py"
+    "tests/android-emulator-screen-preflight.py",
+    "tests/mushaf-opening-whitespace.py"
   ],
   "visual_allowed_regions": [],
   "latest_user_instruction": "الأيقونة الأولى بدون خلفية سوداء؛ حذف جميع أزرار/شريط الإجراءات المضافة؛ فقط انتقال تلقائي للسورة التالية والتحكم بالمشغل الموجود.",

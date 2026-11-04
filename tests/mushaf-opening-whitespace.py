@@ -24,17 +24,19 @@ try:
     target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
     page.wait_for_function("n=>{const c=document.querySelector('#qVerses'),t=c.querySelector('[data-reading-page=\"'+n+'\"]');return c.scrollHeight-c.clientHeight>=c.scrollTop+t.getBoundingClientRect().top-c.getBoundingClientRect().top-1}",arg=n)
     target.evaluate("e=>{const c=document.querySelector('#qVerses');c.scrollTo({top:c.scrollTop+e.getBoundingClientRect().top-c.getBoundingClientRect().top,behavior:'instant'})}")
-    node=page.locator(f'[data-reading-page="{n}"] .printed-page-image');image=Image.open(root/f'dist/quran/printed-1441/pages/{n}.png').convert('RGBA');bbox=image.getchannel('A').getbbox();box=node.bounding_box();reader=page.locator('#qVerses').bounding_box();dock=page.locator('#mushafPlayerSlot').bounding_box()
+    node=page.locator(f'[data-reading-page="{n}"] .printed-page-image');image=Image.open(root/f'dist/quran/printed-1441/pages/{n}.png').convert('RGBA');bbox=image.getchannel('A').getbbox()
+    # Measure the related layers in ONE browser task. Separate protocol reads
+    # can straddle a smooth-scroll frame (CI observed a false2px displacement).
+    geometry=page.evaluate('''n=>{const rect=s=>{const r=document.querySelector(s).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height}};const p='[data-reading-page="'+n+'"] ';return{box:rect(p+'.printed-page-image'),overlay:rect(p+'.printed-ayah-regions'),title:rect(p+'.printed-opening-title'),reader:rect('#qVerses'),dock:rect('#mushafPlayerSlot')}}''',n)
+    box,reader,dock,title,overlay=[geometry[k] for k in ['box','reader','dock','title','overlay']]
     region=json.loads((root/f'dist/quran/printed-1441/regions/{n}.json').read_text());x,y,w,h=region['displayViewport']
     assert x<=bbox[0] and y<=bbox[1] and x+w>=bbox[2] and y+h>=bbox[3],'Display crop must retain every nontransparent Quran pixel'
     ink_top=box['y']+bbox[1]*box['width']/image.width
-    title=page.locator(f'[data-reading-page="{n}"] .printed-opening-title').bounding_box()
     assert 0<=ink_top-title['y']-title['height']<=32,(width,height,n,'Unused gap after original title',ink_top,title)
     assert ink_top<dock['y'],(width,height,n,'Quran ink hidden by dock',ink_top,dock)
     assert reader['y']+reader['height']<=dock['y']+1,'Player overlaps reader'
     assert node.evaluate('(e)=>e.naturalWidth')==image.width
     # Image and hit layer must keep the SAME full-image geometry after trimming.
-    overlay=page.locator(f'[data-reading-page="{n}"] .printed-ayah-regions').bounding_box()
     assert abs(overlay['y']-box['y'])<1 and abs(overlay['height']-box['height'])<1,(box,overlay)
     targets=page.locator(f'[data-reading-page="{n}"] [data-ayah]');assert targets.count()==7 if n==1 else targets.count()==5
     target=targets.first;target.scroll_into_view_if_needed();hitbox=target.bounding_box();hit=page.evaluate('([x,y])=>document.elementFromPoint(x,y)?.closest("[data-ayah]")?.dataset.ayah',[hitbox['x']+hitbox['width']/2,hitbox['y']+hitbox['height']/2]);assert hit==target.get_attribute('data-ayah'),'Ayah hit testing drifted after margin trim'
