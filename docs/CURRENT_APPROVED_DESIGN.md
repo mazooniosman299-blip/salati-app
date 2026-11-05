@@ -63,3 +63,6 @@ Latest user points out the black rounded box enclosing a selected ayah. Actual12
 
 ##5Nov Fajr delivery and coloured launcher
 Latest5Nov user selects SECOND newly displayed coloured mosque image (emerald/garden), superseding transparent launcher only. Exact approved source SHA9fe039bc... archived in design-references/launcher-20261105/. All main UI/PWA/widget/Quran unchanged. Fajr repair must preserve existing audio settings and duplicate/stale guards. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.
+
+##5Nov2026 scoped polish and approved real photo2
+Latest user restores prior white crescent/minaret over actual real mosque photo and unifies header/PWA/native graphic. User explicitly selected real sunset photo2 by Fahrul Azmi after actual preview and requested mosque/sunset crop; this supersedes131green launcher and earlier home-photo exception only. New original-source complete Quran frame supersedes repeated slices;604Quran ink/regions/player unchanged. Home name/time slightly smaller, exact4:103one-line, native widget3right edges14dp, existingblue +/-/tasbih, whitecaption, removedguideheading/explanation and translucentsaveframe are scoped approvals. All other geometry/art/behavior retained. Source approval and actual test evidence are separate from future user acceptance.

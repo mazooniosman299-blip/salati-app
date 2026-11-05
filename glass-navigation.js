@@ -8,9 +8,21 @@ export function setupGlassNavigation(){
  const marker=document.createElement('span');marker.className='nav-selection';marker.setAttribute('aria-hidden','true');
  nav.prepend(marker);nav.classList.add('has-glass-navigation');
  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)');
- let animation,started=false;
+ let animation,iconAnimation,lastActive,started=false;
  function update(shouldAnimate=true){
   const active=nav.querySelector('button.active');if(!active)return;
+  // The current design hides the old selection marker. Animate the actual
+  // selected icon without moving layout or changing the approved resting art.
+  if(reduced.matches)iconAnimation?.cancel();
+  if(lastActive!==active){
+   iconAnimation?.cancel();
+   if(started&&shouldAnimate&&!reduced.matches){
+    iconAnimation=active.querySelector('.nav-symbol')?.animate?.(
+     [{opacity:.65,transform:'translateY(2px)'},{opacity:1,transform:'translateY(0)'}],
+     {duration:180,easing:'cubic-bezier(.22,1,.36,1)'});
+   }
+   lastActive=active;
+  }
   const box=active.getBoundingClientRect(),origin=marker.offsetParent?.getBoundingClientRect()||{left:0,top:0};
   const next={left:box.left-origin.left+4,top:box.top-origin.top+4,width:Math.max(0,box.width-8),height:Math.max(0,box.height-8)};
   animation?.stop();

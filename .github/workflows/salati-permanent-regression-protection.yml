@@ -57,7 +57,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: salati-permanent-source-regressions
-          path: reports/full-source-audit-latest.json
+          path: |
+            reports/full-source-audit-latest.json
+            reports/global-prayer-calendar/
           if-no-files-found: warn
 
   actual-browser-ui:
@@ -90,6 +92,9 @@ jobs:
           python3 tests/active-production-browser-20261102.py
           python3 tests/mobile-layout-contract-20261101.py
           python3 tests/home-reference-browser.py
+          python3 tests/scoped-polish-authentic-browser.py
+          python3 tests/launcher-icon.py
+          python3 tests/mushaf-ornament-layout.py
       - name: Test latest approved printed reader and unchanged prayer/Fajr safety
         run: |
           set -euo pipefail
@@ -109,6 +114,8 @@ jobs:
         with:
           name: salati-permanent-browser-screenshots
           path: |
+            reports/scoped-polish-authentic/
+            reports/mushaf-ornaments/
             reports/ayah-focus/
             reports/quran-continuation-actions/
             reports/mushaf-opening-whitespace/
@@ -157,6 +164,7 @@ jobs:
           python3 -m pip install --quiet pillow
           python3 tests/android-emulator-readiness.py
           python3 tests/apk-assets.py
+          python3 tests/launcher-icon.py android/app/build/outputs/apk/debug/app-debug.apk
           test -s android/app/build/outputs/apk/debug/app-debug.apk
       - name: Require hardware accelerated Android 15 emulator
         run: |
@@ -178,6 +186,8 @@ jobs:
           script: |
             bash scripts/android-webview-smoke.sh
             bash scripts/android-adhan-screen-off.sh
+            bash scripts/capture-widget-emulator.sh
+            python3 tests/widget-text-alignment.py
       - name: Preserve emulator screenshots, package, diagnostics
         if: always()
         uses: actions/upload-artifact@v4
@@ -185,6 +195,7 @@ jobs:
           name: salati-permanent-android-device-evidence
           path: |
             reports/adhan-screen-off/
+            reports/native-widget-preview/
             reports/android-webview-20261102/
             android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: warn

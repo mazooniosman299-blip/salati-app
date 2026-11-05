@@ -1,0 +1,3 @@
+# Exact timezone boundary correction
+
+Exact regional polygons derived from geo-tz8.1.11, whose geographic boundaries come from timezone-boundary-builder and OpenStreetMap contributors. Data is licensed under ODbL1.0; the unmodified DATA_LICENSE is included alongside this notice. Source coordinates and extraction provenance are publicly available in world-data/exact-timezone-regions.json and exact-timezone-regions-SOURCES.json. This small original-data extraction is used locally for the audited boundary regions and complete Tokelau/American Samoa territorial waters; no coordinates are transmitted.

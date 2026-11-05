@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-03",
+  "as_of": "2026-11-05",
   "purpose": "A production gate must not accidentally enforce historical preview designs. Security and release checks remain blocking.",
   "blocking_production": [
     "npm test",
@@ -55,5 +55,21 @@
     "file": "tests/fixtures/salati-v125-approved-ui.css",
     "approval": "User-selected option3 plus user-reported opening whitespace; actual ten-case opening captures reviewed, all ink retained, original124 fixture preserved",
     "test": "tests/css-cascade-equivalence.py"
+  },
+  "scoped_polish_20261105": {
+    "request": "SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS",
+    "tests": [
+      "tests/scoped-polish-authentic-browser.py",
+      "tests/global-prayer-calendar-audit.cjs",
+      "tests/launcher-icon.py",
+      "tests/widget-text-alignment.py"
+    ],
+    "superseded_assertions": [
+      "Home old mosque source only; all geometry retained",
+      "Widget exact bytes allow sole14dp countdown-row margin; artwork unchanged",
+      "Launcher131green export replaced with approved real photo and restored original mark",
+      "Frame old repeated slices replaced with whole original frame"
+    ],
+    "preserved": "All core/audio/604plate/security/signature/25MiB/fingerprint/publication guards"
   }
 }

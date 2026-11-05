@@ -44,8 +44,9 @@ try:
      assert page.locator('#nextName').inner_text()==('الفجر' if lang=='ar' else 'Fajr')
      assert page.locator('#nextTime').inner_text()==data[0]['time'],'Hero must show actual prayer clock, not countdown or a hardcoded mock time'
      assert page.locator('#locate').evaluate("e=>getComputedStyle(e).borderTopWidth==='0px'&&getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'")
-     assert page.locator('.home-mosque').get_attribute('src')=='images/mosque-reference-original.png'
-     assert page.locator('.home-mosque').evaluate('e=>e.complete&&e.naturalWidth===1120')
+     # Explicit5Nov photo2 approval supersedes only the hero photograph.
+     assert page.locator('.home-mosque').get_attribute('src')=='images/mosque-sunset-selected.webp'
+     assert page.locator('.home-mosque').evaluate('e=>e.complete&&e.naturalWidth===960')
      assert page.evaluate('document.documentElement.scrollWidth<=innerWidth'),width
      return data
     data=home()
@@ -92,11 +93,16 @@ try:
    page.close()
   browser.close()
 finally:server.shutdown();server.server_close()
-# This request explicitly excludes every Android widget file, including artwork.
+# Latest5Nov request changes ONLY countdown's right margin in native widget.
 base=os.environ.get('SALATI_WIDGET_BASE','5eee10c6bb2839de0b4ec06afc022a3f8c4b5a31')
 widget_paths=subprocess.check_output(['git','ls-tree','-r','--name-only',base,'android/app/src/main'],cwd=root,text=True).splitlines()
 widget_paths=[f for f in widget_paths if 'widget' in f.lower()]
 for f in widget_paths:
- assert (root/f).read_bytes()==subprocess.check_output(['git','show',base+':'+f],cwd=root),f
+ original=subprocess.check_output(['git','show',base+':'+f],cwd=root)
+ actual=(root/f).read_bytes()
+ if f=='android/app/src/main/res/layout/prayer_widget.xml':
+  # Remove the sole authorized new row margin; every other byte is retained.
+  actual=actual.replace(b'android:id="@+id/widget_countdown_row" android:layout_marginRight="14dp"',b'android:id="@+id/widget_countdown_row"')
+ assert actual==original,f
 (out/'result.json').write_text(json.dumps({'cases':results,'empty_states':3,'unchanged_widget_files':len(widget_paths),'pixel_equality_claimed':False},ensure_ascii=False,indent=2)+'\n')
 print(f'PASS home reference: {len(results)} real AR/EN responsive/reload/tab cases, 3 empty states; {len(widget_paths)} native widget files byte-identical. No automated pixel-equality claim.')

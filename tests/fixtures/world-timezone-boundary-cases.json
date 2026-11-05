@@ -1,0 +1,176 @@
+{
+  "tested": 480,
+  "mismatches": [
+    {
+      "name": "AS:Aūa",
+      "lat": -14.2703,
+      "lon": -170.6653,
+      "old": "Pacific/Apia",
+      "exact": [
+        "Pacific/Pago_Pago"
+      ]
+    },
+    {
+      "name": "BZ:Yo Creek",
+      "lat": 18.091,
+      "lon": -88.6461,
+      "old": "America/Cancun",
+      "exact": [
+        "America/Belize"
+      ]
+    },
+    {
+      "name": "CF:Zemio",
+      "lat": 5.0314,
+      "lon": 25.1361,
+      "old": "Africa/Lubumbashi",
+      "exact": [
+        "Africa/Bangui"
+      ]
+    },
+    {
+      "name": "VA:Vatican City",
+      "lat": 41.9027,
+      "lon": 12.4541,
+      "old": "Europe/Rome",
+      "exact": [
+        "Europe/Vatican"
+      ]
+    },
+    {
+      "name": "KG:Tayan",
+      "lat": 39.9026,
+      "lon": 71.1083,
+      "old": "Asia/Tashkent",
+      "exact": [
+        "Asia/Bishkek"
+      ]
+    },
+    {
+      "name": "LS:Tsa Kholo",
+      "lat": -29.6692,
+      "lon": 27.1516,
+      "old": "Africa/Johannesburg",
+      "exact": [
+        "Africa/Maseru"
+      ]
+    },
+    {
+      "name": "MW:Karonga",
+      "lat": -9.9333,
+      "lon": 33.9333,
+      "old": "Africa/Dar_es_Salaam",
+      "exact": [
+        "Africa/Blantyre"
+      ]
+    },
+    {
+      "name": "MP:San Jose Village",
+      "lat": 14.9682,
+      "lon": 145.62,
+      "old": "Pacific/Guam",
+      "exact": [
+        "Pacific/Saipan"
+      ]
+    },
+    {
+      "name": "PE:Zorritos",
+      "lat": -3.6805,
+      "lon": -80.6782,
+      "old": "America/Guayaquil",
+      "exact": [
+        "America/Lima"
+      ]
+    },
+    {
+      "name": "LC:Vieux Fort",
+      "lat": 13.7167,
+      "lon": -60.95,
+      "old": "America/St_Vincent",
+      "exact": [
+        "America/St_Lucia"
+      ]
+    },
+    {
+      "name": "PM:Saint-Pierre",
+      "lat": 46.7791,
+      "lon": -56.1773,
+      "old": "America/St_Johns",
+      "exact": [
+        "America/Miquelon"
+      ]
+    },
+    {
+      "name": "TK:Fale old settlement",
+      "lat": -9.3852,
+      "lon": -171.2467,
+      "old": "Pacific/Pago_Pago",
+      "exact": [
+        "Pacific/Fakaofo"
+      ]
+    },
+    {
+      "name": "UG:Zombo",
+      "lat": 2.5136,
+      "lon": 30.9091,
+      "old": "Africa/Lubumbashi",
+      "exact": [
+        "Africa/Kampala"
+      ]
+    },
+    {
+      "name": "EH:Tifariti",
+      "lat": 26.1579,
+      "lon": -10.5589,
+      "old": "Africa/Nouakchott",
+      "exact": [
+        "Africa/El_Aaiun"
+      ]
+    },
+    {
+      "name": "ZM:Nchelenge",
+      "lat": -9.3451,
+      "lon": 28.734,
+      "old": "Africa/Lubumbashi",
+      "exact": [
+        "Africa/Lusaka"
+      ]
+    },
+    {
+      "name": "JE:Saint John",
+      "lat": 49.2456,
+      "lon": -2.1386,
+      "old": "Europe/Guernsey",
+      "exact": [
+        "Europe/Jersey"
+      ]
+    },
+    {
+      "name": "العين / Al Ain",
+      "lat": 24.1302,
+      "lon": 55.8023,
+      "old": "Asia/Muscat",
+      "exact": [
+        "Asia/Dubai"
+      ]
+    },
+    {
+      "name": "Fakaofo",
+      "lat": -9.381,
+      "lon": -171.247,
+      "old": "Pacific/Pago_Pago",
+      "exact": [
+        "Pacific/Fakaofo"
+      ]
+    },
+    {
+      "name": "Pago Pago",
+      "lat": -14.2756,
+      "lon": -170.702,
+      "old": "Pacific/Apia",
+      "exact": [
+        "Pacific/Pago_Pago"
+      ]
+    }
+  ]
+}

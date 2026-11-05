@@ -81,9 +81,9 @@ try:
    calls=page.evaluate('nativeCalls');assert calls==([['options','existing-android-session',False,True]] if expected else []),calls
    assert page.evaluate('nativeState.position')==12;assert not errors,errors;page.close();results.append({'native_bridge_policy':policy,'options_only':True,'result':'pass'})
   # Latest correction: existing player only, no new ayah dock or actions.
-  # Latest5Nov approval changes only the printed-ayah outline reset. Keep
-  # the complete approved130 stylesheet frozen;128 remains a parity fixture.
-  assert (root/'dist/salati-ui.css').read_bytes()==(root/'tests/fixtures/salati-v130-approved-ui.css').read_bytes(),'Reader/UI CSS must remain exactly the approved130 focus correction'
+  # Latest scoped5Nov polish supersedes130 colors/fonts/frame/photo only.
+  # Keep a full132 source snapshot; retain128/130 historical fixtures.
+  assert (root/'dist/salati-ui.css').read_bytes()==(root/'tests/fixtures/salati-v132-approved-ui.css').read_bytes(),'Reader/UI CSS must remain exactly the scoped132 stylesheet'
   for width,height,lang in [(320,740,'ar'),(390,844,'ar'),(1440,900,'en'),(935,325,'ar')]:
    page=b.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('https://**/*.mp3',media)
    page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:%s}))"%json.dumps(lang));enter(page)

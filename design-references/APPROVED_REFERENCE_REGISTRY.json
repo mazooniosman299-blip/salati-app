@@ -104,6 +104,33 @@
       "source": "User approved option3 in independent preview; pinned original hifdziapp/mushaf and QuranWS revisions in manifest",
       "element": "Mushaf original plate edition; 604 image hashes, not a pixel-parity claim for entire application",
       "rights": "KFQC publisher usage notice and QuranWS CC-BY4 metadata notices retained in quran/printed-1441/licenses"
+    },
+    {
+      "id": "mosque-sunset-user-selected-2",
+      "status": "verified-source-bytes-user-scoped-approval",
+      "file": "design-references/mosque-20261105/fahrul-azmi-sunset.webp",
+      "sha256": "9b111a3f505da38e4871b069353322b4e3510c20dac7af213664a95e8c70f97e",
+      "element": "Home hero and real photo backing of unified app icon",
+      "source": "https://unsplash.com/photos/4-pillar-mosque-in-front-of-rotunda-during-golden-hour-vR-Nb0bncOY",
+      "rights": "UnsplashLicense; Fahrul Azmi attribution in archived SOURCES.json"
+    },
+    {
+      "id": "mushaf-complete-frame-pinned-564",
+      "status": "verified-source-bytes-user-scoped-approval",
+      "file": "design-references/mushaf-frame-20261105/source-page-564.png",
+      "sha256": "1904db20d73cd1e08fd193397f857f6dd9c83dd7a28d6f2ef99bf45661576b74",
+      "element": "Authentic complete printed outer decorative frame only",
+      "source": "https://github.com/QuranHub/quran-pages-images/blob/95823e5c5788e150a3f3e89a8536f1bd0c34f2c2/ayat/hafs/564.png",
+      "rights": "Pinned original LICENSE Unlicense and conflicting GPL README both retained; no exact AlMosaly claim"
+    },
+    {
+      "id": "restored-original-white-mark",
+      "status": "verified-source-bytes-user-scoped-approval",
+      "file": "design-references/brand-20261105/mark-original.webp",
+      "sha256": "7ccb9017778d5bd4637dc1d33b98fc1108a16e100f2f50ff5917cf0fde4b458a",
+      "element": "Prior user-chosen white crescent/minaret, now over real photo",
+      "source": "Official129/130 user-selected mark; recovered immutable38c59895 resource",
+      "rights": "Previously approved app mark reused unchanged; not a photograph"
     }
   ]
 }

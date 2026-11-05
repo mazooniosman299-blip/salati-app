@@ -1,0 +1,49 @@
+{
+  "source": "https://github.com/QuranHub/quran-pages-images/blob/95823e5c5788e150a3f3e89a8536f1bd0c34f2c2/ayat/hafs/564.png",
+  "source_sha256": "1904db20d73cd1e08fd193397f857f6dd9c83dd7a28d6f2ef99bf45661576b74",
+  "source_size": [
+    622,
+    917
+  ],
+  "source_bytes": 93913,
+  "output": "dist/quran/printed-1441/ornaments/authentic-frame.svg",
+  "sha256": "3bce99c9d22c5f72ea621e230b4c270a74d469b4ff7330e669191fa50aca699e",
+  "method": "Single unchanged original complete printed frame image with geometric exclusions of non-ornamental text/reading area. No new ornamental paths, no repeated pieces, no redrawing. Standard border-image stretch retains existing12/16px layout.",
+  "excluded_rectangles": [
+    [
+      46,
+      47,
+      530,
+      825
+    ],
+    [
+      116,
+      7,
+      96,
+      31
+    ],
+    [
+      360,
+      7,
+      156,
+      31
+    ],
+    [
+      284,
+      881,
+      49,
+      28
+    ],
+    [
+      5,
+      445,
+      34,
+      45
+    ]
+  ],
+  "licenses": [
+    "dist/quran/printed-1441/licenses/QuranHub-LICENSE",
+    "dist/quran/printed-1441/licenses/QuranHub-README.md"
+  ],
+  "note": "Actual pinned LICENSE is Unlicense; conflicting GPL3 README is retained as well. Not a claim of exact AlMosaly edition."
+}
