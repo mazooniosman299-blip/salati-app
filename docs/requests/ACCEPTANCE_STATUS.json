@@ -20,7 +20,7 @@
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS."
+      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS. Actual offline AR/EN deep-link root recovery/new960pxphoto/Quran bootstrap PASS;36real CSS parity cases with132immutable snapshot PASS;88representative text contrasts above4.5:1 PASS."
     },
     "real_browser": {
       "status": "pass",
@@ -31,8 +31,8 @@
       "evidence": "Actual user-selected real photo2/source bytes and prior original mark verified. Original pinned QuranHub complete frame bytes verified and rendered screenshots inspected; fixed source captions excluded. Not claimed exact AlMosaly/pixel equality to unavailable prior photo."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "Current132 build needs fresh actual Android35 WebView/cold alarms/widget3widths CI; local executor has noKVM/emulator."
+      "status": "pass",
+      "evidence": "PR55 source00cdb300 actualAndroid35 job127254860732/run42030333009 PASS: settled real WebView tap/reader/scroll, five cold/screen-off/Doze started USAGE_ALARM tracks and all4voices, actual RemoteViews3rightedges at900/1080/1440px. Follow-up changes only superseded visual-test assertions; final exact-head CI repeat is still required before publication."
     },
     "physical_android": {
       "status": "not_run",

@@ -8,7 +8,8 @@ const js=read('quran-controller.js');
 const expected='android:layout_marginRight="14dp"';
 assert(xml.includes('<TextView '+expected+' android:id="@+id/widget_next_label"'),'Keep next-prayer label inset 14dp from right edge');
 assert(xml.includes('<LinearLayout '+expected+' android:layout_width="wrap_content"'),'Keep prayer-name row inset 14dp from right edge');
-assert.equal((xml.match(/android:layout_marginRight="14dp"/g)||[]).length,2,'Inset only those two text groups');
+assert(xml.includes('<LinearLayout android:id="@+id/widget_countdown_row" '+expected),'Latest5Nov request aligns countdown with the same14dp edge');
+assert.equal((xml.match(/android:layout_marginRight="14dp"/g)||[]).length,3,'Inset exactly the caption, prayer-name row and countdown row');
 assert(xml.includes('@+id/widget_countdown')&&xml.includes('@+id/widget_location'),'Original countdown and location must remain');
 for(const name of ['fajr','sunrise','dhuhr','asr','maghrib','isha'])assert(xml.includes('widget_'+name),'Six times remain on widget');
 assert(html.includes('id="qVerses" class="mushaf-verses" role="region" tabindex="0"'),'Quran should be touch/keyboard scrollable');
@@ -22,4 +23,4 @@ assert(!hasForcedPriority(html+css),'No inline or canonical forced CSS prioritie
 for(const injected of ['.test{color:red!important}','.test{color:red ! important}']){
  assert(hasForcedPriority(injected),'Forced-priority mutation escaped test');
 }
-console.log('PASS: two native widget 14dp insets, image/time layout, Quran pan-y, automatic pages, no preview location code');
+console.log('PASS: three native widget 14dp insets, image/time layout, Quran pan-y, automatic pages, no preview location code');

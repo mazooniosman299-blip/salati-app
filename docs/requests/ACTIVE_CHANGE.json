@@ -321,6 +321,9 @@
     "design-references/APPROVED_REFERENCE_REGISTRY.json",
     "README.md",
     "tests/quran-continuation-actions.py",
-    "tests/fixtures/salati-v132-approved-ui.css"
+    "tests/fixtures/salati-v132-approved-ui.css",
+    "tests/widget-quran-no-regression-20261102.cjs",
+    "tests/css-cascade-equivalence.py",
+    "tests/offline-navigation.py"
   ]
 }
