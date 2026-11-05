@@ -1,4 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<inset xmlns:android="http://schemas.android.com/apk/res/android" android:insetLeft="14%" android:insetTop="14%" android:insetRight="14%" android:insetBottom="14%">
-    <bitmap android:src="@drawable/ic_salati_launcher" android:gravity="fill" />
-</inset>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle"><solid android:color="#00000000" /></shape>

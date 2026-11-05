@@ -1,0 +1,24 @@
+{
+  "user_scope": "Restore old selected crescent/minaret over user-selected real mosque sunset photo; same identity in app/launcher/PWA",
+  "photo_source": "https://unsplash.com/photos/4-pillar-mosque-in-front-of-rotunda-during-golden-hour-vR-Nb0bncOY",
+  "photo_author": "Fahrul Azmi",
+  "photo_license": "https://unsplash.com/license",
+  "photo_sha256": "9b111a3f505da38e4871b069353322b4e3510c20dac7af213664a95e8c70f97e",
+  "mark_sha256": "7ccb9017778d5bd4637dc1d33b98fc1108a16e100f2f50ff5917cf0fde4b458a",
+  "square_crop": [
+    180,
+    0,
+    899,
+    719
+  ],
+  "mark_fraction": 0.64,
+  "photo_readability_overlay_alpha": 40,
+  "processing": "Mechanical crop, standard resize/codec export, and original alpha-mark composition only. No generated/repainted architecture or redrawn logo. Full real photo archived.",
+  "canonical_tile_sha256": "b42248e8ccb5db907fcd7bce9744881f8b63776383468252b552ce7f528393b2",
+  "native_same_bytes": true,
+  "hero_sha256": "84c30a7763df9e9eab3f6821ce913035a661ffc4cd44dcaca983ba7448027b04",
+  "hero_codec_mean_error": 1.2995431540720137,
+  "hero_bytes": 68896,
+  "tile_bytes": 28294,
+  "png192_bytes": 46106
+}

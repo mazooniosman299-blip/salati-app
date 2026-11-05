@@ -8,3 +8,6 @@ Opening title frames and page cartouches: original NedaaDevs/nedaa@18430f3a7277f
 Opening calligraphy: unaltered surah-name vector groups from https://github.com/mushafdatabase/MushafDatabase-Ligature-Based-SVG/tree/ae5786ab08597f8123575dec4e774f1eca195e0f/SVG%20V1.01/{001,002}.svg . Explicit unrestricted digital-use permission in MushafDatabase-LICENSE.txt. ViewBox tight to original ink; all path coordinates unmodified.
 
 Full asset manifest: ../ornaments/SOURCES.json. These separate decorative assets are not claimed to be exact AlMosaly artwork or a new Quran text edition.
+
+##5November: complete original frame supersedes repeated slices
+The user rejects reconstructed/repeated ornament. Active authentic-frame.svg embeds the exact unchanged complete QuranHub pinned564.png (SHA1904db20d73cd1e08fd193397f857f6dd9c83dd7a28d6f2ef99bf45661576b74), with geometric masks excluding only its reading area and page-specific captions/digits. No motif is redrawn or repeated; all four original full edges/corners are retained. CSS scales these original edges within the existing border dimensions. Original prior assets and literal licences stay intact for provenance. Source and reproducible extraction: design-references/mushaf-frame-20261105/SOURCES.json and scripts/build-authentic-mushaf-frame.py. Actual current604Quran plate bytes and ayah hit paths remain unchanged.

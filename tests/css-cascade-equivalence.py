@@ -13,12 +13,11 @@ import json
 
 root=Path(__file__).resolve().parents[1]
 css=root/'dist'
-# Immutable approved128 snapshot after4Nov home reference/white-label review.
-# Historical126 snapshot remains intact; intentional home redesign is separately
-# checked against actual127 in48 scoped screenshots, not forced back to126.
-# This fixture must
-# change only after full visual review; a normal web build cannot erase it.
-baseline=(root/'tests/fixtures/salati-v128-approved-ui.css').read_text()
+# Immutable scoped132 snapshot after actual48pixel-scope captures and source
+# review. The user's latest requested blue/fonts/photo/frame changes supersede
+#128 only for those components. Preserve128/130fixtures; retain all36real
+# DOM/computed-style/geometry comparisons below and strict future drift guard.
+baseline=(root/'tests/fixtures/salati-v132-approved-ui.css').read_text()
 optimized=(css/'salati-ui.css').read_text()
 assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # Re-running a cleanup on an already canonical production branch is

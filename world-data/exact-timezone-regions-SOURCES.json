@@ -1,0 +1,277 @@
+{
+  "sourcePackage": "geo-tz@8.1.11",
+  "upstream": "https://github.com/evansiroky/node-geo-tz",
+  "boundarySource": "https://github.com/evansiroky/timezone-boundary-builder",
+  "dataLicense": "ODbL1.0, OpenStreetMap contributors; included under dist/licenses",
+  "originalDataSha256": "a1f137b219f0a88bba13df02fc7f24e04fe95ef9be3f1eb0913bf06a26422153",
+  "indexSha256": "b5a93045c6afe13b12a167bb4b173d586793f30ae586377a282c8ef99f2df2e9",
+  "sha256": "8ccf5115e7564e12ef4bc23938596804072973ae1337ea942fa41a2f7682e2a4",
+  "featureCount": 57,
+  "bytes": 445836,
+  "sourceCells": [
+    {
+      "key": "cbbcbdaba",
+      "pos": 6883894,
+      "len": 681,
+      "filter": null
+    },
+    {
+      "key": "bdcbbccba",
+      "pos": 12597703,
+      "len": 11841,
+      "filter": null
+    },
+    {
+      "key": "accdcbbad",
+      "pos": 23563710,
+      "len": 5038,
+      "filter": null
+    },
+    {
+      "key": "acbbacbba",
+      "pos": 25371198,
+      "len": 1460,
+      "filter": null
+    },
+    {
+      "key": "acaabcdca",
+      "pos": 26297364,
+      "len": 4420,
+      "filter": null
+    },
+    {
+      "key": "dbcacbdab",
+      "pos": 1104159,
+      "len": 7323,
+      "filter": null
+    },
+    {
+      "key": "dbbadccbb",
+      "pos": 1474868,
+      "len": 9417,
+      "filter": null
+    },
+    {
+      "key": "addbcadad",
+      "pos": 28070181,
+      "len": 527,
+      "filter": null
+    },
+    {
+      "key": "cabbbdaca",
+      "pos": 5412530,
+      "len": 7493,
+      "filter": null
+    },
+    {
+      "key": "bdcacdbba",
+      "pos": 12329712,
+      "len": 478,
+      "filter": null
+    },
+    {
+      "key": "bacddcbcb",
+      "pos": 9140490,
+      "len": 173,
+      "filter": null
+    },
+    {
+      "key": "cbbbcdacb",
+      "pos": 6840112,
+      "len": 1137,
+      "filter": null
+    },
+    {
+      "key": "accdcdbaa",
+      "pos": 23711903,
+      "len": 3349,
+      "filter": null
+    },
+    {
+      "key": "bdaddbcb",
+      "exactCell": true,
+      "zone": "Africa/El_Aaiun",
+      "bounds": {
+        "left": -11.24999375,
+        "right": -9.84374453125,
+        "bottom": 26.01559609375,
+        "top": 26.718720312499997
+      }
+    },
+    {
+      "key": "dbbacdbcb",
+      "pos": 1644667,
+      "len": 1590,
+      "filter": null
+    },
+    {
+      "key": "badddaacc",
+      "pos": 7528818,
+      "len": 598,
+      "filter": null
+    },
+    {
+      "key": "acaccdadd",
+      "pos": 27232639,
+      "len": 1406,
+      "filter": null
+    },
+    {
+      "key": "cbbbcacdc",
+      "pos": 6832538,
+      "len": 666,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdabc",
+      "pos": 6839070,
+      "len": 273,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdacb",
+      "pos": 6840112,
+      "len": 1137,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdacc",
+      "pos": 6839343,
+      "len": 769,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdbaa",
+      "pos": 6837796,
+      "len": 175,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdbab",
+      "pos": 6836593,
+      "len": 1203,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdbad",
+      "pos": 6835567,
+      "len": 1026,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcdbda",
+      "pos": 6837971,
+      "len": 1099,
+      "filter": "Pacific/Fakaofo"
+    },
+    {
+      "key": "cbbbcddcb",
+      "pos": 6835065,
+      "len": 502,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbbcddcc",
+      "pos": 6833794,
+      "len": 1271,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcacbba",
+      "pos": 6890833,
+      "len": 173,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcacbbb",
+      "pos": 6890379,
+      "len": 454,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcacbbc",
+      "pos": 6889569,
+      "len": 810,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcacbbd",
+      "pos": 6889050,
+      "len": 519,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbaabb",
+      "pos": 6876021,
+      "len": 300,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbadcd",
+      "pos": 6873625,
+      "len": 428,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbaddc",
+      "pos": 6874540,
+      "len": 620,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbaddd",
+      "pos": 6874259,
+      "len": 281,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdaaa",
+      "pos": 6881503,
+      "len": 589,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdaab",
+      "pos": 6880826,
+      "len": 677,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdaac",
+      "pos": 6880514,
+      "len": 312,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdaad",
+      "pos": 6880248,
+      "len": 266,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdaba",
+      "pos": 6883894,
+      "len": 681,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdabb",
+      "pos": 6883173,
+      "len": 721,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdabc",
+      "pos": 6882843,
+      "len": 330,
+      "filter": "Pacific/Pago_Pago"
+    },
+    {
+      "key": "cbbcbdabd",
+      "pos": 6882092,
+      "len": 751,
+      "filter": "Pacific/Pago_Pago"
+    }
+  ],
+  "method": "Original exact source polygon regions for observed lookup mismatches; source quadtree uniform-cell rectangles where applicable. No guessed coordinate radii, invented UTC offsets, online lookup or geo-tz production dependency. Complete source Tokelau/American Samoa territorial geometry retained."
+}

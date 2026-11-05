@@ -39,7 +39,7 @@ try:
      assert 0<=top-tb['y']-tb['height']<=32,(w,h,n,top,tb)
      crop=json.loads((root/f'dist/quran/printed-1441/regions/{n}.json').read_text())['displayViewport'];assert crop[1]<=ink[1] and crop[1]+crop[3]>=ink[3]
     else: assert top-read['y']<=50
-    style=page.locator(f'[data-reading-page="{n}"]').evaluate('(e)=>getComputedStyle(e).borderImageSource');assert 'floral-border.svg' in style
+    style=page.locator(f'[data-reading-page="{n}"]').evaluate('(e)=>getComputedStyle(e).borderImageSource');assert 'authentic-frame.svg' in style
     label=page.locator(f'[data-reading-page="{n}"] .printed-page-index');assert 'page-cartouche.png' in label.evaluate('(e)=>getComputedStyle(e).backgroundImage')
     page.locator('#qVerses').evaluate('(e)=>e.scrollTop=e.scrollHeight');page.wait_for_function('document.querySelectorAll(".original-printed-page").length>=2');nodes=page.locator('.original-printed-page');one=nodes.nth(0).bounding_box();two=nodes.nth(1).bounding_box();assert one['y']+one['height']<=two['y']+1 and abs(one['x']-two['x'])<1
     if n==1 and h==1600:page.wait_for_function('document.querySelectorAll(".original-printed-page").length>=3',timeout=5000)
@@ -47,6 +47,6 @@ try:
     if (w,n) in [(390,1),(1440,1),(1920,564)]:page.screenshot(path=str(out/f'{w}-ar-p{n}.png'))
     assert not errors,errors;cases.append({'viewport':[w,h],'page':n,'result':'PASS','paper_width':leaf['width'],'first_ink_y':top,'reader_top':read['y']});page.close()
   b.close()
- (out/'result.json').write_text(json.dumps({'result':'PASS','cases':cases,'reference':'Licensed original ornamental slices, not claimed exact AlMosaly art','physical_phone':'NOT RUN','Android':'separate release checks required'},ensure_ascii=False,indent=2)+'\n')
+ (out/'result.json').write_text(json.dumps({'result':'PASS','cases':cases,'reference':'Complete original pinned QuranHub frame, no repeated/drawn motifs; not claimed exact AlMosaly art','physical_phone':'NOT RUN','Android':'separate release checks required'},ensure_ascii=False,indent=2)+'\n')
 finally:server.shutdown()
 print('PASS decorated integrated reader:21 real Chromium cases; original ink, no blank leading block, one bounded vertical column, real ornaments, accurate targets and separate player')

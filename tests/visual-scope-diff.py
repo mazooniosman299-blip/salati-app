@@ -20,7 +20,9 @@ def pixel_scope(a,b,allowed):
 
 def visible_rectangle(case,selector):
  e=case['computed'].get(selector)
- if not e or not e.get('visible'):raise AssertionError('Missing/hidden approved selector '+case['image']+' '+selector)
+ # Removed/hidden elements grant no pixels. Their visible counterpart alone
+ # bounds a removal; two hidden counterparts grant nothing at all.
+ if not e or not e.get('visible'):return None
  return [e['x'],e['y'],e['right'],e['bottom']]
 
 def compare(baseline,candidate,policy):
@@ -41,6 +43,8 @@ def compare(baseline,candidate,policy):
   for rule in rules:
    p=visible_rectangle(baseline_case,rule['selector'])
    q=visible_rectangle(case,rule['selector'])
+   if p is None and q is None:continue
+   p=p or q;q=q or p
    boxes.append([max(0,min(p[0],q[0])-6),max(0,min(p[1],q[1])-6),
     min(case['viewport'][0],max(p[2],q[2])+6),min(case['viewport'][1],max(p[3],q[3])+6)])
   with Image.open(baseline/key) as x,Image.open(candidate/key) as y:
@@ -60,6 +64,8 @@ def self_test():
  z=x.copy();ImageDraw.Draw(z).rectangle((21,21,23,23),fill='white')
  assert pixel_scope(x,z,[[1,1,6,6]])[1]==9
  assert pixel_scope(x,z,[[2,30,6,24]])[1]==9,'Off-screen allowance must grant zero visible pixels'
+ assert visible_rectangle({'image':'removed','computed':{}},'#gone') is None
+ assert pixel_scope(x,z,[])[1]==9,'Hidden/removed controls cannot authorize unrelated pixels'
  print('PASS pixel boundary negative tests: authorized accepted, unrelated rejected')
 
 def main():

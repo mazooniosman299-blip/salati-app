@@ -1,5 +1,5 @@
 // All prayer-time computations use the bundled Adhan library locally.
-import tzLookup from 'tz-lookup';
+import tzLookup from './timezone-lookup.js';
 import {getTimezone} from 'countries-and-timezones';
 import {PrayerTimes,Coordinates,CalculationMethod,Madhab,HighLatitudeRule} from 'adhan';
 import {cities} from './cities.js';
@@ -44,7 +44,28 @@ export function validateDayTimes(times){
  if(finite('maghrib','isha')&&t('isha')<=t('maghrib'))absent('isha');
  return result;
 }
-function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return validateDayTimes(times)}return validateDayTimes(new PrayerTimes(new Coordinates(state.lat,state.lon),day,prayerParameters(state,day)))}
+function calendarAlignedSolarTimes(state,day){
+ const coordinates=new Coordinates(state.lat,state.lon),parameters=prayerParameters(state,day);
+ const zone=state.zone||tzLookup(state.lat,state.lon);
+ const target=Date.UTC(day.getFullYear(),day.getMonth(),day.getDate());
+ // Adhan anchors its solar calculation to a Gregorian UTC day. West-longitude
+ // locations using an eastern civil date (e.g. Kiritimati/Apia) need the
+ // previous solar day. Recalculate it: moving tomorrow's timestamps24h would
+ // keep tomorrow's solar angles and can introduce a one-minute error.
+ const difference=times=>{
+  if(!Number.isFinite(+times.dhuhr))return 0;
+  const corrections=Number(parameters.adjustments.dhuhr||0)+Number(parameters.methodAdjustments.dhuhr||0);
+  const local=calendarParts(new Date(+times.dhuhr-corrections*60000),zone);
+  return (target-Date.UTC(local.year,local.month-1,local.day))/86400000;
+ };
+ let times=new PrayerTimes(coordinates,day,parameters),shift=difference(times);
+ if(shift){const solarDay=new Date(day);solarDay.setDate(solarDay.getDate()+shift);times=new PrayerTimes(coordinates,solarDay,parameters);}
+ // A historically skipped civil date has no corresponding solar day. Never
+ // invent six alarm timestamps for it. Normal dates retain the original data.
+ if(difference(times))return Object.fromEntries(PRAYER_KEYS.map(k=>[k,new Date(NaN)]));
+ return times;
+}
+function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return validateDayTimes(times)}return validateDayTimes(calendarAlignedSolarTimes(state,day))}
 export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
 export function calculateSchedule(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone);const day=new Date(d.year,d.month-1,d.day,12),today=dayTimes(state,day);day.setDate(day.getDate()+1);const tomorrow=dayTimes(state,day);return [...PRAYER_KEYS.map(key=>({key,time:today[key]})),{key:'fajr',time:tomorrow.fajr,tomorrow:true}]}
 

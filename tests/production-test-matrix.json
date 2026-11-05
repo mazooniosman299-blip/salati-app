@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-03",
+  "as_of": "2026-11-05",
   "purpose": "A production gate must not accidentally enforce historical preview designs. Security and release checks remain blocking.",
   "blocking_production": [
     "npm test",
@@ -52,8 +52,27 @@
     "reason": "Old assertions require reflowed text geometry, exposed toolbar, per-ayah reciter popup or source equality to v123 CSS. Original files retained. Replace with direct-ayah/printed hash/browser tests and 48 actual production-vs-candidate scoped screenshots; all core/security/signature tests remain blocking."
   },
   "current_css_fixture": {
-    "file": "tests/fixtures/salati-v125-approved-ui.css",
-    "approval": "User-selected option3 plus user-reported opening whitespace; actual ten-case opening captures reviewed, all ink retained, original124 fixture preserved",
+    "file": "tests/fixtures/salati-v132-approved-ui.css",
+    "approval": "Explicit5Nov scoped corrections and actual photo2 selection;48real production-vs-candidate scoped screenshots PASS; desktop photo focal red/green and independent visual review PASS; prior128/130retained. Future user acceptance remains separate.",
     "test": "tests/css-cascade-equivalence.py"
+  },
+  "scoped_polish_20261105": {
+    "request": "SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS",
+    "tests": [
+      "tests/scoped-polish-authentic-browser.py",
+      "tests/global-prayer-calendar-audit.cjs",
+      "tests/launcher-icon.py",
+      "tests/widget-text-alignment.py"
+    ],
+    "superseded_assertions": [
+      "Home old mosque source only; all geometry retained",
+      "Widget exact bytes allow sole14dp countdown-row margin; artwork unchanged",
+      "Launcher131green export replaced with approved real photo and restored original mark",
+      "Frame old repeated slices replaced with whole original frame",
+      "Exactly2nativewidget14dp margins becomes exactly3caption/name/countdown margins, with dedicated countdown row assertion",
+      "Immutable128CSS parity baseline becomes132after scoped source/screenshot review; all36real computed-style comparisons remain",
+      "Offline-navigation actual decoded hero expects selected960pxphoto2WebP; SW/offline redirect/city/Quran behavior and timeouts stay mandatory"
+    ],
+    "preserved": "All core/audio/604plate/security/signature/25MiB/fingerprint/publication guards"
   }
 }

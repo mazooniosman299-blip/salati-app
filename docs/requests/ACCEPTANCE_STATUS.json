@@ -1,54 +1,58 @@
 {
-  "request_id": "SALATI-20261105-FAJR-ADHAN-ICON",
-  "source_reference": "docs/requests/SALATI-20261105-FAJR-ADHAN-ICON.md",
-  "producer_branch": "fix/android-ui-readiness-20261105",
+  "request_id": "SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS",
+  "source_reference": "docs/requests/SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS.md",
+  "producer_branch": "fix/scoped-polish-authentic-assets-20261105",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "Exact latest request and displayed-second selected artwork identified; real source owners inspected; independent native/web failure paths documented"
+      "evidence": "Full latest request and photo-preview/both-widget clarification recorded verbatim."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Exact latest request and displayed-second selected artwork identified; real source owners inspected; independent native/web failure paths documented"
+      "evidence": "Actual source/import/DOM/native owners inspected; scoped photo2 selection and dependencies documented. Independent read-only review: noCritical/Important code finding."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Current release/debug/instrumentation build and full CI code checks pass; original-key code132 and1000 native asset parity pass; no test instrumentation in release APK."
+      "evidence": "npm source build and Android release/debug/instrumentation builds PASS. Source-lifecycle regenerates exact linked JS hash11575ec5... from actual imports."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "Current host RED/GREEN alarm output/focus/call-mode/stop/generation/preview/legacy/granted branches; native resync all5/exact/inexact guards; full npm suite and strict recordings pass. Actual cold/Doze all5 pass, recorded separately."
+      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS. Actual offline AR/EN deep-link root recovery/new960pxphoto/Quran bootstrap PASS;36real CSS parity cases with132immutable snapshot PASS;88representative text contrasts above4.5:1 PASS. Fresh full npm test PASS after native fault-injection fix. Actual Java process-death/replacement and cross-mode eligibility regressions PASS; independent reviewer verified failed final-commit conservative policy."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "48 scoped captures PASS with no unrequested changes;4pointer focus and4continuation/player viewport cases PASS; original Quran content unchanged."
+      "evidence": "48real AR/EN six-tab screenshots at4widths compared to exact official131 runtime: scoped pixel-diff PASS. Additional8scoped cases incl real nav animation/reduced motion,21decorated-reader cases,8mushaf cases,10home cases/reload/empty states PASS. Final desktop minaret/dome/sunset focal-point regression PASS at all8responsive/language cases, actual improved desktop screenshot reviewed."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "Signed-update job126990555473 actual launcher hierarchy requires visible Salati; native cropped screenshot inspected. Exact chosen mosque background/dome/minarets visible within adaptive circle; original approved reference and asset bytes verified. User acceptance remains pending."
+      "evidence": "Actual user-selected real photo2/source bytes and prior original mark verified. Original pinned QuranHub complete frame bytes verified and rendered screenshots inspected; fixed source captions excluded. Not claimed exact AlMosaly/pixel equality to unavailable prior photo."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "PR53 final native all5 passed; production UI preflight repeatedly taps before settled native layout (observed y866 then actual905), so official130 retained. Strengthen complete-navigation/three-frame stability, preserve exact verified frame and full logcat. No product/APK/website change; new exact native suite required."
+      "reason": "Diagnostic-only source103322d/run42062304711 all4mandatory jobs PASS, including all5actual cold/screen-off/Doze alarm audio checks and widget3widths. New native atomic-replacement/early-callback/conservative-mode fix independently reviewed and host fault-injection PASS; fresh exact-candidate emulator CI required."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "No physical phone available; actual user environment clarification pending; emulator is separate evidence."
+      "reason": "No physical phone is connected. Emulator/compile results do not establish physical-device behavior."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Current original-key131/code132 with durable pending metadata: 26203812bytes SHA01ad91722b69e2fefd3e5d085b7527be85c224471b9fb0db4d463cfcac15a6c2; no debug/test utility in release dex. Actual NoDisplay cold suite all5 passes in job127013776900."
+      "evidence": "Fresh final native atomic-replacement original-key132/code133 APK26072992bytes below25MiB; SHA014535f2e4d396e8d1971ea7b79cc8d311de9d61748370a7740a91ebc8d7362e; originalcert559dec66...;1002native/site assets and exact canonical icon verified; release/debug/instrumentation builds PASS41s. Supersedes archived unpublishedcafbd103candidate."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "PR53 merged but Cloudflare safely blocked native UI failure; canonical remains130. Follow-up test-only PR must pass all exact merge checks, then canonical/readback131."
+      "reason": "Current signed132 candidate has not been merged/published. All exact-head CI and fresh Android evidence must pass first."
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "Current request verification pending; no claim from earlier release"
+      "reason": "User selected actual photo2 and crop; has not yet assessed the final installed132 candidate."
     }
-  }
+  },
+  "limitations": [
+    "Global tests establish mathematical date/zone/rounding behavior at covered points, not every official mosque calendar minute worldwide.",
+    "Physical phone/human audition/future user acceptance remain unverified."
+  ]
 }

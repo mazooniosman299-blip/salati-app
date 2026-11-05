@@ -36,8 +36,21 @@ for style in target.glob('*.css'):
     style.unlink()
 assert (target/'salati-ui.css').is_file(), 'Missing canonical stylesheet in Android package'
 assert not any((target/n).exists() for n in ('design-restoration-v1.0.113.css','eight-mobile-root-fixes-20261101.css','mobile-layout-contract-20261101.css'))
+image_references=stylesheet_references+'\n'+'\n'.join(style.read_text() for style in target.glob('*.css'))
 for image in (target/'images').glob('mosque*'):
-    if image.is_file() and image.suffix in ['.webp','.jpg'] and 'images/'+image.name not in index:image.unlink()
+    # Prune only unused web copies from the APK staging directory. The
+    # source archive and the independently used native widget photo remain.
+    if image.is_file() and image.suffix in ['.webp','.jpg','.png'] and 'images/'+image.name not in image_references:image.unlink()
+
+# These two retired UI fonts have zero HTML/CSS/JS/JSON or Java references.
+# Keep the original files in dist for history; omit only unused APK copies.
+# All three active Cairo/Amiri/Madinah fonts and Quran glyphs are retained.
+text_references='\n'.join(f.read_text() for f in target.rglob('*') if f.suffix in ('.html','.css','.js','.json'))
+java_references='\n'.join(f.read_text() for f in (root/'android/app/src/main').rglob('*.java'))
+for filename in ('NotoSansArabic-Regular.ttf','NotoSansArabic-Bold.ttf'):
+    if filename not in text_references and filename not in java_references:
+        (target/'fonts'/filename).unlink(missing_ok=True)
+assert all((target/'fonts'/name).is_file() for name in ('Cairo-Variable.ttf','AmiriQuran-Regular.ttf','MadinahHafsClassic.ttf'))
 
 p=target/'index.html';s=p.read_text()
 s=re.sub(r'data-ar="فعّل الأذان مرة واحدة؛[^"\n]+" data-en="Enable adhan once;[^"\n]+"', 'data-ar="فعّل الأذان واسمح بالإشعارات والمنبّهات الدقيقة لتشغيله في الخلفية. اتبع إعدادات توفير البطارية في هاتفك، وافتح التطبيق مجددًا بعد الإيقاف الإجباري. يعتمد التشغيل على أذونات أندرويد وصوت الجهاز." data-en="Enable adhan and allow notifications and exact alarms for background playback. Check your phone’s battery restrictions and reopen the app after a force stop. Playback depends on Android permissions and device volume."',s)
