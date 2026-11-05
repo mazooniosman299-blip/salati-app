@@ -31,8 +31,8 @@
       "reason": "Exact selected original archived; source384pxexport fidelity/adaptive geometry pass. Actual native launcher capture comparison pending CI."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "Current request verification pending; no claim from earlier release"
+      "status": "fail",
+      "evidence": "Initial actual Android15 screen-off Fajr failed at native audio-focus request, recording direct system denial. Minimal bounded retry added; same unweakened test must pass before merge/publication."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,7 +40,7 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Original-key1.0.131/code132APK26203812B/SHAa9074522b0643202c03206f7151d23d6feb4b000f67e7bee05bad90410742c33;1000native asset matches; actual selected icon resource identity pass."
+      "evidence": "Current original-key131/code132 after native focus correction: 26203812bytes SHA25682fa7b70c15dcfdc5d8da895a80ba7b5534ff1be42ad2d099d2a61198e89979e; original cert and full native asset parity verified locally; actual CI still pending"
     },
     "production_publication": {
       "status": "not_run",

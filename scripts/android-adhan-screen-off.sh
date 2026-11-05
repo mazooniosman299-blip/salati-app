@@ -16,6 +16,7 @@ for pair in fajr:nufais dhuhr:qatami asr:makkah maghrib:aqsa isha:nufais; do
  adb shell input keyevent KEYCODE_WAKEUP
  adb shell am instrument -w -r -e prayer "$prayer" -e voice "$voice" "$pkg.test/com.salati.prayer.AlarmDeliveryInstrumentation" > "$out/$prayer-prepare.txt"
  cat "$out/$prayer-prepare.txt"
+ adb shell dumpsys alarm > "$out/$prayer-alarms-after-prepare.txt"
  grep -F 'INSTRUMENTATION_CODE: -1' "$out/$prayer-prepare.txt"
  adb shell input keyevent KEYCODE_HOME
  adb shell am kill "$pkg"
@@ -50,6 +51,10 @@ PY
  done
  if [ "$delivered" -ne 1 ]; then
   adb logcat -d -t 1600 > "$out/$prayer-failure-logcat.txt"
+  adb shell dumpsys alarm > "$out/$prayer-alarms-at-failure.txt"
+  adb shell cmd appops get "$pkg" TAKE_AUDIO_FOCUS > "$out/$prayer-focus-appops.txt"
+  cat "$out/$prayer-focus-appops.txt"
+  cat "$out/$prayer-prefs.xml" "$out/$prayer-alarms-after-prepare.txt" "$out/$prayer-alarms-at-failure.txt"
   cat "$out/$prayer-audio.txt" "$out/$prayer-services.txt"
   exit 1
  fi

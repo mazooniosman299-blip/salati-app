@@ -28,6 +28,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Install strict packaged-recording decoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
       - run: npm ci
       - name: Build exact current source and block core regressions
         run: |
@@ -35,6 +39,7 @@ jobs:
           node tests/permanent-regression-contract.cjs
           npm test
           python3 tests/fajr-alarm-resync.py
+          python3 tests/adhan-focus-startup.py
           python3 tests/packaged-recordings.py
           node tests/quran-dom.cjs
           node tests/worldwide-prayer-integrity-20261101.cjs

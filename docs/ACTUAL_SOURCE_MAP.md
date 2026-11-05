@@ -51,3 +51,5 @@ Latest user points out the black rounded box enclosing a selected ayah. Actual12
 
 ##5Nov Fajr delivery and coloured launcher
 Fajr pending-resync owner native-adapter.js must keep still-deliverable event data; PrayerSchedule.sync must apply the same due-pending protection as Activity resume after persisting selected settings. OS AlarmDeliveryPolicy remains authoritative. Native-only launcher uses selected384pxWebP/full coloured backing/14% inset and separate themed silhouette. Test-only Android instrumentation remains outside release APK. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.
+
+AdhanService.requestPlaybackFocus now owns bounded automatic startup focus retries; generation/terminal state guards cancellation and original beginFocusedPlayback owns unchanged local output setup. A real Android15 cold-service focus denial is the acceptance trigger.

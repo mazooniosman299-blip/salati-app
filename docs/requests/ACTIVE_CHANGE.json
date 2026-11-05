@@ -60,7 +60,9 @@
     "apk-release-parts/v1.0.131/part14.bin",
     "dist/audio/wasilah.mp3",
     "dist/audio/SOURCES.txt",
-    "tests/packaged-recordings.py"
+    "tests/packaged-recordings.py",
+    "android/app/src/main/java/com/salati/prayer/AdhanService.java",
+    "tests/adhan-focus-startup.py"
   ],
   "native_visual_changes": [
     {

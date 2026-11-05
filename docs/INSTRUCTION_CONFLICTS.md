@@ -49,3 +49,5 @@ Latest user points out the black rounded box enclosing a selected ayah. Actual12
 
 ##5Nov Fajr delivery and coloured launcher
 Latest explicit coloured-mosque option2 supersedes129 transparency/white-only launcher assertions, not website/PWA/widget. Replace those image assertions with exact approved reference/export fidelity and real adaptive/themed safeguards. Native schedule historical strictly-future data test conflicts with retaining an already scheduled undelivered event during synchronization; bound retained data to existing30min maximum and keep actual5min exact/30min inexact, duplicate, disabled and stale execution rejection unchanged. No new alarm is created merely because past data is retained. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.
+
+Do not interpret a real cold-service focus denial as proof that alarm scheduling failed. Keep the new screen-off test demanding an actual started USAGE_ALARM AudioTrack; no AppOps override, lower targetSDK, skipped audio check or fabricated playback allowed.

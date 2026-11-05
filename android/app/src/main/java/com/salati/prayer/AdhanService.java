@@ -19,14 +19,28 @@ public final class AdhanService extends Service{
   wake=getSystemService(PowerManager.class).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"salati:adhan");wake.acquire(600000);long ticket=generation;handler.postDelayed(()->{if(ticket==generation)finishPlayback("error");},600000);
   manager=getSystemService(AudioManager.class);attributes=new AudioAttributes.Builder().setUsage(preview?AudioAttributes.USAGE_MEDIA:AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build();
   focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).setAudioAttributes(attributes).setWillPauseWhenDucked(false).setOnAudioFocusChangeListener(change->{if(ticket==generation)onAudioFocusChange(change);},handler).build();
-  if(manager.requestAudioFocus(focus)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED){finishPlayback("blocked");return START_NOT_STICKY;}
-  AlarmVolumeSession.begin(this,settings.optBoolean("silentMode",true),!preview,(float)settings.optDouble("volume",1.0));
   duaPlaying="dua".equals(i.getStringExtra("kind"));
+  requestPlaybackFocus(ticket,prayer,0);return START_NOT_STICKY;
+ }
+ // Android15 may still consider a freshly promoted cold service ineligible
+ // for TAKE_AUDIO_FOCUS. Retry briefly on the main queue; never play without
+ // a grant, and never revive a stopped/replaced request.
+ void requestPlaybackFocus(long ticket,String prayer,int attempt){
+  if(ticket!=generation||terminal)return;
+  if(manager.requestAudioFocus(focus)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
+   if(!preview&&attempt<8){PrayerSchedule.recordDelivery(this,"waiting_audio_focus",null);handler.postDelayed(()->requestPlaybackFocus(ticket,prayer,attempt+1),250);}
+   else finishPlayback("blocked");
+   return;
+  }
+  beginFocusedPlayback(ticket,prayer);
+ }
+ void beginFocusedPlayback(long ticket,String prayer){
+  AlarmVolumeSession.begin(this,settings.optBoolean("silentMode",true),!preview,(float)settings.optDouble("volume",1.0));
   String voice=settings.optString("voice","nufais");if(!voice.matches("nufais|qatami|makkah|aqsa"))voice="nufais";
   String name=duaPlaying?"wasilah":"qatami".equals(voice)?"qatami-user-v2":voice;
   if(!preview&&"fajr".equals(prayer)&&settings.optBoolean("fajrAnnouncement",false)&&FajrAnnouncementPolicy.canPlay(PrayerSchedule.notificationsAllowed(this),getSystemService(NotificationManager.class).getCurrentInterruptionFilter(),settings.optDouble("volume",1))){
    pendingRecording=name;prelude=new ArabicSpeech(this,attributes);MainActivity.notifyPlayback("fajr");prelude.speak("الصلاة خير من النوم",(float)settings.optDouble("volume",1),()->{if(ticket!=generation)return;prelude=null;if(!focusState.paused&&pendingRecording!=null){String recording=pendingRecording;pendingRecording=null;play(recording);}});
-  }else play(name);return START_NOT_STICKY;
+  }else play(name);
  }
  void onAudioFocusChange(int change){focusState.change(change);if(focusState.stopped){finishPlayback("stopped");return;}if(prelude!=null&&focusState.paused){prelude.close();prelude=null;}if(!focusState.paused&&prelude==null&&pendingRecording!=null){String recording=pendingRecording;pendingRecording=null;play(recording);return;}applyFocus();}
  void applyFocus(){if(settings==null)return;float preferred=(float)Math.max(0,Math.min(1,settings.optDouble("volume",1.0)));if(prelude!=null)prelude.setVolume(focusState.volume(preferred));if(player!=null){player.setVolume(focusState.volume(preferred));player.setPaused(focusState.paused);}}
