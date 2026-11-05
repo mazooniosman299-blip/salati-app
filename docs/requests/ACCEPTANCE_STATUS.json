@@ -32,7 +32,8 @@
     },
     "android_emulator": {
       "status": "fail",
-      "evidence": "Initial actual Android15 screen-off Fajr failed at native audio-focus request, recording direct system denial. Minimal bounded retry added; same unweakened test must pass before merge/publication."
+      "evidence": "Initial actual Android15 screen-off Fajr failed at native audio-focus request, recording direct system denial. Minimal bounded retry added; same unweakened test must pass before merge/publication.",
+      "reason": "Previous actual cold-screen-off run failed at audio-focus startup; current bounded-retry correction is awaiting the same real Android test. Failure is not accepted or hidden."
     },
     "physical_android": {
       "status": "not_run",
