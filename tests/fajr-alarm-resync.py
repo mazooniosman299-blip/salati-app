@@ -16,10 +16,11 @@ code=code.replace(' final Map<String,Object> data=new HashMap<>();',''' final Ma
   JSONObject(){}JSONObject(String json){data.putAll(encoded.get(json).data);}
   public String toString(){String key="json"+encoded.size();encoded.put(key,this);return key;}''')
 code=code.replace('int length(){return values.size();}', 'JSONObject getJSONObject(int n){return values.get(n);}int length(){return values.size();}')
-code=code.replace('final class Editor {','''final Context owner;SharedPreferences(Context owner){this.owner=owner;}
+code=code.replace('final class Editor {','''final Map<String,Object> durable=new HashMap<>();final Context owner;SharedPreferences(Context owner){this.owner=owner;}
   long getLong(String k,long fallback){Object v=values.get(k);return v instanceof Number?((Number)v).longValue():fallback;}
   String getString(String k,String fallback){Object v=values.get(k);return v==null?fallback:v.toString();}
-  final class Editor {boolean commit(){return true;}''')
+  final class Editor {''')
+code=code.replace('boolean commit(){return true;}', 'boolean commit(){durable.clear();durable.putAll(values);return true;}')
 code=code.replace('values.put(key,value);return this;}void apply()', 'values.put(key,value);if(key.equals("config"))owner.config=new JSONObject(value);return this;}void apply()')
 code=code.replace('new SharedPreferences();','new SharedPreferences(this);')
 code=code.replace('<T> T getSystemService','boolean stopService(Intent intent){return false;}<T> T getSystemService')
@@ -40,6 +41,11 @@ code+='''
   return c;
  }
  public static void main(String[] args)throws Exception{
+  long originalNow=System.now;Context cold=new Context();
+  cold.config=new JSONObject().put("enabled",true).put("events",new JSONArray().add(event(originalNow+1000,"fajr")).add(event(originalNow+3600000,"dhuhr"))).put("days",new JSONArray());
+  PrayerSchedule.sync(cold,cold.config.toString());
+  cold.prefs.values.clear();cold.prefs.values.putAll(cold.prefs.durable);System.now+=21000;
+  check(PrayerSchedule.pendingDueOnResume(cold,System.now),"Confirmed alarm metadata must survive immediate process death before asynchronous disk work");System.now=originalNow;
   for(String prayer:new String[]{"fajr","dhuhr","asr","maghrib","isha"}){
    for(boolean inexact:new boolean[]{false,true}){
     Context c=pending(prayer,inexact?600000:20000,inexact);long due=(Long)c.prefs.values.get("nextAlarmTime");

@@ -41,8 +41,9 @@ public final class PrayerSchedule {
     // deliver it late; NEVER present it as a guaranteed precise alarm.
     alarm.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,at,alarmIntent);
    }
+   // Pending alarm identity/mode must be durable before sync returns.
    c.getSharedPreferences(PREF,0).edit()
-    .putLong("nextAlarmTime",at).putString("nextAlarmPrayer",prayer).putString("nextAlarmMode",mode).apply();
+    .putLong("nextAlarmTime",at).putString("nextAlarmPrayer",prayer).putString("nextAlarmMode",mode).commit();
   }catch(RuntimeException error){recordDelivery(c,"schedule_failed",error);}
  }
 

@@ -42,7 +42,7 @@ public final class LegacyReminderMigrationTest {
  }
  static final class SharedPreferences {
   final Map<String,Object> values=new HashMap<>();Editor edit(){return new Editor();}
-  final class Editor {Editor remove(String key){values.remove(key);return this;}Editor putLong(String key,long value){values.put(key,value);return this;}Editor putString(String key,String value){values.put(key,value);return this;}void apply(){}}
+  final class Editor {Editor remove(String key){values.remove(key);return this;}Editor putLong(String key,long value){values.put(key,value);return this;}Editor putString(String key,String value){values.put(key,value);return this;}void apply(){}boolean commit(){return true;}}
  }
  static final class Context {
   JSONObject config;PendingIntent legacy;final AlarmManager alarm=new AlarmManager();final NotificationManager notifications=new NotificationManager();final SharedPreferences prefs=new SharedPreferences();

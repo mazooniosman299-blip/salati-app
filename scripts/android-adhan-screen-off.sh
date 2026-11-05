@@ -9,7 +9,6 @@ if [ "$(adb shell getprop ro.kernel.qemu | tr -d '\r')" != "1" ] && [ "$(adb she
  exit 1
 fi
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
-adb install -r android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 uid="$(adb shell cmd package list packages -U "$pkg" | tr -d '\r' | sed -n "s/^package:$pkg uid:\([0-9]*\)$/\1/p")"
 test -n "$uid"
 for pair in fajr:nufais dhuhr:qatami asr:makkah maghrib:aqsa isha:nufais; do
@@ -21,19 +20,19 @@ for pair in fajr:nufais dhuhr:qatami asr:makkah maghrib:aqsa isha:nufais; do
  adb shell pm clear "$pkg" >/dev/null
  adb shell pm grant "$pkg" android.permission.POST_NOTIFICATIONS
  adb shell appops set "$pkg" SCHEDULE_EXACT_ALARM allow
- adb shell am instrument -w -r -e prayer "$prayer" -e voice "$voice" "$pkg.test/com.salati.prayer.AlarmDeliveryInstrumentation" > "$out/$prayer-prepare.txt"
+ adb shell am start -W -n "$pkg/com.salati.prayer.AlarmPreparationActivity" --es prayer "$prayer" --es voice "$voice" > "$out/$prayer-prepare.txt"
  cat "$out/$prayer-prepare.txt"
  adb shell dumpsys alarm > "$out/$prayer-alarms-after-prepare.txt"
- grep -F 'INSTRUMENTATION_CODE: -1' "$out/$prayer-prepare.txt"
+ grep -F 'Status: ok' "$out/$prayer-prepare.txt"
  adb shell run-as "$pkg" cat shared_prefs/salati_background.xml > "$out/$prayer-prepared-prefs.xml"
  python3 - "$out" "$prayer" <<'PYSETUP'
-import sys,re,xml.etree.ElementTree as ET
+import sys,json,xml.etree.ElementTree as ET
 from pathlib import Path
 out=Path(sys.argv[1]);prayer=sys.argv[2]
-expected=int(re.search(r'scheduledTime=(\d+)',(out/(prayer+'-prepare.txt')).read_text())[1])
 root=ET.parse(out/(prayer+'-prepared-prefs.xml')).getroot()
 prefs={e.attrib['name']:e.text if e.tag=='string' else e.attrib.get('value') for e in root}
-assert prefs.get('nextAlarmPrayer')==prayer and int(prefs.get('nextAlarmTime',0))==expected,('Native setup lost its pending alarm before cold test',prefs)
+config=json.loads(prefs['config']);expected=config['events'][0]['time']
+assert config['events'][0]['prayer']==prayer and prefs.get('nextAlarmPrayer')==prayer and int(prefs.get('nextAlarmTime',0))==expected,('Native setup lost its pending alarm before cold test',prefs)
 PYSETUP
  adb shell input keyevent KEYCODE_HOME
  adb shell am kill "$pkg"
