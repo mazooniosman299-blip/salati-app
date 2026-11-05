@@ -60,3 +60,6 @@ User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this sup
 
 ##5Nov pointer-focus correction
 Latest user points out the black rounded box enclosing a selected ayah. Actual129 reproduction confirms browser UAauto5px outline on:focus without:focus-visible. Fix only.printed-ayah common outline reset; retain the existing brown keyboard path stroke/selection/full-file audio. No extra actions or redesign. Source ownerdist/salati-ui.css printed-reader component; requestSALATI-20261105-AYAH-POINTER-FOCUS.
+
+##5Nov Fajr delivery and coloured launcher
+Latest5Nov user selects SECOND newly displayed coloured mosque image (emerald/garden), superseding transparent launcher only. Exact approved source SHA9fe039bc... archived in design-references/launcher-20261105/. All main UI/PWA/widget/Quran unchanged. Fajr repair must preserve existing audio settings and duplicate/stale guards. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.
