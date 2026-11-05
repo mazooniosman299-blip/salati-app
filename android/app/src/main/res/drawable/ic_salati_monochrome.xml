@@ -1,0 +1,5 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+ <!-- OS themed-icon silhouette only. The normal launcher uses the exact
+      user-selected full-colour mosque artwork. -->
+ <path android:fillColor="#FFFFFF" android:pathData="M57,19A8,8 0,1 0,63 29A7,7 0,0 1,57 19Z M54,32L54,36 M34,55C34,44 43,39 54,35C65,39 74,44 74,55Z M30,57H78V80H30Z M22,45H29V80H22Z M79,45H86V80H79Z M20,42H31V45H20Z M77,42H88V45H77Z M22,40C22,36 25,33 25.5,31C26,33 29,36 29,40Z M79,40C79,36 82,33 82.5,31C83,33 86,36 86,40Z M25,29H26V33H25Z M82,29H83V33H82Z M27,80H81V84H27Z"/>
+</vector>

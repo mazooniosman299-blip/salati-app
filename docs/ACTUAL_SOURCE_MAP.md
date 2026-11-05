@@ -48,3 +48,6 @@ User explicitly rejects extra Pause/Surah start/Bookmark/Close actions; this sup
 
 ##5Nov pointer-focus correction
 Latest user points out the black rounded box enclosing a selected ayah. Actual129 reproduction confirms browser UAauto5px outline on:focus without:focus-visible. Fix only.printed-ayah common outline reset; retain the existing brown keyboard path stroke/selection/full-file audio. No extra actions or redesign. Source ownerdist/salati-ui.css printed-reader component; requestSALATI-20261105-AYAH-POINTER-FOCUS.
+
+##5Nov Fajr delivery and coloured launcher
+Fajr pending-resync owner native-adapter.js must keep still-deliverable event data; PrayerSchedule.sync must apply the same due-pending protection as Activity resume after persisting selected settings. OS AlarmDeliveryPolicy remains authoritative. Native-only launcher uses selected384pxWebP/full coloured backing/14% inset and separate themed silhouette. Test-only Android instrumentation remains outside release APK. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.

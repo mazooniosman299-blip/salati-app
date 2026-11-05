@@ -24,12 +24,18 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
       - run: npm ci
       - name: Build exact current source and block core regressions
         run: |
           npm run build
           node tests/permanent-regression-contract.cjs
           npm test
+          python3 tests/fajr-alarm-resync.py
+          python3 tests/packaged-recordings.py
           node tests/quran-dom.cjs
           node tests/worldwide-prayer-integrity-20261101.cjs
           npm run test:seo
@@ -142,7 +148,7 @@ jobs:
           python3 tests/android-asset-path-contract-20261102.py
       - name: Build actual Android debug APK (NOT signed public update)
         working-directory: android
-        run: bash gradlew :app:assembleDebug --no-daemon
+        run: bash gradlew :app:assembleDebug :app:assembleDebugAndroidTest --no-daemon
       - name: Audit native packaged assets and original mosque pixels
         run: |
           python3 -m pip install --quiet pillow
@@ -165,13 +171,16 @@ jobs:
           ram-size: 2048M
           emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
           disable-animations: true
-          script: bash scripts/android-webview-smoke.sh
+          script: |
+            bash scripts/android-webview-smoke.sh
+            bash scripts/android-adhan-screen-off.sh
       - name: Preserve emulator screenshots, package, diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: salati-permanent-android-device-evidence
           path: |
+            reports/adhan-screen-off/
             reports/android-webview-20261102/
             android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: warn

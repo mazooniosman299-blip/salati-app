@@ -1,54 +1,54 @@
 {
-  "request_id": "SALATI-20261105-AYAH-POINTER-FOCUS",
-  "source_reference": "docs/requests/SALATI-20261105-AYAH-POINTER-FOCUS.md",
-  "producer_branch": "fix/ayah-pointer-focus-20261105",
+  "request_id": "SALATI-20261105-FAJR-ADHAN-ICON",
+  "source_reference": "docs/requests/SALATI-20261105-FAJR-ADHAN-ICON.md",
+  "producer_branch": "fix/fajr-adhan-icon-20261105",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "User screenshot and exact current129 reproduction; UAauto5px pointer-focus cause recorded in request."
+      "evidence": "Exact latest request and displayed-second selected artwork identified; real source owners inspected; independent native/web failure paths documented"
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "User screenshot and exact current129 reproduction; UAauto5px pointer-focus cause recorded in request."
+      "evidence": "Exact latest request and displayed-second selected artwork identified; real source owners inspected; independent native/web failure paths documented"
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Canonical npm build and Android assembleRelease131 PASS; executing JS remains7dcea766...; CSS owner reset only, source/native asset parity1000 checks."
+      "evidence": "npm build, full npm test, original-key release132 and debug/test APK builds passed; native assets1000 match."
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "npm test PASS; four real pointer/touch/keyboard AR/EN cases preserve full900s media duration, direct selection/playback, autoNext, pause/stop, tab return and reload."
+      "evidence": "RED/GREEN actual native sync methods and JS grace generation, all5 exact/inexact/disabled/changed/delivered/expired/revoked; audio focus/lifecycle and full strict4recording+dua decode pass; original decoded duaPCM byte-identical."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "Four real interaction scenarios plus48 scope screenshots PASS; only8 Mushaf pointer-state captures change, at most3 raster pixels outside accepted region tolerance.36 default CSS parity cases PASS."
+      "evidence": "48 scoped captures PASS with no unrequested changes;4pointer focus and4continuation/player viewport cases PASS; original Quran content unchanged."
     },
     "screenshot_user_reference": {
-      "status": "pass",
-      "evidence": "Same selected2:2 defect reproduced with UAauto5px outline; before/after screenshots personally compared. Only the black/white rectangle is removed; original artwork and brown selection/keyboard path preserved."
+      "status": "not_run",
+      "reason": "Exact selected original archived; source384pxexport fidelity/adaptive geometry pass. Actual native launcher capture comparison pending CI."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "New original-key129→130 upgrade and clean WebView CI pending."
+      "reason": "Current request verification pending; no claim from earlier release"
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "No physical Android device available; touch/browser and actual Android emulator checks are separate evidence."
+      "reason": "No physical phone available; actual user environment clarification pending; emulator is separate evidence."
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Original-key1.0.130/code131APK26187372bytes; SHA256708e9379874059cda0518396c60ad41cbd4d96e1f16ac2ffc6086d280a4ff3a0; originalcertificate559dec66...; matching native assets and unchanged launcher verified."
+      "evidence": "Original-key1.0.131/code132APK26203812B/SHAa9074522b0643202c03206f7151d23d6feb4b000f67e7bee05bad90410742c33;1000native asset matches; actual selected icon resource identity pass."
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Official129 remains active until all PR/original-key/exact-production gates pass and public130 verified."
+      "reason": "Current request verification pending; no claim from earlier release"
     },
     "latest_user_acceptance": {
       "status": "not_run",
-      "reason": "New pointer-focus correction not yet implemented/verified."
+      "reason": "Current request verification pending; no claim from earlier release"
     }
   }
 }
