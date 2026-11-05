@@ -4,12 +4,12 @@
   "original_verbatim_excerpt": "٢ + اكتشفت مشكلة في الاذان صلاة الفجر لمن يجي وقتها الاذان ماباذن شوف لي السبب وحلها وافحص الباقي",
   "request_record": "docs/requests/SALATI-20261105-FAJR-ADHAN-ICON.md",
   "base_branch": "production",
-  "base_commit": "38c59895fce345a4609ee5aebd4238210646ae5e",
+  "base_commit": "ddeb0ce9904e11ac5afc038e60563bafae64b692",
   "visual_change": false,
   "visual_allowed_regions": [],
   "android_release": true,
   "release_mode": "production",
-  "status": "implementation_in_progress",
+  "status": "native_test_readiness_fix_in_progress",
   "allowed_paths": [
     "native-adapter.js",
     "package.json",
@@ -65,7 +65,10 @@
     "tests/adhan-focus-startup.py",
     "tests/legacy-reminder-migration.py",
     "android/app/src/debug/AndroidManifest.xml",
-    "android/app/src/debug/java/com/salati/prayer/AlarmPreparationActivity.java"
+    "android/app/src/debug/java/com/salati/prayer/AlarmPreparationActivity.java",
+    "tests/android-emulator-screen-preflight.py",
+    "tests/android-emulator-readiness.py",
+    "scripts/android-webview-smoke.sh"
   ],
   "native_visual_changes": [
     {

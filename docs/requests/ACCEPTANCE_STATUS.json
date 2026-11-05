@@ -1,7 +1,7 @@
 {
   "request_id": "SALATI-20261105-FAJR-ADHAN-ICON",
   "source_reference": "docs/requests/SALATI-20261105-FAJR-ADHAN-ICON.md",
-  "producer_branch": "fix/fajr-adhan-icon-20261105",
+  "producer_branch": "fix/android-ui-readiness-20261105",
   "code_runtime_changed": true,
   "overall": "in_progress",
   "complete": false,
@@ -31,8 +31,8 @@
       "evidence": "Signed-update job126990555473 actual launcher hierarchy requires visible Salati; native cropped screenshot inspected. Exact chosen mosque background/dome/minarets visible within adaptive circle; original approved reference and asset bytes verified. User acceptance remains pending."
     },
     "android_emulator": {
-      "status": "pass",
-      "evidence": "Run41956870897/job127013776900, head7f6de7b: actual NoDisplay normal-Activity setup (no instrumentation force-stop or extra metadata flush); Fajr/Dhuhr/Asr/Maghrib/Isha all pass cold-process/screen-off/Doze actual receiver, foreground service, started unmuted USAGE_ALARM AudioTrack and next alarm; all4 voices. Runtime matches signed01ad candidate. Physical audition not claimed."
+      "status": "not_run",
+      "reason": "PR53 final native all5 passed; production UI preflight repeatedly taps before settled native layout (observed y866 then actual905), so official130 retained. Strengthen complete-navigation/three-frame stability, preserve exact verified frame and full logcat. No product/APK/website change; new exact native suite required."
     },
     "physical_android": {
       "status": "not_run",
@@ -44,7 +44,7 @@
     },
     "production_publication": {
       "status": "not_run",
-      "reason": "Official130 remains until final exact-head PR checks and all exact-production merge checks pass, canonical131 promotion and public byte/hash readback. Final publication evidence will be linked in PR53."
+      "reason": "PR53 merged but Cloudflare safely blocked native UI failure; canonical remains130. Follow-up test-only PR must pass all exact merge checks, then canonical/readback131."
     },
     "latest_user_acceptance": {
       "status": "not_run",
