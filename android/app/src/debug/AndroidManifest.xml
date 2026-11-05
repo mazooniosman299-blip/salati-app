@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
- <application>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+ <application android:label="صلاتي — معاينة التعديلات" tools:replace="android:label">
+  <!-- Preserve the existing preview entry; MainActivity remains the launcher. -->
+  <activity android:name="com.salati.prayer.WidgetPreviewActivity" android:exported="true" />
   <activity android:name="com.salati.prayer.AlarmPreparationActivity" android:exported="true" android:theme="@android:style/Theme.NoDisplay" android:excludeFromRecents="true" android:noHistory="true" android:taskAffinity="${applicationId}.alarmtest"/>
  </application>
 </manifest>

@@ -20,7 +20,7 @@
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "Current host RED/GREEN alarm output/focus/call-mode/stop/generation/preview/legacy/granted branches; native resync all5/exact/inexact guards; full npm suite and strict recordings pass. Actual cold/Doze output is separately pending."
+      "evidence": "Current host RED/GREEN alarm output/focus/call-mode/stop/generation/preview/legacy/granted branches; native resync all5/exact/inexact guards; full npm suite and strict recordings pass. Actual cold/Doze all5 pass, recorded separately."
     },
     "real_browser": {
       "status": "pass",
@@ -31,8 +31,8 @@
       "evidence": "Signed-update job126990555473 actual launcher hierarchy requires visible Salati; native cropped screenshot inspected. Exact chosen mosque background/dome/minarets visible within adaptive circle; original approved reference and asset bytes verified. User acceptance remains pending."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "Actual automatic alarm output previously passed5/5, but repeating instrumentation teardown can cancel alarms by framework force-stop. Replace setup with debug-only normal Activity and require all5 fresh; product metadata now commits durably. No publication until this exact corrected test passes."
+      "status": "pass",
+      "evidence": "Run41956870897/job127013776900, head7f6de7b: actual NoDisplay normal-Activity setup (no instrumentation force-stop or extra metadata flush); Fajr/Dhuhr/Asr/Maghrib/Isha all pass cold-process/screen-off/Doze actual receiver, foreground service, started unmuted USAGE_ALARM AudioTrack and next alarm; all4 voices. Runtime matches signed01ad candidate. Physical audition not claimed."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,7 +40,7 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Current original-key131/code132 with durable pending metadata: 26203812bytes SHA01ad91722b69e2fefd3e5d085b7527be85c224471b9fb0db4d463cfcac15a6c2; no debug/test utility in release dex. New exact native suite pending."
+      "evidence": "Current original-key131/code132 with durable pending metadata: 26203812bytes SHA01ad91722b69e2fefd3e5d085b7527be85c224471b9fb0db4d463cfcac15a6c2; no debug/test utility in release dex. Actual NoDisplay cold suite all5 passes in job127013776900."
     },
     "production_publication": {
       "status": "not_run",
