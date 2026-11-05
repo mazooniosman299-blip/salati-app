@@ -20,20 +20,20 @@
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "RED/GREEN actual native sync methods and JS grace generation, all5 exact/inexact/disabled/changed/delivered/expired/revoked; audio focus/lifecycle and full strict4recording+dua decode pass; original decoded duaPCM byte-identical."
+      "evidence": "Current host RED/GREEN alarm output/focus/call-mode/stop/generation/preview/legacy/granted branches; native resync all5/exact/inexact guards; full npm suite and strict recordings pass. Actual cold/Doze output is separately pending."
     },
     "real_browser": {
       "status": "pass",
       "evidence": "48 scoped captures PASS with no unrequested changes;4pointer focus and4continuation/player viewport cases PASS; original Quran content unchanged."
     },
     "screenshot_user_reference": {
-      "status": "not_run",
-      "reason": "Exact selected original archived; source384pxexport fidelity/adaptive geometry pass. Actual native launcher capture comparison pending CI."
+      "status": "pass",
+      "evidence": "Signed-update job126990555473 actual launcher hierarchy requires visible Salati; native cropped screenshot inspected. Exact chosen mosque background/dome/minarets visible within adaptive circle; original approved reference and asset bytes verified. User acceptance remains pending."
     },
     "android_emulator": {
       "status": "fail",
-      "evidence": "Initial actual Android15 screen-off Fajr failed at native audio-focus request, recording direct system denial. Minimal bounded retry added; same unweakened test must pass before merge/publication.",
-      "reason": "Previous actual cold-screen-off run failed at audio-focus startup; current bounded-retry correction is awaiting the same real Android test. Failure is not accepted or hidden."
+      "reason": "Actual cold/Doze test rejected startup9times; transient retry hypothesis disproven. Corrected distinction between alarm output and optional focus control now awaits identical/stronger real native test. No publication approved.",
+      "evidence": "job126990929940, run41949730481; OP_TAKE_AUDIO_FOCUS foreground; nine procState4 denials."
     },
     "physical_android": {
       "status": "not_run",
@@ -41,7 +41,7 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Current original-key131/code132 after native focus correction: 26203812bytes SHA25682fa7b70c15dcfdc5d8da895a80ba7b5534ff1be42ad2d099d2a61198e89979e; original cert and full native asset parity verified locally; actual CI still pending"
+      "evidence": "Current original-key131/code132 with automatic alarm output and startup-call guard: 26203812bytes SHAf83798d9a522991c995b2e39bc125be5f1724db8f40b70732b60f55b5362e284; exact web fingerprint/native assets; no test instrumentation in release dex."
     },
     "production_publication": {
       "status": "not_run",

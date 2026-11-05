@@ -53,3 +53,5 @@ Latest user points out the black rounded box enclosing a selected ayah. Actual12
 Fajr pending-resync owner native-adapter.js must keep still-deliverable event data; PrayerSchedule.sync must apply the same due-pending protection as Activity resume after persisting selected settings. OS AlarmDeliveryPolicy remains authoritative. Native-only launcher uses selected384pxWebP/full coloured backing/14% inset and separate themed silhouette. Test-only Android instrumentation remains outside release APK. See requests/SALATI-20261105-FAJR-ADHAN-ICON.md.
 
 AdhanService.requestPlaybackFocus now owns bounded automatic startup focus retries; generation/terminal state guards cancellation and original beginFocusedPlayback owns unchanged local output setup. A real Android15 cold-service focus denial is the acceptance trigger.
+
+Corrected after actual persistent-focus denial: AdhanService.requestPlaybackFocus distinguishes API35+ automatic USAGE_ALARM output from optional focus control; monitorAlarmMode gives calls priority and is canceled through existing release/generation ownership. Ineffective startup retry is removed. No media-engine/SDK/permission changes.

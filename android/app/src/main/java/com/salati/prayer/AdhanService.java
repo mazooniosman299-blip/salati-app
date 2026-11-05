@@ -20,19 +20,25 @@ public final class AdhanService extends Service{
   manager=getSystemService(AudioManager.class);attributes=new AudioAttributes.Builder().setUsage(preview?AudioAttributes.USAGE_MEDIA:AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SPEECH).build();
   focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT).setAudioAttributes(attributes).setWillPauseWhenDucked(false).setOnAudioFocusChangeListener(change->{if(ticket==generation)onAudioFocusChange(change);},handler).build();
   duaPlaying="dua".equals(i.getStringExtra("kind"));
-  requestPlaybackFocus(ticket,prayer,0);return START_NOT_STICKY;
+  requestPlaybackFocus(ticket,prayer);return START_NOT_STICKY;
  }
- // Android15 may still consider a freshly promoted cold service ineligible
- // for TAKE_AUDIO_FOCUS. Retry briefly on the main queue; never play without
- // a grant, and never revive a stopped/replaced request.
- void requestPlaybackFocus(long ticket,String prayer,int attempt){
+ // Foreground-only focus CONTROL on Android15 is separate from alarm output.
+ // A cold AlarmClock service can ring through USAGE_ALARM without taking
+ // another app's focus. Media previews still require a grant; calls win.
+ void requestPlaybackFocus(long ticket,String prayer){
   if(ticket!=generation||terminal)return;
   if(manager.requestAudioFocus(focus)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED){
-   if(!preview&&attempt<8){PrayerSchedule.recordDelivery(this,"waiting_audio_focus",null);handler.postDelayed(()->requestPlaybackFocus(ticket,prayer,attempt+1),250);}
-   else finishPlayback("blocked");
-   return;
+   if(preview||Build.VERSION.SDK_INT<35||manager.getMode()!=AudioManager.MODE_NORMAL){finishPlayback("blocked");return;}
+   android.util.Log.i("SalatiAudio","Scheduled alarm uses USAGE_ALARM without foreground-only focus control");
+   monitorAlarmMode(ticket);
   }
+  if(ticket!=generation||terminal)return;
   beginFocusedPlayback(ticket,prayer);
+ }
+ void monitorAlarmMode(long ticket){
+  if(ticket!=generation||terminal)return;
+  if(manager.getMode()!=AudioManager.MODE_NORMAL){finishPlayback("stopped");return;}
+  handler.postDelayed(()->monitorAlarmMode(ticket),250);
  }
  void beginFocusedPlayback(long ticket,String prayer){
   AlarmVolumeSession.begin(this,settings.optBoolean("silentMode",true),!preview,(float)settings.optDouble("volume",1.0));

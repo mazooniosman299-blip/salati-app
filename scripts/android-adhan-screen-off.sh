@@ -42,7 +42,7 @@ assert prefs.get('nextAlarmMode')=='exact',prefs
 assert int(prefs['nextAlarmTime'])>int(prefs['deliveryAt']),prefs
 audio=(folder/(prayer+'-audio.txt')).read_text()
 lines=[line for line in audio.splitlines() if re.search(r'\b'+re.escape(uid)+r'\b',line)]
-assert any('state:started' in line and 'USAGE_ALARM' in line for line in lines),('No started real alarm AudioTrack for app UID',lines)
+assert any('state:started' in line and 'USAGE_ALARM' in line and 'mutedState:none' in line for line in lines),('No started unmuted real alarm AudioTrack for app UID',lines)
 assert 'AdhanService' in (folder/(prayer+'-services.txt')).read_text(),'Actual native adhan service not running'
 print('PASS cold-process/screen-off/Doze actual',prayer,'receiver -> foreground service -> started USAGE_ALARM AudioTrack; next alarm scheduled')
 PY
