@@ -9,8 +9,8 @@ assert.match(schedule,/static boolean pendingDueOnResume\(Context c,long now\)/,
 assert.match(schedule,/valid\(c,at,prayer\),/,'validate matching stored event before wakeup');
 assert.match(schedule,/"inexact"\.equals\(prefs\.getString\("nextAlarmMode",""\)\)/,'resume mode must be checked');
 assert.match(receiver,/laterEventAlreadyDue/,'never play a delayed alarm after newer prayer');
-assert.match(schedule,/"exact"\.equals\(prefs\.getString\("nextAlarmMode",""\)\)&&!exactAlarmsAllowed\(c\)/,'reschedule when Android revokes exact permission and cancels prior alarms');
+assert.match(schedule,/!"inexact"\.equals\(prefs\.getString\("nextAlarmMode",""\)\)&&!exactAlarmsAllowed\(c\)/,'reschedule when Android revokes exact permission and cancels prior alarms');
 assert.match(schedule,/\(prayer\+at\)\.equals\(delivered\)/,'do not preserve a delivered alarm');
 assert.match(policy,/!alreadyDelivered && now >= scheduled && mayPlay/,"Reject future or delivered alarms");
-assert.match(receiver,/PrayerSchedule\.scheduleNext\(c,Math\.max\(time,now\)\)/,'real alarm delivery must continue to schedule following event');
+assert.match(receiver,/boolean playable=AlarmDeliveryPolicy\.mayPlay\(valid,inexact,time,now\);[\s\S]*?PrayerSchedule\.scheduleNext\(c,playable\?Math\.max\(time,now\):now\)/,'eligible delivery advances the next event; rejected early callbacks rearm from current time');
 console.log('PASS: resume guard, validation, deduplication and next-alarm delivery code paths linked.');

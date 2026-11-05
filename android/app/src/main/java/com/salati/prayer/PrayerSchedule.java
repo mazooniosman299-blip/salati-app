@@ -12,18 +12,28 @@ public final class PrayerSchedule {
   cancelLegacyApproach(c);
   AlarmManager alarm=c.getSystemService(AlarmManager.class);
   if(alarm==null){recordDelivery(c,"no_alarm_manager",null);return;}
-  alarm.cancel(pending(c,0,""));
   JSONObject data=config(c);
-  c.getSharedPreferences(PREF,0).edit().remove("nextAlarmTime").remove("nextAlarmPrayer").remove("nextAlarmMode").apply();
-  if(!data.optBoolean("enabled"))return;
-  JSONArray events=data.optJSONArray("events");if(events==null)return;
+  JSONArray events=data.optJSONArray("events");
   JSONObject next=null;
-  for(int i=0;i<events.length();i++){
-   JSONObject e=events.optJSONObject(i);
-   if(e!=null&&e.optLong("time")>after&&(next==null||e.optLong("time")<next.optLong("time")))next=e;
+  if(data.optBoolean("enabled")&&events!=null){
+   for(int i=0;i<events.length();i++){
+    JSONObject e=events.optJSONObject(i);
+    if(e!=null&&e.optLong("time")>after&&(next==null||e.optLong("time")<next.optLong("time")))next=e;
+   }
   }
-  if(next==null)return;
+  if(next==null){
+   alarm.cancel(pending(c,0,""));
+   c.getSharedPreferences(PREF,0).edit().remove("nextAlarmTime").remove("nextAlarmPrayer").remove("nextAlarmMode").commit();
+   return;
+  }
+  // AlarmManager replaces the same PendingIntent atomically. Preserve the
+  // previous OS wake-up and identity until replacement succeeds. An interrupted
+  // permission/mode change must not give an exact alarm stale inexact grace.
   long at=next.optLong("time");String prayer=next.optString("prayer");
+  SharedPreferences saved=c.getSharedPreferences(PREF,0);
+  if(!saved.edit().putString("nextAlarmMode","unconfirmed").commit()){
+   recordDelivery(c,"schedule_failed",new java.io.IOException("Could not persist conservative alarm mode"));return;
+  }
   PendingIntent alarmIntent=pending(c,at,prayer);
   String mode="inexact";
   try{
@@ -67,7 +77,7 @@ public final class PrayerSchedule {
   // Android revokes and cancels pending exact alarms on permission loss.
   // Do not preserve a now-nonexistent exact PendingIntent; install the
   // inexact fallback on Activity resume instead.
-  if("exact".equals(prefs.getString("nextAlarmMode",""))&&!exactAlarmsAllowed(c))return false;
+  if(!"inexact".equals(prefs.getString("nextAlarmMode",""))&&!exactAlarmsAllowed(c))return false;
   return AlarmDeliveryPolicy.preserveOnActivityResume(
       valid(c,at,prayer),
       "inexact".equals(prefs.getString("nextAlarmMode","")),at,now,

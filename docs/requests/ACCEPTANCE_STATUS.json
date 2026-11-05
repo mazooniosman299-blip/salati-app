@@ -20,7 +20,7 @@
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS. Actual offline AR/EN deep-link root recovery/new960pxphoto/Quran bootstrap PASS;36real CSS parity cases with132immutable snapshot PASS;88representative text contrasts above4.5:1 PASS."
+      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS. Actual offline AR/EN deep-link root recovery/new960pxphoto/Quran bootstrap PASS;36real CSS parity cases with132immutable snapshot PASS;88representative text contrasts above4.5:1 PASS. Fresh full npm test PASS after native fault-injection fix. Actual Java process-death/replacement and cross-mode eligibility regressions PASS; independent reviewer verified failed final-commit conservative policy."
     },
     "real_browser": {
       "status": "pass",
@@ -31,8 +31,8 @@
       "evidence": "Actual user-selected real photo2/source bytes and prior original mark verified. Original pinned QuranHub complete frame bytes verified and rendered screenshots inspected; fixed source captions excluded. Not claimed exact AlMosaly/pixel equality to unavailable prior photo."
     },
     "android_emulator": {
-      "status": "pass",
-      "evidence": "PR55 source00cdb300 actualAndroid35 job127254860732/run42030333009 PASS: settled real WebView tap/reader/scroll, five cold/screen-off/Doze started USAGE_ALARM tracks and all4voices, actual RemoteViews3rightedges at900/1080/1440px. Follow-up changes only superseded visual-test assertions; final exact-head CI repeat is still required before publication."
+      "status": "not_run",
+      "reason": "Diagnostic-only source103322d/run42062304711 all4mandatory jobs PASS, including all5actual cold/screen-off/Doze alarm audio checks and widget3widths. New native atomic-replacement/early-callback/conservative-mode fix independently reviewed and host fault-injection PASS; fresh exact-candidate emulator CI required."
     },
     "physical_android": {
       "status": "not_run",
@@ -40,7 +40,7 @@
     },
     "signed_release": {
       "status": "pass",
-      "evidence": "Final crop-corrected original-key132/code133 APK26072992bytes below25MiB; SHAcafbd1037aac3207a873e1771773789ac686b0f76a372bdab65f82a156b106b5; originalcert559dec66...; fresh1002staged/site asset parity and canonical icon verification PASS."
+      "evidence": "Fresh final native atomic-replacement original-key132/code133 APK26072992bytes below25MiB; SHA014535f2e4d396e8d1971ea7b79cc8d311de9d61748370a7740a91ebc8d7362e; originalcert559dec66...;1002native/site assets and exact canonical icon verified; release/debug/instrumentation builds PASS41s. Supersedes archived unpublishedcafbd103candidate."
     },
     "production_publication": {
       "status": "not_run",

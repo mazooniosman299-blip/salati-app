@@ -326,6 +326,9 @@
     "tests/css-cascade-equivalence.py",
     "tests/offline-navigation.py",
     "scripts/android-adhan-screen-off.sh",
-    "tests/fajr-alarm-resync.py"
+    "tests/fajr-alarm-resync.py",
+    "android/app/src/main/java/com/salati/prayer/PrayerSchedule.java",
+    "android/app/src/main/java/com/salati/prayer/PrayerReceiver.java",
+    "tests/adhan-resume-integrity.cjs"
   ]
 }

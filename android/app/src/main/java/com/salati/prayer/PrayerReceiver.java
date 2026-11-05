@@ -8,8 +8,12 @@ public final class PrayerReceiver extends BroadcastReceiver {
   // Save the delivered alarm's mode BEFORE scheduling the next event.
   boolean inexact="inexact".equals(saved.getString("nextAlarmMode",""));
   boolean valid=PrayerSchedule.valid(c,time,prayer)&&!PrayerSchedule.laterEventAlreadyDue(c,time,now);
-  PrayerSchedule.scheduleNext(c,Math.max(time,now));
-  if(!AlarmDeliveryPolicy.mayPlay(valid,inexact,time,now)){
+  boolean playable=AlarmDeliveryPolicy.mayPlay(valid,inexact,time,now);
+  // UPDATE_CURRENT can change an older wake-up's extras before its OS time
+  // is replaced. Rejected early callbacks must rearm the future prayer,
+  // rather than advancing past a prayer that has not actually been played.
+  PrayerSchedule.scheduleNext(c,playable?Math.max(time,now):now);
+  if(!playable){
    PrayerSchedule.recordDelivery(c,valid?"late_alarm_skipped":"obsolete_alarm",null);PrayerWidget.updateAll(c);return;
   }
   String key=prayer+time;
