@@ -28,6 +28,9 @@ public final class AlarmDeliveryInstrumentation extends Instrumentation {
    PrayerSchedule.sync(c,data.toString());
    JSONObject state=new JSONObject(PrayerSchedule.status(c));
    if(state.getLong("nextAlarmTime")!=at||!state.getString("nextAlarmPrayer").equals(prayer)||!state.getString("nextAlarmMode").equals("exact"))throw new AssertionError("Actual AlarmManager schedule not confirmed: "+state);
+   // Flush asynchronous scheduler metadata before instrumentation exits and
+   // the shell kills this test process. This is test preparation only.
+   if(!c.getSharedPreferences(PrayerSchedule.PREF,0).edit().putLong("testPreparedAt",System.currentTimeMillis()).commit())throw new AssertionError("Test setup metadata was not durable");
    result.putString("scheduledPrayer",prayer);result.putLong("scheduledTime",at);
    result.putString("stream","Prepared real cold-process screen-off alarm; shell verifies delivery and actual AudioTrack after runner exits");
    finish(-1,result);

@@ -32,8 +32,8 @@
     },
     "android_emulator": {
       "status": "fail",
-      "reason": "Actual cold/Doze test rejected startup9times; transient retry hypothesis disproven. Corrected distinction between alarm output and optional focus control now awaits identical/stronger real native test. No publication approved.",
-      "evidence": "job126990929940, run41949730481; OP_TAKE_AUDIO_FOCUS foreground; nine procState4 denials."
+      "reason": "Corrected output passed4cold prayers/all4voices; fifthIsha setup lost its alarm before scheduled time. Test isolation/durable setup correction pending same5-prayer native acceptance; not yet all5pass.",
+      "evidence": "run41951471027/job126996169266: four actual unmuted AudioTracks pass; Isha metadata absent and alarm_cancelled before cold trial."
     },
     "physical_android": {
       "status": "not_run",
