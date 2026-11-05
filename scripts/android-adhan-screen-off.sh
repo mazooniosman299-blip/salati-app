@@ -4,6 +4,10 @@ set -euo pipefail
 out=reports/adhan-screen-off
 mkdir -p "$out"
 pkg=com.salati.prayer.preview
+if [ "$(adb shell getprop ro.kernel.qemu | tr -d '\r')" != "1" ] && [ "$(adb shell getprop ro.boot.qemu | tr -d '\r')" != "1" ]; then
+ echo 'Refusing destructive test preparation outside a disposable Android emulator' >&2
+ exit 1
+fi
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 adb install -r android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
 uid="$(adb shell cmd package list packages -U "$pkg" | tr -d '\r' | sed -n "s/^package:$pkg uid:\([0-9]*\)$/\1/p")"
