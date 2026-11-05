@@ -7,8 +7,43 @@ Mode quran-tap: print x y of Quran tab. Mode reader-swipe: screenshot-derived sa
 from PIL import Image
 import sys,io,base64
 
-assert len(sys.argv)==3, 'usage: preflight.py dialog|ready|quran-tap|reader-swipe|quran-ready /path/to/screenshot.png'
-mode,path=sys.argv[1:]
+assert len(sys.argv)>=3, 'usage: preflight.py mode /path/to/screenshot.png'
+mode,path=sys.argv[1:3]
+
+def navigation(im):
+ w,h=im.size
+ pixels=[]
+ for y in range(h-145,h-25):
+  for x in range(int(w*.07),int(w*.96)):
+   r,g,b=im.getpixel((x,y))
+   if 5<=r<=60 and 40<=g<=150 and 110<=b<=255 and b>g*1.5:
+    pixels.append((x,y))
+ assert len(pixels)>300,('No undimmed blue tab',len(pixels),w,h)
+ xs=[x for x,_ in pixels];ys=[y for _,y in pixels]
+ active_x=(min(xs)+max(xs))//2;active_y=(min(ys)+max(ys))//2
+ # Actual 432x960 native captures place the settled bar at y905. During
+ # first paint Android can transiently apply insets twice (observed y866).
+ # A coloured pill alone does not prove that labels/input layout are ready.
+ assert h-82<=active_y<=h-30,('Navigation insets not settled',active_y,h)
+ pitch=(w-16)//6
+ assert active_x>w*.8,('Expected initial Times tab',active_x,w)
+ for slot in range(6):
+  left=8+slot*pitch;right=min(w,left+pitch)
+  ink=sum(min(im.getpixel((x,y)))>185
+   for y in range(active_y-22,active_y+23)
+   for x in range(left,right))
+  assert ink>20,('Incomplete navigation icons/labels',slot,ink)
+ return active_x-pitch,active_y
+
+if mode=='quran-tap-stable':
+ assert len(sys.argv)==5,'Three consecutive actual frames required'
+ frames=[Image.open(p).convert('RGB') for p in sys.argv[2:]]
+ assert len({f.size for f in frames})==1,'Viewport is still moving'
+ points=[navigation(f) for f in frames]
+ assert all(abs(x-points[-1][0])<=2 and abs(y-points[-1][1])<=2 for x,y in points),'Navigation is still moving'
+ print(*points[-1]);raise SystemExit(0)
+
+assert len(sys.argv)==3,'Single screenshot required for this mode'
 im=Image.open(path).convert('RGB')
 w,h=im.size
 assert w>=320 and h>=650, (w,h)
@@ -55,24 +90,14 @@ if mode in ('reader-swipe','quran-ready'):
  print(w//2,start,end)
  raise SystemExit(0)
 if mode in ('ready','quran-tap'):
- pixels=[]
- for y in range(h-145,h-25):
-  for x in range(int(w*.07),int(w*.96)):
-   r,g,b=im.getpixel((x,y))
-   if 5<=r<=60 and 40<=g<=150 and 110<=b<=255 and b>g*1.5:
-    pixels.append((x,y))
+ try:
+  point=navigation(im)
+ except AssertionError:
+  if mode=='ready':raise SystemExit(1)
+  raise
  if mode=='ready':
-  if len(pixels)>300:
-   print('Native Salati navigation ready',file=sys.stderr)
-   raise SystemExit(0)
-  raise SystemExit(1)
- assert len(pixels)>300, ('No undimmed blue tab in real Android screenshot',len(pixels),w,h)
- xs=[x for x,_ in pixels];ys=[y for _,y in pixels]
- active_x=(min(xs)+max(xs))//2
- active_y=(min(ys)+max(ys))//2
- tab_pitch=(w-16)//6
- mushaf_x=active_x-tab_pitch
- assert mushaf_x>0 and mushaf_x<w, ('Quran target outside screen',active_x,tab_pitch)
- print(mushaf_x,active_y)
+  print('Native Salati complete navigation ready',file=sys.stderr)
+  raise SystemExit(0)
+ print(*point)
 else:
  raise ValueError('unknown mode '+mode)

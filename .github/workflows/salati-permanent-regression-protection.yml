@@ -155,6 +155,7 @@ jobs:
       - name: Audit native packaged assets and original mosque pixels
         run: |
           python3 -m pip install --quiet pillow
+          python3 tests/android-emulator-readiness.py
           python3 tests/apk-assets.py
           test -s android/app/build/outputs/apk/debug/app-debug.apk
       - name: Require hardware accelerated Android 15 emulator

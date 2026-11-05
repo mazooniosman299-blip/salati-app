@@ -11,16 +11,30 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 adb shell pm grant com.salati.prayer.preview android.permission.POST_NOTIFICATIONS || true
 adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_FINE_LOCATION || true
 adb shell pm grant com.salati.prayer.preview android.permission.ACCESS_COARSE_LOCATION || true
+adb logcat -c
+adb logcat -v threadtime > reports/android-webview-20261102/logcat-full.txt &
+log_pid=$!
+trap 'kill "$log_pid" 2>/dev/null || true' EXIT
 adb shell am start -n com.salati.prayer.preview/com.salati.prayer.MainActivity
 # Startup is async. A fixed 12-second sleep captured only Salati's
 # splash logo in actual CI evidence; poll for the real blue bottom navigation.
 sleep 5
 READY=0
+stable_frames=0
 for attempt in $(seq 1 42); do
   adb exec-out screencap -p > /tmp/salati-boot-check.png
   if python3 tests/android-emulator-screen-preflight.py ready /tmp/salati-boot-check.png; then
-    READY=1
-    break
+    stable_frames=$((stable_frames+1))
+    cp /tmp/salati-boot-check.png "reports/android-webview-20261102/navigation-$stable_frames.png"
+    if [ "$stable_frames" -ge 3 ]; then
+      if read -r quran_x quran_y < <(python3 tests/android-emulator-screen-preflight.py quran-tap-stable reports/android-webview-20261102/navigation-{1,2,3}.png); then
+        READY=1
+        break
+      fi
+      stable_frames=0
+    fi
+  else
+    stable_frames=0
   fi
   if python3 tests/android-emulator-screen-preflight.py dialog /tmp/salati-boot-check.png; then
     adb shell input tap 146 485
@@ -37,10 +51,12 @@ if [ "$READY" -ne 1 ]; then
   echo "Salati never passed splash; native UI not ready after bounded polling" >&2
   exit 1
 fi
-adb exec-out screencap -p > reports/android-webview-20261102/times.png
-read -r quran_x quran_y < <(python3 tests/android-emulator-screen-preflight.py quran-tap reports/android-webview-20261102/times.png)
+# Use the SAME verified settled frame, never a new unverified paint.
+cp reports/android-webview-20261102/navigation-3.png reports/android-webview-20261102/times.png
 test -n "$quran_x" && test -n "$quran_y"
+python3 tests/android-emulator-screen-preflight.py evidence reports/android-webview-20261102/times.png
 adb shell input tap "$quran_x" "$quran_y"
+adb exec-out screencap -p > reports/android-webview-20261102/immediate-after-tap.png
 # Android System WebView may create/select Quran controls before the async
 # local 604-page source has finished loading. A fixed 7s sleep captured
 # "جار فتح المصحف..." with NO cream reading page and falsely failed QA.
