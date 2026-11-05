@@ -8,9 +8,44 @@ if [ "$(adb shell getprop ro.kernel.qemu | tr -d '\r')" != "1" ] && [ "$(adb she
  echo 'Refusing destructive test preparation outside a disposable Android emulator' >&2
  exit 1
 fi
+# Preserve the preparation interval, not only a late1600-line tail. This is
+# diagnostic capture on the disposable emulator; delivery assertions stay strict.
+adb logcat -b all -v threadtime > "$out/logcat-full.txt" &
+salati_alarm_log_pid=$!
+trap 'kill "$salati_alarm_log_pid" 2>/dev/null || true' EXIT
+adb shell log -t SalatiAlarmTest 'cold-suite-before-install'
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 uid="$(adb shell cmd package list packages -U "$pkg" | tr -d '\r' | sed -n "s/^package:$pkg uid:\([0-9]*\)$/\1/p")"
 test -n "$uid"
+alarm_checkpoint(){
+ local phase="$1"
+ adb shell log -t SalatiAlarmTest "$prayer-$phase"
+ adb shell dumpsys alarm > "$out/$prayer-alarms-$phase.txt"
+ adb shell run-as "$pkg" cat shared_prefs/salati_background.xml > "$out/$prayer-prefs-$phase.xml"
+ adb shell pidof "$pkg" > "$out/$prayer-pid-$phase.txt" || true
+ if ! python3 - "$out" "$prayer" "$phase" "$pkg" <<'PYCHECK'
+import sys,re,json,xml.etree.ElementTree as ET
+from pathlib import Path
+out=Path(sys.argv[1]);prayer,phase,pkg=sys.argv[2:]
+prefs={e.attrib['name']:e.text if e.tag=='string' else e.attrib.get('value') for e in ET.parse(out/(prayer+'-prefs-'+phase+'.xml')).getroot()}
+expected=json.loads(prefs['config'])['events'][0]['time']
+text=(out/(prayer+'-alarms-'+phase+'.txt')).read_text()
+now=int(re.search(r'nowRTC=(\d+)=',text)[1])
+pattern=r'RTC_WAKEUP #\d+: Alarm\{[^\n]*\borigWhen '+str(expected)+r'\b[^\n]* '+re.escape(pkg)+r'\}'
+assert re.search(pattern,text),('OS alarm disappeared during setup',prayer,phase,expected,now)
+assert now<expected,('Fixture reached due time before cold setup completed',prayer,phase,expected,now)
+if phase in ('after-kill','after-doze'):
+ assert not (out/(prayer+'-pid-'+phase+'.txt')).read_text().strip(),('App process is not cold',prayer,phase)
+print('PASS real OSalarm checkpoint',prayer,phase,'remaining_ms',expected-now)
+PYCHECK
+ then
+  adb shell cmd appops get "$pkg" SCHEDULE_EXACT_ALARM > "$out/$prayer-exact-appops-$phase.txt"
+  adb shell dumpsys package "$pkg" > "$out/$prayer-package-$phase.txt"
+  adb shell dumpsys activity broadcasts > "$out/$prayer-broadcasts-$phase.txt"
+  echo "FAIL: actual OSalarm/process checkpoint $prayer $phase; full preparation logcat retained" >&2
+  exit 1
+ fi
+}
 for pair in fajr:nufais dhuhr:qatami asr:makkah maghrib:aqsa isha:nufais; do
  prayer="${pair%%:*}"; voice="${pair#*:}"
  adb shell dumpsys deviceidle unforce >/dev/null
@@ -34,12 +69,16 @@ prefs={e.attrib['name']:e.text if e.tag=='string' else e.attrib.get('value') for
 config=json.loads(prefs['config']);expected=config['events'][0]['time']
 assert config['events'][0]['prayer']==prayer and prefs.get('nextAlarmPrayer')==prayer and int(prefs.get('nextAlarmTime',0))==expected,('Native setup lost its pending alarm before cold test',prefs)
 PYSETUP
+ alarm_checkpoint after-prepare
  adb shell input keyevent KEYCODE_HOME
+ alarm_checkpoint after-home
  adb shell am kill "$pkg"
+ alarm_checkpoint after-kill
  adb shell dumpsys battery unplug >/dev/null
  adb shell input keyevent KEYCODE_SLEEP
  adb shell dumpsys deviceidle force-idle > "$out/$prayer-idle.txt"
  adb shell dumpsys deviceidle >> "$out/$prayer-idle.txt"
+ alarm_checkpoint after-doze
  sleep 17
  delivered=0
  for attempt in $(seq 1 8); do
