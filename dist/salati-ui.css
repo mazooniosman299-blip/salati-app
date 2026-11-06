@@ -317,7 +317,7 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
  aspect-ratio:63 / 58;
  border:0;
  border-radius:0;
- background:transparent url(quran/printed-1441/ornaments/page-book-from-reference.png) center / 100% 100% no-repeat;
+ background:transparent;
  box-shadow:none;
  color:#241810;
  font:400 19px/1 AmiriQuran,serif;
@@ -328,24 +328,44 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
  pointer-events:none;
 }
 
-/* Separate, optically centred ink plaque prevents the book spine from
-   merging into the single Arabic numeral ١. Keep exact book artwork 46x42. */
+/* The original open-book image remains fully visible, with no opaque
+   rectangle or pill over the fold. Mirror only the art to match the owner's
+   screenshot (left ivory leaf, right sepia leaf), never the Arabic digits. */
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:transparent url(quran/printed-1441/ornaments/page-book-from-reference.png) center / 100% 100% no-repeat;
+ transform:scaleX(-1);
+ pointer-events:none;
+}
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits{
  position:absolute;
- left:50%;top:48%;
+ left:50%;
+ top:48%;
  transform:translate(-50%,-50%);
- display:flex;align-items:center;justify-content:center;
+ display:flex;
+ align-items:center;
+ justify-content:center;
  box-sizing:border-box;
- min-width:18px;min-height:23px;
+ min-width:0;
+ min-height:0;
  max-width:42px;
- padding:1px 2px 0;
+ padding:0;
  margin:0;
- border:0;border-radius:9px;
- background:#faf5ec;
+ border:0;
+ border-radius:0;
+ background:transparent;
  color:#241810;
  font:400 19px/1 AmiriQuran,serif;
- -webkit-text-stroke:.45px currentColor;
- direction:rtl;white-space:nowrap;unicode-bidi:isolate;
- text-shadow:none;box-shadow:none;
+ -webkit-text-stroke:.25px currentColor;
+ direction:rtl;
+ white-space:nowrap;
+ unicode-bidi:isolate;
+ text-shadow:none;
+ box-shadow:none;
  pointer-events:none;
+}
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits.printed-page-index-single-digit{
+ left:57%;
 }
