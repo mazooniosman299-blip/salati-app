@@ -45,6 +45,19 @@ try:
        top:r.top,bottom:r.bottom,readerBottom:reader.bottom,dockTop:dock.top,space:document.documentElement.scrollWidth-innerWidth};
     }""")
     assert 'page-book-from-reference.png' in computed['bg'],(width,number,'book missing',computed)
+    digits=label.locator('.printed-page-index-digits')
+    assert digits.count()==1,(width,number,'missing independent digit plate')
+    assert digits.inner_text().strip()==expected,(width,number,'wrong folio plate text')
+    rects=digits.evaluate("""e=>{
+      const b=e.closest('.printed-page-index').getBoundingClientRect(),r=e.getBoundingClientRect(),s=getComputedStyle(e);
+      return {parentX:b.x,parentY:b.y,parentW:b.width,parentH:b.height,
+        glyphX:r.x,glyphY:r.y,glyphW:r.width,glyphH:r.height,
+        background:s.backgroundColor,stroke:s.webkitTextStrokeWidth};
+    }""")
+    assert abs((rects['glyphX']+rects['glyphW']/2)-(rects['parentX']+rects['parentW']/2))<1.1,(width,number,'digit off horizontal book center',rects)
+    assert abs((rects['glyphY']+rects['glyphH']/2)-(rects['parentY']+rects['parentH']*.48))<1.1,(width,number,'digit off vertical book center',rects)
+    assert rects['background']!='rgba(0, 0, 0, 0)' and rects['background']!='transparent',(width,number,'original book spine still visible through digit')
+    assert rects['glyphW']<=rects['parentW']-2 and rects['glyphH']<=rects['parentH']-3,(width,number,'folio ink outside book')
     assert 'AmiriQuran' in computed['fontFamily'] and computed['font']=='19px' and computed['fontWeight']=='400' and computed['fontLoaded'],(width,number,'print glyph font missing',computed)
     assert 45<=computed['width']<=47 and 41<=computed['height']<=43,(width,number,'compact 46x42 book dimensions',computed)
     assert computed['bottom']<=computed['readerBottom']+1,(width,number,'below reader',computed)
@@ -55,6 +68,7 @@ try:
     assert leaf.locator('.printed-page-artwork .printed-page-image').count()==1
     assert leaf.locator('.printed-ayah-regions [data-ayah]').count()>0
     label.screenshot(path=str(out/f'{width}-page{number}-book-only.png'))
+    digits.screenshot(path=str(out/f'{width}-page{number}-digit-detail.png'))
     page.screenshot(path=str(out/f'{width}-page{number}-actual-app.png'),full_page=False)
     assert not errors,(width,number,errors)
     cases.append({'viewport':[width,height],'printed_page':number,'eastern_arabic_digits':value,'book_size':[computed['width'],computed['height']],'status':'PASS'})
