@@ -13,7 +13,8 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')))
 Thread(target=server.serve_forever,daemon=True).start()
-# Bottom page number only uses the requested Western 0-9 digits; Quran text and verse numbers remain untouched.
+# The bottom folio uses the owner's original Eastern Arabic printed numerals;
+# Quran ayah numbers and original page artwork remain entirely untouched.
 cases=[]
 try:
  with sync_playwright() as pw:
@@ -34,16 +35,17 @@ try:
     label=leaf.locator('.printed-page-index')
     label.scroll_into_view_if_needed(timeout=20000)
     page.wait_for_timeout(300)
-    expected=str(number)
+    expected=str(number).translate(str.maketrans('0123456789','٠١٢٣٤٥٦٧٨٩'))
     value=label.inner_text().strip()
-    assert value==expected,(width,number,'wrong Western English page digit',value,expected)
+    assert value==expected,(width,number,'wrong Eastern Arabic page digit',value,expected)
     computed=label.evaluate("""e=>{
       const s=getComputedStyle(e),r=e.getBoundingClientRect(),reader=document.querySelector('#qVerses').getBoundingClientRect(),
        dock=document.querySelector('#mushafPlayerSlot').getBoundingClientRect();
-      return {bg:s.backgroundImage,width:r.width,height:r.height,font:s.fontSize,color:s.color,
+      return {bg:s.backgroundImage,width:r.width,height:r.height,font:s.fontSize,fontFamily:s.fontFamily,fontWeight:s.fontWeight,fontLoaded:document.fonts.check('19px AmiriQuran'),color:s.color,
        top:r.top,bottom:r.bottom,readerBottom:reader.bottom,dockTop:dock.top,space:document.documentElement.scrollWidth-innerWidth};
     }""")
     assert 'page-book-from-reference.png' in computed['bg'],(width,number,'book missing',computed)
+    assert 'AmiriQuran' in computed['fontFamily'] and computed['font']=='19px' and computed['fontWeight']=='400' and computed['fontLoaded'],(width,number,'print glyph font missing',computed)
     assert 45<=computed['width']<=47 and 41<=computed['height']<=43,(width,number,'compact 46x42 book dimensions',computed)
     assert computed['bottom']<=computed['readerBottom']+1,(width,number,'below reader',computed)
     assert computed['readerBottom']<=computed['dockTop']+1,(width,number,'player overlap',computed)
@@ -55,10 +57,10 @@ try:
     label.screenshot(path=str(out/f'{width}-page{number}-book-only.png'))
     page.screenshot(path=str(out/f'{width}-page{number}-actual-app.png'),full_page=False)
     assert not errors,(width,number,errors)
-    cases.append({'viewport':[width,height],'printed_page':number,'english_digits':value,'book_size':[computed['width'],computed['height']],'status':'PASS'})
+    cases.append({'viewport':[width,height],'printed_page':number,'eastern_arabic_digits':value,'book_size':[computed['width'],computed['height']],'status':'PASS'})
     page.close()
   browser.close()
  (out/'results.json').write_text(json.dumps({'result':'PASS','count':len(cases),'cases':cases,'real_browser':True,'physical_device':False,'production_published':False},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 finally:
  server.shutdown()
-print('PASS actual Salati reader '+str(len(cases))+' real screenshots with original user book, immutable Quran text, unblocked player/nav, English 0-9 page labels')
+print('PASS actual Salati reader '+str(len(cases))+' real screenshots with original user book, immutable Quran text, unblocked player/nav, authentic Eastern Arabic page labels in embedded Amiri Quran font')
