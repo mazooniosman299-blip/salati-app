@@ -3,7 +3,7 @@
   "source_reference": "docs/requests/SALATI-20261106-SURAH-FOLIO-RELEASE.md",
   "producer_branch": "review/surah-heading-original-reference-20261106",
   "code_runtime_changed": true,
-  "overall": "publication_blocked_original_key_signed_release_missing",
+  "overall": "blocked",
   "complete": false,
   "stages": {
     "user_request_captured": {
