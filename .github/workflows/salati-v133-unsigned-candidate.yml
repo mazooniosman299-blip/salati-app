@@ -1,0 +1,83 @@
+name: Salati 1.0.133 unsigned Android candidate (NO RELEASE)
+on:
+  push:
+    branches:
+      - review/surah-heading-original-reference-20261106
+    paths:
+      - '.github/workflows/salati-v133-unsigned-candidate.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare-review-only-apk-and-aab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild exact PR sources and verify approved Quran source invariants
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          npm test
+          node tests/page-number-book-contract.cjs
+          node tests/printed-mushaf-integrity.cjs
+      - name: Stage new site snapshot inside Android WebView
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build new APK and AAB without exposing or substituting any signing key
+        working-directory: android
+        run: |
+          set -euo pipefail
+          bash gradlew :app:assembleRelease :app:bundleRelease -x verifyReleaseSigningIdentity \
+            -PsalatiVersionCode=134 -PsalatiVersionName=1.0.133 --no-daemon
+      - name: Verify unsigned candidate identity and packaged web assets
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          BUNDLE=android/app/build/outputs/bundle/release/app-release.aab
+          test -s "$APK"
+          test -s "$BUNDLE"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+          python3 scripts/verify-native-web-assets.py "$APK"
+          mkdir -p reports/salati-133-unsigned
+          node scripts/release-fingerprint.cjs > reports/salati-133-unsigned/website-fingerprint.json
+          sha256sum "$APK" "$BUNDLE" > reports/salati-133-unsigned/sha256.txt
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('reports/salati-133-unsigned/candidate.json')
+          p.write_text(json.dumps({
+            'versionName':'1.0.133','versionCode':134,
+            'packageName':'com.salati.prayer',
+            'certificateSha256Required':'559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e',
+            'signingStatus':'UNSIGNED: original private release key required',
+            'published':False,
+            'approvalGate':'Do not release without original-key signer check, exact-content proof and all mandatory green CI'
+          },indent=2)+'\n')
+          PY
+      - name: Retain only review artifacts, never publish or deploy
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.133-unsigned-apk-aab
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            reports/salati-133-unsigned/
