@@ -1,58 +1,59 @@
 {
-  "request_id": "SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS",
-  "source_reference": "docs/requests/SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS.md",
-  "producer_branch": "fix/scoped-polish-authentic-assets-20261105",
+  "request_id": "SALATI-20261106-SURAH-FOLIO-RELEASE",
+  "source_reference": "docs/requests/SALATI-20261106-SURAH-FOLIO-RELEASE.md",
+  "producer_branch": "review/surah-heading-original-reference-20261106",
   "code_runtime_changed": true,
-  "overall": "in_progress",
+  "overall": "publication_blocked_original_key_signed_release_missing",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "Full latest request and photo-preview/both-widget clarification recorded verbatim."
+      "evidence": "User explicitly approved official publication after reviewing page 1 and 564 actual app screenshots."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Actual source/import/DOM/native owners inspected; scoped photo2 selection and dependencies documented. Independent read-only review: noCritical/Important code finding."
+      "evidence": "Verified canonical printed Quran controller/CSS and immutable original plate assets, original signed-APK release guard, and Cloudflare production branch."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "npm source build and Android release/debug/instrumentation builds PASS. Source-lifecycle regenerates exact linked JS hash11575ec5... from actual imports."
+      "evidence": "Targeted web bundle/114 heading/604 unmodified plates code review passes; full release workflow currently has unrelated original-key fingerprint mismatch."
     },
     "functional_regressions": {
-      "status": "pass",
-      "evidence": "Full npm test PASS including604original Quran hashes/6236regions, continuous audio, Fajr/offset/sync/privacy regressions. New global2976calendar cases/5host zones PASS; old worldwide2892and2760city schedules PASS. Strict4recordings+dua decode PASS. Actual offline AR/EN deep-link root recovery/new960pxphoto/Quran bootstrap PASS;36real CSS parity cases with132immutable snapshot PASS;88representative text contrasts above4.5:1 PASS. Fresh full npm test PASS after native fault-injection fix. Actual Java process-death/replacement and cross-mode eligibility regressions PASS; independent reviewer verified failed final-commit conservative policy."
+      "status": "blocked",
+      "reason": "Legacy assertions updated for approved new frame; re-run full exact SHA CI to confirm. Do not claim full suite green."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "48real AR/EN six-tab screenshots at4widths compared to exact official131 runtime: scoped pixel-diff PASS. Additional8scoped cases incl real nav animation/reduced motion,21decorated-reader cases,8mushaf cases,10home cases/reload/empty states PASS. Final desktop minaret/dome/sunset focal-point regression PASS at all8responsive/language cases, actual improved desktop screenshot reviewed."
+      "evidence": "Successful dedicated real Chromium 8 phone/desktop footer visual pixel tests including 1,50,564,604 and 16 headings cases, with reviewed screenshots."
     },
     "screenshot_user_reference": {
       "status": "pass",
-      "evidence": "Actual user-selected real photo2/source bytes and prior original mark verified. Original pinned QuranHub complete frame bytes verified and rendered screenshots inspected; fixed source captions excluded. Not claimed exact AlMosaly/pixel equality to unavailable prior photo."
+      "evidence": "Direct pixel compare of real mobile page 564 to original photographed book. Outside-folio frame matches; 0.5px numeral ink error measured."
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "Diagnostic-only source103322d/run42062304711 all4mandatory jobs PASS, including all5actual cold/screen-off/Doze alarm audio checks and widget3widths. New native atomic-replacement/early-callback/conservative-mode fix independently reviewed and host fault-injection PASS; fresh exact-candidate emulator CI required."
+      "reason": "Fresh exact-head signed original-key candidate not available."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "No physical phone is connected. Emulator/compile results do not establish physical-device behavior."
+      "reason": "Physical phone not connected; no claim."
     },
     "signed_release": {
-      "status": "pass",
-      "evidence": "Fresh final native atomic-replacement original-key132/code133 APK26072992bytes below25MiB; SHA014535f2e4d396e8d1971ea7b79cc8d311de9d61748370a7740a91ebc8d7362e; originalcert559dec66...;1002native/site assets and exact canonical icon verified; release/debug/instrumentation builds PASS41s. Supersedes archived unpublishedcafbd103candidate."
+      "status": "blocked",
+      "reason": "Current 1.0.132 signed APK fingerprint does not match newly changed web/CSS/images. Obtain NEW original-key signed Android release with versionCode increase, and verify SHA, cert, native assets."
     },
     "production_publication": {
-      "status": "not_run",
-      "reason": "Current signed132 candidate has not been merged/published. All exact-head CI and fresh Android evidence must pass first."
+      "status": "blocked",
+      "reason": "Protected production branch requires green CI and matching original-key signed release. Cloudflare production deployment has not been attempted and must not bypass verifiedManifest."
     },
     "latest_user_acceptance": {
-      "status": "not_run",
-      "reason": "User selected actual photo2 and crop; has not yet assessed the final installed132 candidate."
+      "status": "pass",
+      "evidence": "User: ممتاز جدا يلا انشر التحديثات دي رسمي."
     }
   },
   "limitations": [
-    "Global tests establish mathematical date/zone/rounding behavior at covered points, not every official mosque calendar minute worldwide.",
-    "Physical phone/human audition/future user acceptance remain unverified."
+    "No exact-release signed new APK or AAB generated.",
+    "Global Cloudflare site and Android store remain on prior production version.",
+    "User-approved visual tests do not replace signed release/native checks."
   ]
 }
