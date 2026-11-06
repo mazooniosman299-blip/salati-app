@@ -57,7 +57,7 @@ try:
       }""")
       expected_y=rects['totalHeight']*h['y']/index['pages'][str(n)]['height']
       assert abs(rects['top']-expected_y)<2,(n,width,k,rects,expected_y)
-      assert '19%' in rects['clip'],(n,'old border mask absent',rects)
+      assert '30%' in rects['clip'],(n,'old heading hairline mask absent',rects)
       img=item.locator('img.printed-reference-surah-decoration')
       assert img.evaluate('(e)=>e.complete&&e.naturalWidth>0'),(n,width,'reference failed to decode')
       assert 'user-reference-surah-frame.svg' in img.get_attribute('src')
