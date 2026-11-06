@@ -94,6 +94,26 @@
     "scripts/android-adhan-screen-off.sh",
     ".github/workflows/salati-v133-unsigned-candidate.yml",
     "dist/index.html",
-    "android/app/build.gradle"
+    "android/app/build.gradle",
+    ".github/workflows/salati-v133-stage-original-key.yml",
+    "release-proof/v1.0.133/metadata.json",
+    "release-proof/v1.0.133/signature-block.zlib.b64",
+    "apk-release-parts/current.json",
+    "apk-release-parts/v1.0.133/manifest.json",
+    "apk-release-parts/v1.0.133/part00.bin",
+    "apk-release-parts/v1.0.133/part01.bin",
+    "apk-release-parts/v1.0.133/part02.bin",
+    "apk-release-parts/v1.0.133/part03.bin",
+    "apk-release-parts/v1.0.133/part04.bin",
+    "apk-release-parts/v1.0.133/part05.bin",
+    "apk-release-parts/v1.0.133/part06.bin",
+    "apk-release-parts/v1.0.133/part07.bin",
+    "apk-release-parts/v1.0.133/part08.bin",
+    "apk-release-parts/v1.0.133/part09.bin",
+    "apk-release-parts/v1.0.133/part10.bin",
+    "apk-release-parts/v1.0.133/part11.bin",
+    "apk-release-parts/v1.0.133/part12.bin",
+    "apk-release-parts/v1.0.133/part13.bin",
+    "apk-release-parts/v1.0.133/part14.bin"
   ]
 }
