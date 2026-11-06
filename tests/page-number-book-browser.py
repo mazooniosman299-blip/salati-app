@@ -39,12 +39,14 @@ try:
     value=label.inner_text().strip()
     assert value==expected,(width,number,'wrong Eastern Arabic page digit',value,expected)
     computed=label.evaluate("""e=>{
-      const s=getComputedStyle(e),r=e.getBoundingClientRect(),reader=document.querySelector('#qVerses').getBoundingClientRect(),
+      const s=getComputedStyle(e),before=getComputedStyle(e,'::before'),r=e.getBoundingClientRect(),reader=document.querySelector('#qVerses').getBoundingClientRect(),
        dock=document.querySelector('#mushafPlayerSlot').getBoundingClientRect();
-      return {bg:s.backgroundImage,width:r.width,height:r.height,font:s.fontSize,fontFamily:s.fontFamily,fontWeight:s.fontWeight,fontLoaded:document.fonts.check('19px AmiriQuran'),color:s.color,
+      return {bg:before.backgroundImage,flip:before.transform,bookBackground:s.backgroundColor,width:r.width,height:r.height,font:s.fontSize,fontFamily:s.fontFamily,fontWeight:s.fontWeight,fontLoaded:document.fonts.check('19px AmiriQuran'),color:s.color,
        top:r.top,bottom:r.bottom,readerBottom:reader.bottom,dockTop:dock.top,space:document.documentElement.scrollWidth-innerWidth};
     }""")
-    assert 'page-book-from-reference.png' in computed['bg'],(width,number,'book missing',computed)
+    assert 'page-book-from-reference.png' in computed['bg'],(width,number,'original book missing',computed)
+    assert 'matrix(-1' in computed['flip'],(width,number,'owner screenshot leaf orientation not restored',computed)
+    assert computed['bookBackground'] in ('rgba(0, 0, 0, 0)','transparent'),(width,number,'unexpected cover over the book',computed)
     digits=label.locator('.printed-page-index-digits')
     assert digits.count()==1,(width,number,'missing independent digit plate')
     assert digits.inner_text().strip()==expected,(width,number,'wrong folio plate text')
@@ -54,9 +56,10 @@ try:
         glyphX:r.x,glyphY:r.y,glyphW:r.width,glyphH:r.height,
         background:s.backgroundColor,stroke:s.webkitTextStrokeWidth};
     }""")
-    assert abs((rects['glyphX']+rects['glyphW']/2)-(rects['parentX']+rects['parentW']/2))<1.1,(width,number,'digit off horizontal book center',rects)
+    expected_center=(.57 if number<10 else .50)
+    assert abs((rects['glyphX']+rects['glyphW']/2)-(rects['parentX']+rects['parentW']*expected_center))<1.1,(width,number,'Arabic numeral intersects book spine',rects)
     assert abs((rects['glyphY']+rects['glyphH']/2)-(rects['parentY']+rects['parentH']*.48))<1.1,(width,number,'digit off vertical book center',rects)
-    assert rects['background']!='rgba(0, 0, 0, 0)' and rects['background']!='transparent',(width,number,'original book spine still visible through digit')
+    assert rects['background'] in ('rgba(0, 0, 0, 0)','transparent'),(width,number,'opaque patch broke original book fold',rects)
     assert rects['glyphW']<=rects['parentW']-2 and rects['glyphH']<=rects['parentH']-3,(width,number,'folio ink outside book')
     assert 'AmiriQuran' in computed['fontFamily'] and computed['font']=='19px' and computed['fontWeight']=='400' and computed['fontLoaded'],(width,number,'print glyph font missing',computed)
     assert 45<=computed['width']<=47 and 41<=computed['height']<=43,(width,number,'compact 46x42 book dimensions',computed)
