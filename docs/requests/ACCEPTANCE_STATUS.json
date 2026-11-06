@@ -19,8 +19,8 @@
       "evidence": "Targeted web bundle/114 heading/604 unmodified plates code review passes; full release workflow currently has unrelated original-key fingerprint mismatch."
     },
     "functional_regressions": {
-      "status": "pending",
-      "reason": "Original-key signed release is staged on review branch. Require all mandatory exact-head PR and native/negative-publish checks green after signed-release inventory commit; do not publish on incomplete CI."
+      "status": "blocked",
+      "reason": "Await all mandatory exact-head PR source/browser/native/security checks to turn green after staged original-key signed release. Never bypass or claim full pass while any is pending."
     },
     "real_browser": {
       "status": "pass",
@@ -31,8 +31,8 @@
       "evidence": "Direct pixel compare of real mobile page 564 to original photographed book. Outside-folio frame matches; 0.5px numeral ink error measured."
     },
     "android_emulator": {
-      "status": "pending",
-      "reason": "Real Android WebView/debug emulator tests passed on prior review head; re-run exact signed candidate install-over-install and final release head before publication."
+      "status": "pass",
+      "evidence": "Actual Android 15 Google APIs hardware-accelerated emulator installed original-key 1.0.132 and upgraded in-place to original-key 1.0.133, then launched com.salati.prayer.MainActivity; run https://github.com/mazooniosman299-blip/salati-app/actions/runs/42288812772 passed, no uninstall or clear-data."
     },
     "physical_android": {
       "status": "not_run",
