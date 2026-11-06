@@ -44,18 +44,34 @@ try:
      headings=index['pages'][str(n)]['headings']
      wraps=frame.locator('.printed-reference-surah-heading')
      assert wraps.count()==len(headings),(n,'missing frame',wraps.count())
-     art=frame.locator('.printed-page-artwork').bounding_box()
      for k,h in enumerate(headings):
-      item=wraps.nth(k);box=item.bounding_box()
+      item=wraps.nth(k)
       assert item.get_attribute('data-surah-frame')==str(h['surah'])
-      expected_y=art['y']+art['height']*h['y']/index['pages'][str(n)]['height']
-      assert abs(box['y']-expected_y)<2,(n,width,k,box,expected_y)
+      # Measure the art and heading in one frame so moving scroll cannot
+      # corrupt page-bound positioning assertions.
+      rects=item.evaluate("""element=>{
+       const a=element.closest('.printed-page-artwork').getBoundingClientRect();
+       const b=element.getBoundingClientRect();
+       return {top:b.top-a.top,totalHeight:a.height,
+         clip:getComputedStyle(element.querySelector('.printed-reference-original-ink')).clipPath};
+      }""")
+      expected_y=rects['totalHeight']*h['y']/index['pages'][str(n)]['height']
+      assert abs(rects['top']-expected_y)<2,(n,width,k,rects,expected_y)
+      assert '19%' in rects['clip'],(n,'old border mask absent',rects)
       img=item.locator('img.printed-reference-surah-decoration')
       assert img.evaluate('(e)=>e.complete&&e.naturalWidth>0'),(n,width,'reference failed to decode')
       assert 'user-reference-surah-frame.svg' in img.get_attribute('src')
       assert item.evaluate('(e)=>getComputedStyle(e).pointerEvents')=='none'
-     # The verse target must still exist separately from this decorative frame.
+      item.scroll_into_view_if_needed(timeout=15000)
+      page.wait_for_timeout(120)
+      item.screenshot(path=str(out/f'{width}-page{n}-surah{h["surah"]}-heading.png'))
+     # The verse targets remain in the original unmodified plate overlay.
      assert frame.locator('.printed-ayah-regions [data-ayah]').count()>0
+    # Capture the actual ornament at the visible position, not while the
+    # selected chapter's automatic scroll is still traversing the page.
+    target=frame.locator('.printed-opening-title') if n<=2 else frame.locator('.printed-reference-surah-heading').first
+    target.scroll_into_view_if_needed(timeout=15000)
+    page.wait_for_timeout(150)
     page.screenshot(path=str(out/f'{width}-page{n}-surah{surah}.png'),full_page=False)
     assert not errors,(width,n,errors)
     checks.append({'width':width,'height':height,'page':n,'surah':surah,'expected_frames':1 if n<=2 else len(headings),'pass':True})
