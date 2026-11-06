@@ -28,7 +28,7 @@ assert(graphic[1].includes('transform:none;'),'Never mirror the exact reference'
 const page1=/\.printed-page-index\.printed-reference-page-one::before\{([^}]+)\}/.exec(style);
 assert(page1&&page1[1].includes('ornaments/user-book-page1.webp'),'First printed page must show photographed centered ١');
 const ink=/\.printed-page-index>\.printed-page-index-digits\{([^}]+)\}/.exec(style);
-assert(ink&&ink[1].includes('left:50%;top:39%'),'Correct rendered ink baseline, not element box center');
+assert(ink&&ink[1].includes('left:calc(50% + 1.5px);top:39%'),'Optical ink centering measured from genuine screenshot, not guessed CSS box');
 assert(ink[1].includes('font:400 20px/1 AmiriQuran,serif'),'Readability at 56x51 folio size');
 assert(ink[1].includes('background:transparent;'),'No opaque plaque');
 const originalOne=/\.printed-page-index\.printed-reference-page-one>\.printed-page-index-digits\{([^}]+)\}/.exec(style);
