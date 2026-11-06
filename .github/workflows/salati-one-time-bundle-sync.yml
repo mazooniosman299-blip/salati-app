@@ -1,0 +1,44 @@
+name: Salati one-time canonical generated JS sync (REVIEW ONLY)
+on:
+  push:
+    branches: [review/surah-heading-original-reference-20261106]
+    paths:
+      - .github/workflows/salati-one-time-bundle-sync.yml
+      - quran-printed-pages.js
+permissions:
+  contents: write
+concurrency:
+  group: salati-one-time-bundle-sync
+  cancel-in-progress: false
+jobs:
+  recompile-one-repo-entry:
+    if: github.ref == 'refs/heads/review/surah-heading-original-reference-20261106'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Build canonical active bundle from source, never touching release guards
+        run: npm run build
+      - name: Commit ONLY canonical active compiled UI bundles to this review branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- dist/app.js dist/app-v1.0.109.js
+          STAGED="$(git diff --cached --name-only)"
+          if [ -z "$STAGED" ]; then
+            echo "PASS: linked JS bundles already match source"
+            exit 0
+          fi
+          test "$STAGED" = "$(printf 'dist/app-v1.0.109.js\ndist/app.js')"
+          git config user.name "salati-build-automation[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Build exact linked JS bundle from approved original-Mushaf source (review only)"
+          git push origin HEAD:refs/heads/review/surah-heading-original-reference-20261106
