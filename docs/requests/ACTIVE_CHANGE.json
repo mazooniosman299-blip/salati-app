@@ -73,6 +73,7 @@
     "tests/mushaf-ornament-layout.py",
     "tests/page-number-book-browser.py",
     "tests/page-number-book-contract.cjs",
+    "tests/quran-continuation-actions.py",
     "tests/surah-frame-browser.py",
     "tests/surah-frame-contract.cjs"
   ]
