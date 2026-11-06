@@ -97,7 +97,7 @@ try:
      reference_photo[width]=(saved,actual)
     else:
      ref_path,ref_ink=reference_photo[width]
-     assert abs(actual[0]-ref_ink[0])<=2.6 and abs(actual[1]-ref_ink[1])<=2.6,(width,number,'VISUAL ink differs from original centered ١',actual,ref_ink)
+     assert abs(actual[0]-ref_ink[0])<=1.25 and abs(actual[1]-ref_ink[1])<=1.25,(width,number,'Ink center differs >1.25 pixels from photographed original ١',actual,ref_ink)
      pixel_error=outside_book_match(saved,ref_path)
      assert pixel_error<2.0,(width,number,"VISUAL book cover differs from user reference",pixel_error)
     page.screenshot(path=str(out/f'{width}-page{number}-actual-app.png'),full_page=False)
