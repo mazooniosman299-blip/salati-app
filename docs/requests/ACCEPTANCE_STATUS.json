@@ -19,8 +19,8 @@
       "evidence": "Targeted web bundle/114 heading/604 unmodified plates code review passes; full release workflow currently has unrelated original-key fingerprint mismatch."
     },
     "functional_regressions": {
-      "status": "blocked",
-      "reason": "Legacy assertions updated for approved new frame; re-run full exact SHA CI to confirm. Do not claim full suite green."
+      "status": "pending",
+      "reason": "Original-key signed release is staged on review branch. Require all mandatory exact-head PR and native/negative-publish checks green after signed-release inventory commit; do not publish on incomplete CI."
     },
     "real_browser": {
       "status": "pass",
@@ -31,20 +31,20 @@
       "evidence": "Direct pixel compare of real mobile page 564 to original photographed book. Outside-folio frame matches; 0.5px numeral ink error measured."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "Fresh exact-head signed original-key candidate not available."
+      "status": "pending",
+      "reason": "Real Android WebView/debug emulator tests passed on prior review head; re-run exact signed candidate install-over-install and final release head before publication."
     },
     "physical_android": {
       "status": "not_run",
       "reason": "Physical phone not connected; no claim."
     },
     "signed_release": {
-      "status": "blocked",
-      "reason": "Current 1.0.132 signed APK fingerprint does not match newly changed web/CSS/images. Obtain NEW original-key signed Android release with versionCode increase, and verify SHA, cert, native assets."
+      "status": "pass",
+      "evidence": "Release review run 42288261811 reconstructed byte-identical APK 1.0.133 (versionCode 134, com.salati.prayer) with original signing certificate SHA-256 559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e, APK SHA-256 c1b18452a1441c4146cecdde795b0d972a7ab3420641b9ab928426f8708b8be5. Android v2/v3 verify passed; site/build release guard and staged Cloudflare build passed. AAB separately signed and verified offline, not yet Play published."
     },
     "production_publication": {
       "status": "blocked",
-      "reason": "Protected production branch requires green CI and matching original-key signed release. Cloudflare production deployment has not been attempted and must not bypass verifiedManifest."
+      "reason": "Signed APK staged in PR #56 only; official production remains v1.0.132. Finish all required exact-head CI and signed-update Android QA before merging or Cloudflare production deploy."
     },
     "latest_user_acceptance": {
       "status": "pass",
@@ -52,8 +52,8 @@
     }
   },
   "limitations": [
-    "No exact-release signed new APK or AAB generated.",
-    "Global Cloudflare site and Android store remain on prior production version.",
-    "User-approved visual tests do not replace signed release/native checks."
+    "Signed APK 1.0.133 exists and is SHA-256/certificate-verified in review branch; no production deployment yet.",
+    "Native physical HONOR device test not performed.",
+    "All mandatory exact-head workflow jobs must pass after the final review commit before protected release."
   ]
 }
