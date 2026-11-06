@@ -90,6 +90,7 @@
     "tests/page-number-book-contract.cjs",
     "tests/quran-continuation-actions.py",
     "tests/surah-frame-browser.py",
-    "tests/surah-frame-contract.cjs"
+    "tests/surah-frame-contract.cjs",
+    "scripts/android-adhan-screen-off.sh"
   ]
 }
