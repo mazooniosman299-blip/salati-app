@@ -68,7 +68,7 @@ export async function enhancePrintedPage(page,index,verses){
    const calligraphy=new Image();calligraphy.src=base+'ornaments/surah-'+number+'.svg';calligraphy.alt=number===1?'سورة الفاتحة':'سورة البقرة';
    title.append(calligraphy);page.insertBefore(title,artwork);
   }
-  const label=document.createElement('div');label.className='printed-page-index';label.textContent=String(number);page.append(label);page.classList.add('original-printed-page');
+  const label=document.createElement('div');label.className='printed-page-index';label.textContent=String(number).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[Number(d)]);page.append(label);page.classList.add('original-printed-page');
   page.dispatchEvent(new CustomEvent('printedpage',{bubbles:true}));
  }catch{
   // No guessed plate or mismatched hit regions. The canonical text remains readable.
