@@ -299,3 +299,30 @@ body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
  position:absolute;left:0;width:100%;height:auto;max-width:none;
  filter:grayscale(1) sepia(.22) contrast(1.1);
 }
+
+/* Only the printed-page BOTTOM numeral changes: original open-Mushaf book
+   enclosure extracted from the owner's reference photo. Not verse numerals,
+   page artwork, chapter headings, scroll region, or reading hit targets. */
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
+ display:grid;
+ place-items:center;
+ box-sizing:border-box;
+ width:78px;
+ height:72px;
+ min-width:78px;
+ min-height:72px;
+ margin:4px auto 2px;
+ padding:0 2px 2px;
+ aspect-ratio:63 / 58;
+ border:0;
+ border-radius:0;
+ background:transparent url(quran/printed-1441/ornaments/page-book-from-reference.png) center / 100% 100% no-repeat;
+ box-shadow:none;
+ color:#241810;
+ font:700 19px/1.1 Cairo,sans-serif;
+ text-align:center;
+ direction:rtl;
+ unicode-bidi:plaintext;
+ user-select:none;
+ pointer-events:none;
+}
