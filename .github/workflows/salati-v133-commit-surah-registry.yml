@@ -1,0 +1,47 @@
+name: Salati deterministic signed Quran registry source synchronization (NO DEPLOY)
+on:
+  push:
+    branches: [review/surah-heading-original-reference-20261106]
+    paths:
+      - '.github/workflows/salati-v133-commit-surah-registry.yml'
+permissions:
+  contents: write
+jobs:
+  commit-generated-surah-registry-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build the actual 114-heading geometry from original immutable Quran PNG plates
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          node tests/surah-frame-contract.cjs
+          node tests/printed-mushaf-integrity.cjs
+          node - <<'JS'
+          const {fingerprint}=require('./scripts/release-fingerprint.cjs');
+          const expected=require('./release-proof/v1.0.133/metadata.json');
+          if(fingerprint().sha256!==expected.webFingerprint)throw Error('Generated source differs from original-key signed APK. No commit.');
+          console.log('PASS exact signed-release fingerprint from deterministic registry',expected.webFingerprint);
+          JS
+          node scripts/release-guard.cjs
+      - name: Persist ONLY the source registry which was absent from checkout
+        run: |
+          set -euo pipefail
+          FILE=dist/quran/printed-1441/surah-title-regions.json
+          test -s "$FILE"
+          git add "$FILE"
+          test "$(git diff --cached --name-only | wc -l)" -eq 1
+          test "$(git diff --cached --name-only)" = "$FILE"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'fix(release): commit exact generated 114-surah registry required by signed 1.0.133 fingerprint'
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo 'PASS identical signed web source committed to review only; production unchanged.'
