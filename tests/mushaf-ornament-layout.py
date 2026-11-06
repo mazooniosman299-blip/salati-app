@@ -40,7 +40,14 @@ try:
      crop=json.loads((root/f'dist/quran/printed-1441/regions/{n}.json').read_text())['displayViewport'];assert crop[1]<=ink[1] and crop[1]+crop[3]>=ink[3]
     else: assert top-read['y']<=50
     style=page.locator(f'[data-reading-page="{n}"]').evaluate('(e)=>getComputedStyle(e).borderImageSource');assert 'authentic-frame.svg' in style
-    label=page.locator(f'[data-reading-page="{n}"] .printed-page-index');assert 'page-cartouche.png' in label.evaluate('(e)=>getComputedStyle(e).backgroundImage')
+    label=page.locator(f'[data-reading-page="{n}"] .printed-page-index')
+    assert label.count()==1,('missing authentic bottom folio',n)
+    footer=label.evaluate("""e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e),p=getComputedStyle(e,'::before');return {width:r.width,height:r.height,art:p.backgroundImage,ink:e.innerText,flip:p.transform,background:s.backgroundColor}}""")
+    assert 'user-book-page1.webp' in footer['art'],(n,'wrong book reference',footer)
+    assert ('user-book-digit-seam.webp' in footer['art'])==(n!=1),(n,'wrong seam repair scope',footer)
+    assert abs(footer['width']-56)<1 and abs(footer['height']-51)<1,(n,'unexpected footer frame size',footer)
+    assert footer['flip']=='none',(n,'book cannot be mirrored',footer)
+    assert footer['ink']==str(n).translate(str.maketrans('0123456789','٠١٢٣٤٥٦٧٨٩')),(n,'incorrect footer number',footer)
     page.locator('#qVerses').evaluate('(e)=>e.scrollTop=e.scrollHeight');page.wait_for_function('document.querySelectorAll(".original-printed-page").length>=2');nodes=page.locator('.original-printed-page');one=nodes.nth(0).bounding_box();two=nodes.nth(1).bounding_box();assert one['y']+one['height']<=two['y']+1 and abs(one['x']-two['x'])<1
     if n==1 and h==1600:page.wait_for_function('document.querySelectorAll(".original-printed-page").length>=3',timeout=5000)
     page.locator('#qVerses').evaluate('(e)=>e.scrollTop=0');page.wait_for_timeout(100)
