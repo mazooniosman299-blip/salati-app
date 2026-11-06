@@ -19,7 +19,9 @@ assert(match[1].includes('page-book-from-reference.png'),'Must use genuine origi
 assert(match[1].includes('pointer-events:none'),'No disruption to Quran ayah taps');
 assert(match[1].includes('color:#241810'),'Keep print digit contrast');
 assert(source.includes("label.className='printed-page-index'"));
-assert(source.includes("label.textContent=String(number).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[Number(d)])"),'All 604 bottom folios must use Eastern Arabic digits without touching ayah numbering');
+assert(source.includes("folioDigits.textContent=String(number).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[Number(d)])"),'All 604 bottom folios must use Eastern Arabic digits without touching ayah numbering');
+assert(source.includes("folioDigits.className='printed-page-index-digits'"),'The folio glyph must be optically centered independent of the book spine');
+assert(style.includes('.printed-page-index>.printed-page-index-digits{'),'Only one bottom-folio plaque may be positioned over the book');
 assert(match[1].includes('font:400 19px/1 AmiriQuran,serif;'),'Must use the embedded Mushaf-style Amiri Quran font, not Cairo');
 assert(source.includes("page.append(label);page.classList.add('original-printed-page')"),'Page footer must remain under real image');
 for(let n=1;n<=604;n++){
