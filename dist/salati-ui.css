@@ -324,11 +324,11 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index.prin
  background-image:url(quran/printed-1441/ornaments/user-book-page1.webp);
 }
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits{
- position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+ position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);
  display:block;width:max-content;max-width:52px;height:auto;
  margin:0;padding:0;border:0;border-radius:0;
  background:transparent;box-shadow:none;text-shadow:none;
- color:#241810;font:400 16px/1 AmiriQuran,serif;
+ color:#241810;font:400 20px/1 AmiriQuran,serif;
  white-space:nowrap;letter-spacing:-.5px;direction:rtl;
  text-align:center;unicode-bidi:isolate;pointer-events:none;
  -webkit-text-stroke:0;
