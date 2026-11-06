@@ -302,7 +302,8 @@ body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
 
 /* REVIEW ONLY: photographic book cropped from the owner's exact screenshot.
    Page 1 displays the SOURCE book + original central ١ with zero re-typeset
-   ink. Later pages use the SAME source book with only that ink removed.
+   ink. Other pages overlay a tiny photo-derived seam restoration on THE SAME
+   original source book; no different full-book reconstruction is ever used.
    No CSS mirror, opaque plaque or arbitrary off-center single-digit shift. */
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
  position:relative;display:grid;place-items:center;
@@ -317,11 +318,14 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
 }
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index::before{
  content:"";position:absolute;inset:0;pointer-events:none;
- background:transparent url(quran/printed-1441/ornaments/user-book-blank.webp) center / 100% 100% no-repeat;
+ background-image:url(quran/printed-1441/ornaments/user-book-digit-seam.webp),url(quran/printed-1441/ornaments/user-book-page1.webp);
+ background-position:52.083333% 52.631579%, center;
+ background-size:13.513514% 43.564356%, 100% 100%;
+ background-repeat:no-repeat,no-repeat;
  transform:none;
 }
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index.printed-reference-page-one::before{
- background-image:url(quran/printed-1441/ornaments/user-book-page1.webp);
+ background-image:url(quran/printed-1441/ornaments/user-book-page1.webp);background-position:center;background-size:100% 100%;background-repeat:no-repeat;
 }
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits{
  position:absolute;left:50%;top:39%;transform:translate(-50%,-50%);
