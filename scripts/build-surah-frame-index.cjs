@@ -59,7 +59,10 @@ function readPalettePng(file){
   else groups.push({start:y,end:y,samples:1});
  }
  const candidates=groups.filter(g=>g.end-g.start>=52&&g.samples>=14)
-   .map(g=>({y:Math.max(0,g.start-11),h:Math.min(height,g.end+15)-Math.max(0,g.start-11)}));
+   // The canonical image's dark horizontal top hairline sits ABOVE the cyan plaque.
+   // Cover that whole original header rule, not only its colored center;
+   // otherwise a black stroke is left between Al-Falaq and An-Nas on p604.
+   .map(g=>({y:Math.max(0,g.start-32),h:Math.min(height,g.end+15)-Math.max(0,g.start-32)}));
  return {width,height,candidates};
 }
 const pages={};let total=2;
