@@ -52,6 +52,8 @@
   "status": "user_approved_official_release_blocked_pending_matching_original_key_signed_apk_and_all_required_ci",
   "allowed_paths": [
     ".github/workflows/salati-surah-frame-review.yml",
+    "dist/app-v1.0.109.js",
+    "dist/app.js",
     "dist/quran/printed-1441/ornaments/page-book-from-reference.png",
     "dist/quran/printed-1441/ornaments/user-book-blank.webp",
     "dist/quran/printed-1441/ornaments/user-book-digit-seam.webp",
