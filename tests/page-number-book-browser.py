@@ -76,7 +76,7 @@ try:
     assert data['background'] in ('transparent','rgba(0, 0, 0, 0)')
     assert data['inkBackground'] in ('transparent','rgba(0, 0, 0, 0)'),(width,number,'opaque badge hiding original book')
     assert abs(data['w']-56)<1 and abs(data['h']-51)<1,(width,number,'wrong approved size',data)
-    assert data['centered']<1.05,(width,number,'folio glyph not horizontally centered',data)
+    assert abs(data['centered']-1.5)<0.65,(width,number,'ink compensation should be 1.5px rather than shifting the book',data)
     assert 4.5<data['centeredY']<6.5,(width,number,'visible Amiri glyph baseline should be optically centered, NOT its CSS box',data)
     assert data['opacity']==('0' if number==1 else '1'),(width,number,'duplicate page one glyph',data)
     assert 'AmiriQuran' in data['font']
