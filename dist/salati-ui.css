@@ -275,3 +275,27 @@ body.dark #mushaf.printed-reader:not([hidden]){position:fixed;inset:0 0 80px;z-i
  body.dark #mushaf.printed-reader .printed-reader-options>.mushaf-toolbar{margin:12px 0;padding:10px;}
  @media(min-width:761px){body.dark #mushaf.printed-reader:not([hidden]){bottom:0;}body.dark #mushaf.printed-reader #qSheet #qVerses .original-printed-page{border-width:16px;padding:7px;}.printed-opening-title{margin-bottom:8px;}.printed-page-index{width:90px;font-size:16px;}}
 }
+
+/* REVIEW ONLY: exact decorative reference extracted from the user's own
+   screenshot. The original printed calligraphic text remains in the plate;
+   a centrally clipped copy is shown above this single replacement frame.
+   No Quran ink, basmala, ayah hit geometry, or other tab is changed. */
+body.dark #mushaf.printed-reader .printed-opening-title{
+ aspect-ratio:282 / 39;
+ background-image:url(quran/printed-1441/ornaments/user-reference-surah-frame.svg);
+}
+body.dark #mushaf.printed-reader .printed-reference-surah-heading{
+ position:absolute;left:0;right:0;overflow:hidden;z-index:2;
+ background:#fbf6ed;pointer-events:none;isolation:isolate;
+}
+body.dark #mushaf.printed-reader .printed-reference-surah-decoration{
+ position:absolute;left:5%;top:0;width:90%;height:100%;
+ max-width:none;object-fit:fill;filter:none;
+}
+body.dark #mushaf.printed-reader .printed-reference-original-ink{
+ position:absolute;inset:0;overflow:hidden;clip-path:inset(0 30% 0 30%);
+}
+body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
+ position:absolute;left:0;width:100%;height:auto;max-width:none;
+ filter:grayscale(1) sepia(.22) contrast(1.1);
+}
