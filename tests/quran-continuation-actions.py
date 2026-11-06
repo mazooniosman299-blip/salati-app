@@ -93,7 +93,7 @@ try:
   # Count comments out of the same representation that is actually parsed.
   # Reject malformed or nested CSS; preserve strict scoped style enforcement.
   assert len(rules)>=5 and clean_extra.count('{')==len(rules)==clean_extra.count('}'),('No truncated or nested new CSS rules',len(rules),clean_extra.count('{'),clean_extra.count('}'))
-  assert all(re.match(r'^\\s*body\\.dark\\s+#mushaf\\.printed-reader\\s+(?:\\.printed-|\\.original-printed-page\\s+\\.printed-page-index)',rule) for rule in rules),('Unapproved CSS outside printed Quran',rules)
+  assert all(re.match(r'^\s*body\.dark\s+#mushaf\.printed-reader\s+(?:\.printed-|\.original-printed-page\s+\.printed-page-index)',rule) for rule in rules),('Unapproved CSS outside printed Quran',rules)
   assert 'user-book-page1.webp' in extra and 'user-reference-surah-frame.svg' in extra,'Missing approved Quran ornament sources'
   for width,height,lang in [(320,740,'ar'),(390,844,'ar'),(1440,900,'en'),(935,325,'ar')]:
    page=b.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('https://**/*.mp3',media)
