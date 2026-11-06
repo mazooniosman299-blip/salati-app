@@ -1,5 +1,28 @@
 // Selected Madinah1441 originals; do not retype or reconstruct printed artwork.
 const NS='http://www.w3.org/2000/svg';
+// The banner index is derived from authentic printed pixel colors at build
+// time, not guessed browser heights. Keep one request across all 604 pages.
+let surahBannersPromise;
+function loadSurahBanners(base){
+ if(!surahBannersPromise)surahBannersPromise=fetch(base+'surah-title-regions.json')
+  .then(r=>{if(!r.ok)throw Error('surah frame index');return r.json()})
+  .then(registry=>{if(registry.count!==114)throw Error('incomplete surah frame index');return registry;})
+  .catch(error=>{surahBannersPromise=null;throw error;});
+ return surahBannersPromise;
+}
+function addReferenceSurahFrame(artwork,image,heading,base,height){
+ if(!Number.isInteger(heading.surah)||!Number.isInteger(heading.y)||!Number.isInteger(heading.h)||
+    heading.h<=0||heading.y<0||heading.y+heading.h>height)throw Error('invalid heading geometry');
+ const frame=document.createElement('div');frame.className='printed-reference-surah-heading';
+ frame.dataset.surahFrame=String(heading.surah);frame.setAttribute('aria-hidden','true');
+ frame.style.top=(heading.y/height*100)+'%';frame.style.height=(heading.h/height*100)+'%';
+ const decoration=new Image();decoration.src=base+'ornaments/user-reference-surah-frame.svg';
+ decoration.alt='';decoration.className='printed-reference-surah-decoration';
+ const inkWindow=document.createElement('div');inkWindow.className='printed-reference-original-ink';
+ const ink=new Image();ink.src=image.src;ink.alt='';ink.decoding='async';
+ ink.style.top=(-heading.y/heading.h*100)+'%';
+ inkWindow.append(ink);frame.append(decoration,inkWindow);artwork.append(frame);
+}
 export async function enhancePrintedPage(page,index,verses){
  const number=index+1,base='quran/printed-1441/';
  try{
@@ -17,6 +40,15 @@ export async function enhancePrintedPage(page,index,verses){
   for(const region of regions.verses){const verse=canonical.get(region.key),path=document.createElementNS(NS,'path');path.classList.add('printed-ayah');path.dataset.ayah=region.key;path.setAttribute('d',region.path);path.setAttribute('tabindex','0');path.setAttribute('role','button');path.setAttribute('aria-pressed','false');path.setAttribute('aria-label',verse.t+'، الآية '+verse.a);group.append(path);}
   svg.append(group);image.className='printed-page-image';image.alt='صفحة '+number+' من مصحف المدينة، طبعة ١٤٤١هـ';image.width=regions.width;image.height=regions.height;image.draggable=false;
   const artwork=document.createElement('div');artwork.className='printed-page-artwork';artwork.append(image,svg);
+  const starts=verses.filter(v=>v.a===1).map(v=>v.s);
+  if(number>2&&starts.length){
+   const registry=await loadSurahBanners(base);
+   const node=registry.pages?.[number];
+   if(!node||node.width!==regions.width||node.height!==regions.height||
+      node.headings?.length!==starts.length||
+      node.headings.some((heading,i)=>heading.surah!==starts[i]))throw Error('surah heading index mismatch');
+   for(const heading of node.headings)addReferenceSurahFrame(artwork,image,heading,base,regions.height);
+  }
   if(number<=2&&regions.displayViewport){
    const [x,y,w,h]=regions.displayViewport;
    if(x!==0||w!==regions.width||![y,h].every(Number.isFinite)||y<0||h<=0||y+h>regions.height)throw Error('viewport');
