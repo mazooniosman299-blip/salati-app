@@ -319,7 +319,7 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
  background:transparent url(quran/printed-1441/ornaments/page-book-from-reference.png) center / 100% 100% no-repeat;
  box-shadow:none;
  color:#241810;
- font:700 14px/1.1 Cairo,sans-serif;
+ font:400 19px/1 AmiriQuran,serif;
  text-align:center;
  direction:rtl;
  unicode-bidi:plaintext;
