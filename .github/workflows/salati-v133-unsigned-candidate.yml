@@ -70,6 +70,64 @@ jobs:
             'approvalGate':'Do not release without original-key signer check, exact-content proof and all mandatory green CI'
           },indent=2)+'\n')
           PY
+      - name: Verify existing GitHub Actions signing key and sign review APK/AAB if present
+        id: original_key
+        shell: bash
+        env:
+          SALATI_KEYSTORE_BASE64: ${{ secrets.SALATI_KEYSTORE_BASE64 }}
+          SALATI_KEYSTORE_B64: ${{ secrets.SALATI_KEYSTORE_B64 }}
+          SALATI_RELEASE_KEYSTORE_BASE64: ${{ secrets.SALATI_RELEASE_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          SALATI_KEYSTORE_PASSWORD: ${{ secrets.SALATI_KEYSTORE_PASSWORD }}
+          SALATI_STORE_PASSWORD: ${{ secrets.SALATI_STORE_PASSWORD }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SALATI_PASSWORD: ${{ secrets.SALATI_PASSWORD }}
+          SALATI_KEY_PASSWORD: ${{ secrets.SALATI_KEY_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          set +x
+          umask 077
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          key="$tmp/original.keystore"
+          pw="$tmp/password.txt"
+          matched=false
+          for n in SALATI_KEYSTORE_BASE64 SALATI_KEYSTORE_B64 SALATI_RELEASE_KEYSTORE_BASE64 ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_B64 KEYSTORE_BASE64 KEYSTORE_B64 SIGNING_KEYSTORE_BASE64; do
+            candidate="${!n:-}"
+            if [ -n "$candidate" ] && printf '%s' "$candidate" | base64 -d > "$key" 2>/dev/null && test -s "$key"; then
+              matched=true
+              break
+            fi
+          done
+          password=''
+          for n in SALATI_KEYSTORE_PASSWORD SALATI_STORE_PASSWORD ANDROID_KEYSTORE_PASSWORD KEYSTORE_PASSWORD SALATI_PASSWORD SALATI_KEY_PASSWORD ANDROID_KEY_PASSWORD; do
+            if [ -n "${!n:-}" ]; then password="${!n}"; break; fi
+          done
+          if [ "$matched" != true ] || [ -z "$password" ]; then
+            echo 'No matching original-key keystore/password pair in checked GitHub Actions secret names.'
+            echo 'signed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          printf '%s' "$password" > "$pw"
+          unset password candidate
+          export SALATI_KEYSTORE="$key" SALATI_PASSWORD_FILE="$pw"
+          export ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          python3 scripts/sign-android.py --check-key
+          python3 scripts/sign-android.py --input android/app/build/outputs/apk/release/app-release-unsigned.apk --output reports/salati-133-unsigned/salati-1.0.133-original-signed.apk
+          export SALATI_SIGNING_PASSWORD_INTERNAL="$(cat "$pw")"
+          jarsigner -keystore "$key" -storepass:env SALATI_SIGNING_PASSWORD_INTERNAL -keypass:env SALATI_SIGNING_PASSWORD_INTERNAL -signedjar reports/salati-133-unsigned/salati-1.0.133-original-signed.aab android/app/build/outputs/bundle/release/app-release.aab salati >/dev/null
+          jarsigner -verify -strict reports/salati-133-unsigned/salati-1.0.133-original-signed.aab >/dev/null
+          "$ANDROID_BUILD_TOOLS/apksigner" verify --verbose --print-certs reports/salati-133-unsigned/salati-1.0.133-original-signed.apk | grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e'
+          python3 scripts/verify-native-web-assets.py reports/salati-133-unsigned/salati-1.0.133-original-signed.apk
+          sha256sum reports/salati-133-unsigned/salati-1.0.133-original-signed.apk reports/salati-133-unsigned/salati-1.0.133-original-signed.aab >reports/salati-133-unsigned/signed-sha256.txt
+          echo 'signed=true' >> "$GITHUB_OUTPUT"
+          echo 'Original-key verified. QA artifacts only, no production release.'
       - name: Retain only review artifacts, never publish or deploy
         if: success()
         uses: actions/upload-artifact@v4
