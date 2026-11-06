@@ -19,7 +19,7 @@ assert(match[1].includes('page-book-from-reference.png'),'Must use genuine origi
 assert(match[1].includes('pointer-events:none'),'No disruption to Quran ayah taps');
 assert(match[1].includes('color:#241810'),'Keep print digit contrast');
 assert(source.includes("label.className='printed-page-index'"));
-assert(source.includes("label.textContent=new Intl.NumberFormat('ar').format(number)"),'All pages must use real Arabic page numbers');
+assert(source.includes("label.textContent=String(number).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[Number(d)])"),'All pages must use stable Eastern Arabic numerals, not browser-dependent ICU defaults');
 assert(source.includes("page.append(label);page.classList.add('original-printed-page')"),'Page footer must remain under real image');
 for(let n=1;n<=604;n++){
  const original=fs.readFileSync(base+'pages/'+n+'.png');
