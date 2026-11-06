@@ -9,6 +9,9 @@ on:
       - 'dist/quran/printed-1441/ornaments/user-reference-surah-frame.svg'
       - 'tests/surah-frame-contract.cjs'
       - 'tests/surah-frame-browser.py'
+      - 'dist/quran/printed-1441/ornaments/page-book-from-reference.png'
+      - 'tests/page-number-book-contract.cjs'
+      - 'tests/page-number-book-browser.py'
       - '.github/workflows/salati-surah-frame-review.yml'
   workflow_dispatch:
 permissions:
@@ -31,6 +34,7 @@ jobs:
         run: |
           npm run build
           node tests/surah-frame-contract.cjs
+          node tests/page-number-book-contract.cjs
           node tests/printed-mushaf-integrity.cjs
           node tests/quran-direct-ayah.cjs
       - name: Chromium phone/desktop genuine screenshots (review only)
@@ -38,12 +42,15 @@ jobs:
           python3 -m pip install --quiet playwright pillow
           python3 -m playwright install --with-deps chromium
           python3 tests/surah-frame-browser.py
+          python3 tests/page-number-book-browser.py
       - name: Save actual screenshots and failures for review
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: salati-surah-frame-real-UI-16-cases
-          path: reports/surah-frame-review/
+          name: salati-surah-and-page-number-real-UI-review
+          path: |
+            reports/surah-frame-review/
+            reports/page-number-book/
           if-no-files-found: warn
   never-publish:
     runs-on: ubuntu-latest
