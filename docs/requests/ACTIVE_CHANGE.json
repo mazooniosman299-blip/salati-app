@@ -45,6 +45,21 @@
         "audio controls and navigation",
         "visible book fold"
       ]
+    },
+    {
+      "selector": "#mushaf #qVerses",
+      "tab": "mushaf",
+      "language": "both",
+      "before": "Baseline 1.0.132 original source plate and legacy header/footer ornaments within vertically scrolling reader",
+      "after": "User-approved real photographed surah-header frame and page-number open book within Quran reading page; title aspect ratio changes vertical text pixels only inside the existing reader",
+      "preserve": [
+        "604 original Quran artwork SHA-256 hashes",
+        "all 6236 calibrated verse-region targets",
+        "original Quran text and diacritics",
+        "continuous audio player and controls outside qVerses",
+        "unchanged app navigation and all five other tabs",
+        "exact approved user-photo frame source"
+      ]
     }
   ],
   "android_release": true,
