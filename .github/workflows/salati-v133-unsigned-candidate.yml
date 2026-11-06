@@ -5,6 +5,11 @@ on:
       - review/surah-heading-original-reference-20261106
     paths:
       - '.github/workflows/salati-v133-unsigned-candidate.yml'
+      - 'dist/index.html'
+      - 'android/app/build.gradle'
+      - 'quran-printed-pages.js'
+      - 'dist/salati-ui.css'
+      - 'scripts/prepare-android.py'
   workflow_dispatch:
 permissions:
   contents: read
