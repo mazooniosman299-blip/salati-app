@@ -116,6 +116,8 @@
     "apk-release-parts/v1.0.133/part13.bin",
     "apk-release-parts/v1.0.133/part14.bin",
     ".github/workflows/salati-v133-signed-upgrade-qa.yml",
-    "README.md"
+    "README.md",
+    "dist/quran/printed-1441/surah-title-regions.json",
+    ".github/workflows/salati-v133-commit-surah-registry.yml"
   ]
 }
