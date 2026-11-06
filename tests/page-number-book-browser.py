@@ -34,9 +34,9 @@ try:
     label=leaf.locator('.printed-page-index')
     label.scroll_into_view_if_needed(timeout=20000)
     page.wait_for_timeout(300)
-    expected=str(number).translate(digits)
+    expected=str(number)
     value=label.inner_text().strip()
-    assert value==expected,(width,number,'wrong Arabic page digit',value,expected)
+    assert value==expected,(width,number,'wrong Western English page digit',value,expected)
     computed=label.evaluate("""e=>{
       const s=getComputedStyle(e),r=e.getBoundingClientRect(),reader=document.querySelector('#qVerses').getBoundingClientRect(),
        dock=document.querySelector('#mushafPlayerSlot').getBoundingClientRect();
@@ -55,10 +55,10 @@ try:
     label.screenshot(path=str(out/f'{width}-page{number}-book-only.png'))
     page.screenshot(path=str(out/f'{width}-page{number}-actual-app.png'),full_page=False)
     assert not errors,(width,number,errors)
-    cases.append({'viewport':[width,height],'printed_page':number,'arabic_digits':value,'book_size':[computed['width'],computed['height']],'status':'PASS'})
+    cases.append({'viewport':[width,height],'printed_page':number,'english_digits':value,'book_size':[computed['width'],computed['height']],'status':'PASS'})
     page.close()
   browser.close()
  (out/'results.json').write_text(json.dumps({'result':'PASS','count':len(cases),'cases':cases,'real_browser':True,'physical_device':False,'production_published':False},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 finally:
  server.shutdown()
-print('PASS actual Salati reader '+str(len(cases))+' real screenshots with original user book, immutable Quran text, unblocked player/nav, Arabic page labels')
+print('PASS actual Salati reader '+str(len(cases))+' real screenshots with original user book, immutable Quran text, unblocked player/nav, English 0-9 page labels')
