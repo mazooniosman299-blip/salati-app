@@ -91,6 +91,7 @@
     "tests/quran-continuation-actions.py",
     "tests/surah-frame-browser.py",
     "tests/surah-frame-contract.cjs",
-    "scripts/android-adhan-screen-off.sh"
+    "scripts/android-adhan-screen-off.sh",
+    ".github/workflows/salati-v133-unsigned-candidate.yml"
   ]
 }
