@@ -6,6 +6,8 @@ source=root/'dist';target=root/'android/app/src/main/assets/www'
 # Never package preview-only code that could silently overwrite user location.
 assert 'preview-sample-location-20261101.js' not in (source/'index.html').read_text(), 'Preview location setter imported by native homepage'
 assert not (source/'preview-sample-location-20261101.js').exists(), 'Preview location setter still in shipped distribution'
+assert (source/'quran/printed-1441/surah-title-regions.json').is_file(), 'No verified 114-surah heading geometry: run npm run build before Android packaging'
+assert (source/'quran/printed-1441/ornaments/user-reference-surah-frame.svg').is_file(), 'Missing approved-source reference image'
 if target.exists():shutil.rmtree(target)
 def packaged_files(directory,names):
     ignored=shutil.ignore_patterns('downloads','sw.js')(directory,names)

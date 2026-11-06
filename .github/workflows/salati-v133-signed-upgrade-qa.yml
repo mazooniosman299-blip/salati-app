@@ -1,0 +1,88 @@
+name: Salati 1.0.133 genuine signed upgrade Android 15 (NO DEPLOY)
+on:
+  push:
+    branches: [review/surah-heading-original-reference-20261106]
+    paths:
+      - '.github/workflows/salati-v133-signed-upgrade-qa.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  upgrade-signed-over-signed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reassemble two immutable ORIGINAL-key signed APKs without secrets
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-upgrade reports/salati-v133-signed-upgrade
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          for version in ['1.0.132','1.0.133']:
+            directory=Path('apk-release-parts/v'+version)
+            m=json.loads((directory/'manifest.json').read_text())
+            blob=b''.join((directory/f'part{i:02d}.bin').read_bytes() for i in range(m['partCount']))
+            assert hashlib.sha256(blob).hexdigest()==m['sha256'] and len(blob)==m['size']
+            assert m['certificateSha256']=='559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e'
+            assert m['applicationId']=='com.salati.prayer'
+            Path('/tmp/salati-upgrade/salati-'+version+'.apk').write_bytes(blob)
+            print('PASS original-key signed byte-exact release',version,m['sha256'])
+          PY
+          for v in 1.0.132 1.0.133; do
+            APK="/tmp/salati-upgrade/salati-$v.apk"
+            "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK" > "reports/salati-v133-signed-upgrade/signature-$v.txt"
+            grep -F "Verified using v2 scheme (APK Signature Scheme v2): true" "reports/salati-v133-signed-upgrade/signature-$v.txt"
+            grep -Fi "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e" "reports/salati-v133-signed-upgrade/signature-$v.txt"
+          done
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.132.apk | grep -F "name='com.salati.prayer' versionCode='133' versionName='1.0.132'"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.133.apk | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+      - name: Require hardware accelerated emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+      - name: Install original v132 then update to original v133 without uninstalling or clearing data
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            adb install -r /tmp/salati-upgrade/salati-1.0.132.apk | tee reports/salati-v133-signed-upgrade/install-132.txt
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee reports/salati-v133-signed-upgrade/start-132.txt
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=133' > reports/salati-v133-signed-upgrade/version-before.txt
+            adb shell am force-stop com.salati.prayer
+            # This MUST be a real in-place signed upgrade: no pm clear/uninstall.
+            adb install -r /tmp/salati-upgrade/salati-1.0.133.apk | tee reports/salati-v133-signed-upgrade/upgrade-133.txt
+            grep -Fx 'Success' reports/salati-v133-signed-upgrade/upgrade-133.txt
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > reports/salati-v133-signed-upgrade/version-after.txt
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee reports/salati-v133-signed-upgrade/start-133.txt
+            sleep 4
+            adb shell pidof com.salati.prayer > reports/salati-v133-signed-upgrade/process-133.txt
+            test -s reports/salati-v133-signed-upgrade/process-133.txt
+            adb exec-out screencap -p > reports/salati-v133-signed-upgrade/actual-signed-android-home.png
+            test -s reports/salati-v133-signed-upgrade/actual-signed-android-home.png
+            adb logcat -d -v threadtime > reports/salati-v133-signed-upgrade/logcat.txt
+            echo 'PASS original-key signed 1.0.132 -> 1.0.133 in-place Android 15 upgrade and app launch; physical HONOR not tested.'
+      - name: Save truthful signed device evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-133-original-signed-update-android15
+          retention-days: 20
+          if-no-files-found: warn
+          path: reports/salati-v133-signed-upgrade/

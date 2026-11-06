@@ -1,0 +1,157 @@
+name: Salati 1.0.133 unsigned Android candidate (NO RELEASE)
+on:
+  push:
+    branches:
+      - review/surah-heading-original-reference-20261106
+    paths:
+      - '.github/workflows/salati-v133-unsigned-candidate.yml'
+      - 'dist/index.html'
+      - 'android/app/build.gradle'
+      - 'quran-printed-pages.js'
+      - 'dist/salati-ui.css'
+      - 'scripts/prepare-android.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  prepare-review-only-apk-and-aab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild exact PR sources and verify approved Quran source invariants
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          npm test
+          node tests/page-number-book-contract.cjs
+          node tests/printed-mushaf-integrity.cjs
+      - name: Stage new site snapshot inside Android WebView
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build new APK and AAB without exposing or substituting any signing key
+        working-directory: android
+        run: |
+          set -euo pipefail
+          bash gradlew :app:assembleRelease :app:bundleRelease -x verifyReleaseSigningIdentity \
+            -PsalatiVersionCode=134 -PsalatiVersionName=1.0.133 --no-daemon
+      - name: Verify unsigned candidate identity and packaged web assets
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          BUNDLE=android/app/build/outputs/bundle/release/app-release.aab
+          test -s "$APK"
+          test -s "$BUNDLE"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+          # Candidate-only validation: the live release pointer intentionally
+          # remains 1.0.132 until a NEW original-key signed 1.0.133 APK exists.
+          # Temporarily set the validation fixture to the candidate version,
+          # then restore the pointer even if a check fails. Never touch guards.
+          original_pointer="$(mktemp)"
+          cp apk-release-parts/current.json "$original_pointer"
+          restore_pointer() { cp "$original_pointer" apk-release-parts/current.json; rm -f "$original_pointer"; }
+          trap restore_pointer EXIT
+          printf '{ "version": "1.0.133" }\n' > apk-release-parts/current.json
+          python3 scripts/verify-native-web-assets.py "$APK"
+          restore_pointer
+          trap - EXIT
+          mkdir -p reports/salati-133-unsigned
+          node scripts/release-fingerprint.cjs > reports/salati-133-unsigned/website-fingerprint.json
+          sha256sum "$APK" "$BUNDLE" > reports/salati-133-unsigned/sha256.txt
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path('reports/salati-133-unsigned/candidate.json')
+          p.write_text(json.dumps({
+            'versionName':'1.0.133','versionCode':134,
+            'packageName':'com.salati.prayer',
+            'certificateSha256Required':'559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e',
+            'signingStatus':'UNSIGNED: original private release key required',
+            'published':False,
+            'approvalGate':'Do not release without original-key signer check, exact-content proof and all mandatory green CI'
+          },indent=2)+'\n')
+          PY
+      - name: Verify existing GitHub Actions signing key and sign review APK/AAB if present
+        id: original_key
+        shell: bash
+        env:
+          SALATI_KEYSTORE_BASE64: ${{ secrets.SALATI_KEYSTORE_BASE64 }}
+          SALATI_KEYSTORE_B64: ${{ secrets.SALATI_KEYSTORE_B64 }}
+          SALATI_RELEASE_KEYSTORE_BASE64: ${{ secrets.SALATI_RELEASE_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+          SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
+          SALATI_KEYSTORE_PASSWORD: ${{ secrets.SALATI_KEYSTORE_PASSWORD }}
+          SALATI_STORE_PASSWORD: ${{ secrets.SALATI_STORE_PASSWORD }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          SALATI_PASSWORD: ${{ secrets.SALATI_PASSWORD }}
+          SALATI_KEY_PASSWORD: ${{ secrets.SALATI_KEY_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          set +x
+          umask 077
+          tmp="$(mktemp -d)"
+          trap 'rm -rf "$tmp"' EXIT
+          key="$tmp/original.keystore"
+          pw="$tmp/password.txt"
+          matched=false
+          for n in SALATI_KEYSTORE_BASE64 SALATI_KEYSTORE_B64 SALATI_RELEASE_KEYSTORE_BASE64 ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_B64 KEYSTORE_BASE64 KEYSTORE_B64 SIGNING_KEYSTORE_BASE64; do
+            candidate="${!n:-}"
+            if [ -n "$candidate" ] && printf '%s' "$candidate" | base64 -d > "$key" 2>/dev/null && test -s "$key"; then
+              matched=true
+              break
+            fi
+          done
+          password=''
+          for n in SALATI_KEYSTORE_PASSWORD SALATI_STORE_PASSWORD ANDROID_KEYSTORE_PASSWORD KEYSTORE_PASSWORD SALATI_PASSWORD SALATI_KEY_PASSWORD ANDROID_KEY_PASSWORD; do
+            if [ -n "${!n:-}" ]; then password="${!n}"; break; fi
+          done
+          if [ "$matched" != true ] || [ -z "$password" ]; then
+            echo 'No matching original-key keystore/password pair in checked GitHub Actions secret names.'
+            echo 'signed=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          printf '%s' "$password" > "$pw"
+          unset password candidate
+          export SALATI_KEYSTORE="$key" SALATI_PASSWORD_FILE="$pw"
+          export ANDROID_BUILD_TOOLS="$ANDROID_HOME/build-tools/36.0.0"
+          python3 scripts/sign-android.py --check-key
+          python3 scripts/sign-android.py --input android/app/build/outputs/apk/release/app-release-unsigned.apk --output reports/salati-133-unsigned/salati-1.0.133-original-signed.apk
+          export SALATI_SIGNING_PASSWORD_INTERNAL="$(cat "$pw")"
+          jarsigner -keystore "$key" -storepass:env SALATI_SIGNING_PASSWORD_INTERNAL -keypass:env SALATI_SIGNING_PASSWORD_INTERNAL -signedjar reports/salati-133-unsigned/salati-1.0.133-original-signed.aab android/app/build/outputs/bundle/release/app-release.aab salati >/dev/null
+          jarsigner -verify -strict reports/salati-133-unsigned/salati-1.0.133-original-signed.aab >/dev/null
+          "$ANDROID_BUILD_TOOLS/apksigner" verify --verbose --print-certs reports/salati-133-unsigned/salati-1.0.133-original-signed.apk | grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e'
+          python3 scripts/verify-native-web-assets.py reports/salati-133-unsigned/salati-1.0.133-original-signed.apk
+          sha256sum reports/salati-133-unsigned/salati-1.0.133-original-signed.apk reports/salati-133-unsigned/salati-1.0.133-original-signed.aab >reports/salati-133-unsigned/signed-sha256.txt
+          echo 'signed=true' >> "$GITHUB_OUTPUT"
+          echo 'Original-key verified. QA artifacts only, no production release.'
+      - name: Retain only review artifacts, never publish or deploy
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.133-unsigned-apk-aab
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            reports/salati-133-unsigned/

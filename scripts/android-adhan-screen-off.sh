@@ -53,6 +53,11 @@ for pair in fajr:nufais dhuhr:qatami asr:makkah maghrib:aqsa isha:nufais; do
  # Isolate native delivery from a prior UI trial's WebView/localStorage and
  # lifecycle callbacks. This is a disposable emulator, never user data.
  adb shell pm clear "$pkg" >/dev/null
+ # Android can process PACKAGE_DATA_CLEARED notifications after pm clear
+ # returns. Let package/broadcast cleanup settle before scheduling alarms,
+ # without weakening ANY subsequent OS AlarmManager or playback assertions.
+ adb shell am wait-for-broadcast-idle >/dev/null
+ sleep 3
  adb shell pm grant "$pkg" android.permission.POST_NOTIFICATIONS
  adb shell appops set "$pkg" SCHEDULE_EXACT_ALARM allow
  adb shell am start -W -n "$pkg/com.salati.prayer.AlarmPreparationActivity" --es prayer "$prayer" --es voice "$voice" > "$out/$prayer-prepare.txt"

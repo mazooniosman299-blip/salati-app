@@ -1,334 +1,123 @@
 {
-  "request_id": "SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS",
-  "original_request": "انت الزخرفه حقت المصحف العملتها لي رسمتها انت صح تاني ماتجيب من عندك جيب زخرفه حقيقه تبع مصحف تاني شي شكل الايقونه بتاعت التطبيق ماجميله انت قلت ليك الايقونه الفاتت بدل شفاف خلي وراها منظر مسجد حقيقي وبعد الخط في الويجدت داخل التطبيق في كلمة العصر و الساعه كبير نقصو حبه  وتاني شي سورة النساء الايه 103 الخاتيها في الصفحه الرئيسيه ليه القوس تحت مفروض يكون في سطر واحد وبعدين ليه شكل الايقونه من بره شكل ومن الداخل شكل وحد ايقونة التطبيق وبعدين الانتقال بتاع الايقونات خليه سلس ومريح ياريت تكون فهمت قصدي  وبعدين الازرار  حقت زياده والنقصان في تعديل وقت الصلاه خليها ازرق نفس الازرق الموجود بنفس الدرجه  وتاني شي كلمة حفظ الاعدادات ليه مافيها ايطار شفاف زي الباقي يوضح الكلمه  وتاني شي اتاكد انو مواقيت الصلاه في كل دول العالم صحيحه ماتكون ناقصه ولا دقيقه واحذف معاك النص دا تم الاختيار حسب الإحداثيات: عُمان / Oman · Asia/Muscat. المواقيت حسابية؛ قد يختلف تقويم المسجد قليلًا.  زر التسبيح خليه ازرق  والنص دا خليه ابيض لحظات من الطمأنينة  واحذف كلمة طريقة التسبيح  وغير صورة المسجد داخل التطبيق ل صورة المسجد الرسلتها ليك قبل كدا وقلت ليك ماعارف مصدره وين  والعداد حق المتبقي للصلاه في الويجدت في الشاشه الرئيسيه ملاصق الاطار خليه النصوص ال 3 متساويه في المحاذاه بس تاني مافي تعديل الباقي تمام",
-  "original_verbatim_excerpt": "بس تاني مافي تعديل الباقي تمام",
-  "request_record": "docs/requests/SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS.md",
+  "request_id": "SALATI-20261106-SURAH-FOLIO-RELEASE",
+  "original_request": "طلب تعديل زخرفة أسماء جميع السور، وإطار المصحف المفتوح حول رقم الصفحة السفلي بجميع الصفحات، وإصلاح الموضع والشكل استنادا إلى الصور الأصلية واللقطات الفعلية؛ ثم: ممتاز جدا يلا انشر التحديثات دي رسمي.",
+  "original_verbatim_excerpt": "ممتاز جدا يلا انشر التحديثات دي رسمي",
+  "request_record": "docs/requests/SALATI-20261106-SURAH-FOLIO-RELEASE.md",
   "base_branch": "production",
-  "base_commit": "17426bf7ac9088672d01e6e1bc5cfebe48710e5f",
+  "base_commit": "a35d26031a3cec39c633412a76efb258db4d6470",
   "visual_change": true,
   "visual_allowed_regions": [
     {
-      "selector": "#times .home-next",
-      "tab": "times",
+      "selector": "#mushaf .printed-reference-surah-heading",
+      "tab": "mushaf",
       "language": "both",
-      "before": "Current36/32px mobile name/time",
-      "after": "Slightly smaller name/time",
+      "before": "Current printed surah plaque differs from owner reference",
+      "after": "Original user-photo frame around all 114 surah starts; no black remnant rails",
       "preserve": [
-        "positions",
-        "right alignment",
-        "next actual prayer"
+        "original printed Quran plates",
+        "original verses and timings",
+        "number/title layout",
+        "touch geometry"
       ]
     },
     {
-      "selector": "#times .verse",
-      "tab": "times",
+      "selector": "#mushaf .printed-opening-title",
+      "tab": "mushaf",
       "language": "both",
-      "before": "Closing brace can wrap alone",
-      "after": "Complete exact verse and braces on one readable line",
+      "before": "Previous opener-only frame",
+      "after": "Matching reference photograph for pages 1 and 2",
       "preserve": [
-        "Quran text and diacritics",
-        "other home cards"
+        "page artwork and display viewport",
+        "Arabic surah label",
+        "reading audio and hits"
       ]
     },
     {
-      "selector": ".site-nav",
-      "tab": "times",
+      "selector": "#mushaf .printed-page-index",
+      "tab": "mushaf",
       "language": "both",
-      "before": "Current animation/visible selection ownership under audit",
-      "after": "Smooth icon/tab selection motion",
+      "before": "Earlier page cartouche and misaligned book numeral",
+      "after": "Original source-photo open book identical on all 604 plates with Eastern Arabic page number optically centered (pages 1, 50, 564, 604 validated)",
       "preserve": [
-        "tab symbols/order",
-        "ARIA",
-        "dimensions",
-        "reduced motion"
-      ]
-    },
-    {
-      "selector": "#settings .prayer-adjust-row .adjust-stepper",
-      "tab": "settings",
-      "language": "both",
-      "before": "Dark +/- buttons",
-      "after": "Existing action blue fill only",
-      "preserve": [
-        "44px circle",
-        "handlers",
-        "spacing"
-      ]
-    },
-    {
-      "selector": "#settings button[form=preferences][type=submit]",
-      "tab": "settings",
-      "language": "both",
-      "before": "Missing visible frame",
-      "after": "Translucent peer frame with white text",
-      "preserve": [
-        "form action",
-        "dimensions",
-        "stored preferences"
-      ]
-    },
-    {
-      "selector": "#settings #automaticMethodInfo",
-      "tab": "settings",
-      "language": "both",
-      "before": "Coordinates/calculated explanation recreated",
-      "after": "Requested explanation removed",
-      "preserve": [
-        "method selection",
-        "input validation"
-      ]
-    },
-    {
-      "selector": "#tasbih .tasbih-card",
-      "tab": "tasbih",
-      "language": "both",
-      "before": "Dark counter, muted caption and guide heading",
-      "after": "Blue counter, white caption, no guide heading",
-      "preserve": [
-        "counter/reset/limit",
-        "authentic guidance paragraph",
-        "geometry"
+        "56x51 book geometry",
+        "all original Quran PNG SHA-256",
+        "6236 ayah regions",
+        "audio controls and navigation",
+        "visible book fold"
       ]
     },
     {
       "selector": "#mushaf #qVerses",
       "tab": "mushaf",
       "language": "both",
-      "before": "Repeated cropped original edge slices",
-      "after": "Complete authentic original frames around every visible leaf; original604ink hashes and hits preserved",
+      "before": "Baseline 1.0.132 original source plate and legacy header/footer ornaments within vertically scrolling reader",
+      "after": "User-approved real photographed surah-header frame and page-number open book within Quran reading page; title aspect ratio changes vertical text pixels only inside the existing reader",
       "preserve": [
-        "604 plate bytes",
-        "text/hits",
-        "audio/layout"
-      ]
-    },
-    {
-      "selector": "#times .home-mosque",
-      "tab": "times",
-      "language": "both",
-      "before": "Current dark/gold image",
-      "after": "User-selected real Fahrul Azmi sunset photo2, cropped to mosque/sunset; approved explicit reply",
-      "preserve": [
-        "hero geometry",
-        "cards",
-        "other surface photos"
-      ]
-    },
-    {
-      "selector": ".brand",
-      "tab": "times",
-      "language": "both",
-      "before": "Header and launcher have inconsistent identity",
-      "after": "Same original crescent/minaret over user-selected real sunset photo",
-      "preserve": [
-        "header dimensions",
-        "app name",
-        "navigation"
-      ]
-    },
-    {
-      "selector": ".brand",
-      "tab": "qibla",
-      "language": "both",
-      "before": "Different header and launcher identity",
-      "after": "Same original white mark over explicitly approved real photo2",
-      "preserve": [
-        "header dimensions",
-        "app label",
-        "all unrelated tab content"
-      ]
-    },
-    {
-      "selector": ".brand",
-      "tab": "dhikr",
-      "language": "both",
-      "before": "Different header and launcher identity",
-      "after": "Same original white mark over explicitly approved real photo2",
-      "preserve": [
-        "header dimensions",
-        "app label",
-        "all unrelated tab content"
-      ]
-    },
-    {
-      "selector": ".brand",
-      "tab": "tasbih",
-      "language": "both",
-      "before": "Different header and launcher identity",
-      "after": "Same original white mark over explicitly approved real photo2",
-      "preserve": [
-        "header dimensions",
-        "app label",
-        "all unrelated tab content"
-      ]
-    },
-    {
-      "selector": ".brand",
-      "tab": "settings",
-      "language": "both",
-      "before": "Different header and launcher identity",
-      "after": "Same original white mark over explicitly approved real photo2",
-      "preserve": [
-        "header dimensions",
-        "app label",
-        "all unrelated tab content"
-      ]
-    },
-    {
-      "selector": ".app-version",
-      "tab": "times",
-      "language": "both",
-      "before": "Official131 release label; tasbih closed heading occupies one line",
-      "after": "Official132 release label; retained guidance without its removed heading flows naturally and moves following footer",
-      "preserve": [
-        "footer labels/buttons/styles/gaps",
-        "only release version text changes",
-        "no fixed overlay"
-      ]
-    },
-    {
-      "selector": ".app-version",
-      "tab": "qibla",
-      "language": "both",
-      "before": "Official131 release label; tasbih closed heading occupies one line",
-      "after": "Official132 release label; retained guidance without its removed heading flows naturally and moves following footer",
-      "preserve": [
-        "footer labels/buttons/styles/gaps",
-        "only release version text changes",
-        "no fixed overlay"
-      ]
-    },
-    {
-      "selector": ".app-version",
-      "tab": "dhikr",
-      "language": "both",
-      "before": "Official131 release label; tasbih closed heading occupies one line",
-      "after": "Official132 release label; retained guidance without its removed heading flows naturally and moves following footer",
-      "preserve": [
-        "footer labels/buttons/styles/gaps",
-        "only release version text changes",
-        "no fixed overlay"
-      ]
-    },
-    {
-      "selector": ".dark footer",
-      "tab": "tasbih",
-      "language": "both",
-      "before": "Official131 release label; tasbih closed heading occupies one line",
-      "after": "Official132 release label; retained guidance without its removed heading flows naturally and moves following footer",
-      "preserve": [
-        "footer labels/buttons/styles/gaps",
-        "only release version text changes",
-        "no fixed overlay"
-      ]
-    },
-    {
-      "selector": ".app-version",
-      "tab": "settings",
-      "language": "both",
-      "before": "Official131 release label; tasbih closed heading occupies one line",
-      "after": "Official132 release label; retained guidance without its removed heading flows naturally and moves following footer",
-      "preserve": [
-        "footer labels/buttons/styles/gaps",
-        "only release version text changes",
-        "no fixed overlay"
+        "604 original Quran artwork SHA-256 hashes",
+        "all 6236 calibrated verse-region targets",
+        "original Quran text and diacritics",
+        "continuous audio player and controls outside qVerses",
+        "unchanged app navigation and all five other tabs",
+        "exact approved user-photo frame source"
       ]
     }
   ],
   "android_release": true,
   "release_mode": "production",
-  "status": "source_implemented_runtime_native_release_verification_pending",
+  "status": "user_approved_official_release_blocked_pending_matching_original_key_signed_apk_and_all_required_ci",
   "allowed_paths": [
-    "docs/requests/SALATI-20261105-SCOPED-POLISH-AUTHENTIC-ASSETS.md",
-    "docs/requests/ACTIVE_CHANGE.json",
-    "docs/requests/ACCEPTANCE_STATUS.json",
-    "docs/CURRENT_APPROVED_DESIGN.md",
-    "docs/ACTUAL_SOURCE_MAP.md",
-    "docs/INSTRUCTION_CONFLICTS.md",
-    "dist/index.html",
-    "dist/salati-ui.css",
-    "app-source.js",
-    "glass-navigation.js",
-    "android/app/src/main/res/layout/prayer_widget.xml",
-    "tests/scoped-polish-authentic-browser.py",
-    "dist/app.js",
+    ".github/workflows/salati-surah-frame-review.yml",
     "dist/app-v1.0.109.js",
-    "design-references/mosque-20261105/fahrul-azmi-sunset.webp",
-    "design-references/mosque-20261105/SOURCES.json",
-    "dist/images/mosque-sunset-selected.webp",
-    "quran-printed-pages.js",
-    "dist/quran/printed-1441/ornaments/authentic-frame.svg",
-    "dist/quran/printed-1441/ornaments/SOURCES.json",
-    "design-references/mushaf-frame-20261105/source-page-564.png",
-    "design-references/mushaf-frame-20261105/SOURCES.json",
+    "dist/app.js",
+    "dist/quran/printed-1441/ornaments/page-book-from-reference.png",
+    "dist/quran/printed-1441/ornaments/user-book-blank.webp",
+    "dist/quran/printed-1441/ornaments/user-book-digit-seam.webp",
+    "dist/quran/printed-1441/ornaments/user-book-page1.webp",
+    "dist/quran/printed-1441/ornaments/user-reference-surah-frame.svg",
+    "dist/salati-ui.css",
     "dist/sw.js",
-    "scripts/build-authentic-mushaf-frame.py",
-    "tests/global-prayer-calendar-audit.cjs",
-    "dist/quran/printed-1441/licenses/ORNAMENTS-NOTICE.md",
-    "prayer-engine.js",
-    "timezone-lookup.js",
-    "world-data/exact-timezone-islands.json",
-    "world-data/exact-timezone-islands-SOURCES.json",
-    "dist/licenses/timezone-boundaries-DATA-LICENSE.txt",
-    "dist/licenses/timezone-boundaries-NOTICE.md",
+    "docs/requests/ACCEPTANCE_STATUS.json",
+    "docs/requests/ACTIVE_CHANGE.json",
+    "docs/requests/SALATI-20261106-SURAH-FOLIO-RELEASE.md",
     "package.json",
-    "scripts/extract-exact-timezone-regions.cjs",
-    "world-data/exact-timezone-regions.json",
-    "world-data/exact-timezone-regions-SOURCES.json",
-    "tests/fixtures/world-timezone-boundary-cases.json",
-    "scripts/build-salati-brand-assets.py",
-    "design-references/brand-20261105/mark-original.webp",
-    "design-references/brand-20261105/composite-512.png",
-    "design-references/brand-20261105/SOURCES.json",
-    "dist/icon-192.png",
-    "dist/icon-512.webp",
-    "dist/icon.svg",
-    "dist/manifest.json",
-    "android/app/src/main/res/drawable-nodpi/ic_salati_launcher.webp",
-    "android/app/src/main/res/drawable-nodpi/ic_salati_mark.webp",
-    "android/app/src/main/res/drawable/ic_salati_background.xml",
-    "android/app/src/main/res/drawable/ic_salati_foreground.xml",
-    "android/app/src/main/res/drawable/ic_salati_monochrome.xml",
+    "quran-printed-pages.js",
+    "scripts/build-surah-frame-index.cjs",
+    "scripts/build-web.cjs",
     "scripts/prepare-android.py",
-    "dist/city-times.js",
-    "tests/home-reference-browser.py",
-    "tests/mushaf-ornament-layout.py",
-    "tests/launcher-icon.py",
-    ".github/workflows/salati-permanent-regression-protection.yml",
-    "tests/production-test-matrix.json",
-    "android/app/build.gradle",
-    "apk-release-parts/current.json",
-    "apk-release-parts/v1.0.132/manifest.json",
-    "scripts/capture-widget-emulator.sh",
-    "tests/widget-text-alignment.py",
-    "apk-release-parts/v1.0.132/part00.bin",
-    "apk-release-parts/v1.0.132/part01.bin",
-    "apk-release-parts/v1.0.132/part02.bin",
-    "apk-release-parts/v1.0.132/part03.bin",
-    "apk-release-parts/v1.0.132/part04.bin",
-    "apk-release-parts/v1.0.132/part05.bin",
-    "apk-release-parts/v1.0.132/part06.bin",
-    "apk-release-parts/v1.0.132/part07.bin",
-    "apk-release-parts/v1.0.132/part08.bin",
-    "apk-release-parts/v1.0.132/part09.bin",
-    "apk-release-parts/v1.0.132/part10.bin",
-    "apk-release-parts/v1.0.132/part11.bin",
-    "apk-release-parts/v1.0.132/part12.bin",
-    "apk-release-parts/v1.0.132/part13.bin",
-    "apk-release-parts/v1.0.132/part14.bin",
-    "tests/current-design-visual-proof.py",
-    "tests/visual-scope-diff.py",
-    "design-references/APPROVED_REFERENCE_REGISTRY.json",
-    "README.md",
-    "tests/quran-continuation-actions.py",
-    "tests/fixtures/salati-v132-approved-ui.css",
-    "tests/widget-quran-no-regression-20261102.cjs",
     "tests/css-cascade-equivalence.py",
-    "tests/offline-navigation.py",
+    "tests/mushaf-ornament-layout.py",
+    "tests/page-number-book-browser.py",
+    "tests/page-number-book-contract.cjs",
+    "tests/quran-continuation-actions.py",
+    "tests/surah-frame-browser.py",
+    "tests/surah-frame-contract.cjs",
     "scripts/android-adhan-screen-off.sh",
-    "tests/fajr-alarm-resync.py",
-    "android/app/src/main/java/com/salati/prayer/PrayerSchedule.java",
-    "android/app/src/main/java/com/salati/prayer/PrayerReceiver.java",
-    "tests/adhan-resume-integrity.cjs"
+    ".github/workflows/salati-v133-unsigned-candidate.yml",
+    "dist/index.html",
+    "android/app/build.gradle",
+    ".github/workflows/salati-v133-stage-original-key.yml",
+    "release-proof/v1.0.133/metadata.json",
+    "release-proof/v1.0.133/signature-block.zlib.b64",
+    "apk-release-parts/current.json",
+    "apk-release-parts/v1.0.133/manifest.json",
+    "apk-release-parts/v1.0.133/part00.bin",
+    "apk-release-parts/v1.0.133/part01.bin",
+    "apk-release-parts/v1.0.133/part02.bin",
+    "apk-release-parts/v1.0.133/part03.bin",
+    "apk-release-parts/v1.0.133/part04.bin",
+    "apk-release-parts/v1.0.133/part05.bin",
+    "apk-release-parts/v1.0.133/part06.bin",
+    "apk-release-parts/v1.0.133/part07.bin",
+    "apk-release-parts/v1.0.133/part08.bin",
+    "apk-release-parts/v1.0.133/part09.bin",
+    "apk-release-parts/v1.0.133/part10.bin",
+    "apk-release-parts/v1.0.133/part11.bin",
+    "apk-release-parts/v1.0.133/part12.bin",
+    "apk-release-parts/v1.0.133/part13.bin",
+    "apk-release-parts/v1.0.133/part14.bin",
+    ".github/workflows/salati-v133-signed-upgrade-qa.yml",
+    "README.md",
+    "dist/quran/printed-1441/surah-title-regions.json",
+    ".github/workflows/salati-v133-commit-surah-registry.yml"
   ]
 }

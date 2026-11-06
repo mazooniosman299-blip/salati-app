@@ -275,3 +275,68 @@ body.dark #mushaf.printed-reader:not([hidden]){position:fixed;inset:0 0 80px;z-i
  body.dark #mushaf.printed-reader .printed-reader-options>.mushaf-toolbar{margin:12px 0;padding:10px;}
  @media(min-width:761px){body.dark #mushaf.printed-reader:not([hidden]){bottom:0;}body.dark #mushaf.printed-reader #qSheet #qVerses .original-printed-page{border-width:16px;padding:7px;}.printed-opening-title{margin-bottom:8px;}.printed-page-index{width:90px;font-size:16px;}}
 }
+
+/* REVIEW ONLY: exact decorative reference extracted from the user's own
+   screenshot. The original printed calligraphic text remains in the plate;
+   a centrally clipped copy is shown above this single replacement frame.
+   No Quran ink, basmala, ayah hit geometry, or other tab is changed. */
+body.dark #mushaf.printed-reader .printed-opening-title{
+ aspect-ratio:282 / 39;
+ background-image:url(quran/printed-1441/ornaments/user-reference-surah-frame.svg);
+}
+body.dark #mushaf.printed-reader .printed-reference-surah-heading{
+ position:absolute;left:0;right:0;overflow:hidden;z-index:2;
+ background:#fbf6ed;pointer-events:none;isolation:isolate;
+}
+body.dark #mushaf.printed-reader .printed-reference-surah-decoration{
+ position:absolute;left:5%;top:0;width:90%;height:100%;
+ max-width:none;object-fit:fill;filter:none;
+}
+body.dark #mushaf.printed-reader .printed-reference-original-ink{
+ position:absolute;inset:0;overflow:hidden;clip-path:inset(30% 34% 19% 34%);
+}
+body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
+ position:absolute;left:0;width:100%;height:auto;max-width:none;
+ filter:grayscale(1) sepia(.22) contrast(1.1);
+}
+
+/* REVIEW ONLY: photographic book cropped from the owner's exact screenshot.
+   Page 1 displays the SOURCE book + original central ١ with zero re-typeset
+   ink. Other pages overlay a tiny photo-derived seam restoration on THE SAME
+   original source book; no different full-book reconstruction is ever used.
+   No CSS mirror, opaque plaque or arbitrary off-center single-digit shift. */
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
+ position:relative;display:grid;place-items:center;
+ box-sizing:border-box;
+ width:56px;height:51px;min-width:56px;min-height:51px;
+ margin:3px auto 2px;padding:0;
+ border:0;border-radius:0;aspect-ratio:111 / 101;
+ background:transparent;
+ box-shadow:none;color:#241810;
+ direction:rtl;unicode-bidi:plaintext;
+ user-select:none;pointer-events:none;
+}
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index::before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background-image:url(quran/printed-1441/ornaments/user-book-digit-seam.webp),url(quran/printed-1441/ornaments/user-book-page1.webp);
+ background-position:52.083333% 52.631579%, center;
+ background-size:13.513514% 43.564356%, 100% 100%;
+ background-repeat:no-repeat,no-repeat;
+ transform:none;
+}
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index.printed-reference-page-one::before{
+ background-image:url(quran/printed-1441/ornaments/user-book-page1.webp);background-position:center;background-size:100% 100%;background-repeat:no-repeat;
+}
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits{
+ position:absolute;left:calc(50% + 1.5px);top:39%;transform:translate(-50%,-50%);
+ display:block;width:max-content;max-width:52px;height:auto;
+ margin:0;padding:0;border:0;border-radius:0;
+ background:transparent;box-shadow:none;text-shadow:none;
+ color:#241810;font:400 20px/1 AmiriQuran,serif;
+ white-space:nowrap;letter-spacing:-.5px;direction:rtl;
+ text-align:center;unicode-bidi:isolate;pointer-events:none;
+ -webkit-text-stroke:0;
+}
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index.printed-reference-page-one>.printed-page-index-digits{
+ opacity:0; /* Original ١ is already perfectly centered in source photograph. */
+}

@@ -25,8 +25,20 @@ assert baseline and optimized, 'Missing CSS baseline or canonical stylesheet'
 # remains mandatory in BOTH cases; identical input is not a regression.
 if baseline == optimized:
  print('PASS idempotent canonical CSS: no obsolete declarations to remove')
+elif optimized.startswith(baseline):
+ # An explicitly approved Mushaf enhancement may append isolated rules, but
+ # MUST preserve every byte of the signed baseline and restrict new selectors
+ # to the original printed-reader subtree. No silent global visual drift.
+ added=optimized[len(baseline):]
+ import re
+ rules=re.findall(r'([^{}]+)\{([^{}]*)\}',re.sub(r'/\*[\s\S]*?\*/','',added))
+ assert len(rules)>=5,'Missing approved original-Mushaf CSS rules'
+ selectors=[selector.strip() for selector,_ in rules]
+ assert all(re.fullmatch(r'body\.dark\s+#mushaf\.printed-reader\s+(?:\.printed-[\w>.: -]+|\.original-printed-page\s+\.printed-page-index[\w>.: -]*)',s) for s in selectors),('Unscoped CSS',selectors)
+ assert added.count('{')==len(rules)==added.count('}'),'Added styles contain nested or invalid rules'
+ print('PASS immutable approved baseline retained byte-for-byte; additional original-Mushaf selectors remain strictly scoped')
 else:
- assert len(optimized) < len(baseline), 'Optimized CSS unexpectedly grew'
+ assert len(optimized)<len(baseline),'Unexpected changed CSS: baseline cannot be rewritten or extended outside original Mushaf scope'
 report=root/'reports/css-debt-20261101'
 report.mkdir(parents=True,exist_ok=True)
 class Quiet(SimpleHTTPRequestHandler):

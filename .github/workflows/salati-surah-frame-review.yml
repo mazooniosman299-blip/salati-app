@@ -1,0 +1,58 @@
+name: Salati user-reference surah frame review (NO RELEASE)
+on:
+  pull_request:
+    branches: [production]
+    paths:
+      - 'scripts/build-surah-frame-index.cjs'
+      - 'quran-printed-pages.js'
+      - 'dist/salati-ui.css'
+      - 'dist/quran/printed-1441/ornaments/user-reference-surah-frame.svg'
+      - 'tests/surah-frame-contract.cjs'
+      - 'tests/surah-frame-browser.py'
+      - 'dist/quran/printed-1441/ornaments/page-book-from-reference.png'
+      - 'tests/page-number-book-contract.cjs'
+      - 'tests/page-number-book-browser.py'
+      - '.github/workflows/salati-surah-frame-review.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-114-frame-readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - name: Build same production reader with all 114 original heading coordinates
+        run: |
+          npm run build
+          node tests/surah-frame-contract.cjs
+          node tests/page-number-book-contract.cjs
+          node tests/printed-mushaf-integrity.cjs
+          node tests/quran-direct-ayah.cjs
+      - name: Chromium phone/desktop genuine screenshots (review only)
+        run: |
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+          python3 tests/surah-frame-browser.py
+          python3 tests/page-number-book-browser.py
+      - name: Save actual screenshots and failures for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-surah-and-page-number-real-UI-review
+          path: |
+            reports/surah-frame-review/
+            reports/page-number-book/
+          if-no-files-found: warn
+  never-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "REVIEW ONLY; neither publish nor merge nor create release"
