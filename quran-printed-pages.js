@@ -71,7 +71,6 @@ export async function enhancePrintedPage(page,index,verses){
   const label=document.createElement('div');label.className='printed-page-index';
   const folioDigits=document.createElement('span');folioDigits.className='printed-page-index-digits';
   folioDigits.textContent=String(number).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[Number(d)]);
-  if(number<10)folioDigits.classList.add('printed-page-index-single-digit');
   if(number===1)label.classList.add('printed-reference-page-one');
   label.setAttribute('aria-label','الصفحة '+folioDigits.textContent);
   label.append(folioDigits);page.append(label);page.classList.add('original-printed-page');
