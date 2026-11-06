@@ -304,6 +304,7 @@ body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
    enclosure extracted from the owner's reference photo. Not verse numerals,
    page artwork, chapter headings, scroll region, or reading hit targets. */
 body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
+ position:relative;
  display:grid;
  place-items:center;
  box-sizing:border-box;
@@ -324,5 +325,27 @@ body.dark #mushaf.printed-reader .original-printed-page .printed-page-index{
  direction:rtl;
  unicode-bidi:plaintext;
  user-select:none;
+ pointer-events:none;
+}
+
+/* Separate, optically centred ink plaque prevents the book spine from
+   merging into the single Arabic numeral ١. Keep exact book artwork 46x42. */
+body.dark #mushaf.printed-reader .original-printed-page .printed-page-index>.printed-page-index-digits{
+ position:absolute;
+ left:50%;top:48%;
+ transform:translate(-50%,-50%);
+ display:flex;align-items:center;justify-content:center;
+ box-sizing:border-box;
+ min-width:18px;min-height:23px;
+ max-width:42px;
+ padding:1px 2px 0;
+ margin:0;
+ border:0;border-radius:9px;
+ background:#faf5ec;
+ color:#241810;
+ font:400 19px/1 AmiriQuran,serif;
+ -webkit-text-stroke:.45px currentColor;
+ direction:rtl;white-space:nowrap;unicode-bidi:isolate;
+ text-shadow:none;box-shadow:none;
  pointer-events:none;
 }
