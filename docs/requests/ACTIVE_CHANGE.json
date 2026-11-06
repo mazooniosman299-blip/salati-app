@@ -114,6 +114,7 @@
     "apk-release-parts/v1.0.133/part11.bin",
     "apk-release-parts/v1.0.133/part12.bin",
     "apk-release-parts/v1.0.133/part13.bin",
-    "apk-release-parts/v1.0.133/part14.bin"
+    "apk-release-parts/v1.0.133/part14.bin",
+    ".github/workflows/salati-v133-signed-upgrade-qa.yml"
   ]
 }
