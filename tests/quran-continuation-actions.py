@@ -88,8 +88,11 @@ try:
   assert approved_css.startswith(original_css),'Original signed132 interface CSS must remain byte-identical before approved Quran-only additions'
   extra=approved_css[len(original_css):].decode('utf-8')
   import re
-  rules=re.findall(r'([^{}]+)\\{[^{}]*\\}',re.sub(r'/\\*[\\s\\S]*?\\*/','',extra))
-  assert len(rules)>=5 and extra.count('{')==len(rules)==extra.count('}'),'No truncated or nested new CSS rules'
+  clean_extra=re.sub(r'/\*[\s\S]*?\*/','',extra)
+  rules=re.findall(r'([^{}]+)\{[^{}]*\}',clean_extra)
+  # Count comments out of the same representation that is actually parsed.
+  # Reject malformed or nested CSS; preserve strict scoped style enforcement.
+  assert len(rules)>=5 and clean_extra.count('{')==len(rules)==clean_extra.count('}'),('No truncated or nested new CSS rules',len(rules),clean_extra.count('{'),clean_extra.count('}'))
   assert all(re.match(r'^\\s*body\\.dark\\s+#mushaf\\.printed-reader\\s+(?:\\.printed-|\\.original-printed-page\\s+\\.printed-page-index)',rule) for rule in rules),('Unapproved CSS outside printed Quran',rules)
   assert 'user-book-page1.webp' in extra and 'user-reference-surah-frame.svg' in extra,'Missing approved Quran ornament sources'
   for width,height,lang in [(320,740,'ar'),(390,844,'ar'),(1440,900,'en'),(935,325,'ar')]:
