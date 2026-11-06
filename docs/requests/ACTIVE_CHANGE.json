@@ -92,6 +92,8 @@
     "tests/surah-frame-browser.py",
     "tests/surah-frame-contract.cjs",
     "scripts/android-adhan-screen-off.sh",
-    ".github/workflows/salati-v133-unsigned-candidate.yml"
+    ".github/workflows/salati-v133-unsigned-candidate.yml",
+    "dist/index.html",
+    "android/app/build.gradle"
   ]
 }
