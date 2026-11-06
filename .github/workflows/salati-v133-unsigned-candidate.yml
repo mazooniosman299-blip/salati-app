@@ -59,7 +59,18 @@ jobs:
           test -s "$APK"
           test -s "$BUNDLE"
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+          # Candidate-only validation: the live release pointer intentionally
+          # remains 1.0.132 until a NEW original-key signed 1.0.133 APK exists.
+          # Temporarily set the validation fixture to the candidate version,
+          # then restore the pointer even if a check fails. Never touch guards.
+          original_pointer="$(mktemp)"
+          cp apk-release-parts/current.json "$original_pointer"
+          restore_pointer() { cp "$original_pointer" apk-release-parts/current.json; rm -f "$original_pointer"; }
+          trap restore_pointer EXIT
+          printf '{ "version": "1.0.133" }\n' > apk-release-parts/current.json
           python3 scripts/verify-native-web-assets.py "$APK"
+          restore_pointer
+          trap - EXIT
           mkdir -p reports/salati-133-unsigned
           node scripts/release-fingerprint.cjs > reports/salati-133-unsigned/website-fingerprint.json
           sha256sum "$APK" "$BUNDLE" > reports/salati-133-unsigned/sha256.txt
