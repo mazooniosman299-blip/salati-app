@@ -83,7 +83,15 @@ try:
   # Latest correction: existing player only, no new ayah dock or actions.
   # Latest scoped5Nov polish supersedes130 colors/fonts/frame/photo only.
   # Keep a full132 source snapshot; retain128/130 historical fixtures.
-  assert (root/'dist/salati-ui.css').read_bytes()==(root/'tests/fixtures/salati-v132-approved-ui.css').read_bytes(),'Reader/UI CSS must remain exactly the scoped132 stylesheet'
+  original_css=(root/'tests/fixtures/salati-v132-approved-ui.css').read_bytes()
+  approved_css=(root/'dist/salati-ui.css').read_bytes()
+  assert approved_css.startswith(original_css),'Original signed132 interface CSS must remain byte-identical before approved Quran-only additions'
+  extra=approved_css[len(original_css):].decode('utf-8')
+  import re
+  rules=re.findall(r'([^{}]+)\\{[^{}]*\\}',re.sub(r'/\\*[\\s\\S]*?\\*/','',extra))
+  assert len(rules)>=5 and extra.count('{')==len(rules)==extra.count('}'),'No truncated or nested new CSS rules'
+  assert all(re.match(r'^\\s*body\\.dark\\s+#mushaf\\.printed-reader\\s+(?:\\.printed-|\\.original-printed-page\\s+\\.printed-page-index)',rule) for rule in rules),('Unapproved CSS outside printed Quran',rules)
+  assert 'user-book-page1.webp' in extra and 'user-reference-surah-frame.svg' in extra,'Missing approved Quran ornament sources'
   for width,height,lang in [(320,740,'ar'),(390,844,'ar'),(1440,900,'en'),(935,325,'ar')]:
    page=b.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce');errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('https://**/*.mp3',media)
    page.add_init_script("localStorage.setItem('salati',JSON.stringify({lang:%s}))"%json.dumps(lang));enter(page)
