@@ -12,11 +12,11 @@
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Verified canonical printed Quran controller/CSS and immutable original plate assets, original signed-APK release guard, and Cloudflare production branch."
+      "evidence": "Original source ownership retained; 114-heading derived registry generated from immutable plates, saved byte-for-byte in GitHub SHA c40c4bd3353281340e049d826d8db6257b1591b2, and explicitly included in scope."
     },
     "source_build": {
       "status": "pass",
-      "evidence": "Targeted web bundle/114 heading/604 unmodified plates code review passes; full release workflow currently has unrelated original-key fingerprint mismatch."
+      "evidence": "Exact signed-replay source tree now includes deterministic checked-in dist/quran/printed-1441/surah-title-regions.json with all 114 chapter heading coordinates; independent GitHub workflow 42289987308 verified build fingerprint 6c0b9f86669b48158fbed3bc503e517ebcc98599eb6412f2ce33c8d27c20f979 matches original-key signed v1.0.133, all 604 Quran plates unchanged. PR CI to recheck exact new head."
     },
     "functional_regressions": {
       "status": "blocked",
