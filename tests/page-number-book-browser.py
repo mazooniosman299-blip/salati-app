@@ -13,7 +13,7 @@ class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root/'dist')))
 Thread(target=server.serve_forever,daemon=True).start()
-digits=str.maketrans('0123456789','٠١٢٣٤٥٦٧٨٩')
+# Bottom page number only uses the requested Western 0-9 digits; Quran text and verse numbers remain untouched.
 cases=[]
 try:
  with sync_playwright() as pw:
