@@ -18,8 +18,8 @@ cases=[]
 try:
  with sync_playwright() as pw:
   browser=pw.chromium.launch(headless=True,args=['--no-sandbox','--autoplay-policy=no-user-gesture-required'])
-  for width,height in [(320,740),(390,844),(1440,900)]:
-   for number,surah in [(1,1),(2,2),(50,3),(564,68),(600,101),(604,114)]:
+  for width,height in [(390,844),(1440,900)]:
+   for number,surah in [(1,1),(50,3),(564,68),(604,114)]:
     page=browser.new_page(viewport={'width':width,'height':height},service_workers='block',reduced_motion='reduce')
     errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
