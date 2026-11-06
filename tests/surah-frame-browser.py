@@ -30,7 +30,7 @@ try:
      page.locator('#qSurah').evaluate("""(element,surah)=>{element.value=String(surah);element.dispatchEvent(new Event('change',{bubbles:true}));}""",surah)
     frame=page.locator(f'[data-reading-page="{n}"]')
     frame.wait_for(state='visible',timeout=30000)
-    page.wait_for_function("""n=>{const e=document.querySelector('[data-reading-page="'+n+'"]');return !!e?.classList.contains('original-printed-page')&&(n<=2||e.querySelectorAll('.printed-reference-surah-heading').length>0);}""",n,timeout=30000)
+    page.wait_for_function("""n=>{const e=document.querySelector('[data-reading-page="'+n+'"]');return !!e?.classList.contains('original-printed-page')&&(n<=2||e.querySelectorAll('.printed-reference-surah-heading').length>0);}""",arg=n,timeout=30000)
     leaf=frame.bounding_box()
     reader=page.locator('#qVerses').bounding_box()
     player=page.locator('#mushafPlayerSlot').bounding_box()
