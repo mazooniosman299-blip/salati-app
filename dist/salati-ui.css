@@ -293,7 +293,7 @@ body.dark #mushaf.printed-reader .printed-reference-surah-decoration{
  max-width:none;object-fit:fill;filter:none;
 }
 body.dark #mushaf.printed-reader .printed-reference-original-ink{
- position:absolute;inset:0;overflow:hidden;clip-path:inset(19% 34% 19% 34%);
+ position:absolute;inset:0;overflow:hidden;clip-path:inset(30% 34% 19% 34%);
 }
 body.dark #mushaf.printed-reader .printed-reference-original-ink>img{
  position:absolute;left:0;width:100%;height:auto;max-width:none;
