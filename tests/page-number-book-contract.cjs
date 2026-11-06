@@ -4,7 +4,7 @@ const assert=require('node:assert/strict'),fs=require('node:fs'),crypto=require(
 const base='dist/quran/printed-1441/';
 const files=[
  ['ornaments/user-book-page1.webp','d916bad90d659de4963b690bcf830bb9e4e1f9f65cd1642104619707da14d99c'],
- ['ornaments/user-book-blank.webp','30342ecf11f8fe6484abe4eceba49cf9e06f3f97323c881b6cd154b1c1067588']
+ ['ornaments/user-book-digit-seam.webp','e8b1a7643f2adb2a42951e4f5cf4ec78c193c4497c92d9a369386df643c0eacb']
 ];
 for(const [path,sha] of files){
  const contents=fs.readFileSync(base+path);
@@ -20,12 +20,16 @@ assert(footer,'Footer scoping must target only actual printed pages');
 assert(footer[1].includes('width:56px;height:51px'),'Photo-matched book size was not preserved');
 assert(footer[1].includes('pointer-events:none'),'Never steal ayah clicks');
 const graphic=/\.printed-page-index::before\{([^}]+)\}/.exec(style);
-assert(graphic&&graphic[1].includes('ornaments/user-book-blank.webp'));
+assert(graphic&&graphic[1].includes('ornaments/user-book-page1.webp'),'Every page must use the exact reference book');
+assert(graphic[1].includes('ornaments/user-book-digit-seam.webp'),'Remove only central black ١ from pages 2–604');
+assert(!graphic[1].includes('ornaments/user-book-blank.webp'),'No differently reconstructed full-book image');
+assert(graphic[1].includes('background-size:13.513514% 43.564356%, 100% 100%;'),'Seam repair must be registered to exact source-image coordinates');
 assert(graphic[1].includes('transform:none;'),'Never mirror the exact reference');
 const page1=/\.printed-page-index\.printed-reference-page-one::before\{([^}]+)\}/.exec(style);
 assert(page1&&page1[1].includes('ornaments/user-book-page1.webp'),'First printed page must show photographed centered ١');
 const ink=/\.printed-page-index>\.printed-page-index-digits\{([^}]+)\}/.exec(style);
-assert(ink&&ink[1].includes('left:50%;top:50%'),'Other numbers stay centered in the original book');
+assert(ink&&ink[1].includes('left:50%;top:39%'),'Correct rendered ink baseline, not element box center');
+assert(ink[1].includes('font:400 20px/1 AmiriQuran,serif'),'Readability at 56x51 folio size');
 assert(ink[1].includes('background:transparent;'),'No opaque plaque');
 const originalOne=/\.printed-page-index\.printed-reference-page-one>\.printed-page-index-digits\{([^}]+)\}/.exec(style);
 assert(originalOne&&originalOne[1].includes('opacity:0;'),'Do not double print page one numeral');
