@@ -44,7 +44,7 @@ try:
        top:r.top,bottom:r.bottom,readerBottom:reader.bottom,dockTop:dock.top,space:document.documentElement.scrollWidth-innerWidth};
     }""")
     assert 'page-book-from-reference.png' in computed['bg'],(width,number,'book missing',computed)
-    assert 67<=computed['width']<=85 and 61<=computed['height']<=80,(width,number,'book dimensions',computed)
+    assert 45<=computed['width']<=47 and 41<=computed['height']<=43,(width,number,'compact 46x42 book dimensions',computed)
     assert computed['bottom']<=computed['readerBottom']+1,(width,number,'below reader',computed)
     assert computed['readerBottom']<=computed['dockTop']+1,(width,number,'player overlap',computed)
     assert computed['space']<=1,(width,number,'horizontal overflow',computed)
