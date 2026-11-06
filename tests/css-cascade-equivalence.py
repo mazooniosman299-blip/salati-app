@@ -31,10 +31,11 @@ elif optimized.startswith(baseline):
  # to the original printed-reader subtree. No silent global visual drift.
  added=optimized[len(baseline):]
  import re
- blocks=re.findall(r'([^{}]+)\\{[^{}]*\\}',re.sub(r'/\\*[\\s\\S]*?\\*/','',added))
- assert blocks and len(blocks)>=5,'Missing scoped approved Mushaf additions'
- assert all(re.match(r'^\\s*body\\.dark\\s+#mushaf\\.printed-reader\\s+\\.printed-',block) for block in blocks),('Unscoped CSS introduced',blocks)
- assert added.count('{')==len(blocks)==added.count('}'),'Added styles contain nested or invalid rules'
+ rules=re.findall(r'([^{}]+)\{([^{}]*)\}',re.sub(r'/\*[\s\S]*?\*/','',added))
+ assert len(rules)>=5,'Missing approved original-Mushaf CSS rules'
+ selectors=[selector.strip() for selector,_ in rules]
+ assert all(re.fullmatch(r'body\.dark\s+#mushaf\.printed-reader\s+(?:\.printed-[\w>.: -]+|\.original-printed-page\s+\.printed-page-index[\w>.: -]*)',s) for s in selectors),('Unscoped CSS',selectors)
+ assert added.count('{')==len(rules)==added.count('}'),'Added styles contain nested or invalid rules'
  print('PASS immutable approved baseline retained byte-for-byte; additional original-Mushaf selectors remain strictly scoped')
 else:
  assert len(optimized)<len(baseline),'Unexpected changed CSS: baseline cannot be rewritten or extended outside original Mushaf scope'
