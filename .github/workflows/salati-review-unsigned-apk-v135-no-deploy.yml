@@ -5,6 +5,9 @@ on:
       - fix/prayer-source-and-12hour-guard-20261107
     paths:
       - '.github/workflows/salati-review-unsigned-apk-v135-no-deploy.yml'
+      - 'dist/index.html'
+      - 'android/app/build.gradle'
+      - 'apk-release-parts/current.json'
   workflow_dispatch:
 permissions:
   contents: read
