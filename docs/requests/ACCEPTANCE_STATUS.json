@@ -1,59 +1,59 @@
 {
-  "request_id": "SALATI-20261106-SURAH-FOLIO-RELEASE",
-  "source_reference": "docs/requests/SALATI-20261106-SURAH-FOLIO-RELEASE.md",
-  "producer_branch": "review/surah-heading-original-reference-20261106",
+  "request_id": "SALATI-20261107-GLOBAL-PRAYER-AUDIT",
+  "source_reference": "docs/requests/SALATI-20261107-GLOBAL-PRAYER-AUDIT.md",
+  "producer_branch": "fix/worldwide-prayer-authority-20261107",
   "code_runtime_changed": true,
   "overall": "blocked",
   "complete": false,
   "stages": {
     "user_request_captured": {
       "status": "pass",
-      "evidence": "User explicitly approved official publication after reviewing page 1 and 564 actual app screenshots."
+      "evidence": "User explicitly requested 2026-11-07 fix for all countries, not just Muscat; original words saved in request record."
     },
     "source_map_and_contract": {
       "status": "pass",
-      "evidence": "Original source ownership retained; 114-heading derived registry generated from immutable plates, saved byte-for-byte in GitHub SHA c40c4bd3353281340e049d826d8db6257b1591b2, and explicitly included in scope."
+      "evidence": "Identified canonical prayer-engine.js plus verified national calendar modules and explicit preview path/visual scopes."
     },
     "source_build": {
-      "status": "pass",
-      "evidence": "Exact signed-replay source tree now includes deterministic checked-in dist/quran/printed-1441/surah-title-regions.json with all 114 chapter heading coordinates; independent GitHub workflow 42289987308 verified build fingerprint 6c0b9f86669b48158fbed3bc503e517ebcc98599eb6412f2ce33c8d27c20f979 matches original-key signed v1.0.133, all 604 Quran plates unchanged. PR CI to recheck exact new head."
+      "status": "blocked",
+      "reason": "Await CI verification after local authority datasets and GPS correction are finalized."
     },
     "functional_regressions": {
       "status": "blocked",
-      "reason": "Await all mandatory exact-head PR source/browser/native/security checks to turn green after staged original-key signed release. Never bypass or claim full pass while any is pending."
+      "reason": "Global prayer, date-line, actual-browser, privacy, timezone, native regression CI required."
     },
     "real_browser": {
-      "status": "pass",
-      "evidence": "Successful dedicated real Chromium 8 phone/desktop footer visual pixel tests including 1,50,564,604 and 16 headings cases, with reviewed screenshots."
+      "status": "not_run",
+      "reason": "Fresh browser evaluation of new preview source not performed."
     },
     "screenshot_user_reference": {
-      "status": "pass",
-      "evidence": "Direct pixel compare of real mobile page 564 to original photographed book. Outside-folio frame matches; 0.5px numeral ink error measured."
+      "status": "not_applicable",
+      "reason": "User requested minute accuracy and did not supply a visual design reference for this task."
     },
     "android_emulator": {
-      "status": "pass",
-      "evidence": "Actual Android 15 Google APIs hardware-accelerated emulator installed original-key 1.0.132 and upgraded in-place to original-key 1.0.133, then launched com.salati.prayer.MainActivity; run https://github.com/mazooniosman299-blip/salati-app/actions/runs/42288812772 passed, no uninstall or clear-data."
+      "status": "not_run",
+      "reason": "New candidate has not been signed or installed on Android emulator."
     },
     "physical_android": {
       "status": "not_run",
-      "reason": "Physical phone not connected; no claim."
+      "reason": "No physical Android hardware connected or tested."
     },
     "signed_release": {
-      "status": "pass",
-      "evidence": "Release review run 42288261811 reconstructed byte-identical APK 1.0.133 (versionCode 134, com.salati.prayer) with original signing certificate SHA-256 559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e, APK SHA-256 c1b18452a1441c4146cecdde795b0d972a7ab3420641b9ab928426f8708b8be5. Android v2/v3 verify passed; site/build release guard and staged Cloudflare build passed. AAB separately signed and verified offline, not yet Play published."
+      "status": "blocked",
+      "reason": "v1.0.133 signed APK cannot represent modified prayer code; new version requires original signer and fresh verification."
     },
     "production_publication": {
       "status": "blocked",
-      "reason": "Signed APK staged in PR #56 only; official production remains v1.0.132. Finish all required exact-head CI and signed-update Android QA before merging or Cloudflare production deploy."
+      "reason": "Preview branch/PR only, official website remains verified v1.0.133 until gates pass."
     },
     "latest_user_acceptance": {
       "status": "pass",
-      "evidence": "User: ممتاز جدا يلا انشر التحديثات دي رسمي."
+      "evidence": "User explicitly directed full correction worldwide and requested that errors be fixed."
     }
   },
   "limitations": [
-    "Signed APK 1.0.133 exists and is SHA-256/certificate-verified in review branch; no production deployment yet.",
-    "Native physical HONOR device test not performed.",
-    "All mandatory exact-head workflow jobs must pass after the final review commit before protected release."
+    "No known global source publishes a single universally accepted official prayer timetable for every location.",
+    "No per-city/per-date official match may be claimed without authority evidence.",
+    "Do not reuse signed 1.0.133 APK for changed application bytes."
   ]
 }
