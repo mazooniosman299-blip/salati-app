@@ -48,9 +48,9 @@
       ]
     }
   ],
-  "android_release": false,
-  "release_mode": "preview",
-  "status": "preview_implementation_and_regression_audit_in_progress",
+  "android_release": true,
+  "release_mode": "production",
+  "status": "signed_v134_staging_in_progress_not_published_waiting_exact_source_GitHub_CI_and_original_cert_rebuild",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -65,6 +65,28 @@
     ".github/workflows/salati-prayer-preview-sync-build.yml",
     "dist/app.js",
     "dist/app-v1.0.109.js",
-    ".github/workflows/salati-v134-unsigned-prayer-candidate.yml"
+    ".github/workflows/salati-v134-unsigned-prayer-candidate.yml",
+    "dist/index.html",
+    "android/app/build.gradle",
+    ".github/workflows/salati-v134-stage-original-key.yml",
+    "release-proof/v1.0.134/metadata.json",
+    "release-proof/v1.0.134/signature-block.zlib.b64",
+    "apk-release-parts/current.json",
+    "apk-release-parts/v1.0.134/manifest.json",
+    "apk-release-parts/v1.0.134/part00.bin",
+    "apk-release-parts/v1.0.134/part01.bin",
+    "apk-release-parts/v1.0.134/part02.bin",
+    "apk-release-parts/v1.0.134/part03.bin",
+    "apk-release-parts/v1.0.134/part04.bin",
+    "apk-release-parts/v1.0.134/part05.bin",
+    "apk-release-parts/v1.0.134/part06.bin",
+    "apk-release-parts/v1.0.134/part07.bin",
+    "apk-release-parts/v1.0.134/part08.bin",
+    "apk-release-parts/v1.0.134/part09.bin",
+    "apk-release-parts/v1.0.134/part10.bin",
+    "apk-release-parts/v1.0.134/part11.bin",
+    "apk-release-parts/v1.0.134/part12.bin",
+    "apk-release-parts/v1.0.134/part13.bin",
+    "apk-release-parts/v1.0.134/part14.bin"
   ]
 }
