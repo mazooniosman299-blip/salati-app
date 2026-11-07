@@ -1,6 +1,6 @@
 {
   "request_id": "SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS",
-  "original_request": "اعتمد مواقيت مسقط الرسمية ليوم 7 نوفمبر 2026 كما أُعطيت للمستخدم، بنظام عرض 12 ساعة، ولا تسمح بتكرار اختلاف الشروق والعشاء. للمدن الأخرى احترم التوقيت والمنهج المحلي، واستخدم فقط التقويم الرسمي المتحقق دون ادعاء تغطية عالمية دقيقة بالدقيقة.",
+  "original_request": "اعتمد مواقيت مسقط الرسمية ليوم 7 نوفمبر 2026 كما أُعطيت للمستخدم، بنظام عرض 12 ساعة، ولا تسمح بتكرار اختلاف الشروق والعشاء. للمدن الأخرى احترم التوقيت والمنهج المحلي، واستخدم فقط التقويم الرسمي المتحقق دون ادعاء تغطية عالمية دقيقة بالدقيقة. ثم طلب المستخدم إثبات الدقة عالميًا والتحقق قبل أي نشر رسمي.",
   "original_verbatim_excerpt": "اتاكد انو المشكله ماتنعاد تاني نهائيا للابد والمواقيت تكون صحيحه",
   "request_record": "docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md",
   "base_branch": "production",
@@ -48,7 +48,7 @@
   ],
   "android_release": false,
   "release_mode": "preview",
-  "status": "review_only_no_production_publish_until_original_signing_and_all_guards",
+  "status": "GLOBAL_AUTHORITY_AUDIT_FAILED_ON_INDEPENDENT_MALAYSIA_EGYPT_TURKEY_BENCHMARKS_NO_DEPLOY",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -63,6 +63,9 @@
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/ACCEPTANCE_STATUS.json",
     "docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md",
-    "dist/index.html"
+    "dist/index.html",
+    "tests/independent-world-authority-audit.cjs",
+    ".github/workflows/salati-independent-world-authority-no-deploy.yml",
+    "docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md"
   ]
 }
