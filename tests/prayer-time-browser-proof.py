@@ -16,7 +16,7 @@ class Quiet(SimpleHTTPRequestHandler):
 server=ThreadingHTTPServer(("127.0.0.1",0),partial(Quiet,directory=str(ROOT/"dist")))
 Thread(target=server.serve_forever,daemon=True).start()
 CASES=[
- ("muscat-ar","ar",23.588,58.3829,"Asia/Muscat","Oman","Shafi",["4:59","6:16","11:56","3:07","5:30 م","6:42 م"]),
+ ("muscat-ar","ar",23.588,58.3829,"Asia/Muscat","Oman","Shafi",["4:59","6:16","11:56","3:07 م","5:30 م","6:42 م"]),
  ("muscat-en","en",23.588,58.3829,"Asia/Muscat","Oman","Shafi",["4:59 AM","6:16 AM","11:56 AM","3:07 PM","5:30 PM","6:42 PM"]),
  ("singapore-ar","ar",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27","6:47","12:50 م","4:11 م","6:51 م","8:03 م"]),
  ("singapore-en","en",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27 AM","6:47 AM","12:50 PM","4:11 PM","6:51 PM","8:03 PM"])
