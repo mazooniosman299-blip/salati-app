@@ -26,6 +26,26 @@ for(const [s,expected] of verified){
  for(const [key,want] of Object.entries(expected))assert.equal(local(hanafi)[key],want,s.method+' Hanafi must not change '+key);
  assert.equal(timetableSource(hanafi,instant).kind,'custom',s.method+' must disclose calculated Hanafi Asr');
 }
+// Exhaustive authority regression: 30 Oman November dates and all 365 MUIS dates.
+const fs=require('node:fs');
+const omRows=JSON.parse(fs.readFileSync('official-muscat.js','utf8').split('export const MUSCAT_NOVEMBER_2026=')[1].split(';')[0]);
+const sgRows=JSON.parse(fs.readFileSync('official-singapore.js','utf8').split('export const SINGAPORE_MUIS_2026=')[1].split(';')[0]);
+const minuteText=n=>String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');
+let verifiedDates=0;
+for(const [st,days] of [
+ [muscat,Object.entries(omRows).map(([day,minutes])=>({p:{year:2026,month:11,day:+day},minutes}))],
+ [singapore,Object.entries(sgRows).map(([key,minutes])=>{const [y,m,d]=key.split('-').map(Number);return {p:{year:y,month:m,day:d},minutes}})]
+]){
+ for(const {p,minutes} of days){
+  const hanafi={...st,madhab:'Hanafi'};
+  const calculated=Object.fromEntries(calculateDaySchedule(hanafi,p).map(({key,time})=>[key,new Intl.DateTimeFormat('en-GB',{timeZone:st.zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(time)]));
+  assert.equal(calculated.sunrise,minuteText(minutes[1]),st.method+' Hanafi sunrise '+JSON.stringify(p));
+  assert.equal(calculated.isha,minuteText(minutes[5]),st.method+' Hanafi Isha '+JSON.stringify(p));
+  verifiedDates++;
+ }
+}
+assert.equal(verifiedDates,395,'No skipped date in protected authority ranges');
+console.log('PASS: all '+verifiedDates+' official dates preserve correct sunrise and Isha under Hanafi school.');
 // Android's actual synchronized timetable must use the same corrected times.
 const adapter=new Module('sunrise-isha-android',module);
 adapter._compile(esbuild.buildSync({entryPoints:['native-adapter.js'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text,'sunrise-isha-android.cjs');
