@@ -35,13 +35,13 @@ jobs:
       - name: Commit ONLY reproducible generated JS, never signed releases
         run: |
           set -euo pipefail
-          # The current production signed APK v1.0.133 remains untouched.
-          echo 'Generated-file differences after deterministic npm run build:'
-          git status --short -- dist/ world-data/ | head -100
-          git diff --name-only | grep -v -E '^dist/(app.js|app-v1.0.109.js)
+          echo 'Review generated-file differences:'
+          git status --short -- dist/ world-data/
+          # Reject tracked AND untracked changes outside the two explicitly permitted bundles.
+          git status --porcelain -- dist/ world-data/ | sed 's/^...//' | grep -Ev '^dist/(app\\.js|app-v1\\.0\\.109\\.js)$' > /tmp/unexpected || true
           if test -s /tmp/unexpected; then
             cat /tmp/unexpected
-            echo 'Refusing to commit unexpected outputs' >&2
+            echo 'Refusing to commit unexpected build outputs' >&2
             exit 1
           fi
           git add -- dist/app.js dist/app-v1.0.109.js
@@ -50,22 +50,7 @@ jobs:
           else
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Sync prayer-engine authority coverage into deterministic review-only web bundles'
+            git commit -m 'Sync verified prayer-engine JS into review-only web bundles'
             git push origin HEAD:fix/worldwide-prayer-authority-20261107
           fi
- > /tmp/unexpected || true
-          if test -s /tmp/unexpected; then
-            cat /tmp/unexpected
-            echo 'Refusing to commit unexpected outputs' >&2
-            exit 1
-          fi
-          git add -- dist/app.js dist/app-v1.0.109.js
-          if git diff --cached --quiet; then
-            echo 'No rebuilt JS drift'
-          else
-            git config user.name 'github-actions[bot]'
-            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git commit -m 'Sync prayer-engine authority coverage into deterministic review-only web bundles'
-            git push origin HEAD:fix/worldwide-prayer-authority-20261107
-          fi
-# Regenerate deterministic review JS from the already-verified original-key v1.0.134 source.
+# No deploy. Android signed release source/fingerprint must pass independent guards.
