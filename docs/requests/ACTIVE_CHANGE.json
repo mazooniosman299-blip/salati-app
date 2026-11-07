@@ -64,6 +64,7 @@
     "tests/city-pages.cjs",
     ".github/workflows/salati-prayer-preview-sync-build.yml",
     "dist/app.js",
-    "dist/app-v1.0.109.js"
+    "dist/app-v1.0.109.js",
+    ".github/workflows/salati-v134-unsigned-prayer-candidate.yml"
   ]
 }
