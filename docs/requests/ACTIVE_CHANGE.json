@@ -65,6 +65,19 @@
         "existing footer/download layout, fonts and color",
         "all other tabs and actual prayer times"
       ]
+    },
+    {
+      "selector": "#times>.note",
+      "tab": "times",
+      "language": "both",
+      "before": "Original always-visible warning incorrectly said every prayer time was astronomically calculated",
+      "after": "Original warning removed; source-specific accurate official-versus-astronomical note moved into the existing collapsed calculation details",
+      "preserve": [
+        "all six prayer time cells and widget",
+        "exact source reference data",
+        "other tabs and their layouts",
+        "only the old warning's own visible pixels may change"
+      ]
     }
   ],
   "android_release": true,
