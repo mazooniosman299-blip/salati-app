@@ -15,6 +15,7 @@ on:
       - 'tests/prayer-authority-guard.cjs'
       - 'tests/prayer-time-browser-proof.py'
       - 'docs/requests/ACTIVE_CHANGE.json'
+      - 'docs/requests/ACCEPTANCE_STATUS.json'
       - 'docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md'
   workflow_dispatch:
 permissions:
