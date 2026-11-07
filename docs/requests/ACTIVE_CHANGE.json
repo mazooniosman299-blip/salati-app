@@ -48,7 +48,7 @@
   ],
   "android_release": false,
   "release_mode": "preview",
-  "status": "OFFICIAL_CITY_MONTHS_EXTENDED_MUSCAT_SINGAPORE_WLY01_CAIRO_TURKEY_WORLDWIDE_STILL_BLOCKED",
+  "status": "FIVE_CITY_SOURCE_REVIEW_ONLY_MUSCAT_SINGAPORE_WLY01_CAIRO_ISTANBUL_WORLDWIDE_NOT_CERTIFIED",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -68,6 +68,7 @@
     ".github/workflows/salati-independent-world-authority-no-deploy.yml",
     "docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md",
     "official-malaysia-wly01.js",
-    "official-cairo.js"
+    "official-cairo.js",
+    "official-istanbul.js"
   ]
 }
