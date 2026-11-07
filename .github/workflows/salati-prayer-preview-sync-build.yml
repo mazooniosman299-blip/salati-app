@@ -36,7 +36,24 @@ jobs:
         run: |
           set -euo pipefail
           # The current production signed APK v1.0.133 remains untouched.
-          git diff --name-only | grep -v -E '^dist/(app.js|app-v1.0.109.js)$' > /tmp/unexpected || true
+          echo 'Generated-file differences after deterministic npm run build:'
+          git status --short -- dist/ world-data/ | head -100
+          git diff --name-only | grep -v -E '^dist/(app.js|app-v1.0.109.js)
+          if test -s /tmp/unexpected; then
+            cat /tmp/unexpected
+            echo 'Refusing to commit unexpected outputs' >&2
+            exit 1
+          fi
+          git add -- dist/app.js dist/app-v1.0.109.js
+          if git diff --cached --quiet; then
+            echo 'No rebuilt JS drift'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Sync prayer-engine authority coverage into deterministic review-only web bundles'
+            git push origin HEAD:fix/worldwide-prayer-authority-20261107
+          fi
+ > /tmp/unexpected || true
           if test -s /tmp/unexpected; then
             cat /tmp/unexpected
             echo 'Refusing to commit unexpected outputs' >&2
