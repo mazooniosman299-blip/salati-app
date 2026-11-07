@@ -26,6 +26,21 @@ for(const [s,expected] of verified){
  for(const [key,want] of Object.entries(expected))assert.equal(local(hanafi)[key],want,s.method+' Hanafi must not change '+key);
  assert.equal(timetableSource(hanafi,instant).kind,'custom',s.method+' must disclose calculated Hanafi Asr');
 }
+// Android's actual synchronized timetable must use the same corrected times.
+const adapter=new Module('sunrise-isha-android',module);
+adapter._compile(esbuild.buildSync({entryPoints:['native-adapter.js'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text,'sunrise-isha-android.cjs');
+const {nativeSchedule}=adapter.exports;
+for(const [st,expected] of verified){
+ const hanafi={...st,madhab:'Hanafi',audio:{enabled:true,prayers:{fajr:true,dhuhr:true,asr:true,maghrib:true,isha:true},voice:'default',volume:1,dua:false,silentMode:true}};
+ const payload=nativeSchedule(hanafi,instant,1);
+ const row=payload.days.find(d=>d.date==='2026-11-07');
+ assert(row,'Android timed alarms must contain day 7');
+ for(const [key,want] of Object.entries(expected)){
+  assert.equal(new Intl.DateTimeFormat('en-GB',{timeZone:st.zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(row[key])),want,'Android date-alarm mismatch '+st.method+'/'+key);
+ }
+ assert(payload.events.some(e=>e.prayer==='isha'&&e.time===row.isha),'Isha Android event must use the verified authority timestamp');
+ assert(!payload.events.some(e=>e.prayer==='sunrise'),'Sunrise must never become an Adhan alarm');
+}
 const fakeMuscatZone={...muscat,zone:'Europe/London',zoneMode:'manual'};
 assert.equal(timetableSource(fakeMuscatZone,instant).kind,'calculated',
  'A manual foreign timezone must not be falsely labelled official Oman civil time');
