@@ -1,0 +1,12 @@
+{
+  "version": "1.0.134",
+  "versionCode": 135,
+  "applicationId": "com.salati.prayer",
+  "filename": "salati-1.0.134.apk",
+  "size": 25995626,
+  "sha256": "407d18f454f8faae57ea6b5ef6583f591c438e33af60d2ba05a29cabdada74bb",
+  "certificateSha256": "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e",
+  "partCount": 15,
+  "chunkBytes": 1800000,
+  "webFingerprint": "5d42c29e366aea9b2ee69f1c7fbc16acbd680c043d26d9f59e27e867bb77c276"
+}
