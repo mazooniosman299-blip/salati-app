@@ -62,6 +62,10 @@ jobs:
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-135-upgrade/salati-1.0.133.apk | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
           "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-135-upgrade/salati-1.0.135.apk | grep -F "name='com.salati.prayer' versionCode='136' versionName='1.0.135'"
       - name: Rebuild exact website and prove signed release fingerprint and APK assets
+        # Embedded city-page snapshots depend on build clock; original signed APK was built 2026-11-07 15:12 UTC.
+        # Pin rebuild to that minute; do not weaken exact APK/WebView asset comparisons.
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-07T15:12:00.000Z'
         run: |
           set -euo pipefail
           npm ci
