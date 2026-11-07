@@ -15,12 +15,12 @@
       "evidence": "Identified canonical prayer-engine.js plus verified national calendar modules and explicit preview path/visual scopes."
     },
     "source_build": {
-      "status": "blocked",
-      "reason": "Await CI verification after local authority datasets and GPS correction are finalized."
+      "status": "pass",
+      "evidence": "Exact deterministic 1.0.134 web source fingerprint 5d42c29e366aea9b2ee69f1c7fbc16acbd680c043d26d9f59e27e867bb77c276 verified against freshly generated original-key APK. GitHub unsigned build run 42325384555 and independent signed staging run 42326480599 both SUCCESS."
     },
     "functional_regressions": {
       "status": "blocked",
-      "reason": "Global prayer, date-line, actual-browser, privacy, timezone, native regression CI required."
+      "reason": "Need green mandatory exact-head PR checks AFTER staged signed v1.0.134 and fresh Android signed in-place emulator update."
     },
     "real_browser": {
       "status": "not_run",
@@ -32,19 +32,19 @@
     },
     "android_emulator": {
       "status": "not_run",
-      "reason": "New candidate has not been signed or installed on Android emulator."
+      "reason": "Original-signed v1.0.133 to v1.0.134 dedicated Android emulator upgrade run not yet verified."
     },
     "physical_android": {
       "status": "not_run",
       "reason": "No physical Android hardware connected or tested."
     },
     "signed_release": {
-      "status": "blocked",
-      "reason": "v1.0.133 signed APK cannot represent modified prayer code; new version requires original signer and fresh verification."
+      "status": "pass",
+      "evidence": "GitHub run 42326480599 SUCCESS reassembled byte-for-byte original-key signed APK v1.0.134 code135 SHA256 407d18f454f8faae57ea6b5ef6583f591c438e33af60d2ba05a29cabdada74bb cert SHA256 559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e, 15 signed parts with independent apksigner v2/v3 and exact current web fingerprint. AAB signed offline and independently checked; not uploaded to Google Play."
     },
     "production_publication": {
       "status": "blocked",
-      "reason": "Preview branch/PR only, official website remains verified v1.0.133 until gates pass."
+      "reason": "Signed v1.0.134 is staged in draft PR #57 only. Do not claim current production updated before mandatory checks, merge, Cloudflare deploy and HTTP verification."
     },
     "latest_user_acceptance": {
       "status": "pass",
@@ -52,8 +52,9 @@
     }
   },
   "limitations": [
-    "No known global source publishes a single universally accepted official prayer timetable for every location.",
-    "No per-city/per-date official match may be claimed without authority evidence.",
-    "Do not reuse signed 1.0.133 APK for changed application bytes."
+    "No universally authoritative minute-exact prayer-time calendar covers every country/location.",
+    "Oman Muscat October+November 2026 and Singapore MUIS entire 2026 use date-scoped verified government data; all other covered dates and regions use location-specific astronomy with explicit calculated label.",
+    "Physical HONOR Android device not connected; do not claim hardware tests or Google Play publication.",
+    "Production remains v1.0.133 until exact-head green CI and completed Cloudflare production rollout."
   ]
 }
