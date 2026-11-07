@@ -52,7 +52,7 @@ jobs:
           data['fixed_test_utc']='2026-11-07T10:15:00Z'
           data['city']='Muscat (23.588, 58.3829), Asia/Muscat, Oman method'
           data['note']='Screenshots prove rendered UI for fixed test state; not worldwide official calendar certification or physical Android evidence'
-          p.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\\n')
+          p.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
           PY
           test -s reports/current-design-visual-proof/ar-times-390.png
           test -s reports/current-design-visual-proof/en-times-390.png
