@@ -20,11 +20,11 @@
     },
     "functional_regressions": {
       "status": "pass",
-      "evidence": "GitHub Actions run 42331857537: exact official-source 395 daily fixtures, 12-hour formatter, timezone/date, user offsets, Android Isha timestamps, 2,976 global computational calendar cases and full npm test + test:seo passed."
+      "evidence": "PR review workflow 42336204017 successfully completed npm test, all 485 official source-day fixtures, 2976 global mathematical/date-zone cases, city pages, native Isha/adhan events and user adjustments. CI not a worldwide official calendar certification."
     },
     "real_browser": {
       "status": "pass",
-      "evidence": "Run 42331857537 launched genuine Playwright Chromium from built source and verified six actual DOM clocks for Muscat/Singapore AR+EN, produced four genuine screenshots + verified-browser-results.json artifact 13558071475."
+      "evidence": "Workflow run 42336204017 captured ten real Chromium AR+EN screenshots in Muscat/Singapore/Kuala Lumpur/Cairo/Istanbul. Screenshot artifact 13559845356. Verified all 60 visible 12-hour time cells and no page errors."
     },
     "screenshot_user_reference": {
       "status": "not_applicable",
@@ -40,28 +40,32 @@
     },
     "signed_release": {
       "status": "blocked",
-      "reason": "Existing 1.0.133/1.0.134 original-key APK proof binds to prior bytes, not this changed source; no valid new original-key signature."
+      "reason": "Existing original-certificate APK 1.0.134 binds old source bytes; a changed website cannot reuse its signed APK proof. New original-key signer and corresponding APK/AAB required; do not bypass release guard."
     },
     "production_publication": {
       "status": "blocked",
-      "reason": "User conditioned publication on proof of worldwide accuracy. Independent local authorities disagree; other release guards failed due original signed-APK and web-asset fingerprints. DO NOT MERGE OR DEPLOY."
+      "reason": "Production source 8f66d2a remains untouched. No approved nationwide/worldwide exact independent verification; matching new original-key-signed higher-version Android APK/AAB and source/web release fingerprint + native in-place upgrade missing. Preserve original production."
     },
     "latest_user_acceptance": {
       "status": "blocked",
       "reason": "The latest new-branch real screenshots have not been explicitly approved by user for publication."
     },
     "worldwide_official_minute_accuracy": {
-      "status": "failed",
-      "evidence": "Independent official authority audit 2026-11-07: Kuala Lumpur federal mufti vs candidate -11min Fajr, -3min Dhuhr, -2min Asr/Isha; Istanbul Diyanet -1min Asr/Maghrib; Cairo Egyptian Survey +1min Sunrise/Dhuhr/Maghrib. No worldwide proof. CI 42334493017 failed as intended. See docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md."
+      "status": "blocked",
+      "reason": "485 verified official city-date fixtures only, not independent accurate-to-the-minute proof for every city in 246 countries with city data and for future dates. Known limitations include different zone identifiers, religious convention choices, GPS matching and DST/polar policies. This was user-mandated prerequisite to publishing."
+    },
+    "official_sources": {
+      "status": "pass",
+      "evidence": "Independent official 2026 timetables: Muscat Nov 30 days, Singapore year 365 days, WLY01 Kuala Lumpur/Putrajaya Nov 30 days, Cairo Nov 30 days, Istanbul Diyanet Nov 30 days. 485 day/date official rows checked, within bounded location/zone only."
     }
   },
   "limitations": [
-    "No claim of zero errors forever: official source policies, DST/zone regulations, location accuracy, polar conventions and future-year reference data may change.",
-    "No physical Android test or newly signed APK yet; production remains unmodified.",
-    "Independently verified 2026-11-07 source discrepancies in Turkish, Malaysian, and Egyptian official prayer timetables prohibit worldwide-accuracy claims."
+    "Never claim guaranteed correctness for all cities or forever without independent locale authority evidence.",
+    "Physical Android testing and original signer build still absent.",
+    "Do not merge/deploy while real signed release and independent world proof are incomplete."
   ],
   "latest_user_acceptance": {
     "status": "conditional",
-    "evidence": "User explicitly requests official publication ONLY AFTER worldwide accuracy has been proved. Condition currently unmet."
+    "evidence": "User requested: حل المشاكل كلها وانشر افحص اول قبل النشر. Publication is explicitly conditional on all world accuracy and Android release conditions; not yet met."
   }
 }
