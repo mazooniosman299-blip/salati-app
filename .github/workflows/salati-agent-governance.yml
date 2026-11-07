@@ -96,7 +96,7 @@ jobs:
               npm run build
               SALATI_PROJECT_ROOT="$PWD" SALATI_VISUAL_OUT="$SALATI_BASELINE_DIR" python3 "$GITHUB_WORKSPACE/tests/current-design-visual-proof.py"
             )
-            python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
+            mkdir -p reports/production-baseline-visual-proof\n            cp "$SALATI_BASELINE_DIR/ar-times-1280.png" reports/production-baseline-visual-proof/ar-times-1280.png\n            cp "$SALATI_BASELINE_DIR/metrics.json" reports/production-baseline-visual-proof/metrics.json\n            python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
           else
             echo 'No web visual-capable source files changed; unrelated screenshot parity not claimed.'
           fi
@@ -105,7 +105,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: salati-current-48-real-screenshots-and-computed-styles
-          path: reports/current-design-visual-proof/
+          path: |\n            reports/current-design-visual-proof/\n            reports/production-baseline-visual-proof/
           if-no-files-found: warn
 
   isolated-pr-preview-artifact:
