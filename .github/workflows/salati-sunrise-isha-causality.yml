@@ -19,3 +19,13 @@ jobs:
       - run: npm ci
       - name: Reproduce and prevent official Sunrise/Isha mismatches
         run: node tests/sunrise-isha-authority.cjs
+      - name: Run full cross-country and native scheduling regression without publishing
+        run: |
+          set -euo pipefail
+          node tests/prayer-engine.cjs
+          node tests/auto-city-times.cjs
+          node tests/timezone-choice.cjs
+          node tests/native-schedule.cjs
+          node tests/local-prayer-privacy.cjs
+          node tests/global-prayer-calendar-audit.cjs
+          npm test
