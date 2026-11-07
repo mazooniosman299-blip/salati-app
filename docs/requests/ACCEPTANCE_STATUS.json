@@ -31,8 +31,8 @@
       "reason": "User requested minute accuracy and did not supply a visual design reference for this task."
     },
     "android_emulator": {
-      "status": "not_run",
-      "reason": "Original-signed v1.0.133 to v1.0.134 dedicated Android emulator upgrade run not yet verified."
+      "status": "pass",
+      "evidence": "GitHub run https://github.com/mazooniosman299-blip/salati-app/actions/runs/42326837182 SUCCESS installed original-key signed Salati 1.0.133 code134 then in-place adb install -r original-key signed 1.0.134 code135 on Android 15 Google API emulator, launch and process survived without uninstall/clear-data. Physical HONOR not tested."
     },
     "physical_android": {
       "status": "not_run",
