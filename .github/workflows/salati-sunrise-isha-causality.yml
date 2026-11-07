@@ -29,3 +29,21 @@ jobs:
           node tests/local-prayer-privacy.cjs
           node tests/global-prayer-calendar-audit.cjs
           npm test
+      - name: Capture real Chromium screens of the tested candidate (NO DEPLOY)
+        run: |
+          set -euo pipefail
+          npm run build
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+          python3 tests/current-design-visual-proof.py
+          test -s reports/current-design-visual-proof/ar-times-390.png
+          test -s reports/current-design-visual-proof/en-times-390.png
+          test -s reports/current-design-visual-proof/metrics.json
+      - name: Upload source-bound genuine browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-sunrise-isha-real-chromium-no-deploy
+          retention-days: 30
+          if-no-files-found: warn
+          path: reports/current-design-visual-proof/
