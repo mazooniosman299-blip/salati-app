@@ -21,7 +21,9 @@ CASES=[
  ("singapore-ar","ar",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27","6:47","12:50 م","4:11 م","6:51 م","8:03 م"]),
  ("singapore-en","en",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27 AM","6:47 AM","12:50 PM","4:11 PM","6:51 PM","8:03 PM"]),
  ("kuala-lumpur-ar","ar",3.139,101.6869,"Asia/Kuala_Lumpur","Jakim","Shafi",["5:48","6:56","1:00 م","4:21 م","6:58 م","8:10 م"]),
- ("kuala-lumpur-en","en",3.139,101.6869,"Asia/Kuala_Lumpur","Jakim","Shafi",["5:48 AM","6:56 AM","1:00 PM","4:21 PM","6:58 PM","8:10 PM"])
+ ("kuala-lumpur-en","en",3.139,101.6869,"Asia/Kuala_Lumpur","Jakim","Shafi",["5:48 AM","6:56 AM","1:00 PM","4:21 PM","6:58 PM","8:10 PM"]),
+ ("cairo-ar","ar",30.0444,31.2357,"Africa/Cairo","Egyptian","Shafi",["4:45","6:13","11:39","2:41 م","5:03 م","6:23 م"]),
+ ("cairo-en","en",30.0444,31.2357,"Africa/Cairo","Egyptian","Shafi",["4:45 AM","6:13 AM","11:39 AM","2:41 PM","5:03 PM","6:23 PM"])
 ]
 RESULT=[]
 try:
@@ -30,7 +32,7 @@ try:
   for name,lang,lat,lon,zone,method,madhab,expected in CASES:
    page=browser.new_page(viewport={"width":390,"height":844},device_scale_factor=1,service_workers="block",reduced_motion="reduce")
    page.clock.set_fixed_time(datetime(2026,11,7,8,0,tzinfo=timezone.utc))
-   state={"lang":lang,"lat":lat,"lon":lon,"zone":zone,"zoneMode":"auto","name":"Muscat" if method=="Oman" else ("Kuala Lumpur" if method=="Jakim" else "Singapore"),"method":method,"methodPreferenceVersion":1,"madhab":madhab,"locationMode":"manual","locationSet":True,"adjustments":{"fajr":0,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":0}}
+   state={"lang":lang,"lat":lat,"lon":lon,"zone":zone,"zoneMode":"auto","name":("Muscat" if method=="Oman" else ("Kuala Lumpur" if method=="Jakim" else ("Cairo" if method=="Egyptian" else "Singapore"))),"method":method,"methodPreferenceVersion":1,"madhab":madhab,"locationMode":"manual","locationSet":True,"adjustments":{"fajr":0,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":0}}
    page.add_init_script("localStorage.setItem('salati', "+json.dumps(json.dumps(state))+");")
    page_errors=[]
    page.on("pageerror",lambda exc: page_errors.append(str(exc)))
@@ -55,4 +57,4 @@ finally:
  server.shutdown()
  server.server_close()
 (OUT/"verified-browser-results.json").write_text(json.dumps(RESULT,ensure_ascii=False,indent=2)+"\n")
-print("PASS: actual Salati DOM and screenshots; Muscat/Singapore/Kuala Lumpur official local times in Arabic and English with 12-hour display.")
+print("PASS: actual Salati DOM and screenshots; Muscat/Singapore/Kuala Lumpur/Cairo official local times in Arabic and English with 12-hour display.")
