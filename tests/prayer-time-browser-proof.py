@@ -43,7 +43,7 @@ try:
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6",timeout=30000)
    actual=[x.strip() for x in page.locator("#prayers .prayer strong").all_text_contents()]
    assert actual==expected, f"{name}: actual UI {actual}, expected {expected}"
-   note=page.locator("#prayerSourceDisclaimer").inner_text()
+   note=page.locator("#prayerSourceDisclaimer").text_content() or ""
    if lang=="ar":
     assert "التقويم الرسمي" in note and "فلكيًا" in note,(name,"incorrect source note",note)
    else:
