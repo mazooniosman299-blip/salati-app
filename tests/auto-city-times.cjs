@@ -16,5 +16,9 @@ for(const [lat,lon,zone] of [[30.0444,31.2357,'Africa/Cairo'],[25.2048,55.2708,'
 const remote={lat:0,lon:0,zone:'Etc/GMT',method:'MuslimWorldLeague',madhab:'Shafi',locationMode:'auto'};
 assert.equal(resolveCalculationState(remote).lat,0);assert.equal(resolveCalculationState(remote).lon,0);
 assert.equal(resolveCalculationState({...gps,locationMode:'manual'}).lon,58.15);
-for(const day of ['2026-10-21T08:00:00Z','2026-10-22T08:00:00Z','2026-10-23T08:00:00Z','2026-11-01T08:00:00Z'])assert.deepEqual(calculateSchedule(gps,new Date(day)),calculateSchedule(manual,new Date(day)));
+for(const day of ['2026-10-21T08:00:00Z','2026-10-22T08:00:00Z','2026-10-23T08:00:00Z'])assert.deepEqual(calculateSchedule(gps,new Date(day)),calculateSchedule(manual,new Date(day)));
+// Official November Muscat rows must never be silently used for a GPS position in western Seeb.
+assert.equal(timetableSource(manual,new Date('2026-11-01T08:00:00Z')).kind,'official');
+assert.equal(timetableSource(gps,new Date('2026-11-01T08:00:00Z')).kind,'calculated');
+assert.notDeepEqual(calculateSchedule(gps,new Date('2026-11-01T08:00:00Z')),calculateSchedule(manual,new Date('2026-11-01T08:00:00Z')));
 const cityModule=new Module('cities',module);cityModule._compile(esbuild.buildSync({entryPoints:['cities.js'],bundle:true,platform:'node',format:'cjs',write:false}).outputFiles[0].text,'cities.cjs');let count=0;for(const c of cityModule.exports.cities){for(const day of ['2026-10-22T08:00:00Z','2027-03-29T08:00:00Z','2027-07-15T08:00:00Z']){const chosen={lat:c[1],lon:c[2],zone:c[3],method:'Auto',locationMode:'manual'},detected={...chosen,lat:c[1]+.01,lon:c[2]+.01,locationMode:'auto'};assert.deepEqual(calculateSchedule(detected,new Date(day)),calculateSchedule(chosen,new Date(day)),c[0]+' '+day);count++}}console.log('PASS: '+count+' auto/manual schedule comparisons across all '+cityModule.exports.cities.length+' cities, including seasonal and DST dates.');console.log('PASS: reproduced Muscat GPS/calendar mismatch; auto/manual city calendars now match across dates and regions; actual GPS, remote locations, explicit coordinates and minute adjustments preserved.');
