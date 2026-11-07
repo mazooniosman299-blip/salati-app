@@ -11,7 +11,7 @@ assert.equal(timetableSource({...muscat,lat:23.68,lon:57.89},new Date('2026-10-2
 
 // All 30 rows are from the actual Ministry timetable, not a fitted day-7 offset.
 const officialNov=require('node:fs').readFileSync('official-muscat.js','utf8');
-const officialRows=JSON.parse(officialNov.match(/export const MUSCAT_NOVEMBER_2026=(\\{[^;]+\\});/)[1]);
+const officialRows=JSON.parse(officialNov.split('export const MUSCAT_NOVEMBER_2026=')[1].split(';')[0]);
 assert.equal(Object.keys(officialRows).length,30,'Must ship all November ministry dates');
 for(let day=1;day<=30;day++){
  const actual=calculateDaySchedule(muscat,{year:2026,month:11,day}).map(p=>format(p.time));
