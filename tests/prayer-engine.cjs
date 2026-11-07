@@ -26,5 +26,27 @@ assert.equal(actualGPS.lon,geolocated.lon,'GPS longitude must not be replaced wi
 assert.equal(actualGPS.method,'Oman');
 assert.equal(timetableSource(geolocated,new Date('2026-11-07T08:00:00Z')).kind,'calculated','Outside verified city scope must not claim official timetable');
 
+
+// Government-published MUIS 2026 national timetable, each Gregorian day.
+const singapore={lat:1.3521,lon:103.8198,zone:'Asia/Singapore',method:'Auto',madhab:'Shafi',locationMode:'manual'};
+assert.equal(regionalProfile(singapore.lat,singapore.lon).method,'Singapore');
+assert.equal(timetableSource(singapore,new Date('2026-11-07T08:00:00Z')).kind,'official');
+const sgSource=fs.readFileSync('official-singapore.js','utf8');
+const sgRows=JSON.parse(sgSource.split('export const SINGAPORE_MUIS_2026=')[1].split(';')[0]);
+assert.equal(Object.keys(sgRows).length,365,'MUIS 2026 national calendar must have every single day');
+for(let n=0;n<365;n++){
+ const d=new Date(Date.UTC(2026,0,n+1));
+ const key=d.toISOString().slice(0,10);
+ const row=sgRows[key];assert(row&&row.length===6,'MUIS date missing '+key);
+ const actual=calculateDaySchedule(singapore,{year:2026,month:d.getUTCMonth()+1,day:d.getUTCDate()})
+  .map(p=>new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Singapore',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(p.time));
+ const expected=row.map(min=>String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'));
+ assert.deepEqual(actual,expected,'Singapore MUIS official mismatch '+key);
+}
+assert.deepEqual(calculateDaySchedule(singapore,{year:2026,month:11,day:7})
+ .map(p=>new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Singapore',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(p.time)),['05:27','06:47','12:50','16:11','18:51','20:03']);
+assert.equal(timetableSource(singapore,new Date('2027-01-07T08:00:00Z')).kind,'calculated','No official MUIS 2027 fixture yet');
+assert.equal(timetableSource({...singapore,lon:103.2},new Date('2026-11-07T08:00:00Z')).kind,'calculated','Do not apply Singapore timetable in other countries');
+
 let checked=0,missing=0;for(const c of cities){const state={lat:c[1],lon:c[2],method:'Auto'};for(let month=0;month<12;month++){const rows=calculateSchedule(state,new Date(Date.UTC(2026,month,15,12)));for(let i=0;i<6;i++){if(!Number.isFinite(+rows[i].time)){missing++;continue}if(i&&Number.isFinite(+rows[i-1].time))assert.ok(rows[i].time>=rows[i-1].time,c[0]+' sequence month '+month)}checked++;}}
 assert.equal(missing,0);console.log(checked+' city/date schedules checked, across '+cities.length+' cities; chronological and finite.');console.log('Official Muscat sample, next-date change, expiry/geography guards, manual adjustment and regional profiles pass.');
