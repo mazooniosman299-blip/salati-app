@@ -6,37 +6,57 @@
   "overall": "blocked",
   "complete": false,
   "stages": {
-    "official_sources": {
+    "user_request_captured": {
       "status": "pass",
-      "evidence": "Oman Ministry 30-day November 2026 Muscat and Singapore MUIS 365-day 2026 source tables externally verified; source selection limited by date, place, method, timezone."
+      "evidence": "Captured exact latest Arabic user wording verbatim in request record; canonical Muscat November 7 six 12-hour values."
+    },
+    "source_map_and_contract": {
+      "status": "pass",
+      "evidence": "Draft PR #60 against production 8f66d2a; only prayer engine, official-source data, test and review-governance files; no Android or production branch edits."
+    },
+    "source_build": {
+      "status": "pass",
+      "evidence": "Source rebuilt in GitHub Actions run 42331857537 for PR reviewed head 39fca4dd, no production deployment."
     },
     "functional_regressions": {
-      "status": "pending",
-      "evidence": "Dedicated mandatory test and workflow being executed; no claim until CI terminal pass."
+      "status": "pass",
+      "evidence": "GitHub Actions run 42331857537: exact official-source 395 daily fixtures, 12-hour formatter, timezone/date, user offsets, Android Isha timestamps, 2,976 global computational calendar cases and full npm test + test:seo passed."
     },
     "real_browser": {
-      "status": "pending",
-      "evidence": "Actual rendered 12-hour Muscat and Singapore four screenshot cases required."
+      "status": "pass",
+      "evidence": "Run 42331857537 launched genuine Playwright Chromium from built source and verified six actual DOM clocks for Muscat/Singapore AR+EN, produced four genuine screenshots + verified-browser-results.json artifact 13558071475."
     },
-    "worldwide_official_minute_accuracy": {
-      "status": "not_proven",
-      "evidence": "No independent verified official calendars for every city and future date. Fallback calculation is explicitly labeled calculated."
+    "screenshot_user_reference": {
+      "status": "not_applicable",
+      "reason": "Request supplied exact timing values rather than a new visual artwork or layout reference; real-browser timing screenshots were independently captured and checked."
     },
-    "signed_apk": {
-      "status": "blocked",
-      "evidence": "Current original-key APK does not include proposed changes. Fresh signing and in-place update required."
+    "android_emulator": {
+      "status": "not_run",
+      "reason": "A new original-key-signed APK containing this source is not available, so in-place emulator upgrade cannot be truthfully claimed."
     },
     "physical_android": {
       "status": "not_run",
-      "evidence": "No physical device connected."
+      "reason": "No physical HONOR device attached to test the new candidate."
+    },
+    "signed_release": {
+      "status": "blocked",
+      "reason": "Existing 1.0.133/1.0.134 original-key APK proof binds to prior bytes, not this changed source; no valid new original-key signature."
     },
     "production_publication": {
       "status": "blocked",
-      "evidence": "Never publish from preview branch or bypass release fingerprint and original-signing guards."
+      "reason": "PR #60 is draft only; protected production remains unchanged. Must not merge or deploy before real original-key-signed matched update + native QA + acceptance."
+    },
+    "latest_user_acceptance": {
+      "status": "blocked",
+      "reason": "The latest new-branch real screenshots have not been explicitly approved by user for publication."
+    },
+    "worldwide_official_minute_accuracy": {
+      "status": "blocked",
+      "reason": "Only Muscat November 2026 and Singapore 2026 official sources verified. 246-country mathematical tests are not minute-exact local authority certification, and future years need new source data."
     }
   },
-  "latest_user_acceptance": {
-    "status": "pending",
-    "evidence": "User requested accuracy and testing before publication; no visual review of this new branch yet."
-  }
+  "limitations": [
+    "No claim of zero errors forever: official source policies, DST/zone regulations, location accuracy, polar conventions and future-year reference data may change.",
+    "No physical Android test or newly signed APK yet; production remains unmodified."
+  ]
 }
