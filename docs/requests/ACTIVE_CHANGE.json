@@ -48,7 +48,7 @@
   ],
   "android_release": false,
   "release_mode": "preview",
-  "status": "GLOBAL_AUTHORITY_AUDIT_FAILED_ON_INDEPENDENT_MALAYSIA_EGYPT_TURKEY_BENCHMARKS_NO_DEPLOY",
+  "status": "OFFICIAL_CITY_MONTHS_EXTENDED_MUSCAT_SINGAPORE_WLY01_CAIRO_TURKEY_WORLDWIDE_STILL_BLOCKED",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -66,6 +66,8 @@
     "dist/index.html",
     "tests/independent-world-authority-audit.cjs",
     ".github/workflows/salati-independent-world-authority-no-deploy.yml",
-    "docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md"
+    "docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md",
+    "official-malaysia-wly01.js",
+    "official-cairo.js"
   ]
 }
