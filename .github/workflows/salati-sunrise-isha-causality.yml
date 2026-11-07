@@ -35,7 +35,25 @@ jobs:
           npm run build
           python3 -m pip install --quiet playwright pillow
           python3 -m playwright install --with-deps chromium
-          python3 tests/current-design-visual-proof.py
+          BROWSER="$(python3 -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          sudo ln -sf "$BROWSER" /usr/bin/chromium
+          # Reuse actual UI test with a pinned 7 Nov 2026 local-day fixture; do not simulate a screenshot.
+          sed 's/datetime(2026,11,3,10,15,tzinfo=timezone.utc)/datetime(2026,11,7,10,15,tzinfo=timezone.utc)/' tests/current-design-visual-proof.py > tests/current-design-visual-proof-nov7-ci.py
+          grep -F 'datetime(2026,11,7,10,15,tzinfo=timezone.utc)' tests/current-design-visual-proof-nov7-ci.py
+          python3 tests/current-design-visual-proof-nov7-ci.py
+          rm tests/current-design-visual-proof-nov7-ci.py
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          p=Path('reports/current-design-visual-proof/metrics.json')
+          data=json.loads(p.read_text())
+          data['source']='Real Chromium screenshot of exact reviewed GitHub source, built locally in CI'
+          data['commit_sha']=os.environ['GITHUB_SHA']
+          data['fixed_test_utc']='2026-11-07T10:15:00Z'
+          data['city']='Muscat (23.588, 58.3829), Asia/Muscat, Oman method'
+          data['note']='Screenshots prove rendered UI for fixed test state; not worldwide official calendar certification or physical Android evidence'
+          p.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\\n')
+          PY
           test -s reports/current-design-visual-proof/ar-times-390.png
           test -s reports/current-design-visual-proof/en-times-390.png
           test -s reports/current-design-visual-proof/metrics.json
