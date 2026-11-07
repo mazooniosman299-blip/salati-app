@@ -14,6 +14,11 @@ const verified=[
  [singapore,{sunrise:'06:47',isha:'20:03'}]
 ];
 for(const [s,expected] of verified){
+ const regular=local(s),hanafi=local({...s,madhab:'Hanafi'});
+ console.log('BEFORE_FIX',JSON.stringify({method:s.method,regular:{sunrise:regular.sunrise,isha:regular.isha,asr:regular.asr},hanafi:{sunrise:hanafi.sunrise,isha:hanafi.isha,asr:hanafi.asr},expected}));
+}
+console.log('BEFORE_FIX_FOREIGN_ZONE',timetableSource({...muscat,zone:'Europe/London',zoneMode:'manual'},instant).kind);
+for(const [s,expected] of verified){
  assert.equal(timetableSource(s,instant).kind,'official');
  for(const [key,want] of Object.entries(expected))assert.equal(local(s)[key],want,s.method+' official '+key);
  const hanafi={...s,madhab:'Hanafi'};
