@@ -6,7 +6,7 @@ assert.notDeepEqual(calculateSchedule(muscat,new Date('2026-10-21T08:00:00Z')).s
 const adjusted=calculateSchedule({...muscat,adjustments:{asr:1}},new Date('2026-10-21T08:00:00Z'));assert.equal(format(adjusted[3].time),'15:16');
 assert.equal(regionalProfile(23.588,58.3829).method,'Oman');assert.equal(regionalProfile(36.8065,10.1815).method,'Tunisia');assert.equal(regionalProfile(-6.2088,106.8456).method,'Kemenag');assert.equal(regionalProfile(3.139,101.6869).method,'Jakim');assert.equal(regionalProfile(40.7128,-74.006).method,'NorthAmerica');
 const savedMinuteOffsets=calculateSchedule({...muscat,adjustments:{fajr:1,sunrise:1}},new Date('2026-10-21T08:00:00Z'));assert.deepEqual(savedMinuteOffsets.slice(0,6).map(p=>format(p.time)),['04:52','06:08','11:57','15:15','17:42','18:52']);
-for(const [lat,lon] of [[23.4,58.14],[23.6,58.12],[23.67,58.14],[23.68,58.18]]){const western={...muscat,lat,lon};assert.deepEqual(calculateSchedule(western,new Date('2026-10-21T08:00:00Z')).slice(0,6).map(p=>format(p.time)),['04:51','06:07','11:57','15:15','17:42','18:52']);assert.equal(timetableSource(western,new Date('2026-10-21T08:00:00Z')).kind,'custom')}
+for(const [lat,lon] of [[23.4,58.14],[23.6,58.12],[23.67,58.14],[23.68,58.18]]){const western={...muscat,lat,lon};const kind=timetableSource(western,new Date('2026-10-21T08:00:00Z')).kind;assert.equal(kind,'calculated','GPS coordinates outside 20km must not borrow the official city-centre calendar')}
 assert.equal(timetableSource({...muscat,lat:23.68,lon:57.89},new Date('2026-10-21T08:00:00Z')).kind,'calculated');
 
 // All 30 rows are from the actual Ministry timetable, not a fitted day-7 offset.
