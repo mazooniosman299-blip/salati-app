@@ -37,18 +37,17 @@
       "tab": "times",
       "language": "both",
       "before": "Existing collapsed calculation details did not show official source note; prior experimental placement added unrequested homepage height",
-      "after": "Authority/calculation source notice available only when the user opens the existing calculation details, with no home page reflow",
+      "after": "Local source notice visible only when existing calculation details is expanded; hidden while collapsed with no homepage reflow",
       "preserve": [
-        "original home prayer grid and footer positions",
-        "original dark styling",
-        "all 12-hour calculations",
-        "all Quran and navigation elements"
+        "source-verified 12-hour prayer cards",
+        "unchanged position of Quran and navigation below times",
+        "dark canonical style and all other tabs"
       ]
     }
   ],
   "android_release": false,
   "release_mode": "preview",
-  "status": "ORIGINAL_KEY_FOUND_LOCALLY_CERT_VERIFIED_UNSIGNED_CANDIDATE_BUILD_BEFORE_SIGNED_RELEASE",
+  "status": "ORIGINAL_ANDROID_SIGNER_VERIFIED_APP135_SIGNED_OFFLINE_VISUAL_SCOPE_FIX_PENDING_REBUILD",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -73,6 +72,7 @@
     ".github/workflows/salati-review-sync-built-js-no-deploy.yml",
     "dist/app-v1.0.109.js",
     "dist/app.js",
-    ".github/workflows/salati-review-unsigned-apk-v135-no-deploy.yml"
+    ".github/workflows/salati-review-unsigned-apk-v135-no-deploy.yml",
+    "dist/salati-ui.css"
   ]
 }
