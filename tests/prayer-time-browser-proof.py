@@ -37,6 +37,11 @@ try:
    page.wait_for_function("document.querySelectorAll('#prayers .prayer').length===6",timeout=30000)
    actual=[x.strip() for x in page.locator("#prayers .prayer strong").all_text_contents()]
    assert actual==expected, f"{name}: actual UI {actual}, expected {expected}"
+   note=page.locator("#prayerSourceDisclaimer").inner_text()
+   if lang=="ar":
+    assert "التقويم الرسمي" in note and "فلكيًا" in note,(name,"incorrect source note",note)
+   else:
+    assert "official" in note and "astronomically" in note,(name,"incorrect source note",note)
    assert not page_errors,(name,page_errors)
    file=OUT/(name+".png")
    page.screenshot(path=str(file),animations="disabled",full_page=False)
