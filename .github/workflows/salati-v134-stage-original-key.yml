@@ -133,8 +133,10 @@ jobs:
           git reset --hard HEAD
           git fetch origin "$GITHUB_REF_NAME"
           git rebase "origin/$GITHUB_REF_NAME"
-          # Revalidate the signer and EXACT web fingerprint after replaying any
-          # later branch commits. Never sign/stage against a changed source tree.
+          # Restore identical deterministic web output on the rebased tree.
+          # A changed source will make the signed-APK fingerprint fail closed.
+          export SALATI_BUILD_SNAPSHOT='2026-11-02T10:46:00.000Z'
+          npm run build
           node scripts/release-guard.cjs
           git push origin "HEAD:$GITHUB_REF_NAME"
           echo 'Signed review branch updated. Production remains unchanged.'
