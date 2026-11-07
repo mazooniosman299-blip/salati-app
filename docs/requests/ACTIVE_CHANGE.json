@@ -67,7 +67,7 @@
       ]
     },
     {
-      "selector": "#times>.note",
+      "selector": ".note[data-ar^=\"المواقيت محسوبة فلكيًا\"]",
       "tab": "times",
       "language": "both",
       "before": "Original always-visible warning incorrectly said every prayer time was astronomically calculated",
