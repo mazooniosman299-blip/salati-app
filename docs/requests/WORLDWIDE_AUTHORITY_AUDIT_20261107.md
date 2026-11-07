@@ -38,3 +38,20 @@ IMPORTANT: Malaysia also uses **prayer zones**, not arbitrary city-center GPS re
 Run `node tests/independent-world-authority-audit.cjs` on this PR. It deliberately fails closed when independent authority clocks disagree, emits `reports/world-authority/independent-reference-2026-11-07.json`, and the no-deploy workflow uploads that file even after failure.
 
 Partial fixes in a single city do **not** satisfy the user’s conditional requirement for worldwide correctness. Never describe 12-hour display, astronomical plausibility, or a 250-country list as a worldwide official timetable certificate.
+
+## Resolution of reproduced cases — subsequent review commits (NO PUBLISH)
+
+The original November 7 benchmark showed correct source-vs-app minute differences in Cairo, Istanbul and Kuala Lumpur. These rows remain above as the before-state historical evidence, **not current candidate output**.
+
+The candidate review branch now includes:
+- `official-cairo.js`: 30 official November 2026 Cairo rows from Egyptian Dar al-Ifta/Egyptian Survey, confined to the Cairo reference centre and Cairo civil timezone.
+- `official-istanbul.js`: 30 official November 2026 Istanbul rows from Diyanet, confined to the Istanbul reference centre and Turkey timezone.
+- `official-malaysia-wly01.js`: 30 official November 2026 Kuala Lumpur/Putrajaya WLY01 rows from Federal Territory Mufti/JAKIM, with conservatively bounded eligibility; no false claim for Malaysian zones elsewhere.
+- Corrected JAKIM fallback Fajr depression from obsolete 20° to officially accepted 18°, without blanket minute offsets.
+- Previously verified Muscat November (30 days) and Singapore calendar-year 2026 (365 days).
+- Source selection retains raw GPS positions and never treats a snapped nearest city as proof of official calendar eligibility.
+- Regression tests cover **485 official city/date rows** (30+30+30+30+365), 12-hour display, mobile adhan timestamps, manually selected methods, Hanafi Asr isolation, timezone, daylight saving and no unauthorized sunrise adhan.
+- `tests/independent-world-authority-audit.cjs` compares the formerly failing exact Nov 7 Turkey/Malaysia/Egypt government fixtures against the source engine; it was included in successful dedicated workflow run 42336204017.
+- Actual Playwright Chromium screenshots from same reviewed source show ten cases (five cities × Arabic/English) and pass exact six-time DOM comparisons; captured run 42336204017, artifact 13559845356.
+
+**STILL BLOCKED:** A one-month authority calendar for five cities does NOT certify 171,114 city entries or future years. GPS precision, city prayer-zone memberships, changes in official authorities and calculation methods, and high latitude allowances require per-area verification. No newly original-key-signed matching Android APK/AAB has been produced, physical Android test is absent, and existing protected source-versus-APK fingerprint checks reject this unpublished code. This work is preview-only: **do not merge or publish official production**.
