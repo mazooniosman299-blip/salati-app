@@ -68,3 +68,4 @@ jobs:
             git commit -m 'Sync prayer-engine authority coverage into deterministic review-only web bundles'
             git push origin HEAD:fix/worldwide-prayer-authority-20261107
           fi
+# Regenerate deterministic review JS from the already-verified original-key v1.0.134 source.
