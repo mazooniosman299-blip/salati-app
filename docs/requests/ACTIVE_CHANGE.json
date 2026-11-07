@@ -81,7 +81,7 @@
     }
   ],
   "android_release": true,
-  "release_mode": "review_only",
+  "release_mode": "preview",
   "status": "SIGNED_135_STAGED_IN_REVIEW_WITH_EXACT_WEB_SHA__ANDROID_INPLACE_CI_RUNNING_NO_PRODUCTION_DEPLOY",
   "allowed_paths": [
     "official-muscat.js",
@@ -129,6 +129,7 @@
     "apk-release-parts/v1.0.135/part12.bin",
     "apk-release-parts/v1.0.135/part13.bin",
     "apk-release-parts/v1.0.135/part14.bin",
-    ".github/workflows/salati-135-original-signed-upgrade-no-deploy.yml"
+    ".github/workflows/salati-135-original-signed-upgrade-no-deploy.yml",
+    "README.md"
   ]
 }
