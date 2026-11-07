@@ -6,9 +6,27 @@ const publisherMeta=`<meta name="google-adsense-account" content="${publisher.cl
 const built=esbuild.buildSync({entryPoints:[path.join(root,'city-pages/timetable.js')],bundle:true,platform:'node',format:'cjs',write:false});
 const mod=new Module('city-build',module);mod._compile(built.outputFiles[0].text,'city-build.cjs');
 const {cityTimetable,cityWeek}=mod.exports,origin='https://salati-world-prayer.sprytitan65.chatgpt.site';
-const pinnedSnapshot=process.env.SALATI_BUILD_SNAPSHOT;
+// A public website linked to a signed APK must regenerate the exact web bytes
+// that were signed and independently verified. Date-dependent city snapshots are
+// taken from the immutable release proof, never an unbounded CI/Pages clock.
+// Explicit overrides remain available for regression tests, but release-guard
+// still rejects a different asset fingerprint.
+const releasePointerPath=path.join(root,'apk-release-parts','current.json');
+let releaseSnapshot=null;
+if(fs.existsSync(releasePointerPath)){
+ const pointer=JSON.parse(fs.readFileSync(releasePointerPath,'utf8'));
+ const proofPath=path.join(root,'release-proof','v'+pointer.version,'metadata.json');
+ if(fs.existsSync(proofPath)){
+  const proof=JSON.parse(fs.readFileSync(proofPath,'utf8'));
+  if(proof.version!==pointer.version)throw Error('Release proof version mismatch: city-page snapshot refused');
+  releaseSnapshot=proof.buildSnapshotUtc||null;
+ }
+}
+const pinnedSnapshot=process.env.SALATI_BUILD_SNAPSHOT||releaseSnapshot;
 if(pinnedSnapshot && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(pinnedSnapshot))
-  throw Error('Invalid pinned Salati build timestamp; aborting reproducible release');
+  throw Error('Invalid signed release build timestamp; aborting reproducible release');
+if(process.env.CF_PAGES_BRANCH==='production' && !pinnedSnapshot)
+  throw Error('Signed release snapshot missing: refusing nondeterministic production city-page build');
 const now=pinnedSnapshot?new Date(pinnedSnapshot):new Date();
 if(!Number.isFinite(now.getTime()))throw Error('Invalid pinned Salati timestamp');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

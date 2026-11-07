@@ -1,0 +1,33 @@
+name: Salati independent worldwide authority comparison (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/prayer-source-and-12hour-guard-20261107
+    paths:
+      - tests/independent-world-authority-audit.cjs
+      - .github/workflows/salati-independent-world-authority-no-deploy.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-authority:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install frozen source
+        run: npm ci
+      - name: Compare verified Turkish government reference with actual engine
+        run: node tests/independent-world-authority-audit.cjs
+      - name: Preserve official-vs-calculated minute differences even if failed
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-independent-world-authority-discrepancies
+          path: reports/world-authority/
+          if-no-files-found: warn
+          retention-days: 30

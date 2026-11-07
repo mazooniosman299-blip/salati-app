@@ -19,8 +19,16 @@ jobs:
           node-version: '22'
       - name: Verify signed version reference, 20 risk inventory and AI source-of-truth contract
         run: node tests/agent-governance-contract.cjs
+      - name: Rebuild the exact signed website before checking production-scope signature
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          # Do not accept stale checked-in pages whose clock differs from the signed build.
+          node scripts/release-guard.cjs
       - name: Require exact per-request file scope, based on actual PR diff
         run: |
+          set -euo pipefail
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
       - name: Validate original 20-risk mandate and every acceptance stage
@@ -96,6 +104,9 @@ jobs:
               npm run build
               SALATI_PROJECT_ROOT="$PWD" SALATI_VISUAL_OUT="$SALATI_BASELINE_DIR" python3 "$GITHUB_WORKSPACE/tests/current-design-visual-proof.py"
             )
+            mkdir -p reports/production-baseline-visual-proof
+            cp "$SALATI_BASELINE_DIR/ar-times-1280.png" reports/production-baseline-visual-proof/ar-times-1280.png
+            cp "$SALATI_BASELINE_DIR/metrics.json" reports/production-baseline-visual-proof/metrics.json
             python3 tests/visual-scope-diff.py --baseline "$SALATI_BASELINE_DIR" --candidate reports/current-design-visual-proof --manifest docs/requests/ACTIVE_CHANGE.json
           else
             echo 'No web visual-capable source files changed; unrelated screenshot parity not claimed.'
@@ -105,7 +116,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: salati-current-48-real-screenshots-and-computed-styles
-          path: reports/current-design-visual-proof/
+          path: |
+            reports/current-design-visual-proof/
+            reports/production-baseline-visual-proof/
           if-no-files-found: warn
 
   isolated-pr-preview-artifact:

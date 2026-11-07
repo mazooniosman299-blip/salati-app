@@ -1,0 +1,85 @@
+name: Salati official source + 12h future-regression gate (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/prayer-source-and-12hour-guard-20261107
+    paths:
+      - '.github/workflows/salati-authority-guard-no-deploy.yml'
+      - 'official-muscat.js'
+      - 'official-singapore.js'
+      - 'official-malaysia-wly01.js'
+      - 'official-cairo.js'
+      - 'official-istanbul.js'
+      - 'prayer-engine.js'
+      - 'package.json'
+      - 'tests/prayer-engine.cjs'
+      - 'tests/auto-city-times.cjs'
+      - 'tests/city-pages.cjs'
+      - 'tests/prayer-authority-guard.cjs'
+      - 'tests/prayer-time-browser-proof.py'
+      - 'docs/requests/ACTIVE_CHANGE.json'
+      - 'docs/requests/ACCEPTANCE_STATUS.json'
+      - 'docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  worldwide-safe-and-real-screenshots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install frozen project dependencies and build real application
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-07T08:00:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+      - name: Compare exact official sources, 12-hour UI formatter and Android Isha scheduling
+        run: |
+          set -euo pipefail
+          node tests/prayer-authority-guard.cjs
+          node tests/prayer-engine.cjs
+          node tests/auto-city-times.cjs
+          node tests/timezone-choice.cjs
+          node tests/global-prayer-calendar-audit.cjs
+      - name: Capture REAL rendered Muscat/Singapore/Malaysia/Cairo/Istanbul 12-hour screenshots from same source
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet playwright pillow
+          python3 -m playwright install --with-deps chromium
+          python3 tests/prayer-time-browser-proof.py
+          test -s reports/prayer-calendar-real/muscat-ar.png
+          test -s reports/prayer-calendar-real/muscat-en.png
+          test -s reports/prayer-calendar-real/singapore-ar.png
+          test -s reports/prayer-calendar-real/singapore-en.png
+          test -s reports/prayer-calendar-real/kuala-lumpur-ar.png
+          test -s reports/prayer-calendar-real/kuala-lumpur-en.png
+          test -s reports/prayer-calendar-real/cairo-ar.png
+          test -s reports/prayer-calendar-real/cairo-en.png
+          test -s reports/prayer-calendar-real/istanbul-ar.png
+          test -s reports/prayer-calendar-real/istanbul-en.png
+          test -s reports/prayer-calendar-real/verified-browser-results.json
+      - name: Full existing app and independent global date regression
+        run: |
+          set -euo pipefail
+          npm test
+          npm run test:seo
+      - name: Save original screenshots and test evidence; no deployment
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-verified-prayer-times-12hour-real-chromium-no-deploy
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/prayer-calendar-real/
+            reports/global-prayer-calendar/results.json
