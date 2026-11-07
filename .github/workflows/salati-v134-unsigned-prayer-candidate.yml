@@ -1,0 +1,89 @@
+name: Salati 1.0.134 worldwide prayer correction unsigned candidate (NO DEPLOY)
+on:
+  push:
+    branches: [fix/worldwide-prayer-authority-20261107]
+    paths: ['.github/workflows/salati-v134-unsigned-prayer-candidate.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unsigned-v134:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate actual prayer correction and worldwide regressions
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          node tests/prayer-engine.cjs
+          node tests/auto-city-times.cjs
+          node tests/timezone-choice.cjs
+          node tests/city-pages.cjs
+          node tests/global-prayer-calendar-audit.cjs
+      - name: Stage candidate version ONLY in CI workspace, not GitHub production
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('dist/index.html')
+          s=p.read_text()
+          assert s.count('salati-1.0.133.apk')==2 and s.count('class="app-version">v1.0.133</small>')==1
+          s=s.replace('salati-1.0.133.apk','salati-1.0.134.apk').replace('class="app-version">v1.0.133</small>','class="app-version">v1.0.134</small>')
+          p.write_text(s)
+          p=Path('android/app/build.gradle')
+          s=p.read_text()
+          assert "getOrElse('134')" in s and "getOrElse('1.0.133')" in s
+          s=s.replace("getOrElse('134')","getOrElse('135')").replace("getOrElse('1.0.133')","getOrElse('1.0.134')")
+          p.write_text(s)
+          PY
+          npm run build
+          node scripts/release-fingerprint.cjs
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Build unsigned original-key compatible Android APK and AAB
+        working-directory: android
+        run: |
+          set -euo pipefail
+          bash gradlew :app:assembleRelease :app:bundleRelease -x verifyReleaseSigningIdentity -PsalatiVersionCode=135 -PsalatiVersionName=1.0.134 --no-daemon
+      - name: Verify unsigned build and capture exact source fingerprint
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          BUNDLE=android/app/build/outputs/bundle/release/app-release.aab
+          test -s "$APK" && test -s "$BUNDLE"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='135' versionName='1.0.134'"
+          mkdir -p reports/v134-candidate
+          node scripts/release-fingerprint.cjs > reports/v134-candidate/web-fingerprint.json
+          sha256sum "$APK" "$BUNDLE" > reports/v134-candidate/files-sha256.txt
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          p=Path('android/app/build/outputs/apk/release/app-release-unsigned.apk')
+          web=json.loads(Path('reports/v134-candidate/web-fingerprint.json').read_text())
+          Path('reports/v134-candidate/candidate.json').write_text(json.dumps({'version':'1.0.134','versionCode':135,'packageName':'com.salati.prayer','unsignedSha256':hashlib.sha256(p.read_bytes()).hexdigest(),'webFingerprint':web['sha256'],'sourceGitSha':__import__('os').environ['GITHUB_SHA'],'originalKeyNotInCI':True,'status':'UNSIGNED REVIEW ONLY'},indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: salati-1.0.134-unsigned-prayer-fix
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            reports/v134-candidate/
