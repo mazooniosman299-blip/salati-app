@@ -88,6 +88,7 @@
     "apk-release-parts/v1.0.134/part12.bin",
     "apk-release-parts/v1.0.134/part13.bin",
     "apk-release-parts/v1.0.134/part14.bin",
-    ".github/workflows/salati-v134-signed-upgrade-qa.yml"
+    ".github/workflows/salati-v134-signed-upgrade-qa.yml",
+    "README.md"
   ]
 }
