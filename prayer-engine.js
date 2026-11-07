@@ -4,7 +4,8 @@ import {getTimezone} from 'countries-and-timezones';
 import {PrayerTimes,Coordinates,CalculationMethod,Madhab,HighLatitudeRule} from 'adhan';
 import {cities} from './cities.js';
 import {nearestCity} from './location.js';
-import {MUSCAT_OCTOBER_2026,MUSCAT_SOURCE} from './official-muscat.js';
+import {MUSCAT_OCTOBER_2026,MUSCAT_NOVEMBER_2026,MUSCAT_SOURCE} from './official-muscat.js';
+import {SINGAPORE_MUIS_2026,SINGAPORE_MUIS_SOURCE} from './official-singapore.js';
 export const PRAYER_KEYS=['fajr','sunrise','dhuhr','asr','maghrib','isha'];
 // Regional conventions, not a claim of official timetable coverage everywhere.
 // Method angles: https://api.aladhan.com/v1/methods
@@ -65,8 +66,35 @@ function calendarAlignedSolarTimes(state,day){
  if(difference(times))return Object.fromEntries(PRAYER_KEYS.map(k=>[k,new Date(NaN)]));
  return times;
 }
-function dayTimes(state,day){if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return validateDayTimes(times)}return validateDayTimes(calendarAlignedSolarTimes(state,day))}
-export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
+// Authority tables are immutable per-city/date references, NOT a universal calculation rule.
+// The already-published GPS-to-nearest-city behavior is intentionally unchanged.
+function verifiedMuscatNovember(state,day){
+ if(state.method!=='Oman'||state.zone!=='Asia/Muscat'||state.locationMode==='city-calendar'
+   ||day.getFullYear()!==2026||day.getMonth()!==10)return null;
+ const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);
+ // Never pass the Muscat table off as the official calendar for distant Seeb/Al Maabela.
+ if(Math.hypot(dx,dy)>2)return null;
+ return MUSCAT_NOVEMBER_2026[day.getDate()]||null;
+}
+function verifiedSingapore2026(state,day){
+ if(state.method!=='Singapore'||state.zone!=='Asia/Singapore'||state.locationMode==='city-calendar'
+   ||day.getFullYear()!==2026||state.lat<1.14||state.lat>1.48||state.lon<103.58||state.lon>104.15)return null;
+ const key=day.getFullYear()+'-'+String(day.getMonth()+1).padStart(2,'0')+'-'+String(day.getDate()).padStart(2,'0');
+ return SINGAPORE_MUIS_2026[key]||null;
+}
+function sourceRowTimes(state,day,rows,utcOffsetMinutes){
+ const times={};
+ for(let i=0;i<PRAYER_KEYS.length;i++){
+  const key=PRAYER_KEYS[i],mins=rows[i]+Number(state.adjustments?.[key]||0);
+  times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,mins-utcOffsetMinutes));
+ }
+ // Changing the Asr school must never change source-verified sunrise or Isha.
+ if(state.madhab==='Hanafi')times.asr=calendarAlignedSolarTimes(state,day).asr;
+ return validateDayTimes(times);
+}
+
+function dayTimes(state,day){const muscat=verifiedMuscatNovember(state,day),singapore=verifiedSingapore2026(state,day);if(muscat)return sourceRowTimes(state,day,muscat,240);if(singapore)return sourceRowTimes(state,day,singapore,480);if(muscatCoverage(state,day)||requestedMuscatCoverage(state,day)){const times={};PRAYER_KEYS.forEach((key,i)=>{const minutes=MUSCAT_OCTOBER_2026[day.getDate()][i]+(requestedMuscatDay(day)?({asr:1}[key]||0):0)+Number(state.adjustments?.[key]||0);times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-240))});return validateDayTimes(times)}return validateDayTimes(calendarAlignedSolarTimes(state,day))}
+export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return verifiedSingapore2026(state,day)?(state.madhab==='Hanafi'?{kind:'custom',ar:'تقويم سنغافورة MUIS الرسمي والعصر حنفي محسوب',en:'Singapore MUIS official times with calculated Hanafi Asr',url:SINGAPORE_MUIS_SOURCE}:{kind:'official',ar:'تقويم سنغافورة الرسمي · MUIS',en:'Official Singapore timetable · MUIS',url:SINGAPORE_MUIS_SOURCE}):verifiedMuscatNovember(state,day)?(state.madhab==='Hanafi'?{kind:'custom',ar:'تقويم مسقط الرسمي والعصر حنفي محسوب',en:'Muscat official times with calculated Hanafi Asr',url:MUSCAT_SOURCE}:{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}):requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
 export function calculateSchedule(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone);const day=new Date(d.year,d.month-1,d.day,12),today=dayTimes(state,day);day.setDate(day.getDate()+1);const tomorrow=dayTimes(state,day);return [...PRAYER_KEYS.map(key=>({key,time:today[key]})),{key:'fajr',time:tomorrow.fajr,tomorrow:true}]}
 
 export function calculateDaySchedule(state,parts){state=resolveCalculationState(state);const day=new Date(parts.year,parts.month-1,parts.day,12),times=dayTimes(state,day);return PRAYER_KEYS.map(key=>({key,time:times[key]}))}
