@@ -32,7 +32,7 @@ function officialMuscatRow(day){
 function muscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!officialMuscatRow(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
 // Requested display correction for Muscat on 2026-10-21; not an official-table edit.
 function requestedMuscatDay(day){return day.getFullYear()===2026&&day.getMonth()===9&&day.getDate()===21}
-function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=45}
+function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
 // Some circumpolar days cause the astronomical library's shadow-based Asr
 // to be before solar noon or after sunset. This is not a valid prayer time.
 // Never invent a clock time or schedule an Adhan for that event; the UI
