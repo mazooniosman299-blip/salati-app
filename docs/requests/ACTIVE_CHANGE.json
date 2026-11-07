@@ -36,19 +36,19 @@
       "selector": "#prayerSourceDisclaimer",
       "tab": "times",
       "language": "both",
-      "before": "Generic disclaimer inaccurately states every time is astronomical even for verified authority dates",
-      "after": "Clearly state verified official city/date timetables are used where available and unverified places use astronomical calculations",
+      "before": "Existing collapsed calculation details did not show official source note; prior experimental placement added unrequested homepage height",
+      "after": "Authority/calculation source notice available only when the user opens the existing calculation details, with no home page reflow",
       "preserve": [
-        "original note position and styling",
-        "all prayer card geometry and icon sizes",
-        "12-hour clock formatting",
-        "other application tabs and navigation"
+        "original home prayer grid and footer positions",
+        "original dark styling",
+        "all 12-hour calculations",
+        "all Quran and navigation elements"
       ]
     }
   ],
   "android_release": false,
   "release_mode": "preview",
-  "status": "FIVE_CITY_SOURCE_REVIEW_ONLY_MUSCAT_SINGAPORE_WLY01_CAIRO_ISTANBUL_WORLDWIDE_NOT_CERTIFIED",
+  "status": "REVIEW_BUILD_REPRODUCIBILITY_IN_PROGRESS_NO_PRODUCTION_PUBLISH",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -69,6 +69,9 @@
     "docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md",
     "official-malaysia-wly01.js",
     "official-cairo.js",
-    "official-istanbul.js"
+    "official-istanbul.js",
+    ".github/workflows/salati-review-sync-built-js-no-deploy.yml",
+    "dist/app-v1.0.109.js",
+    "dist/app.js"
   ]
 }
