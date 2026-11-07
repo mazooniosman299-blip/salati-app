@@ -69,7 +69,7 @@
   ],
   "android_release": true,
   "release_mode": "review_only",
-  "status": "SIGNED_ORIGINAL_KEY_REBUILD_IN_PROGRESS__NO_DEPLOY_UNTIL_QA_AND_WORLD_PROOF",
+  "status": "SIGNED_135_STAGED_IN_REVIEW_WITH_EXACT_WEB_SHA__ANDROID_INPLACE_CI_RUNNING_NO_PRODUCTION_DEPLOY",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -115,6 +115,7 @@
     "apk-release-parts/v1.0.135/part11.bin",
     "apk-release-parts/v1.0.135/part12.bin",
     "apk-release-parts/v1.0.135/part13.bin",
-    "apk-release-parts/v1.0.135/part14.bin"
+    "apk-release-parts/v1.0.135/part14.bin",
+    ".github/workflows/salati-135-original-signed-upgrade-no-deploy.yml"
   ]
 }
