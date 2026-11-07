@@ -1,0 +1,21 @@
+name: Salati sunrise / Isha verified-source causality regression (NO DEPLOY)
+on:
+  push:
+    branches: [fix/sunrise-isha-provenance-20261107]
+    paths: ['.github/workflows/salati-sunrise-isha-causality.yml', 'tests/sunrise-isha-authority.cjs', 'prayer-engine.js']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-source-reproduction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Reproduce and prevent official Sunrise/Isha mismatches
+        run: node tests/sunrise-isha-authority.cjs
