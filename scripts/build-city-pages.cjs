@@ -23,7 +23,7 @@ if(fs.existsSync(releasePointerPath)){
  }
 }
 const pinnedSnapshot=process.env.SALATI_BUILD_SNAPSHOT||releaseSnapshot;
-if(pinnedSnapshot && !/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$/.test(pinnedSnapshot))
+if(pinnedSnapshot && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(pinnedSnapshot))
   throw Error('Invalid signed release build timestamp; aborting reproducible release');
 if(process.env.CF_PAGES_BRANCH==='production' && !pinnedSnapshot)
   throw Error('Signed release snapshot missing: refusing nondeterministic production city-page build');
