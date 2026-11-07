@@ -72,6 +72,13 @@ jobs:
           (p/'build.json').write_text(json.dumps(report,indent=2)+'\n')
           print('PASS unsigned 1.0.135 version 136, source-linked fingerprint:',report['websiteFingerprint'])
           PY
+      - name: Stage original Android SDK signer utilities without any private keys
+        run: |
+          set -euo pipefail
+          mkdir -p reports/unsigned-review-v135/tools
+          cp "$ANDROID_HOME/build-tools/36.0.0/lib/apksigner.jar" reports/unsigned-review-v135/tools/
+          cp "$ANDROID_HOME/build-tools/36.0.0/zipalign" reports/unsigned-review-v135/tools/
+          cp "$ANDROID_HOME/build-tools/36.0.0/aapt" reports/unsigned-review-v135/tools/
       - name: Retain unsigned candidate and Android verification tools for OFFLINE signing
         if: success()
         uses: actions/upload-artifact@v4
@@ -83,6 +90,4 @@ jobs:
             android/app/build/outputs/apk/release/app-release-unsigned.apk
             android/app/build/outputs/bundle/release/app-release.aab
             reports/unsigned-review-v135/build.json
-            /opt/android-sdk/build-tools/36.0.0/lib/apksigner.jar
-            /opt/android-sdk/build-tools/36.0.0/zipalign
-            /opt/android-sdk/build-tools/36.0.0/aapt
+            reports/unsigned-review-v135/tools/
