@@ -78,11 +78,24 @@
         "other tabs and their layouts",
         "only the old warning's own visible pixels may change"
       ]
+    },
+    {
+      "selector": "#times",
+      "tab": "times",
+      "language": "both",
+      "before": "The original always-visible astronomical disclaimer occupied vertical space below prayer cards and above the following quotation; removing its incorrect absolute claim changes only the times-tab content flow.",
+      "after": "All prayer cards and the hero preserve their styling while the correction to source provenance removes the obsolete visible disclaimer; subsequent verse shifts upward naturally only inside the times tab.",
+      "preserve": [
+        "all five other app tabs and screenshots",
+        "canonical prayer hero, six prayer card geometry, dark colors and typography",
+        "fixed navigation bar, app settings and Quran pages",
+        "signed original-key Android 1.0.135 and exact web fingerprint"
+      ]
     }
   ],
   "android_release": true,
-  "release_mode": "preview",
-  "status": "SIGNED_135_STAGED_IN_REVIEW_WITH_EXACT_WEB_SHA__ANDROID_INPLACE_CI_RUNNING_NO_PRODUCTION_DEPLOY",
+  "release_mode": "production",
+  "status": "SIGNED_135_VALIDATED_ORIGINAL_KEY__PRODUCTION_GATE_UNBLOCKING_ONLY_AFTER_EXACT_SHA_TESTS__GLOBAL_SOURCE_COVERAGE_LIMITED",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
