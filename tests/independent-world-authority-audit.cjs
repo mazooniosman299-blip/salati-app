@@ -8,6 +8,14 @@ const fixtures=[
  {name:'Istanbul, Türkiye',date:'2026-11-07',lat:41.0082,lon:28.9784,zone:'Europe/Istanbul',method:'Turkey',madhab:'Shafi',
   expected:['06:08','07:35','12:53','15:35','18:01','19:22'],
   authority:'Türkiye Diyanet İşleri Başkanlığı',url:'https://namazvakitleri.diyanet.gov.tr/tr-TR/9541/istanbul-icin-namaz-vakti'},
+ {name:'Kuala Lumpur, Malaysia',date:'2026-11-07',lat:3.139,lon:101.6869,zone:'Asia/Kuala_Lumpur',method:'Jakim',madhab:'Shafi',
+  expected:['05:48','06:56','13:00','16:21','18:58','20:10'],
+  authority:'Pejabat Mufti Wilayah Persekutuan / JAKIM Almanak Falak Syarie',
+  url:'https://www.muftiwp.gov.my/images/falak/takwim/jadual-waktu-solat/KL-dan-Putrajaya/JADUAL_WAKTU_SOLAT_2026_WP_KL_PUTRAJAYA.pdf'},
+ {name:'Cairo, Egypt',date:'2026-11-07',lat:30.0444,lon:31.2357,zone:'Africa/Cairo',method:'Egyptian',madhab:'Shafi',
+  expected:['04:45','06:13','11:39','14:41','17:03','18:23'],
+  authority:'Egyptian General Authority for Survey and Dar al-Ifta',
+  url:'https://www.esa.gov.eg/praytimes.aspx'},
 ];
 const toMinute=s=>{const [h,m]=s.split(':').map(Number);return h*60+m};
 const clock=(d,zone)=>new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d);
