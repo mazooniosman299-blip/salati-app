@@ -8,6 +8,7 @@ on:
       - 'official-muscat.js'
       - 'official-singapore.js'
       - 'official-malaysia-wly01.js'
+      - 'official-cairo.js'
       - 'prayer-engine.js'
       - 'package.json'
       - 'tests/prayer-engine.cjs'
@@ -49,7 +50,7 @@ jobs:
           node tests/auto-city-times.cjs
           node tests/timezone-choice.cjs
           node tests/global-prayer-calendar-audit.cjs
-      - name: Capture REAL rendered Muscat/Singapore/Malaysia 12-hour screenshots from same source
+      - name: Capture REAL rendered Muscat/Singapore/Malaysia/Cairo 12-hour screenshots from same source
         run: |
           set -euo pipefail
           python3 -m pip install --quiet playwright pillow
@@ -61,6 +62,8 @@ jobs:
           test -s reports/prayer-calendar-real/singapore-en.png
           test -s reports/prayer-calendar-real/kuala-lumpur-ar.png
           test -s reports/prayer-calendar-real/kuala-lumpur-en.png
+          test -s reports/prayer-calendar-real/cairo-ar.png
+          test -s reports/prayer-calendar-real/cairo-en.png
           test -s reports/prayer-calendar-real/verified-browser-results.json
       - name: Full existing app and independent global date regression
         run: |
