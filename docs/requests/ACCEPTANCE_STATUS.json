@@ -44,19 +44,24 @@
     },
     "production_publication": {
       "status": "blocked",
-      "reason": "PR #60 is draft only; protected production remains unchanged. Must not merge or deploy before real original-key-signed matched update + native QA + acceptance."
+      "reason": "User conditioned publication on proof of worldwide accuracy. Independent local authorities disagree; other release guards failed due original signed-APK and web-asset fingerprints. DO NOT MERGE OR DEPLOY."
     },
     "latest_user_acceptance": {
       "status": "blocked",
       "reason": "The latest new-branch real screenshots have not been explicitly approved by user for publication."
     },
     "worldwide_official_minute_accuracy": {
-      "status": "blocked",
-      "reason": "Only Muscat November 2026 and Singapore 2026 official sources verified. 246-country mathematical tests are not minute-exact local authority certification, and future years need new source data."
+      "status": "failed",
+      "evidence": "Independent official authority audit 2026-11-07: Kuala Lumpur federal mufti vs candidate -11min Fajr, -3min Dhuhr, -2min Asr/Isha; Istanbul Diyanet -1min Asr/Maghrib; Cairo Egyptian Survey +1min Sunrise/Dhuhr/Maghrib. No worldwide proof. CI 42334493017 failed as intended. See docs/requests/WORLDWIDE_AUTHORITY_AUDIT_20261107.md."
     }
   },
   "limitations": [
     "No claim of zero errors forever: official source policies, DST/zone regulations, location accuracy, polar conventions and future-year reference data may change.",
-    "No physical Android test or newly signed APK yet; production remains unmodified."
-  ]
+    "No physical Android test or newly signed APK yet; production remains unmodified.",
+    "Independently verified 2026-11-07 source discrepancies in Turkish, Malaysian, and Egyptian official prayer timetables prohibit worldwide-accuracy claims."
+  ],
+  "latest_user_acceptance": {
+    "status": "conditional",
+    "evidence": "User explicitly requests official publication ONLY AFTER worldwide accuracy has been proved. Condition currently unmet."
+  }
 }
