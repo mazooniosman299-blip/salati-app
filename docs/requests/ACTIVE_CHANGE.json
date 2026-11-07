@@ -43,11 +43,33 @@
         "unchanged position of Quran and navigation below times",
         "dark canonical style and all other tabs"
       ]
+    },
+    {
+      "selector": "footer .app-version",
+      "tab": "times",
+      "language": "both",
+      "before": "Old footer may show version 1.0.133 despite 1.0.135 Android package",
+      "after": "Exact version 1.0.135 shown beside signed release",
+      "preserve": [
+        "existing footer/download layout, fonts and color",
+        "all other tabs and actual prayer times"
+      ]
+    },
+    {
+      "selector": "#androidDownload .apk-download",
+      "tab": "times",
+      "language": "both",
+      "before": "Old website download link points at obsolete version",
+      "after": "Download 1.0.135 original-signed APK matching website",
+      "preserve": [
+        "existing footer/download layout, fonts and color",
+        "all other tabs and actual prayer times"
+      ]
     }
   ],
-  "android_release": false,
-  "release_mode": "preview",
-  "status": "ORIGINAL_ANDROID_SIGNER_VERIFIED_APP135_SIGNED_OFFLINE_VISUAL_SCOPE_FIX_PENDING_REBUILD",
+  "android_release": true,
+  "release_mode": "review_only",
+  "status": "SIGNED_ORIGINAL_KEY_REBUILD_IN_PROGRESS__NO_DEPLOY_UNTIL_QA_AND_WORLD_PROOF",
   "allowed_paths": [
     "official-muscat.js",
     "official-singapore.js",
@@ -73,6 +95,26 @@
     "dist/app-v1.0.109.js",
     "dist/app.js",
     ".github/workflows/salati-review-unsigned-apk-v135-no-deploy.yml",
-    "dist/salati-ui.css"
+    "dist/salati-ui.css",
+    "android/app/build.gradle",
+    ".github/workflows/salati-agent-governance.yml",
+    "apk-release-parts/current.json",
+    "apk-release-parts/v1.0.135/manifest.json",
+    "release-proof/v1.0.135/metadata.json",
+    "apk-release-parts/v1.0.135/part00.bin",
+    "apk-release-parts/v1.0.135/part01.bin",
+    "apk-release-parts/v1.0.135/part02.bin",
+    "apk-release-parts/v1.0.135/part03.bin",
+    "apk-release-parts/v1.0.135/part04.bin",
+    "apk-release-parts/v1.0.135/part05.bin",
+    "apk-release-parts/v1.0.135/part06.bin",
+    "apk-release-parts/v1.0.135/part07.bin",
+    "apk-release-parts/v1.0.135/part08.bin",
+    "apk-release-parts/v1.0.135/part09.bin",
+    "apk-release-parts/v1.0.135/part10.bin",
+    "apk-release-parts/v1.0.135/part11.bin",
+    "apk-release-parts/v1.0.135/part12.bin",
+    "apk-release-parts/v1.0.135/part13.bin",
+    "apk-release-parts/v1.0.135/part14.bin"
   ]
 }
