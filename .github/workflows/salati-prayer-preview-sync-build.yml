@@ -1,0 +1,53 @@
+name: Salati worldwide prayer fix - commit reproducible review assets (NO PRODUCTION)
+on:
+  push:
+    branches: [fix/worldwide-prayer-authority-20261107]
+    paths:
+      - '.github/workflows/salati-prayer-preview-sync-build.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  review-generated-assets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build the exact source and independently exercise authority fixtures
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          node tests/prayer-engine.cjs
+          node tests/auto-city-times.cjs
+          node tests/timezone-choice.cjs
+          node tests/city-pages.cjs
+          npm run build
+          node tests/prayer-engine.cjs
+          node tests/global-prayer-calendar-audit.cjs
+      - name: Commit ONLY reproducible generated JS, never signed releases
+        run: |
+          set -euo pipefail
+          # The current production signed APK v1.0.133 remains untouched.
+          git diff --name-only | grep -v -E '^dist/(app.js|app-v1.0.109.js)$' > /tmp/unexpected || true
+          if test -s /tmp/unexpected; then
+            cat /tmp/unexpected
+            echo 'Refusing to commit unexpected outputs' >&2
+            exit 1
+          fi
+          git add -- dist/app.js dist/app-v1.0.109.js
+          if git diff --cached --quiet; then
+            echo 'No rebuilt JS drift'
+          else
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Sync prayer-engine authority coverage into deterministic review-only web bundles'
+            git push origin HEAD:fix/worldwide-prayer-authority-20261107
+          fi
