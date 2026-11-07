@@ -60,6 +60,7 @@
     "tests/timezone-choice.cjs",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/ACCEPTANCE_STATUS.json",
-    "docs/requests/SALATI-20261107-GLOBAL-PRAYER-AUDIT.md"
+    "docs/requests/SALATI-20261107-GLOBAL-PRAYER-AUDIT.md",
+    "tests/city-pages.cjs"
   ]
 }
