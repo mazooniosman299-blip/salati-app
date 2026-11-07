@@ -19,6 +19,19 @@ for(let day=1;day<=30;day++){
  assert.deepEqual(actual,expected,'Ministry timetable mismatch on 2026-11-'+day);
 }
 assert.deepEqual(calculateDaySchedule(muscat,{year:2026,month:11,day:7}).map(p=>format(p.time)),['04:59','06:16','11:56','15:07','17:30','18:42']);
+// Independent reference: transcribed from BOTH official Oman Ministry pages,
+// https://www.mara.gov.om/calendar_page1.asp and /calendar_page2.asp (7 Nov + full Nov 2026).
+// Do not derive expected values from official-muscat.js or a calculation library.
+// Fail if sunrise, Isha, or ANY of 180 official minute fields changes accidentally.
+const externalOmanMinistryNovember2026=["04:56 06:12 11:55 15:09 17:34 18:45","04:56 06:13 11:55 15:09 17:33 18:45","04:57 06:14 11:55 15:08 17:32 18:44","04:57 06:14 11:55 15:08 17:32 18:44","04:58 06:15 11:55 15:08 17:31 18:43","04:58 06:15 11:55 15:07 17:31 18:43","04:59 06:16 11:56 15:07 17:30 18:42","04:59 06:16 11:56 15:07 17:30 18:42","05:00 06:17 11:56 15:06 17:29 18:42","05:00 06:18 11:56 15:06 17:29 18:41","05:01 06:18 11:56 15:06 17:28 18:41","05:01 06:19 11:56 15:05 17:28 18:41","05:02 06:20 11:56 15:05 17:28 18:40","05:02 06:20 11:56 15:05 17:27 18:40","05:03 06:21 11:56 15:05 17:27 18:40","05:03 06:22 11:57 15:05 17:26 18:40","05:04 06:22 11:57 15:04 17:26 18:39","05:05 06:23 11:57 15:04 17:26 18:39","05:05 06:24 11:57 15:04 17:26 18:39","05:06 06:24 11:57 15:04 17:25 18:39","05:06 06:25 11:58 15:04 17:25 18:39","05:07 06:26 11:58 15:04 17:25 18:39","05:07 06:26 11:58 15:04 17:25 18:39","05:08 06:27 11:58 15:04 17:25 18:39","05:09 06:28 11:59 15:04 17:25 18:39","05:09 06:28 11:59 15:04 17:25 18:39","05:10 06:29 11:59 15:04 17:25 18:39","05:10 06:30 12:00 15:04 17:24 18:39","05:11 06:31 12:00 15:04 17:24 18:39","05:12 06:31 12:00 15:04 17:24 18:39"];
+for(let idx=0;idx<externalOmanMinistryNovember2026.length;idx++){
+ const day=idx+1, expected=externalOmanMinistryNovember2026[idx].split(' ');
+ const actual=calculateDaySchedule(muscat,{year:2026,month:11,day}).map(p=>format(p.time));
+ assert.deepEqual(actual,expected,'INDEPENDENT MINISTRY CROSS-CHECK 2026-11-'+String(day).padStart(2,'0'));
+ const embedded=officialRows[day].map(min=>String(Math.floor(min/60)).padStart(2,'0')+':'+String(min%60).padStart(2,'0'));
+ assert.deepEqual(embedded,expected,'Stored calendar differs from independent Ministry reference: day '+day);
+}
+
 const geolocated={lat:23.68,lon:58.18,method:'Auto',locationMode:'auto',zone:'Asia/Muscat',zoneMode:'auto'};
 const actualGPS=resolveCalculationState(geolocated);
 assert.equal(actualGPS.lat,geolocated.lat,'GPS latitude must not be replaced with Muscat centre');
