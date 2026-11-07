@@ -64,7 +64,7 @@ jobs:
             set -euo pipefail
             adb install -r /tmp/salati-upgrade/salati-1.0.133.apk | tee reports/salati-v134-signed-upgrade/install-132.txt
             adb shell am start -W -n com.salati.prayer/.MainActivity | tee reports/salati-v134-signed-upgrade/start-132.txt
-            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=135' > reports/salati-v134-signed-upgrade/version-before.txt
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > reports/salati-v134-signed-upgrade/version-before.txt
             adb shell am force-stop com.salati.prayer
             # This MUST be a real in-place signed upgrade: no pm clear/uninstall.
             adb install -r /tmp/salati-upgrade/salati-1.0.134.apk | tee reports/salati-v134-signed-upgrade/upgrade-133.txt
