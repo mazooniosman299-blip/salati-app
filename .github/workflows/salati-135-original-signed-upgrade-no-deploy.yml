@@ -1,0 +1,118 @@
+name: Salati 1.0.135 original signed web + in-place Android upgrade QA (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/prayer-source-and-12hour-guard-20261107
+    paths:
+      - '.github/workflows/salati-135-original-signed-upgrade-no-deploy.yml'
+      - 'apk-release-parts/current.json'
+      - 'apk-release-parts/v1.0.135/**'
+      - 'release-proof/v1.0.135/**'
+      - 'dist/index.html'
+      - 'android/app/build.gradle'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-key-upgrade:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Reconstruct two genuinely signed APKs and verify cryptographic hashes
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-135-upgrade reports/salati-135-signed-upgrade
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          cert='559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e'
+          for ver in ('1.0.133','1.0.135'):
+              directory=Path('apk-release-parts/v'+ver)
+              meta=json.loads((directory/'manifest.json').read_text())
+              parts=[(directory/f'part{i:02d}.bin').read_bytes() for i in range(meta['partCount'])]
+              binary=b''.join(parts)
+              assert len(binary)==meta['size'],ver+' byte count mismatch'
+              assert hashlib.sha256(binary).hexdigest()==meta['sha256'],ver+' SHA-256 mismatch'
+              assert meta['certificateSha256']==cert,ver+' ORIGINAL CERTIFICATE MISMATCH'
+              assert meta['applicationId']=='com.salati.prayer',ver+' package mismatch'
+              assert meta['version']==ver,ver+' version mismatch'
+              Path('/tmp/salati-135-upgrade/salati-'+ver+'.apk').write_bytes(binary)
+              print('PASS exact signed release',ver,meta['sha256'],meta['size'])
+          assert json.loads(Path('apk-release-parts/current.json').read_text())['version']=='1.0.135'
+          PY
+          for ver in 1.0.133 1.0.135; do
+            APK="/tmp/salati-135-upgrade/salati-$ver.apk"
+            "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs "$APK" > "reports/salati-135-signed-upgrade/signature-$ver.txt"
+            grep -F 'Verified using v2 scheme (APK Signature Scheme v2): true' "reports/salati-135-signed-upgrade/signature-$ver.txt"
+            grep -F 'Verified using v3 scheme (APK Signature Scheme v3): true' "reports/salati-135-signed-upgrade/signature-$ver.txt"
+            grep -Fi '559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e' "reports/salati-135-signed-upgrade/signature-$ver.txt"
+          done
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-135-upgrade/salati-1.0.133.apk | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-135-upgrade/salati-1.0.135.apk | grep -F "name='com.salati.prayer' versionCode='136' versionName='1.0.135'"
+      - name: Rebuild exact website and prove signed release fingerprint and APK assets
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          node scripts/release-guard.cjs
+          node tests/prayer-authority-guard.cjs
+          node tests/independent-world-authority-audit.cjs
+          python3 scripts/prepare-android.py
+          python3 scripts/verify-native-web-assets.py /tmp/salati-135-upgrade/salati-1.0.135.apk
+          git diff --exit-code -- dist/app.js dist/app-v1.0.109.js
+          echo 'PASS: website, release fingerprint, original-key APK and native WebView assets match.'
+      - name: Check hardware acceleration and permit emulator
+        run: |
+          test -c /dev/kvm
+          sudo chmod 0666 /dev/kvm
+      - name: REAL Android 15 original-key 1.0.133 to 1.0.135 in-place upgrade, no uninstall
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disk-size: 2048M
+          ram-size: 2048M
+          emulator-options: -accel on -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect -camera-back none -camera-front none
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            DIR=reports/salati-135-signed-upgrade
+            adb install -r /tmp/salati-135-upgrade/salati-1.0.133.apk | tee "$DIR/install-133.txt"
+            grep -Fx Success "$DIR/install-133.txt"
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "$DIR/launch-133.txt"
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > "$DIR/version-before.txt"
+            adb shell am force-stop com.salati.prayer
+            # MUST preserve application and user storage. Never uninstall, pm clear, or reset.
+            adb install -r /tmp/salati-135-upgrade/salati-1.0.135.apk | tee "$DIR/upgrade-135.txt"
+            grep -Fx Success "$DIR/upgrade-135.txt"
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=136' > "$DIR/version-after.txt"
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "$DIR/launch-135.txt"
+            sleep 5
+            adb shell pidof com.salati.prayer > "$DIR/pid-135.txt"
+            test -s "$DIR/pid-135.txt"
+            adb exec-out screencap -p > "$DIR/real-android15-after-original-signed-upgrade.png"
+            test -s "$DIR/real-android15-after-original-signed-upgrade.png"
+            adb logcat -d -v threadtime > "$DIR/logcat.txt"
+            echo 'PASS: REAL Android 15 original-signature update 134→136, app launch, no uninstall, no data clearing.'
+      - name: Preserve original signed-release evidence without deploying
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-135-original-signed-android15-inplace-upgrade-evidence
+          retention-days: 30
+          if-no-files-found: warn
+          path: reports/salati-135-signed-upgrade/
