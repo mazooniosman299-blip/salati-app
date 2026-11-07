@@ -11,5 +11,6 @@
   "originalKeyVerified": true,
   "sourceBuildCommit": "b3e00b73182c52cd4d04abaed7cec9981d47d7ad",
   "signing": "offline-original-key",
-  "releaseState": "staged-no-deploy"
+  "releaseState": "staged-no-deploy",
+  "buildSnapshotUtc": "2026-11-07T15:12:00.000Z"
 }
