@@ -45,7 +45,7 @@
       ]
     },
     {
-      "selector": "footer .app-version",
+      "selector": ".app-version",
       "tab": "times",
       "language": "both",
       "before": "Old footer may show version 1.0.133 despite 1.0.135 Android package",
