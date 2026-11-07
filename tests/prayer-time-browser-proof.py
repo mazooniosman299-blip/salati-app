@@ -18,7 +18,7 @@ Thread(target=server.serve_forever,daemon=True).start()
 CASES=[
  ("muscat-ar","ar",23.588,58.3829,"Asia/Muscat","Oman","Shafi",["4:59","6:16","11:56","3:07","5:30 م","6:42 م"]),
  ("muscat-en","en",23.588,58.3829,"Asia/Muscat","Oman","Shafi",["4:59 AM","6:16 AM","11:56 AM","3:07 PM","5:30 PM","6:42 PM"]),
- ("singapore-ar","ar",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27","6:47","12:50","4:11 م","6:51 م","8:03 م"]),
+ ("singapore-ar","ar",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27","6:47","12:50 م","4:11 م","6:51 م","8:03 م"]),
  ("singapore-en","en",1.3521,103.8198,"Asia/Singapore","Singapore","Shafi",["5:27 AM","6:47 AM","12:50 PM","4:11 PM","6:51 PM","8:03 PM"])
 ]
 RESULT=[]
@@ -29,7 +29,7 @@ try:
    page=browser.new_page(viewport={"width":390,"height":844},device_scale_factor=1,service_workers="block",reduced_motion="reduce")
    page.clock.set_fixed_time(datetime(2026,11,7,8,0,tzinfo=timezone.utc))
    state={"lang":lang,"lat":lat,"lon":lon,"zone":zone,"zoneMode":"auto","name":"Muscat" if method=="Oman" else "Singapore","method":method,"methodPreferenceVersion":1,"madhab":madhab,"locationMode":"manual","locationSet":True,"adjustments":{"fajr":0,"sunrise":0,"dhuhr":0,"asr":0,"maghrib":0,"isha":0}}
-   page.add_init_script("(v)=>localStorage.setItem('salati',JSON.stringify(v))",state)
+   page.add_init_script("localStorage.setItem('salati', "+json.dumps(json.dumps(state))+");")
    page_errors=[]
    page.on("pageerror",lambda exc: page_errors.append(str(exc)))
    resp=page.goto(f"http://127.0.0.1:{server.server_port}/",wait_until="domcontentloaded",timeout=35000)
