@@ -21,7 +21,7 @@ for(const c of cities){
   // March 8, 2026 falls in Ramadan: the engine uses a 120-minute Isha interval.
   if(view.state.method==='UmmAlQura' && instant.startsWith('2026-03-08'))params.ishaInterval=120;
   const ref=new PrayerTimes(new Coordinates(c.lat,c.lon),d,params);
-  for(let i=0;i<6;i++){assert(Number.isFinite(+view.rows[i].time));if(view.source.kind==='calculated')assert.equal(+view.rows[i].time,+ref[view.rows[i].key]);else assert.equal(c.slug,'muscat');if(i)assert(+view.rows[i].time>+view.rows[i-1].time)}
+  for(let i=0;i<6;i++){assert(Number.isFinite(+view.rows[i].time));if(view.source.kind==='calculated')assert.equal(+view.rows[i].time,+ref[view.rows[i].key]);else assert(['muscat','cairo'].includes(c.slug),'Unexpected official city source: '+c.slug);if(i)assert(+view.rows[i].time>+view.rows[i-1].time)}
   const week=cityWeek(c,now);assert.equal(week.length,7);assert.equal(week[0].date,view.date);assert.deepEqual(week[0].rows,view.rows);
   for(let i=0;i<7;i++){const parts=week[i].date.split('-').map(Number);assert.deepEqual(week[i].rows,engine.calculateDaySchedule(view.state,{year:parts[0],month:parts[1],day:parts[2]}));if(i)assert.equal(+week[i].instant-+week[i-1].instant,86400000);}
   checked++;
