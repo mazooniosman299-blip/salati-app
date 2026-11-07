@@ -1,0 +1,144 @@
+name: Salati v1.0.134 verified original-key worldwide prayer APK staging (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/worldwide-prayer-authority-20261107
+    paths:
+      - '.github/workflows/salati-v134-stage-original-key.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  signed-v134-source-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild same approved source deterministically
+        env:
+          SALATI_BUILD_SNAPSHOT: '2026-11-02T10:46:00.000Z'
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          npm test
+          node tests/printed-mushaf-integrity.cjs
+          node tests/surah-frame-contract.cjs
+          node tests/page-number-book-contract.cjs
+          node - <<'JS'
+          const {fingerprint}=require('./scripts/release-fingerprint.cjs');
+          const proof=require('./release-proof/v1.0.134/metadata.json');
+          if(fingerprint().sha256!==proof.webFingerprint)throw Error('Source changed since original-key offline signing. REFUSE.');
+          console.log('PASS exact original-key signed web fingerprint',proof.webFingerprint);
+          JS
+      - name: Obtain immutable unsigned candidate created by GitHub Actions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/salati-134-unsigned /tmp/salati-134-release
+          gh run download 42325384555 --repo "$GITHUB_REPOSITORY" --name salati-1.0.134-unsigned-prayer-fix --dir /tmp/salati-134-unsigned
+          test "$(find /tmp/salati-134-unsigned -name app-release-unsigned.apk | wc -l)" -eq 1
+          cp "$(find /tmp/salati-134-unsigned -name app-release-unsigned.apk | head -1)" /tmp/salati-134-release/unsigned.apk
+          python3 - <<'PY'
+          import json,hashlib
+          from pathlib import Path
+          m=json.loads(Path('release-proof/v1.0.134/metadata.json').read_text())
+          p=Path('/tmp/salati-134-release/unsigned.apk')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()==m['unsignedSha256'], 'Signed proof is for a different unsigned ZIP'
+          print('PASS original byte-exact unsigned APK from CI',m['unsignedSha256'])
+          PY
+      - name: Reconstruct signed APK from PUBLIC original-signature block (NO PRIVATE KEY)
+        run: |
+          set -euo pipefail
+          SIGNER="$ANDROID_HOME/build-tools/36.0.0/lib/apksigner.jar"
+          test -s "$SIGNER"
+          test "$(sha256sum "$SIGNER" | cut -d' ' -f1)" = 3716d9311e55d2b0918a2fd9d54ba9e406c5f6abeea700b287f11259bc163dec
+          keytool -genkeypair -noprompt -keystore /tmp/salati-134-temporary.jks -storepass temporary123 -keypass temporary123 -alias temp -keyalg RSA -keysize 2048 -validity 2 -dname 'CN=Temporary ZIP normalizer ONLY' >/dev/null 2>&1
+          java -jar "$SIGNER" sign --v1-signing-enabled false --v4-signing-enabled false --ks /tmp/salati-134-temporary.jks --ks-key-alias temp --ks-pass pass:temporary123 --key-pass pass:temporary123 --out /tmp/salati-134-release/dummy.apk /tmp/salati-134-release/unsigned.apk
+          python3 scripts/reconstruct-verified-apk.py \
+            --unsigned /tmp/salati-134-release/unsigned.apk \
+            --dummy /tmp/salati-134-release/dummy.apk \
+            --proof release-proof/v1.0.134/signature-block.zlib.b64 \
+            --manifest release-proof/v1.0.134/metadata.json \
+            --output /tmp/salati-134-release/salati-1.0.134.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose --print-certs /tmp/salati-134-release/salati-1.0.134.apk > /tmp/salati-134-release/signature-check.txt
+          grep -F "Verified using v2 scheme (APK Signature Scheme v2): true" /tmp/salati-134-release/signature-check.txt
+          grep -F "Verified using v3 scheme (APK Signature Scheme v3): true" /tmp/salati-134-release/signature-check.txt
+          grep -Fi "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e" /tmp/salati-134-release/signature-check.txt
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-134-release/salati-1.0.134.apk | grep -F "name='com.salati.prayer' versionCode='135' versionName='1.0.134'"
+      - name: Stage original-key signed APK and enforce release guard before any commit
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare-android.py
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          meta=json.loads(Path('release-proof/v1.0.134/metadata.json').read_text())
+          apk=Path('/tmp/salati-134-release/salati-1.0.134.apk').read_bytes()
+          assert hashlib.sha256(apk).hexdigest()==meta['sha256']
+          assert len(apk)==meta['size'] and len(apk)<25*1024*1024
+          directory=Path('apk-release-parts/v1.0.134')
+          directory.mkdir(parents=True,exist_ok=True)
+          chunk=1800000
+          parts=[apk[i:i+chunk] for i in range(0,len(apk),chunk)]
+          assert len(parts)==15
+          for i,b in enumerate(parts):(directory/f'part{i:02d}.bin').write_bytes(b)
+          manifest={
+              'version':meta['version'],'versionCode':meta['versionCode'],
+              'applicationId':meta['applicationId'],'filename':meta['filename'],
+              'size':meta['size'],'sha256':meta['sha256'],
+              'certificateSha256':meta['certificateSha256'],
+              'partCount':len(parts),'chunkBytes':chunk,
+              'webFingerprint':meta['webFingerprint']}
+          (directory/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          Path('apk-release-parts/current.json').write_text(json.dumps({'version':meta['version']},indent=2)+'\n')
+          print('PASS staged 15 signed immutable APK parts, no secrets')
+          PY
+          python3 scripts/verify-native-web-assets.py /tmp/salati-134-release/salati-1.0.134.apk
+          node scripts/release-guard.cjs
+      - name: Test same Cloudflare bundle locally without a production deployment
+        env:
+          SALATI_WEB_ALREADY_BUILT: '1'
+          SALATI_PUBLIC_ORIGIN: https://salati-app-ctc.pages.dev
+        run: |
+          set -euo pipefail
+          npm run build:cloudflare
+          node scripts/release-guard.cjs
+          echo 'PASS reconstructed signed APK and Cloudflare staging, no production deploy'
+      - name: Commit ONLY verified signed release inventory to PR branch
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apk-release-parts/current.json apk-release-parts/v1.0.134
+          test "$(git diff --cached --name-only | wc -l)" -eq 17
+          git commit -m "release(review): stage SHA-verified original-key signed Salati 1.0.134"
+          git push origin "HEAD:$GITHUB_REF_NAME"
+          echo 'Signed review branch updated. Production remains unchanged.'
+      - name: Retain signed APK and independent release evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-v134-original-key-signed-review
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            /tmp/salati-134-release/salati-1.0.134.apk
+            /tmp/salati-134-release/signature-check.txt
+            release-proof/v1.0.134/metadata.json
+            apk-release-parts/v1.0.134/manifest.json
