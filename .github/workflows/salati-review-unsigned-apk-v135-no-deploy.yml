@@ -1,0 +1,88 @@
+name: Salati 1.0.135 unsigned candidate for OFFLINE original-key signing (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/prayer-source-and-12hour-guard-20261107
+    paths:
+      - '.github/workflows/salati-review-unsigned-apk-v135-no-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-and-build-unsigned:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild exact candidate and verify all mandatory functional tests
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          npm test
+          npm run test:seo
+          git diff --exit-code -- dist/app.js dist/app-v1.0.109.js
+      - name: Prepare Android WebView from this exact tested tree
+        run: |
+          set -euo pipefail
+          python3 scripts/prepare-android.py
+          python3 tests/android-asset-path-contract-20261102.py
+      - name: Assemble unsigned APK and AAB version 1.0.135 code 136
+        working-directory: android
+        run: |
+          set -euo pipefail
+          bash gradlew :app:assembleRelease :app:bundleRelease -x verifyReleaseSigningIdentity -PsalatiVersionCode=136 -PsalatiVersionName=1.0.135 --no-daemon
+      - name: Independently verify version, embedded web identity and release inventory
+        run: |
+          set -euo pipefail
+          APK=android/app/build/outputs/apk/release/app-release-unsigned.apk
+          AAB=android/app/build/outputs/bundle/release/app-release.aab
+          test -s "$APK"
+          test -s "$AAB"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging "$APK" | grep -F "name='com.salati.prayer' versionCode='136' versionName='1.0.135'"
+          python3 - <<'PY'
+          import hashlib,json,pathlib,zipfile
+          root=pathlib.Path('.')
+          apk=root/'android/app/build/outputs/apk/release/app-release-unsigned.apk'
+          aab=root/'android/app/build/outputs/bundle/release/app-release.aab'
+          assert zipfile.ZipFile(apk).testzip() is None
+          assert zipfile.ZipFile(aab).testzip() is None
+          identity=json.loads((root/'android/signing-identity.json').read_text())
+          assert identity['application_id']=='com.salati.prayer'
+          fingerprint=json.loads(__import__('subprocess').check_output(['node','scripts/release-fingerprint.cjs'],text=True))
+          report={'applicationId':'com.salati.prayer','versionName':'1.0.135','versionCode':136,'buildCommit':__import__('os').environ['GITHUB_SHA'],
+            'unsignedApkSha256':hashlib.sha256(apk.read_bytes()).hexdigest(),
+            'unsignedAabSha256':hashlib.sha256(aab.read_bytes()).hexdigest(),
+            'originalCertificateRequired':identity['certificate_sha256'],
+            'websiteFingerprint':fingerprint['sha256'],
+            'signing':'UNSIGNED - original key must be applied OFFLINE, not in GitHub',
+            'deployed':False}
+          p=root/'reports/unsigned-review-v135';p.mkdir(parents=True,exist_ok=True)
+          (p/'build.json').write_text(json.dumps(report,indent=2)+'\n')
+          print('PASS unsigned 1.0.135 version 136, source-linked fingerprint:',report['websiteFingerprint'])
+          PY
+      - name: Retain unsigned candidate and Android verification tools for OFFLINE signing
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: salati-135-unsigned-and-offline-signer-tools-DO-NOT-PUBLISH
+          retention-days: 7
+          if-no-files-found: error
+          path: |
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            android/app/build/outputs/bundle/release/app-release.aab
+            reports/unsigned-review-v135/build.json
+            /opt/android-sdk/build-tools/36.0.0/lib/apksigner.jar
+            /opt/android-sdk/build-tools/36.0.0/zipalign
+            /opt/android-sdk/build-tools/36.0.0/aapt
