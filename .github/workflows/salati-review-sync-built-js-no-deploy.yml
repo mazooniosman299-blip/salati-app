@@ -41,10 +41,12 @@ jobs:
           git add dist/app.js dist/app-v1.0.109.js
           git diff --cached --name-only > /tmp/salati-staged
           if test -s /tmp/salati-staged; then
-            if grep -Ev '^dist/(app\\.js|app-v1\\.0\\.109\\.js)$' /tmp/salati-staged; then
-              echo 'UNEXPECTED staged file; refusing commit' >&2
-              exit 1
-            fi
+            while IFS= read -r path; do
+              case "$path" in
+                dist/app.js|dist/app-v1.0.109.js) ;;
+                *) echo "Unexpected staged file: $path" >&2; exit 1 ;;
+              esac
+            done < /tmp/salati-staged
             git commit -m "build(review): commit deterministic web runtime matching official prayer engine"
             git push origin "HEAD:$GITHUB_REF_NAME"
           else
