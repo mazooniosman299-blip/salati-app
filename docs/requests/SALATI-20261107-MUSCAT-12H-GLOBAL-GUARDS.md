@@ -1,5 +1,7 @@
 # SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS
 
+Exact latest user wording (verbatim): اتاكد انو المشكله ماتنعاد تاني نهائيا للابد والمواقيت تكون صحيحه
+
 User-approved exact reference: Muscat November 7, 2026, Oman local 12-hour clock:
 Fajr 4:59 AM, Sunrise 6:16 AM, Dhuhr 11:56 AM, Asr 3:07 PM, Maghrib 5:30 PM, Isha 6:42 PM.
 Source: https://www.mara.gov.om/arabic/calendar_page2.asp
