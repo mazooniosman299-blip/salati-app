@@ -79,7 +79,8 @@ for(const [s,exp] of [[muscat,{fajr:'4:59',sunrise:'6:16',dhuhr:'11:56',asr:'3:0
  for(const p of e.calculateDaySchedule(s,day)){
   const show=uiTime(p.time,s.zone,'ar');
   assert.equal(show.clock,exp[p.key],s.zone+' '+p.key+' must display 12-hour clock');
-  assert.equal(show.period,['fajr','sunrise'].includes(p.key)?'صباحًا':p.key==='dhuhr'?'صباحًا':'مساءً',s.zone+' AM/PM error '+p.key);
+  const localHour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:s.zone,hour:'2-digit',hourCycle:'h23'}).format(p.time));
+  assert.equal(show.period,localHour>=12?'مساءً':'صباحًا',s.zone+' AM/PM error '+p.key);
  }
 }
 console.log('PASS: 395 source-authority dates, 12-hour rendered clock, 2 local zones, Hanafi Asr isolation, Android Isha alarm, manual offsets, geography/date expiry, no sunrise Adhan.');
