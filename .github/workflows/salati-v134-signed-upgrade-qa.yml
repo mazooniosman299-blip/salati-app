@@ -43,8 +43,8 @@ jobs:
             grep -F "Verified using v2 scheme (APK Signature Scheme v2): true" "reports/salati-v134-signed-upgrade/signature-$v.txt"
             grep -Fi "559dec66ab13e86be17c661732f1d2b1751a63261ed7d7d353b857f693cf056e" "reports/salati-v134-signed-upgrade/signature-$v.txt"
           done
-          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.133.apk | grep -F "name='com.salati.prayer' versionCode='133' versionName='1.0.133'"
-          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.134.apk | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.134'"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.133.apk | grep -F "name='com.salati.prayer' versionCode='134' versionName='1.0.133'"
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging /tmp/salati-upgrade/salati-1.0.134.apk | grep -F "name='com.salati.prayer' versionCode='135' versionName='1.0.134'"
       - name: Require hardware accelerated emulator
         run: |
           test -c /dev/kvm
@@ -64,7 +64,7 @@ jobs:
             set -euo pipefail
             adb install -r /tmp/salati-upgrade/salati-1.0.133.apk | tee reports/salati-v134-signed-upgrade/install-132.txt
             adb shell am start -W -n com.salati.prayer/.MainActivity | tee reports/salati-v134-signed-upgrade/start-132.txt
-            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > reports/salati-v134-signed-upgrade/version-before.txt
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=135' > reports/salati-v134-signed-upgrade/version-before.txt
             adb shell am force-stop com.salati.prayer
             # This MUST be a real in-place signed upgrade: no pm clear/uninstall.
             adb install -r /tmp/salati-upgrade/salati-1.0.134.apk | tee reports/salati-v134-signed-upgrade/upgrade-133.txt
