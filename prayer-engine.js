@@ -39,7 +39,7 @@ function singaporeCoverage(state,day) {
  // MUIS publishes one NATIONAL timetable for Singapore, not a nearby Malaysia city.
  // Require exact civil timezone and Singapore's bounded geography to avoid an
  // authority source being falsely applied in neighboring countries.
- return state.method==='Singapore'&&state.madhab==='Shafi'&&state.zone==='Asia/Singapore'
+ return state.method==='Singapore'&&(state.zone||tzLookup(state.lat,state.lon))==='Asia/Singapore'
   &&state.lat>=1.14&&state.lat<=1.48&&state.lon>=103.58&&state.lon<=104.15
   &&!!officialSingaporeRow(day);
 }
@@ -49,12 +49,16 @@ function authorityDayTimes(state,day,rows,utcOffsetMinutes){
   const minutes=rows[i]+Number(state.adjustments?.[key]||0);
   times[key]=new Date(Date.UTC(day.getFullYear(),day.getMonth(),day.getDate(),0,minutes-utcOffsetMinutes));
  });
+ // Asr alone depends on the Hanafi shadow-length convention. Official
+ // sunrise, twilight/Isha and the other four times must NEVER be replaced
+ // with unrelated astronomy just because a user changes Asr school.
+ if(state.madhab==='Hanafi')times.asr=calendarAlignedSolarTimes(state,day).asr;
  return validateDayTimes(times);
 }
-function muscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!officialMuscatRow(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
+function muscatCoverage(state,day){if(state.method!=='Oman'||(state.zone||tzLookup(state.lat,state.lon))!=='Asia/Muscat'||!officialMuscatRow(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
 // Requested display correction for Muscat on 2026-10-21; not an official-table edit.
 function requestedMuscatDay(day){return day.getFullYear()===2026&&day.getMonth()===9&&day.getDate()===21}
-function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||state.madhab!=='Shafi'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
+function requestedMuscatCoverage(state,day){if(state.method!=='Oman'||(state.zone||tzLookup(state.lat,state.lon))!=='Asia/Muscat'||!requestedMuscatDay(day))return false;const dy=(state.lat-23.588)*111,dx=(state.lon-58.3829)*111*Math.cos(state.lat*Math.PI/180);return Math.hypot(dx,dy)<=20}
 // Some circumpolar days cause the astronomical library's shadow-based Asr
 // to be before solar noon or after sunset. This is not a valid prayer time.
 // Never invent a clock time or schedule an Adhan for that event; the UI
@@ -102,7 +106,7 @@ function dayTimes(state,day){
  }
  return validateDayTimes(calendarAlignedSolarTimes(state,day));
 }
-export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return singaporeCoverage(state,day)?{kind:'official',ar:'التقويم الرسمي لسنغافورة · مجلس الشؤون الإسلامية MUIS',en:'Official Singapore timetable · MUIS',url:SINGAPORE_MUIS_SOURCE}:requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}:{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
+export function timetableSource(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone),day=new Date(d.year,d.month-1,d.day,12);return singaporeCoverage(state,day)?(state.madhab==='Hanafi'?{kind:'custom',ar:'تقويم سنغافورة MUIS الرسمي، والعصر حنفي محسوب',en:'Singapore MUIS official times, with calculated Hanafi Asr',url:SINGAPORE_MUIS_SOURCE}:{kind:'official',ar:'التقويم الرسمي لسنغافورة · مجلس الشؤون الإسلامية MUIS',en:'Official Singapore timetable · MUIS',url:SINGAPORE_MUIS_SOURCE}):requestedMuscatCoverage(state,day)?{kind:'custom',ar:'تقويم مسقط مع تعديلات المواقيت المطلوبة',en:'Muscat calendar with requested prayer-time corrections',url:MUSCAT_SOURCE}:muscatCoverage(state,day)?(state.madhab==='Hanafi'?{kind:'custom',ar:'تقويم مسقط الرسمي، والعصر حنفي محسوب',en:'Official Muscat calendar, with calculated Hanafi Asr',url:MUSCAT_SOURCE}:{kind:'official',ar:'تقويم مسقط الرسمي · وزارة الأوقاف العُمانية',en:'Official Muscat calendar · Oman Ministry of Endowments',url:MUSCAT_SOURCE}):{kind:'calculated',ar:'حساب فلكي بحسب طريقة المنطقة',en:'Astronomical calculation using the regional convention',url:'https://aladhan.com/calculation-methods'}}
 export function calculateSchedule(state,now=new Date()){state=resolveCalculationState(state);const d=calendarParts(now,state.zone);const day=new Date(d.year,d.month-1,d.day,12),today=dayTimes(state,day);day.setDate(day.getDate()+1);const tomorrow=dayTimes(state,day);return [...PRAYER_KEYS.map(key=>({key,time:today[key]})),{key:'fajr',time:tomorrow.fajr,tomorrow:true}]}
 
 export function calculateDaySchedule(state,parts){state=resolveCalculationState(state);const day=new Date(parts.year,parts.month-1,parts.day,12),times=dayTimes(state,day);return PRAYER_KEYS.map(key=>({key,time:times[key]}))}
