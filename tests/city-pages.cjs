@@ -51,7 +51,7 @@ for(const city of ['makkah','jakarta'])assert.equal(offset(city,'2026-01-15T12:0
 const ramadan=cityTimetable(cities[0],new Date('2026-03-01T12:00Z'));assert.equal((+ramadan.rows[5].time-+ramadan.rows[4].time)/60000,120);
 const muscat=cities.find(c=>c.slug==='muscat'),muscatDay=cityTimetable(muscat,new Date('2026-10-23T12:00Z'));
 assert.deepEqual(muscatDay.rows.map(r=>new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Muscat',hour:'2-digit',minute:'2-digit'}).format(r.time)),['04:52','06:08','11:56','15:13','17:40','18:51']);
-assert.equal(muscatDay.source.kind,'official');const monthEnd=cityWeek(muscat,new Date('2026-10-30T12:00Z'));assert.equal(monthEnd[1].source.kind,'official');assert.equal(monthEnd[2].source.kind,'calculated');
+assert.equal(muscatDay.source.kind,'official');const monthEnd=cityWeek(muscat,new Date('2026-10-30T12:00Z'));assert.equal(monthEnd[1].source.kind,'official');assert.equal(monthEnd[2].source.kind,'official');assert.equal(cityTimetable(muscat,new Date('2026-12-01T08:00Z')).source.kind,'calculated');
 assert.equal(new Set(cities.map(c=>c.enText)).size,cities.length);assert.equal(new Set(cities.map(c=>c.arText)).size,cities.length);
 console.log(`PASS: ${checked} city/date schedules, seven-day tables, ${cities.length} local-midnight rollovers, DST, regional sources and translated canonical/hreflang pages.`);
 // Exercise the actual browser entry: timer/foreground refresh at a city-local midnight.
