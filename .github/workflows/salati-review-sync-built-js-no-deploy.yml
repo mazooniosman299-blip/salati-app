@@ -1,0 +1,58 @@
+name: Salati review exact JS build sync (NO DEPLOY)
+on:
+  push:
+    branches:
+      - fix/prayer-source-and-12hour-guard-20261107
+    paths:
+      - '.github/workflows/salati-review-sync-built-js-no-deploy.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  commit-exact-generated-js:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Rebuild exact review source without publication
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" = "fix/prayer-source-and-12hour-guard-20261107"
+          npm ci
+          npm run build
+          node tests/prayer-authority-guard.cjs
+          node tests/independent-world-authority-audit.cjs
+          test -s dist/app.js
+          test -s dist/app-v1.0.109.js
+          cmp dist/app.js dist/app-v1.0.109.js
+      - name: Commit ONLY rebuilt app JS to same review branch; NEVER touch production
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF_NAME" != production
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/app.js dist/app-v1.0.109.js
+          git diff --cached --name-only > /tmp/salati-staged
+          if test -s /tmp/salati-staged; then
+            if grep -Ev '^dist/(app\\.js|app-v1\\.0\\.109\\.js)$' /tmp/salati-staged; then
+              echo 'UNEXPECTED staged file; refusing commit' >&2
+              exit 1
+            fi
+            git commit -m "build(review): commit deterministic web runtime matching official prayer engine"
+            git push origin "HEAD:$GITHUB_REF_NAME"
+          else
+            echo 'Verified already built exact source; no commit necessary'
+          fi
+      - name: Verify committed tree rebuilds to identical JS
+        run: |
+          set -euo pipefail
+          npm run build
+          git diff --exit-code -- dist/app.js dist/app-v1.0.109.js
+          echo 'PASS: matching deterministic review JS. NO DEPLOY.'
