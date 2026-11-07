@@ -31,6 +31,19 @@
         "widget layout and mosque image",
         "navigation and all interaction controls"
       ]
+    },
+    {
+      "selector": "#prayerSourceDisclaimer",
+      "tab": "times",
+      "language": "both",
+      "before": "Generic disclaimer inaccurately states every time is astronomical even for verified authority dates",
+      "after": "Clearly state verified official city/date timetables are used where available and unverified places use astronomical calculations",
+      "preserve": [
+        "original note position and styling",
+        "all prayer card geometry and icon sizes",
+        "12-hour clock formatting",
+        "other application tabs and navigation"
+      ]
     }
   ],
   "android_release": false,
@@ -49,6 +62,7 @@
     ".github/workflows/salati-authority-guard-no-deploy.yml",
     "docs/requests/ACTIVE_CHANGE.json",
     "docs/requests/ACCEPTANCE_STATUS.json",
-    "docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md"
+    "docs/requests/SALATI-20261107-MUSCAT-12H-GLOBAL-GUARDS.md",
+    "dist/index.html"
   ]
 }
