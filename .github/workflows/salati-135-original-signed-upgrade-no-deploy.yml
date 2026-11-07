@@ -94,23 +94,22 @@ jobs:
           disable-animations: true
           script: |
             set -euo pipefail
-            DIR=reports/salati-135-signed-upgrade
-            adb install -r /tmp/salati-135-upgrade/salati-1.0.133.apk | tee "$DIR/install-133.txt"
-            grep -Fx Success "$DIR/install-133.txt"
-            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "$DIR/launch-133.txt"
-            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > "$DIR/version-before.txt"
+            adb install -r /tmp/salati-135-upgrade/salati-1.0.133.apk | tee "reports/salati-135-signed-upgrade/install-133.txt"
+            grep -Fx Success "reports/salati-135-signed-upgrade/install-133.txt"
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "reports/salati-135-signed-upgrade/launch-133.txt"
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=134' > "reports/salati-135-signed-upgrade/version-before.txt"
             adb shell am force-stop com.salati.prayer
             # MUST preserve application and user storage. Never uninstall, pm clear, or reset.
-            adb install -r /tmp/salati-135-upgrade/salati-1.0.135.apk | tee "$DIR/upgrade-135.txt"
-            grep -Fx Success "$DIR/upgrade-135.txt"
-            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=136' > "$DIR/version-after.txt"
-            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "$DIR/launch-135.txt"
+            adb install -r /tmp/salati-135-upgrade/salati-1.0.135.apk | tee "reports/salati-135-signed-upgrade/upgrade-135.txt"
+            grep -Fx Success "reports/salati-135-signed-upgrade/upgrade-135.txt"
+            adb shell dumpsys package com.salati.prayer | grep -F 'versionCode=136' > "reports/salati-135-signed-upgrade/version-after.txt"
+            adb shell am start -W -n com.salati.prayer/.MainActivity | tee "reports/salati-135-signed-upgrade/launch-135.txt"
             sleep 5
-            adb shell pidof com.salati.prayer > "$DIR/pid-135.txt"
-            test -s "$DIR/pid-135.txt"
-            adb exec-out screencap -p > "$DIR/real-android15-after-original-signed-upgrade.png"
-            test -s "$DIR/real-android15-after-original-signed-upgrade.png"
-            adb logcat -d -v threadtime > "$DIR/logcat.txt"
+            adb shell pidof com.salati.prayer > "reports/salati-135-signed-upgrade/pid-135.txt"
+            test -s "reports/salati-135-signed-upgrade/pid-135.txt"
+            adb exec-out screencap -p > "reports/salati-135-signed-upgrade/real-android15-after-original-signed-upgrade.png"
+            test -s "reports/salati-135-signed-upgrade/real-android15-after-original-signed-upgrade.png"
+            adb logcat -d -v threadtime > "reports/salati-135-signed-upgrade/logcat.txt"
             echo 'PASS: REAL Android 15 original-signature update 134→136, app launch, no uninstall, no data clearing.'
       - name: Preserve original signed-release evidence without deploying
         if: always()
