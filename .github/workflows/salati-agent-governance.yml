@@ -19,8 +19,16 @@ jobs:
           node-version: '22'
       - name: Verify signed version reference, 20 risk inventory and AI source-of-truth contract
         run: node tests/agent-governance-contract.cjs
+      - name: Rebuild the exact signed website before checking production-scope signature
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run build
+          # Do not accept stale checked-in pages whose clock differs from the signed build.
+          node scripts/release-guard.cjs
       - name: Require exact per-request file scope, based on actual PR diff
         run: |
+          set -euo pipefail
           git fetch --no-tags origin production:refs/remotes/origin/production
           node scripts/verify-change-scope.cjs origin/production
       - name: Validate original 20-risk mandate and every acceptance stage
